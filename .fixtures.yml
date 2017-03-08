@@ -1,0 +1,19 @@
+fixtures:
+  repositories:
+    stdlib:
+      repo: https://github.com/puppetlabs/puppetlabs-stdlib.git
+      ref: 4.11.0
+    mysql:
+      repo: https://github.com/puppetlabs/puppetlabs-mysql.git
+      ref: 3.10.0
+    java:
+      repo: https://github.com/puppetlabs/puppetlabs-java.git
+      ref: 1.6.0
+    staging:
+      repo: https://github.com/voxpupuli/puppet-staging.git
+      ref: v2.2.0
+    systemd:
+      repo: https://github.com/camptocamp/puppet-systemd.git
+      ref: 0.4.0
+  symlinks:
+    keycloak: "#{source_dir}"

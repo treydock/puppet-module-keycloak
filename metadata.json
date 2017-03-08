@@ -1,0 +1,31 @@
+{
+  "name": "treydock-keycloak",
+  "version": "0.0.1",
+  "author": "treydock",
+  "summary": "keycloak Puppet module",
+  "license": "Apache 2.0",
+  "source": "git://github.com/treydock/puppet-module-keycloak.git",
+  "issues_url": "https://github.com/treydock/puppet-module-keycloak/issues",
+  "project_page": "https://github.com/treydock/puppet-module-keycloak",
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.6.0 <5.0.0" },
+    { "name": "puppetlabs/mysql", "version_requirement": "3.x" },
+    { "name": "puppetlabs/java", "version_requirement": ">= 1.0.0 <2.0.0" },
+    { "name": "puppet/staging", "version_requirement": ">= 1.0.0 <3.0.0" },
+    { "name": "camptocamp/systemd", "version_requirement": "0.x" }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [ "7" ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [ "7" ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [ "7" ]
+    }
+  ]
+}

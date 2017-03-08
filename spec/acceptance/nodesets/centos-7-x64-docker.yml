@@ -1,0 +1,17 @@
+HOSTS:
+  centos-7-x64:
+    roles:
+      - master
+      - agent
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: centos:7
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget cronie git'
+    docker_container_name: 'keycloak-el7'
+CONFIG:
+  log_level: debug
+  type: foss

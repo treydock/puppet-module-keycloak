@@ -1,0 +1,17 @@
+HOSTS:
+  centos-6-x64:
+    roles:
+      - master
+      - agent
+    platform: el-6-x86_64
+    hypervisor: docker
+    image: centos:6
+    docker_preserve_image: true
+    docker_cmd:
+      - '/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget cronie git'
+    docker_container_name: 'keycloak-el6'
+CONFIG:
+  log_level: debug
+  type: foss
