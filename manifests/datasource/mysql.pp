@@ -1,5 +1,5 @@
 # Private class.
-class keycloak::database::mysql (
+class keycloak::datasource::mysql (
   $jar_source = '/usr/share/java/mysql-connector-java.jar',
 ) {
   assert_private()
@@ -35,6 +35,13 @@ class keycloak::database::mysql (
     owner  => $keycloak::user,
     group  => $keycloak::group,
     mode   => '0644',
+  }
+
+  mysql::db { $keycloak::datasource_dbname:
+    user     => $keycloak::datasource_username,
+    password => $keycloak::datasource_password,
+    host     => $keycloak::db_host,
+    grant    => 'ALL',
   }
 
 }

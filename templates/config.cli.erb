@@ -1,0 +1,31 @@
+embed-server
+<%- if scope['keycloak::proxy_https'] -%>
+if (result.proxy-address-forwarding != true) of /subsystem=undertow/server=default-server/http-listener=default:read-resource
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
+end-if
+if (result.redirect-socket != proxy-https) of /subsystem=undertow/server=default-server/http-listener=default:read-resource
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=redirect-socket,value=proxy-https)
+end-if
+if (outcome != success) of /socket-binding-group=standard-sockets/socket-binding=proxy-https:read-resource
+/socket-binding-group=standard-sockets/socket-binding=proxy-https:add(port=443)
+end-if
+<%- end -%>
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=driver-name, value=<%= scope['keycloak::datasource_driver'] %>)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=connection-url, value="<%= scope['keycloak::datasource_connection_url'] %>")
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=jndi-name, value=java:jboss/datasources/KeycloakD)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=user-name, value=<%= scope['keycloak::datasource_username'] %>)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=password, value=<%= scope['keycloak::datasource_password'] %>)
+<%- if scope['keycloak::datasource_driver'] == 'mysql' -%>
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation, value=true)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1")
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
+if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource
+/subsystem=datasources/jdbc-driver=mysql:add(driver-module-name=com.mysql.jdbc,driver-name=mysql,driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)
+end-if
+<%- elsif scope['keycloak::datasource_driver'] == 'h2' -%>
+/subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=background-validation)
+/subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=check-valid-connection-sql)
+/subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=background-validation-millis)
+/subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=flush-strategy)
+<%- end -%>

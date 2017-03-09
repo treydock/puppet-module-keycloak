@@ -31,8 +31,9 @@ describe 'keycloak class:' do
   context 'non-default parameters' do
     it 'should run successfully' do
       pp =<<-EOS
+      include mysql::server
       class { 'keycloak':
-        jdbc_driver => 'mysql',
+        datasource_driver => 'mysql',
       }
       EOS
 

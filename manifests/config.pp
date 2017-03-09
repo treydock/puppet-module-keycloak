@@ -10,4 +10,22 @@ class keycloak::config {
     creates => $_add_user_keycloak_state,
   }
 
+  file { "${keycloak::install_dir}/keycloak-${keycloak::version}/config.cli":
+    ensure  => 'file',
+    owner   => $keycloak::user,
+    group   => $keycloak::group,
+    mode    => '0600',
+    content => template('keycloak/config.cli.erb'),
+    notify  => Exec['jboss-cli.sh --file=config.cli'],
+  }
+
+  exec { 'jboss-cli.sh --file=config.cli':
+    command     => "${keycloak::install_dir}/keycloak-${keycloak::version}/bin/jboss-cli.sh --file=config.cli",
+    cwd         => "${keycloak::install_dir}/keycloak-${keycloak::version}",
+    user        => $keycloak::user,
+    group       => $keycloak::group,
+    refreshonly => true,
+    logoutput   => true,
+  }
+
 }

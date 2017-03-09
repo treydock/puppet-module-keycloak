@@ -1,5 +1,5 @@
 # Private class.
-class keycloak::database::default {
+class keycloak::datasource::h2 {
   assert_private()
   # Do nothing
 }

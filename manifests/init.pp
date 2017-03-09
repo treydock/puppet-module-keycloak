@@ -15,23 +15,40 @@ class keycloak (
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = 'admin',
   String $admin_user_password   = 'changeme',
-  Enum['default', 'mysql'] $jdbc_driver = 'default',
+  Enum['h2', 'mysql'] $datasource_driver = 'h2',
+  Optional[String] $datasource_host = undef,
+  Optional[Integer] $datasource_port = undef,
+  String $datasource_dbname = 'keycloak',
+  String $datasource_username = 'sa',
+  String $datasource_password = 'sa',
+  Boolean $proxy_https = false,
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
+  case $datasource_driver {
+    'h2': {
+      $datasource_connection_url = "jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE"
+    }
+    'mysql': {
+      $db_host = pick($datasource_host, 'localhost')
+      $db_port = pick($datasource_port, 3306)
+      $datasource_connection_url = "jdbc:mysql://${db_host}:${db_port}/${datasource_dbname}"
+    }
+    default: {}
+  }
 
   include ::java
   contain 'keycloak::install'
-  contain "keycloak::database::${jdbc_driver}"
+  contain "keycloak::datasource::${datasource_driver}"
   contain 'keycloak::config'
   contain 'keycloak::service'
 
   Class['::java']->
   Class['keycloak::install']->
-  Class["keycloak::database::${jdbc_driver}"]->
+  Class["keycloak::datasource::${datasource_driver}"]->
   Class['keycloak::config']~>
   Class['keycloak::service']
 
-  Class["keycloak::database::${jdbc_driver}"]~>Class['keycloak::service']
+  Class["keycloak::datasource::${datasource_driver}"]~>Class['keycloak::service']
 
 }
