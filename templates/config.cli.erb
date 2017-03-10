@@ -12,7 +12,7 @@ end-if
 <%- end -%>
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=driver-name, value=<%= scope['keycloak::datasource_driver'] %>)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=connection-url, value="<%= scope['keycloak::datasource_connection_url'] %>")
-/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=jndi-name, value=java:jboss/datasources/KeycloakD)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=jndi-name, value=java:jboss/datasources/KeycloakDS)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=user-name, value=<%= scope['keycloak::datasource_username'] %>)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=password, value=<%= scope['keycloak::datasource_password'] %>)
 <%- if scope['keycloak::datasource_driver'] == 'mysql' -%>

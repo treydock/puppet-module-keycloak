@@ -9,9 +9,9 @@ fixtures:
     java:
       repo: https://github.com/puppetlabs/puppetlabs-java.git
       ref: 1.6.0
-    staging:
-      repo: https://github.com/voxpupuli/puppet-staging.git
-      ref: v2.2.0
+    archive:
+      repo: https://github.com/voxpupuli/puppet-archive.git
+      ref: v1.3.0
     systemd:
       repo: https://github.com/camptocamp/puppet-systemd.git
       ref: 0.4.0

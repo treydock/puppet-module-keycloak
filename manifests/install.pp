@@ -26,13 +26,15 @@ class keycloak::install {
     group  => $keycloak::group,
     mode   => '0755',
   }->
-  staging::deploy { "keycloak-${keycloak::version}.tar.gz":
-    source  => $keycloak::download_url,
-    target  => "${keycloak::install_dir}/keycloak-${keycloak::version}",
-    creates => "${keycloak::install_dir}/keycloak-${keycloak::version}/bin",
-    user    => $keycloak::user,
-    group   => $keycloak::group,
-    strip   => '1',
+  archive { "keycloak-${keycloak::version}.tar.gz":
+    ensure          => 'present',
+    extract         => true,
+    path            => "/tmp/keycloak-${keycloak::version}.tar.gz",
+    extract_path    => "${keycloak::install_dir}/keycloak-${keycloak::version}",
+    extract_command => 'tar xfz %s --strip-components=1',
+    source          => $keycloak::download_url,
+    creates         => "${keycloak::install_dir}/keycloak-${keycloak::version}/bin",
+    cleanup         => true
   }
 
 }
