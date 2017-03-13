@@ -34,8 +34,12 @@ if (outcome != success) of /subsystem=keycloak-server/spi=truststore:read-resour
 /subsystem=keycloak-server/spi=truststore/:add
 /subsystem=keycloak-server/spi=truststore/provider=file/:add(enabled=true)
 end-if
-/subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=file,value=<%= scope['keycloak::install_dir'] %>/standalone/configuration/truststore.jks)
+/subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=file,value=<%= scope['keycloak::install_base'] %>/standalone/configuration/truststore.jks)
 /subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=password,value=<%= scope['keycloak::truststore_password'] %>)
 /subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=hostname-verification-policy,value=<%= scope['keycloak::truststore_hostname_verification_policy'] %>)
 /subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=disabled,value=false)
+<%- else -%>
+if (outcome == success) of /subsystem=keycloak-server/spi=truststore:read-resource
+/subsystem=keycloak-server/spi=truststore/:remove
+end-if
 <%- end -%>
