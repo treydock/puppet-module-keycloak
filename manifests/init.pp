@@ -22,7 +22,7 @@ class keycloak (
   String $datasource_username = 'sa',
   String $datasource_password = 'sa',
   Boolean $proxy_https = false,
-  Optional[Hash[String, String]] $truststore = undef,
+  Optional[Hash] $truststore = undef,
   String $truststore_password = 'keycloak',
   Enum['WILDCARD', 'STRICT', 'ANY'] $truststore_hostname_verification_policy = 'WILDCARD',
 ) inherits keycloak::params {
