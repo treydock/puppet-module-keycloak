@@ -9,6 +9,9 @@ fixtures:
     java:
       repo: https://github.com/puppetlabs/puppetlabs-java.git
       ref: 1.6.0
+    java_ks:
+      repo: https://github.com/puppetlabs/puppetlabs-java_ks.git
+      ref: 1.4.1
     archive:
       repo: https://github.com/voxpupuli/puppet-archive.git
       ref: v1.3.0

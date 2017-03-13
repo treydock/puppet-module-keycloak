@@ -2,15 +2,22 @@
 class keycloak::config {
   assert_private()
 
-  $_add_user_keycloak_cmd = "${keycloak::install_dir}/keycloak-${keycloak::version}/bin/add-user-keycloak.sh"
+  $_add_user_keycloak_cmd = "${keycloak::install_base}/bin/add-user-keycloak.sh"
   $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
-  $_add_user_keycloak_state = "${keycloak::install_dir}/keycloak-${keycloak::version}/.create-keycloak-admin"
+  $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin"
   exec { 'create-keycloak-admin':
     command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
     creates => $_add_user_keycloak_state,
   }
 
-  file { "${keycloak::install_dir}/keycloak-${keycloak::version}/config.cli":
+  file { "${keycloak::install_base}/standalone/configuration":
+    ensure => 'directory',
+    owner  => $keycloak::user,
+    group  => $keycloak::group,
+    mode   => '0750',
+  }
+
+  file { "${keycloak::install_base}/config.cli":
     ensure  => 'file',
     owner   => $keycloak::user,
     group   => $keycloak::group,
@@ -20,12 +27,22 @@ class keycloak::config {
   }
 
   exec { 'jboss-cli.sh --file=config.cli':
-    command     => "${keycloak::install_dir}/keycloak-${keycloak::version}/bin/jboss-cli.sh --file=config.cli",
-    cwd         => "${keycloak::install_dir}/keycloak-${keycloak::version}",
+    command     => "${keycloak::install_base}/bin/jboss-cli.sh --file=config.cli",
+    cwd         => $keycloak::install_base,
     user        => $keycloak::user,
     group       => $keycloak::group,
     refreshonly => true,
     logoutput   => true,
+  }
+
+  if $keycloak::truststore {
+    $truststore_defaults = {
+      'ensure'       => 'latest',
+      'target'       => "${keycloak::install_base}/standalone/configuration/truststore.jks",
+      'password'     => $keycloak::truststore_password,
+      'trustcacerts' => true,
+    }
+    create_resources('java_ks', $keycloak::truststore, $truststore_defaults)
   }
 
 }

@@ -22,6 +22,9 @@ class keycloak (
   String $datasource_username = 'sa',
   String $datasource_password = 'sa',
   Boolean $proxy_https = false,
+  Optional[Hash[String, String]] $truststore = undef,
+  String $truststore_password = 'keycloak',
+  Enum['WILDCARD', 'STRICT', 'ANY'] $truststore_hostname_verification_policy = 'WILDCARD',
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
@@ -36,6 +39,8 @@ class keycloak (
     }
     default: {}
   }
+
+  $install_base = "${keycloak::install_dir}/keycloak-${keycloak::version}"
 
   include ::java
   contain 'keycloak::install'
