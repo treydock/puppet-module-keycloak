@@ -42,16 +42,16 @@ define keycloak::user_federation::ldap (
   }
 
   exec { "update-ldap-${name}":
-    command   => "${kcadm} update components/${name} -r ${realm} -f ${config} ${auth}",
-    onlyif    => "${kcadm} get components/${name} -r ${realm} ${auth}",
-    unless    => "/bin/bash -c '${kcadm} get components/${name} -r ${realm} ${auth} | grep -v 'lastSync' | sort | diff -w -u <( sort ${config} ) -'",
-    cwd       => $keycloak::install_base,
-    user      => $keycloak::user,
-    group     => $keycloak::group,
-    logoutput => true,
-    require   => Keycloak_conn_validator['keycloak'],
+    command     => "${kcadm} update components/${name} -r ${realm} -f ${config} ${auth}",
+    onlyif      => "${kcadm} get components/${name} -r ${realm} ${auth}",
+    unless      => "/bin/bash -c '${kcadm} get components/${name} -r ${realm} ${auth} | grep -v 'lastSync' | sort | diff -w -u <( sort ${config} ) -'",
+    cwd         => $keycloak::install_base,
+    user        => $keycloak::user,
+    group       => $keycloak::group,
+    logoutput   => true,
+    require     => Keycloak_conn_validator['keycloak'],
     refreshonly => true,
-    subscribe => File[$config],
+    subscribe   => File[$config],
   }
 
 }

@@ -42,14 +42,6 @@ class keycloak::config {
     logoutput   => true,
   }
 
-  if $keycloak::truststore {
-    $truststore_defaults = {
-      'ensure'       => 'latest',
-      'target'       => "${keycloak::install_base}/standalone/configuration/truststore.jks",
-      'password'     => $keycloak::truststore_password,
-      'trustcacerts' => true,
-    }
-    create_resources('java_ks', $keycloak::truststore, $truststore_defaults)
-  }
+  create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
 
 }

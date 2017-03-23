@@ -22,9 +22,11 @@ class keycloak (
   String $datasource_username = 'sa',
   String $datasource_password = 'sa',
   Boolean $proxy_https = false,
-  Optional[Hash] $truststore = undef,
+  Boolean $truststore = false,
+  Hash $truststore_hosts = {},
   String $truststore_password = 'keycloak',
   Enum['WILDCARD', 'STRICT', 'ANY'] $truststore_hostname_verification_policy = 'WILDCARD',
+  Hash $realms = {},
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
@@ -64,5 +66,7 @@ class keycloak (
     test_url        => '/auth/admin/serverinfo',
     require         => Class['keycloak::service'],
   }
+
+  create_resources('keycloak::realm', $realms)
 
 }
