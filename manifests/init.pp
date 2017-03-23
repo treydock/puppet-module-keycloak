@@ -27,6 +27,7 @@ class keycloak (
   String $truststore_password = 'keycloak',
   Enum['WILDCARD', 'STRICT', 'ANY'] $truststore_hostname_verification_policy = 'WILDCARD',
   Hash $realms = {},
+  Hash $client_templates = {},
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
@@ -68,5 +69,6 @@ class keycloak (
   }
 
   create_resources('keycloak::realm', $realms)
+  create_resources('keycloak::client_template', $client_templates)
 
 }

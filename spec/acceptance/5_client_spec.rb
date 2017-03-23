@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak::user_federation::ldap define:' do
-  context 'creates ldap' do
+describe 'keycloak::client define:' do
+  context 'creates client' do
     it 'should run successfully' do
       pp =<<-EOS
       include mysql::server
@@ -9,10 +9,14 @@ describe 'keycloak::user_federation::ldap define:' do
         datasource_driver => 'mysql',
       }
       keycloak::realm { 'test': }
-      keycloak::user_federation::ldap { 'test':
+      keycloak::client_template { 'openid-connect-clients':
         realm => 'test',
-        user_dn => 'ou=People,dc=test',
-        connection_url => 'ldap://localhost:389',
+      }
+      keycloak::client { 'test.foo.bar':
+        realm => 'test',
+        redirect_uris   => ['https://test.foo.bar/test1'],
+        client_template => 'openid-connect-clients',
+        secret => 'foobar',
       }
       EOS
 
@@ -21,7 +25,7 @@ describe 'keycloak::user_federation::ldap define:' do
     end
   end
 
-  context 'updates ldap' do
+  context 'updates client' do
     it 'should run successfully' do
       pp =<<-EOS
       include mysql::server
@@ -29,11 +33,14 @@ describe 'keycloak::user_federation::ldap define:' do
         datasource_driver => 'mysql',
       }
       keycloak::realm { 'test': }
-      keycloak::user_federation::ldap { 'test':
+      keycloak::client_template { 'openid-connect-clients':
         realm => 'test',
-        user_dn => 'ou=People,dc=test',
-        connection_url => 'ldap://localhost:389',
-        user_objectclasses => ['posixAccount'],
+      }
+      keycloak::client { 'test.foo.bar':
+        realm => 'test',
+        redirect_uris   => ['https://test.foo.bar/test2'],
+        client_template => 'openid-connect-clients',
+        secret => 'foobar',
       }
       EOS
 
