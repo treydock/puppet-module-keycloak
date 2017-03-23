@@ -8,7 +8,7 @@
   "issues_url": "https://github.com/treydock/puppet-module-keycloak/issues",
   "project_page": "https://github.com/treydock/puppet-module-keycloak",
   "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.6.0 <5.0.0" },
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.15.0 <5.0.0" },
     { "name": "puppetlabs/mysql", "version_requirement": "3.x" },
     { "name": "puppetlabs/java", "version_requirement": ">= 1.0.0 <2.0.0" },
     { "name": "puppetlabs/java_ks", "version_requirement": ">= 1.0.0 <2.0.0" },

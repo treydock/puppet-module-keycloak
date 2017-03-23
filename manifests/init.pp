@@ -56,4 +56,13 @@ class keycloak (
 
   Class["keycloak::datasource::${datasource_driver}"]~>Class['keycloak::service']
 
+  @keycloak_conn_validator { 'keycloak':
+    keycloak_server => 'localhost',
+    keycloak_port   => '8080',
+    use_ssl         => false,
+    timeout         => 60,
+    test_url        => '/auth/admin/serverinfo',
+    require         => Class['keycloak::service'],
+  }
+
 }

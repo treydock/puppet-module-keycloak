@@ -4,13 +4,20 @@ class keycloak::config {
 
   $_add_user_keycloak_cmd = "${keycloak::install_base}/bin/add-user-keycloak.sh"
   $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
-  $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin"
+  $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}"
   exec { 'create-keycloak-admin':
     command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
     creates => $_add_user_keycloak_state,
   }
 
   file { "${keycloak::install_base}/standalone/configuration":
+    ensure => 'directory',
+    owner  => $keycloak::user,
+    group  => $keycloak::group,
+    mode   => '0750',
+  }
+
+  file { "${keycloak::install_base}/puppet":
     ensure => 'directory',
     owner  => $keycloak::user,
     group  => $keycloak::group,
