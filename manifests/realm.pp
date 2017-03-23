@@ -38,7 +38,7 @@ define keycloak::realm (
   exec { "update-realm-${name}":
     command   => "${kcadm} update realms/${name} -f ${config} ${auth}",
     onlyif    => "${kcadm} get realms/${name} ${auth}",
-    unless    => "${kcadm} get realms/${name} ${auth} | diff ${config} -",
+    unless    => "${kcadm} get realms/${name} ${auth} | diff -w ${config} -",
     cwd       => $keycloak::install_base,
     user      => $keycloak::user,
     group     => $keycloak::group,

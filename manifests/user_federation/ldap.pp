@@ -15,7 +15,7 @@ define keycloak::user_federation::ldap (
 
   include keycloak
   realize Keycloak_conn_validator['keycloak']
-  Keycloak::Realm[$realm] -> Keycloak::User_federation::Ldap[$name]
+  Keycloak::Realm <| title == $realm |> -> Keycloak::User_federation::Ldap[$name]
 
   $config_dir = "${keycloak::install_base}/puppet"
   $config     = "${config_dir}/ldap-${name}.json"
@@ -45,7 +45,7 @@ define keycloak::user_federation::ldap (
   exec { "update-ldap-${name}":
     command     => "${kcadm} update components/${name} -r ${realm} -f ${config} ${auth}",
     onlyif      => "${kcadm} get components/${name} -r ${realm} ${auth}",
-    unless      => "/bin/bash -c '${kcadm} get components/${name} -r ${realm} ${auth} | grep -v 'lastSync' | sort | diff -w -u <( sort ${config} ) -'",
+    #unless      => "/bin/bash -c '${kcadm} get components/${name} -r ${realm} ${auth} | grep -v 'lastSync' | sort | diff -w -u <( sort ${config} ) -'",
     cwd         => $keycloak::install_base,
     user        => $keycloak::user,
     group       => $keycloak::group,
