@@ -15,6 +15,7 @@ define keycloak::user_federation::ldap (
 
   include keycloak
   realize Keycloak_conn_validator['keycloak']
+  Keycloak::Realm[$realm] -> Keycloak::User_federation::Ldap[$name]
 
   $config_dir = "${keycloak::install_base}/puppet"
   $config     = "${config_dir}/ldap-${name}.json"
