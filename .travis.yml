@@ -13,12 +13,6 @@ matrix:
     - rvm: 2.1.6
       sudo: required
       services: docker
-      env: BEAKER_set="centos-6-x64-docker" PUPPET_INSTALL_VERSION=3.8.6 PUPPET_INSTALL_TYPE=foss
-      bundler_args:
-      script: sudo service docker restart ; sleep 10 ; bundle exec rake beaker
-    - rvm: 2.1.6
-      sudo: required
-      services: docker
       env: BEAKER_set="centos-7-x64-docker" PUPPET_INSTALL_VERSION=3.8.6 PUPPET_INSTALL_TYPE=foss
       bundler_args:
       script: sudo service docker restart ; sleep 10 ; bundle exec rake beaker
