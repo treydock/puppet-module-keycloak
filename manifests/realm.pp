@@ -36,14 +36,16 @@ define keycloak::realm (
   }
 
   exec { "update-realm-${name}":
-    command   => "${kcadm} update realms/${name} -f ${config} ${auth}",
-    onlyif    => "${kcadm} get realms/${name} ${auth}",
-    unless    => "${kcadm} get realms/${name} ${auth} | diff -w ${config} -",
-    cwd       => $keycloak::install_base,
-    user      => $keycloak::user,
-    group     => $keycloak::group,
-    logoutput => true,
-    require   => Keycloak_conn_validator['keycloak'],
+    command     => "${kcadm} update realms/${name} -f ${config} ${auth}",
+    onlyif      => "${kcadm} get realms/${name} ${auth}",
+    #unless     => "${kcadm} get realms/${name} ${auth} | diff -w ${config} -",
+    cwd         => $keycloak::install_base,
+    user        => $keycloak::user,
+    group       => $keycloak::group,
+    logoutput   => true,
+    require     => Keycloak_conn_validator['keycloak'],
+    refreshonly => true,
+    subscribe   => File[$config],
   }
 
 }
