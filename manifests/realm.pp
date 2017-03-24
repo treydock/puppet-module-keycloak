@@ -2,6 +2,10 @@
 define keycloak::realm (
   Boolean $remember_me = false,
   Boolean $login_with_email_allowed = true,
+  String $login_theme = 'keycloak',
+  String $account_theme = 'keycloak',
+  String $admin_theme = 'keycloak',
+  String $email_theme = 'keycloak',
 ) {
 
   include keycloak
@@ -16,6 +20,10 @@ define keycloak::realm (
   # - $name
   # - $remember_me
   # - $login_with_email_allowed
+  # - $login_theme
+  # - $account_theme
+  # - $admin_theme
+  # - $email_theme
   file { $config:
     ensure  => 'file',
     owner   => $keycloak::user,
