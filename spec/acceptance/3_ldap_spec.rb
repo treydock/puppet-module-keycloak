@@ -14,6 +14,12 @@ describe 'keycloak::user_federation::ldap define:' do
         user_dn => 'ou=People,dc=test',
         connection_url => 'ldap://localhost:389',
       }
+      keycloak::user_federation::ldap_mapper { 'full-name':
+        realm => 'test',
+        ldap  => 'test',
+        type => 'full-name-ldap-mapper',
+        ldap_attribute => 'foo',
+      }
       EOS
 
       apply_manifest(pp, :catch_failures => true)
@@ -34,6 +40,12 @@ describe 'keycloak::user_federation::ldap define:' do
         user_dn => 'ou=People,dc=test',
         connection_url => 'ldap://localhost:389',
         user_objectclasses => ['posixAccount'],
+      }
+      keycloak::user_federation::ldap_mapper { 'full-name':
+        realm => 'test',
+        ldap  => 'test',
+        type => 'full-name-ldap-mapper',
+        ldap_attribute => 'bar',
       }
       EOS
 

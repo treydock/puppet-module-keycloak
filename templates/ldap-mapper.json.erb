@@ -1,0 +1,20 @@
+{
+  "id" : "<%= @id %>",
+  "name" : "<%= @resource_name %>",
+  "providerId" : "<%= @type %>",
+  "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+  "parentId" : "<%= @ldap %>",
+  "config" : {
+<%- if @type == 'user-attribute-ldap-mapper' -%>
+    "ldap.attribute" : [ "<%= @ldap_attribute %>" ],
+    "is.mandatory.in.ldap" : [ "<%= @is_mandatory_in_ldap %>" ],
+<%- end -%>
+    "read.only" : [ "<%= @read_only %>" ],
+    "write.only" : [ "<%= @write_only %>" ],
+<%- if @type == 'full-name-ldap-mapper' -%>
+    "ldap.full.name.attribute" : [ "<%= @ldap_attribute %>" ]
+<%- else -%>
+    "user.model.attribute" : [ "<%= @model_attribute %>" ]
+<%- end -%>
+  }
+}
