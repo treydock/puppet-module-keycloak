@@ -4,6 +4,7 @@ define keycloak::user_federation::ldap (
   String $user_dn,
   String $connection_url,
   Integer $priority = 0,
+  Boolean $import_enabled = true,
   Array $user_objectclasses = ['inetOrgPerson', 'organizationalPerson'],
   String $username_ldap_attribute = 'uid',
   String $rdn_ldap_attribute = 'uid',

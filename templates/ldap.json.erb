@@ -15,6 +15,7 @@
     "cachePolicy" : [ "DEFAULT" ],
     "useKerberosForPasswordAuthentication" : [ "false" ],
     "priority" : [ "<%= @priority %>" ],
+    "importEnabled" : [ "<%= @import_enabled %>" ],
 <%- if @auth_type == 'simple' -%>
     "bindDn": [""],
     "bindCredential": [""],
