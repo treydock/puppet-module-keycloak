@@ -1,5 +1,7 @@
 #
 define keycloak::realm (
+  Optional[String] $display_name = undef,
+  Optional[String] $display_name_html = undef,
   Boolean $remember_me = false,
   Boolean $login_with_email_allowed = true,
   String $login_theme = 'keycloak',

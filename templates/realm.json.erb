@@ -1,6 +1,12 @@
 {
   "id" : "<%= @name %>",
   "realm" : "<%= @name %>",
+<%- if @display_name -%>
+  "displayName" : "<%= @display_name %>",
+<%- end -%>
+<%- if @display_name_html -%>
+  "displayNameHtml" : "<%= @display_name_html %>",
+<%- end -%>
   "notBefore" : 0,
   "revokeRefreshToken" : false,
   "accessTokenLifespan" : 300,
