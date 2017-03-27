@@ -7,6 +7,7 @@ class keycloak::service {
       content => template('keycloak/keycloak.service.erb'),
       notify  => Service['keycloak'],
     }
+    Exec['systemctl-daemon-reload'] -> Service['keycloak']
   }
 
   service { 'keycloak':

@@ -3,6 +3,7 @@ define keycloak::user_federation::ldap (
   String $realm,
   String $user_dn,
   String $connection_url,
+  String $resource_name = $name,
   Integer $priority = 0,
   Boolean $import_enabled = true,
   Array $user_objectclasses = ['inetOrgPerson', 'organizationalPerson'],

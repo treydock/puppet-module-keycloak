@@ -1,6 +1,7 @@
 #
 define keycloak::client_template (
   String $realm,
+  String $resource_name = $name,
   Enum['openid-connect'] $protocol = 'openid-connect',
   Boolean $full_scope_allowed = true,
 ) {
