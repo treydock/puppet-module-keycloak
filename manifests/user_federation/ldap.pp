@@ -13,6 +13,7 @@ define keycloak::user_federation::ldap (
   Enum['none', 'simple'] $auth_type = 'none',
   Enum['READ_ONLY', 'WRITABLE', 'UNSYNCED'] $edit_mode = 'READ_ONLY',
   Enum['ad', 'rhds', 'tivoli', 'eDirectory', 'other'] $vendor = 'other',
+  String $use_truststore_spi = 'ldapsOnly',
 ) {
 
   include keycloak
