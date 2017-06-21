@@ -1,7 +1,6 @@
 HOSTS:
   centos-7-x64:
     roles:
-      - master
       - agent
     platform: el-7-x86_64
     hypervisor: docker
