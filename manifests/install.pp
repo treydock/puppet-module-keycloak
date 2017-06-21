@@ -25,8 +25,8 @@ class keycloak::install {
     owner  => $keycloak::user,
     group  => $keycloak::group,
     mode   => '0755',
-  }->
-  archive { "keycloak-${keycloak::version}.tar.gz":
+  }
+  -> archive { "keycloak-${keycloak::version}.tar.gz":
     ensure          => 'present',
     extract         => true,
     path            => "/tmp/keycloak-${keycloak::version}.tar.gz",

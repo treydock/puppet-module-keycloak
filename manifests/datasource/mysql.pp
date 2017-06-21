@@ -14,8 +14,8 @@ class keycloak::datasource::mysql (
     creates => $module_dir,
     user    => $keycloak::user,
     group   => $keycloak::group,
-  }->
-  file { $module_dir:
+  }
+  -> file { $module_dir:
     ensure => 'directory',
     owner  => $keycloak::user,
     group  => $keycloak::group,
