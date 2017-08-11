@@ -67,7 +67,7 @@ class keycloak (
     keycloak_port   => '8080',
     use_ssl         => false,
     timeout         => 60,
-    test_url        => '/auth/admin/serverinfo',
+    test_url        => '/auth/realms/master/.well-known/openid-configuration',
     require         => Class['keycloak::service'],
   }
 

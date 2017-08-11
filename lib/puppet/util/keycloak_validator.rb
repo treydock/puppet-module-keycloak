@@ -30,7 +30,7 @@ module Puppet
         conn = Puppet::Network::HttpPool.http_instance(keycloak_server, keycloak_port, use_ssl)
 
         response = conn.get(test_path, test_headers)
-        unless response.kind_of?(Net::HTTPUnauthorized)
+        unless response.kind_of?(Net::HTTPSuccess) || response.kind_of?(Net::HTTPUnauthorized)
           Puppet.notice "Unable to connect to keycloak server (http#{use_ssl ? "s" : ""}://#{keycloak_server}:#{keycloak_port}): [#{response.code}] #{response.msg}"
           return false
         end
