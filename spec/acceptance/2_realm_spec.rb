@@ -8,7 +8,7 @@ describe 'keycloak::realm define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test': }
+      keycloak_realm { 'test': }
       EOS
 
       apply_manifest(pp, :catch_failures => true)
@@ -23,7 +23,7 @@ describe 'keycloak::realm define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test':
+      keycloak_realm { 'test':
         remember_me => true,
       }
       EOS
