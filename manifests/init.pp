@@ -62,7 +62,7 @@ class keycloak (
 
   Class["keycloak::datasource::${datasource_driver}"]~>Class['keycloak::service']
 
-  @keycloak_conn_validator { 'keycloak':
+  keycloak_conn_validator { 'keycloak':
     keycloak_server => 'localhost',
     keycloak_port   => '8080',
     use_ssl         => false,
@@ -71,7 +71,14 @@ class keycloak (
     require         => Class['keycloak::service'],
   }
 
-  create_resources('keycloak::realm', $realms)
+  # Currently unused but left incase becomes necessary
+  keycloak_api { 'keycloak':
+    install_base => $install_base,
+    user         => $admin_user,
+    password     => $admin_user_password,
+  }
+
+  create_resources('keycloak_realm', $realms)
   create_resources('keycloak::client_template', $client_templates)
 
 }
