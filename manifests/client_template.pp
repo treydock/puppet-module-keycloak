@@ -9,6 +9,7 @@ define keycloak::client_template (
   include keycloak
   realize Keycloak_conn_validator['keycloak']
   Keycloak::Realm <| title == $realm |> -> Keycloak::Client_template[$name]
+  Keycloak::Client_template[$name] -> Keycloak_client <| |>
 
   $config_dir = "${keycloak::install_base}/puppet"
   $config     = "${config_dir}/client-template-${name}.json"
