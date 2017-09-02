@@ -45,9 +45,6 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         type_properties.each do |property|
           next unless d.key?(camelize(property))
           value = d[camelize(property)]
-          if property == :redirect_uris
-            value = value
-          end
           if property == :secret
             value = secret
           end
@@ -80,12 +77,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
     data[:secret] = resource[:secret] if resource[:secret]
     type_properties.each do |property|
       if resource[property.to_sym]
-        if property == :redirect_uris
-          value = resource[property.to_sym]
-        else
-          value = resource[property.to_sym]
-        end
-        data[camelize(property)] = value
+        data[camelize(property)] = resource[property.to_sym]
       end
     end
 
@@ -134,12 +126,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
       data[:clientId] = resource[:client_id]
       type_properties.each do |property|
         if @property_flush[property.to_sym]
-          if property == :redirect_uris
-            value = resource[property.to_sym]
-          else
-            value = resource[property.to_sym]
-          end
-          data[camelize(property)] = value
+          data[camelize(property)] = resource[property.to_sym]
         end
       end
 

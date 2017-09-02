@@ -48,6 +48,13 @@ Puppet::Type.newtype(:keycloak_client) do
     end
   end
 
+  newproperty(:protocol) do
+    desc 'protocol'
+    defaultto('openid-connect')
+    newvalues('openid-connect', 'saml')
+    munge { |v| v }
+  end
+
   [
     {:n => :client_authenticator_type, :d => 'client-secret'},
     {:n => :client_template, :d => nil},
@@ -68,7 +75,9 @@ Puppet::Type.newtype(:keycloak_client) do
   end
 
   [
-    {:n => :enabled, :d => true },
+    {:n => :enabled, :d => :true },
+    {:n => :direct_access_grants_enabled, :d => :true},
+    {:n => :public_client, :d => :false},
   ].each do |p|
     newproperty(p[:n], :boolean => true) do
       desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
@@ -78,7 +87,8 @@ Puppet::Type.newtype(:keycloak_client) do
   end
 
   [
-    {:n => :redirect_uris, :d => nil},
+    {:n => :redirect_uris, :d => []},
+    {:n => :web_origins, :d => []}
   ].each do |p|
     newproperty(p[:n], :array_matching => :all) do
       desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"

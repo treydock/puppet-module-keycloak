@@ -39,6 +39,16 @@ describe Puppet::Type.type(:keycloak_client) do
     expect(@client[:client_authenticator_type]).to eq('client-secret')
   end
 
+  it 'should default to protocol=openid-connect' do
+    expect(@client[:protocol]).to eq('openid-connect')
+  end
+
+  it 'should not allow invalid protocol' do
+    expect {
+      @client[:protocol] = 'foo'
+    }.to raise_error
+  end
+
   # Test basic properties
   [
     :secret,
@@ -53,6 +63,8 @@ describe Puppet::Type.type(:keycloak_client) do
   # Test boolean properties
   [
     :enabled,
+    :direct_access_grants_enabled,
+    :public_client,
   ].each do |p|
     it "should accept true for #{p.to_s}" do
       @client[p] = true
@@ -76,6 +88,7 @@ describe Puppet::Type.type(:keycloak_client) do
   # Array properties
   [
     :redirect_uris,
+    :web_origins,
   ].each do |p|
     it 'should accept array' do
       @client[p] = ['foo','bar']
