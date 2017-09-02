@@ -81,7 +81,6 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     :connection_url,
     :priority,
     :batch_size_for_sync,
-    :user_object_classes,
     :username_ldap_attribute,
     :rdn_ldap_attribute,
     :uuid_ldap_attribute,
@@ -112,6 +111,16 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
       expect {
         @component[p] = 'foo'
       }.to raise_error
+    end
+  end
+
+  # Array properties
+  [
+    :user_object_classes,
+  ].each do |p|
+    it 'should accept array' do
+      @component[p] = ['foo','bar']
+      expect(@component[p]).to eq(['foo','bar'])
     end
   end
 

@@ -27,7 +27,7 @@ define keycloak::user_federation::ldap (
     resource_name           => $resource_name,
     priority                => $priority,
     import_enabled          => $import_enabled,
-    user_object_classes     => join($user_objectclasses, ','),
+    user_object_classes     => $user_objectclasses,
     username_ldap_attribute => $username_ldap_attribute,
     rdn_ldap_attribute      => $rdn_ldap_attribute,
     uuid_ldap_attribute     => $uuid_ldap_attribute,

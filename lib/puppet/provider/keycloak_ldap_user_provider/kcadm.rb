@@ -32,6 +32,9 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
         type_properties.each do |property|
           next unless d['config'].key?(camelize(property).gsub(/ldap/i, 'LDAP'))
           value = d['config'][camelize(property).gsub(/ldap/i, 'LDAP')][0]
+          if property == :user_object_classes
+            value = value.split(',')
+          end
           if !!value == value
             value = value.to_s.to_sym
           end
@@ -64,7 +67,12 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
     data[:config] = {}
     type_properties.each do |property|
       if resource[property.to_sym]
-        data[:config][camelize(property).gsub(/ldap/i, 'LDAP')] = [resource[property.to_sym]]
+        if property == :user_object_classes
+          value = resource[property.to_sym].join(',')
+        else
+          value = resource[property.to_sym]
+        end
+        data[:config][camelize(property).gsub(/ldap/i, 'LDAP')] = [value]
       end
     end
 
@@ -114,8 +122,13 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
       data[:providerType] = 'org.keycloak.storage.UserStorageProvider'
       data[:config] = {}
       type_properties.each do |property|
-        if @property_flush[property.to_sym] # || resource[property.to_sym]
-          data[:config][camelize(property).gsub(/ldap/i, 'LDAP')] = [resource[property.to_sym]]
+        if @property_flush[property.to_sym]
+          if property == :user_object_classes
+            value = resource[property.to_sym].join(',')
+          else
+            value = resource[property.to_sym]
+          end
+          data[:config][camelize(property).gsub(/ldap/i, 'LDAP')] = [value]
         end
       end
 

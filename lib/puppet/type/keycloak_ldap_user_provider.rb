@@ -62,7 +62,6 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
     {:n => :connection_url, :d => nil},
     {:n => :priority, :d => '0'},
     {:n => :batch_size_for_sync, :d => '1000'},
-    {:n => :user_object_classes, :d => 'inetOrgPerson,organizationalPerson'},
     {:n => :username_ldap_attribute, :d => 'uid'},
     {:n => :rdn_ldap_attribute, :d => 'uid'},
     {:n => :uuid_ldap_attribute, :d => 'entryUUID'},
@@ -88,6 +87,15 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
     newproperty(p[:n], :boolean => true) do
       desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
       newvalues(:true, :false)
+      defaultto p[:d]
+    end
+  end
+
+  [
+    {:n => :user_object_classes, :d => ['inetOrgPerson', 'organizationalPerson']},
+  ].each do |p|
+    newproperty(p[:n], :array_matching => :all) do
+      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
       defaultto p[:d]
     end
   end
