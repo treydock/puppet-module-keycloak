@@ -8,8 +8,8 @@ describe 'keycloak::user_federation::ldap define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test': }
-      keycloak::user_federation::ldap { 'test':
+      keycloak_realm { 'test': }
+      keycloak_ldap_user_provider { 'test':
         realm => 'test',
         user_dn => 'ou=People,dc=test',
         connection_url => 'ldap://localhost:389',
@@ -34,8 +34,8 @@ describe 'keycloak::user_federation::ldap define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test': }
-      keycloak::user_federation::ldap { 'test':
+      keycloak_realm { 'test': }
+      keycloak_ldap_user_provider { 'test':
         realm => 'test',
         user_dn => 'ou=People,dc=test',
         connection_url => 'ldap://localhost:389',
