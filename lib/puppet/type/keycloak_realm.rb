@@ -53,7 +53,7 @@ Puppet::Type.newtype(:keycloak_realm) do
     end
   end
 
-  autorequire(:keycloak_validator) do
+  autorequire(:keycloak_conn_validator) do
     requires = []
     catalog.resources.each do |resource|
       if resource.class.to_s == 'Puppet::Type::Keycloak_conn_validator'

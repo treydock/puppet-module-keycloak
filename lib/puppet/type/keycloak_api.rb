@@ -31,7 +31,7 @@ Puppet::Type.newtype(:keycloak_api) do
   def generate
     [
       :keycloak_realm,
-      :keycloak_client_template,
+      :keycloak_ldap_user_provider,
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:kcadm)
       provider_class.install_base = self[:install_base]

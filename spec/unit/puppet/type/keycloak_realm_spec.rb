@@ -59,4 +59,24 @@ describe Puppet::Type.type(:keycloak_realm) do
     end
   end
 
+  it 'should autorequire keycloak_conn_validator' do
+    keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(:name => 'keycloak')
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource @realm
+    catalog.add_resource keycloak_conn_validator
+    rel = @realm.autorequire[0]
+    expect(rel.source.ref).to eq(keycloak_conn_validator.ref)
+    expect(rel.target.ref).to eq(@realm.ref)
+  end
+
+  it 'should autorequire kcadm-wrapper.sh' do
+    file = Puppet::Type.type(:file).new(:name => 'kcadm-wrapper.sh', :path => '/opt/keycloak/bin/kcadm-wrapper.sh')
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource @realm
+    catalog.add_resource file
+    rel = @realm.autorequire[0]
+    expect(rel.source.ref).to eq(file.ref)
+    expect(rel.target.ref).to eq(@realm.ref)
+  end
+
 end

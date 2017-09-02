@@ -58,7 +58,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
 
   def create
     data = {}
-    data[:id] = resource[:name]
+    data[:id] = resource[:id]
     data[:realm] = resource[:name]
     type_properties.each do |property|
       if resource[property.to_sym]

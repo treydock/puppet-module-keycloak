@@ -78,13 +78,13 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
     #t.write(self.password)
     #t.close
     #execute(cmd, :stdinfile => t.path.to_s)
-    execute(cmd, :combine => false)
+    execute(cmd, :combine => false, :failonfail => true)
   end
   def kcadm(*args)
     self.class.kcadm(*args)
   end
 
-  def self.get_realms(fields = nil)
+  def self.get_realms()
     output = kcadm('get', 'realms', nil, nil, fields = ['realm'])
     data = JSON.parse(output)
     realms = data.map { |r| r['realm'] }

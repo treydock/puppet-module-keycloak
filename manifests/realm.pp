@@ -13,7 +13,6 @@ define keycloak::realm (
   warning('Keycloak::Realm is deprecated, use keycloak_realm type directly')
 
   include ::keycloak
-  realize Keycloak_conn_validator['keycloak']
 
   keycloak_realm { $name:
     display_name             => $display_name,
