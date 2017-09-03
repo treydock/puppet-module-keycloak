@@ -29,21 +29,6 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
         realm[property.to_sym] = value
       end
       new(realm)
-=begin
-      new(
-      :ensure                   => :present,
-      :id                       => d['realm'],
-      :name                     => d['realm'],
-      :display_name             => d['displayName'],
-      :display_name_html        => d['displayNameHtml'],
-      :remember_me              => d['rememberMe'],
-      :login_with_email_allowed => d['loginWithEmailAllowed'],
-      :login_theme              => d['loginTheme'],
-      :account_theme            => d['accountTheme'],
-      :admin_theme              => d['adminTheme'],
-      :email_theme              => d['emailTheme'],
-      )
-=end
     end
   end
 
@@ -65,16 +50,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
         data[camelize(property)] = convert_property_value(resource[property.to_sym])
       end
     end
-=begin
-    data[:displayName] = resource[:display_name] if resource[:display_name]
-    data[:displayNameHtml] = resource[:display_name_html] if resource[:display_name_html]
-    data[:rememberMe] = resource[:remember_me] if resource[:remember_me]
-    data[:loginWithEmailAllowed] = resource[:login_with_email_allowed] if resource[:login_with_email_allowed]
-    data[:loginTheme] = resource[:login_theme] if resource[:login_theme]
-    data[:accountTheme] = resource[:account_theme] if resource[:account_theme]
-    data[:adminTheme] = resource[:admin_theme] if resource[:admin_theme]
-    data[:emailTheme] = resource[:email_theme] if resource[:email_theme]
-=end
+
     t = Tempfile.new('keycloak_realm')
     t.write(JSON.pretty_generate(data))
     t.close
@@ -120,16 +96,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
           data[camelize(property)] = convert_property_value(resource[property.to_sym])
         end
       end
-=begin
-      data[:displayName] = resource[:display_name] if @property_flush[:display_name]
-      data[:displayNameHtml] = resource[:display_name_html] if @property_flush[:display_name_html]
-      data[:rememberMe] = resource[:remember_me] if @property_flush[:remember_me]
-      data[:loginWithEmailAllowed] = resource[:login_with_email_allowed] if @property_flush[:login_with_email_allowed]
-      data[:loginTheme] = resource[:login_theme] if @property_flush[:login_theme]
-      data[:accountTheme] = resource[:account_theme] if @property_flush[:account_theme]
-      data[:adminTheme] = resource[:admin_theme] if @property_flush[:admin_theme]
-      data[:emailTheme] = resource[:email_theme] if @property_flush[:email_theme]
-=end
+  
       t = Tempfile.new('keycloak_realm')
       t.write(JSON.pretty_generate(data))
       t.close

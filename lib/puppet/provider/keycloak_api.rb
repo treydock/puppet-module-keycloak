@@ -138,5 +138,8 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
 
     bytes.join('-')
   end
+  def name_uuid(*args)
+    self.class.name_uuid(*args)
+  end
 
 end
