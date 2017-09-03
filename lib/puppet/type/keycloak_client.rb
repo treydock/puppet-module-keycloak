@@ -8,7 +8,7 @@ Puppet::Type.newtype(:keycloak_client) do
   ensurable
 
   newparam(:name, :namevar => true) do
-    desc 'The realm name'
+    desc 'The client name'
   end
 
   newparam(:id) do
@@ -114,6 +114,10 @@ Puppet::Type.newtype(:keycloak_client) do
 
   autorequire(:keycloak_realm) do
     self[:realm]
+  end
+
+  autorequire(:keycloak_client_template) do
+    self[:client_template]
   end
 
   def self.title_patterns

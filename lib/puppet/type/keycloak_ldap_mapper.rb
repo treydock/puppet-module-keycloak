@@ -8,7 +8,7 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
   ensurable
 
   newparam(:name, :namevar => true) do
-    desc 'The LDAP user provider name'
+    desc 'The LDAP mapper name'
   end
 
   newparam(:id) do

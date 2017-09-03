@@ -10,8 +10,6 @@ define keycloak::client (
 
   include ::keycloak
 
-  Keycloak::Client_template <| title == $client_template |> -> Keycloak_client[$name]
-
   keycloak_client { $name:
     realm           => $realm,
     redirect_uris   => $redirect_uris,

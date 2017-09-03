@@ -96,8 +96,6 @@ describe Puppet::Type.type(:keycloak_client) do
     end
   end
 
-  let(:pre_condition) { 'keycloak::client_template { "foo": realm => "test"}' }
-
   it 'should autorequire keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(:name => 'keycloak')
     catalog = Puppet::Resource::Catalog.new
@@ -125,6 +123,17 @@ describe Puppet::Type.type(:keycloak_client) do
     catalog.add_resource keycloak_realm
     rel = @client.autorequire[0]
     expect(rel.source.ref).to eq(keycloak_realm.ref)
+    expect(rel.target.ref).to eq(@client.ref)
+  end
+
+  it 'should autorequire keycloak_client_template' do
+    @client[:client_template] = 'foo'
+    keycloak_client_template = Puppet::Type.type(:keycloak_client_template).new(:name => 'foo', :realm => 'test')
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource @client
+    catalog.add_resource keycloak_client_template
+    rel = @client.autorequire[0]
+    expect(rel.source.ref).to eq(keycloak_client_template.ref)
     expect(rel.target.ref).to eq(@client.ref)
   end
 
