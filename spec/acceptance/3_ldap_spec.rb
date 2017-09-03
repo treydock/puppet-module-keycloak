@@ -16,7 +16,7 @@ describe 'keycloak::user_federation::ldap define:' do
       }
       keycloak::user_federation::ldap_mapper { 'full-name':
         realm => 'test',
-        ldap  => 'test',
+        ldap  => 'test-test',
         type => 'full-name-ldap-mapper',
         ldap_attribute => 'foo',
       }
@@ -43,7 +43,7 @@ describe 'keycloak::user_federation::ldap define:' do
       }
       keycloak::user_federation::ldap_mapper { 'full-name':
         realm => 'test',
-        ldap  => 'test',
+        ldap  => 'test-test',
         type => 'full-name-ldap-mapper',
         ldap_attribute => 'bar',
       }
