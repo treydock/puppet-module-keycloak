@@ -91,4 +91,52 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
     return realms
   end
 
+  def self.name_uuid(name)
+    # Code lovingly taken from
+    # https://github.com/puppetlabs/marionette-collective/blob/master/lib/mcollective/ssl.rb
+
+    # This is the UUID version 5 type DNS name space which is as follows:
+    #
+    #  6ba7b810-9dad-11d1-80b4-00c04fd430c8
+    #
+    uuid_name_space_dns = [0x6b,
+      0xa7,
+      0xb8,
+      0x10,
+      0x9d,
+      0xad,
+      0x11,
+      0xd1,
+      0x80,
+      0xb4,
+      0x00,
+      0xc0,
+      0x4f,
+      0xd4,
+      0x30,
+      0xc8
+    ].map {|b| b.chr}.join
+
+    sha1 = Digest::SHA1.new
+    sha1.update(uuid_name_space_dns)
+    sha1.update(name)
+
+    # first 16 bytes..
+    bytes = sha1.digest[0, 16].bytes.to_a
+
+    # version 5 adjustments
+    bytes[6] &= 0x0f
+    bytes[6] |= 0x50
+
+    # variant is DCE 1.1
+    bytes[8] &= 0x3f
+    bytes[8] |= 0x80
+
+    bytes = [4, 2, 2, 2, 6].collect do |i|
+      bytes.slice!(0, i).pack('C*').unpack('H*')
+    end
+
+    bytes.join('-')
+  end
+
 end
