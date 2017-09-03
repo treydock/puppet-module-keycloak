@@ -14,7 +14,7 @@ define keycloak::user_federation::ldap_mapper (
   include keycloak
   realize Keycloak_conn_validator['keycloak']
   Keycloak::Realm <| title == $realm |> -> Keycloak::User_federation::Ldap_mapper[$name]
-  Keycloak_ldap_user_provider <| title == $ldap |> -> Keycloak::User_federation::Ldap_mapper[$name]
+  Keycloak_ldap_user_provider <| |> -> Keycloak::User_federation::Ldap_mapper[$name]
 
   $id = fqdn_uuid($name)
   $config_dir = "${keycloak::install_base}/puppet"
