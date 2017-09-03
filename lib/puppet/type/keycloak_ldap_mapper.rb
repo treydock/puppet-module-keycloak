@@ -36,8 +36,11 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
     desc 'realm'
   end
 
+  newparam(:ldap, :namevar => true) do
+    desc 'parentId'
+  end
+
   [
-    {:n => :ldap, :d => nil},
     {:n => :ldap_attribute, :d => nil},
     {:n => :user_model_attribute, :d => nil},
   ].each do |p|
@@ -95,11 +98,19 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
   end
 
   autorequire(:keycloak_realm) do
-    self[:realm]
+    [ self[:realm] ]
   end
 
   autorequire(:keycloak_ldap_user_provider) do
-    self[:ldap]
+    requires = []
+    catalog.resources.each do |resource|
+      if resource.class.to_s == 'Puppet::Type::Keycloak_ldap_user_provider'
+        if "#{resource[:resource_name]}-#{resource[:realm]}" == self[:ldap]
+          requires << resource.name
+        end
+      end
+    end
+    requires
   end
 
   def self.title_patterns

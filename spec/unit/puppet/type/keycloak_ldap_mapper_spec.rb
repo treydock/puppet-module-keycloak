@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_ldap_mapper) do
   before(:each) do
-    @component = described_class.new(:name => 'foo', :realm => 'test')
+    @component = described_class.new(:name => 'foo', :realm => 'test', :ldap => 'ldap-test')
   end
 
   it 'should add to catalog without raising an error' do
@@ -72,13 +72,13 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
   end
 
   it 'should have is_mandatory_in_ldap be nil for full-name-ldap-mapper' do
-    @component = described_class.new(:name => 'foo', :realm => 'test', :type => 'full-name-ldap-mapper')
-    expect(@component[:is_mandatory_in_ldap]).to be_nil
+    component = described_class.new(:name => 'foo', :realm => 'test', :type => 'full-name-ldap-mapper')
+    expect(component[:is_mandatory_in_ldap]).to be_nil
   end
 
   it 'should have is_mandatory_in_ldap default to false for user-attribute-ldap-mapper' do
-    @component = described_class.new(:name => 'foo', :realm => 'test', :type => 'user-attribute-ldap-mapper')
-    expect(@component[:is_mandatory_in_ldap]).to be(:false)
+    component = described_class.new(:name => 'foo', :realm => 'test', :type => 'user-attribute-ldap-mapper')
+    expect(component[:is_mandatory_in_ldap]).to be(:false)
   end
 
   # Test boolean properties
@@ -136,8 +136,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
   end
 
   it 'should autorequire keycloak_ldap_user_provider' do
-    @component[:ldap] = 'test'
-    keycloak_ldap_user_provider = Puppet::Type.type(:keycloak_ldap_user_provider).new(:name => 'test')
+    keycloak_ldap_user_provider = Puppet::Type.type(:keycloak_ldap_user_provider).new(:name => 'ldap', :realm => 'test')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource @component
     catalog.add_resource keycloak_ldap_user_provider

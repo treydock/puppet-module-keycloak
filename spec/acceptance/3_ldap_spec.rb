@@ -8,7 +8,7 @@ describe 'keycloak::user_federation::ldap define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak_realm { 'test': }
+      keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'test':
         realm => 'test',
         users_dn => 'ou=People,dc=test',
@@ -34,7 +34,7 @@ describe 'keycloak::user_federation::ldap define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak_realm { 'test': }
+      keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'test':
         realm => 'test',
         users_dn => 'ou=People,dc=test',

@@ -11,17 +11,17 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
     desc 'The LDAP user provider name'
   end
 
-  newparam(:id) do
-    desc 'Id'
-    defaultto do
-      "#{@resource[:name]}-#{@resource[:realm]}"
-    end
-  end
-
   newparam(:resource_name) do
     desc 'The LDAP user provider name'
     defaultto do
       @resource[:name]
+    end
+  end
+
+  newparam(:id) do
+    desc 'Id'
+    defaultto do
+      "#{@resource[:resource_name]}-#{@resource[:realm]}"
     end
   end
 
