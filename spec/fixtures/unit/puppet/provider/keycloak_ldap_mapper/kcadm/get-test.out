@@ -1,0 +1,188 @@
+[ {
+  "id" : "38d6fe09-c591-4301-af9d-757017569a5a",
+  "name" : "Allowed Client Templates",
+  "providerId" : "allowed-client-templates",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : { }
+}, {
+  "id" : "ffc23d5f-6549-52a8-8369-2f19ccd071ca",
+  "name" : "full name",
+  "providerId" : "full-name-ldap-mapper",
+  "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+  "parentId" : "LDAP-test",
+  "config" : {
+    "read.only" : [ "true" ],
+    "write.only" : [ "false" ],
+    "ldap.full.name.attribute" : [ "gecos" ]
+  }
+}, {
+  "id" : "4c9d0aad-cd57-4de0-9ebb-7fe8f0dff73a",
+  "name" : "modify date",
+  "providerId" : "user-attribute-ldap-mapper",
+  "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+  "parentId" : "LDAP-test",
+  "config" : {
+    "ldap.attribute" : [ "modifyTimestamp" ],
+    "is.mandatory.in.ldap" : [ "false" ],
+    "always.read.value.from.ldap" : [ "true" ],
+    "read.only" : [ "true" ],
+    "user.model.attribute" : [ "modifyTimestamp" ]
+  }
+}, {
+  "id" : "LDAP-test",
+  "name" : "LDAP",
+  "providerId" : "ldap",
+  "providerType" : "org.keycloak.storage.UserStorageProvider",
+  "parentId" : "test",
+  "config" : {
+    "fullSyncPeriod" : [ "-1" ],
+    "pagination" : [ "true" ],
+    "debug" : [ "false" ],
+    "searchScope" : [ "1" ],
+    "useTruststoreSpi" : [ "never" ],
+    "usersDn" : [ "ou=People,dc=example,dc=com" ],
+    "connectionPooling" : [ "true" ],
+    "cachePolicy" : [ "DEFAULT" ],
+    "useKerberosForPasswordAuthentication" : [ "false" ],
+    "priority" : [ "0" ],
+    "importEnabled" : [ "false" ],
+    "userObjectClasses" : [ "posixAccount" ],
+    "usernameLDAPAttribute" : [ "uid" ],
+    "changedSyncPeriod" : [ "-1" ],
+    "rdnLDAPAttribute" : [ "uid" ],
+    "vendor" : [ "other" ],
+    "editMode" : [ "READ_ONLY" ],
+    "uuidLDAPAttribute" : [ "entryUUID" ],
+    "connectionUrl" : [ "ldaps://example1.com:636 ldaps://example2.com:636" ],
+    "allowKerberosAuthentication" : [ "false" ],
+    "syncRegistrations" : [ "false" ],
+    "batchSizeForSync" : [ "1000" ],
+    "authType" : [ "none" ]
+  }
+}, {
+  "id" : "4e632735-f3f8-4d59-bee8-87753eecef83",
+  "name" : "Max Clients Limit",
+  "providerId" : "max-clients",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : {
+    "max-clients" : [ "200" ]
+  }
+}, {
+  "id" : "460f922b-5732-4236-ac66-06724eb0d3b6",
+  "name" : "hmac-generated",
+  "providerId" : "hmac-generated",
+  "providerType" : "org.keycloak.keys.KeyProvider",
+  "parentId" : "test",
+  "config" : {
+    "priority" : [ "100" ]
+  }
+}, {
+  "id" : "47bb7201-7132-4593-8fde-10b1b38d7ce2",
+  "name" : "Consent Required",
+  "providerId" : "consent-required",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : { }
+}, {
+  "id" : "23cf5cbb-9bf6-4684-8843-88f424a7e46a",
+  "name" : "Trusted Hosts",
+  "providerId" : "trusted-hosts",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : {
+    "host-sending-registration-request-must-match" : [ "true" ],
+    "client-uris-must-match" : [ "true" ]
+  }
+}, {
+  "id" : "5865f600-159a-43c2-862b-eaf35fb2b38c",
+  "name" : "Allowed Protocol Mapper Types",
+  "providerId" : "allowed-protocol-mappers",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : {
+    "allowed-protocol-mapper-types" : [ "oidc-sha256-pairwise-sub-mapper", "oidc-full-name-mapper", "saml-user-attribute-mapper", "saml-role-list-mapper", "oidc-usermodel-property-mapper", "oidc-address-mapper", "oidc-usermodel-attribute-mapper", "saml-user-property-mapper" ],
+    "consent-required-for-all-mappers" : [ "true" ]
+  }
+}, {
+  "id" : "95476673-7af7-42f6-8fb6-016a9c8f9f4c",
+  "name" : "creation date",
+  "providerId" : "user-attribute-ldap-mapper",
+  "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+  "parentId" : "LDAP-test",
+  "config" : {
+    "ldap.attribute" : [ "createTimestamp" ],
+    "is.mandatory.in.ldap" : [ "false" ],
+    "read.only" : [ "true" ],
+    "always.read.value.from.ldap" : [ "true" ],
+    "user.model.attribute" : [ "createTimestamp" ]
+  }
+}, {
+  "id" : "5a769e92-e11b-47b0-be4f-a044a75803c8",
+  "name" : "username",
+  "providerId" : "user-attribute-ldap-mapper",
+  "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+  "parentId" : "LDAP-test",
+  "config" : {
+    "ldap.attribute" : [ "uid" ],
+    "is.mandatory.in.ldap" : [ "true" ],
+    "always.read.value.from.ldap" : [ "false" ],
+    "read.only" : [ "true" ],
+    "user.model.attribute" : [ "username" ]
+  }
+}, {
+  "id" : "87e91c8c-c261-4bf3-a12e-c0e9e026b978",
+  "name" : "email",
+  "providerId" : "user-attribute-ldap-mapper",
+  "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+  "parentId" : "LDAP-test",
+  "config" : {
+    "ldap.attribute" : [ "mail" ],
+    "is.mandatory.in.ldap" : [ "false" ],
+    "always.read.value.from.ldap" : [ "false" ],
+    "read.only" : [ "true" ],
+    "user.model.attribute" : [ "email" ]
+  }
+}, {
+  "id" : "684c2b35-9cf2-40f5-afa1-4ac3817ec56a",
+  "name" : "Allowed Protocol Mapper Types",
+  "providerId" : "allowed-protocol-mappers",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "authenticated",
+  "config" : {
+    "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "saml-user-property-mapper", "oidc-usermodel-attribute-mapper", "oidc-full-name-mapper", "oidc-address-mapper", "saml-role-list-mapper", "saml-user-attribute-mapper", "oidc-sha256-pairwise-sub-mapper" ],
+    "consent-required-for-all-mappers" : [ "true" ]
+  }
+}, {
+  "id" : "b9383c43-63bd-4f8f-85f6-ececf34dca60",
+  "name" : "rsa-generated",
+  "providerId" : "rsa-generated",
+  "providerType" : "org.keycloak.keys.KeyProvider",
+  "parentId" : "test",
+  "config" : {
+    "priority" : [ "100" ]
+  }
+}, {
+  "id" : "f51d7dbd-0ef7-40b5-a948-96ba50375c9a",
+  "name" : "Full Scope Disabled",
+  "providerId" : "scope",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : { }
+}, {
+  "id" : "7abfcd99-99df-42b9-9d72-10f1eaca916e",
+  "name" : "Allowed Client Templates",
+  "providerId" : "allowed-client-templates",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "authenticated",
+  "config" : { }
+} ]
