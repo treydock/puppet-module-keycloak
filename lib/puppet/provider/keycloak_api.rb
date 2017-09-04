@@ -3,22 +3,6 @@ require 'json'
 
 class Puppet::Provider::Keycloak_API < Puppet::Provider
 
-  #@install_base = '/opt/keycloak'
-  #@server = 'http://localhost:8080/auth'
-  #@realm = 'master'
-  #@user = 'admin'
-  #@password = 'changeme'
-
-  #class << self
-  #  attr_accessor :install_base
-  #  attr_accessor :server
-  #  attr_accessor :realm
-  #  attr_accessor :user
-  #  attr_accessor :password
-  #end
-
-  initvars
-
   def self.type_properties
     resource_type.validproperties.reject { |p| p.to_sym == :ensure }
   end
@@ -47,14 +31,7 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
 
   def self.kcadm(action, resource, realm = nil, file = nil, fields = nil)
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
-    # Auth arguments unused as defined in kcadm-wrapper.sh
-    #auth_arguments = [
-    #  '--no-config',
-    #  '--server', self.server,
-    #  '--realm', self.realm,
-    #  '--user', self.user,
-    #  '--password', self.password,
-    #]
+
     arguments = [ action, resource ]
     if realm
       arguments << '-r'
@@ -69,13 +46,7 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
       arguments << fields.join(',')
     end
     cmd = [kcadm_wrapper] + arguments
-    #cmd = [kcadm_wrapper] + arguments + auth_arguments
 
-    # Failed attempt at passing password via STDIN
-    #t = Tempfile.new('kcadm_password')
-    #t.write(self.password)
-    #t.close
-    #execute(cmd, :stdinfile => t.path.to_s)
     execute(cmd, :combine => false, :failonfail => true)
   end
   def kcadm(*args)
