@@ -71,13 +71,6 @@ class keycloak (
     require         => Class['keycloak::service'],
   }
 
-  # Currently unused but left incase becomes necessary
-  keycloak_api { 'keycloak':
-    install_base => $install_base,
-    user         => $admin_user,
-    password     => $admin_user_password,
-  }
-
   create_resources('keycloak_realm', $realms)
   create_resources('keycloak::client_template', $client_templates)
 

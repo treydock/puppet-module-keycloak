@@ -1,24 +1,21 @@
 require 'puppet'
 require 'json'
-require 'net/http'
-require 'openssl'
-require 'uri'
 
 class Puppet::Provider::Keycloak_API < Puppet::Provider
 
-  @install_base = '/opt/keycloak'
-  @server = 'http://localhost:8080/auth'
-  @realm = 'master'
-  @user = 'admin'
-  @password = 'changeme'
+  #@install_base = '/opt/keycloak'
+  #@server = 'http://localhost:8080/auth'
+  #@realm = 'master'
+  #@user = 'admin'
+  #@password = 'changeme'
 
-  class << self
-    attr_accessor :install_base
-    attr_accessor :server
-    attr_accessor :realm
-    attr_accessor :user
-    attr_accessor :password
-  end
+  #class << self
+  #  attr_accessor :install_base
+  #  attr_accessor :server
+  #  attr_accessor :realm
+  #  attr_accessor :user
+  #  attr_accessor :password
+  #end
 
   initvars
 
@@ -49,15 +46,15 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
   end
 
   def self.kcadm(action, resource, realm = nil, file = nil, fields = nil)
-    kcadm_path = File.join(self.install_base, 'bin/kcadm-wrapper.sh')
+    kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
     # Auth arguments unused as defined in kcadm-wrapper.sh
-    auth_arguments = [
-      '--no-config',
-      '--server', self.server,
-      '--realm', self.realm,
-      '--user', self.user,
-      '--password', self.password,
-    ]
+    #auth_arguments = [
+    #  '--no-config',
+    #  '--server', self.server,
+    #  '--realm', self.realm,
+    #  '--user', self.user,
+    #  '--password', self.password,
+    #]
     arguments = [ action, resource ]
     if realm
       arguments << '-r'
@@ -71,9 +68,10 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
       arguments << '--fields'
       arguments << fields.join(',')
     end
-    cmd = [kcadm_path] + arguments
-#    cmd = [kcadm_path] + arguments + auth_arguments
+    cmd = [kcadm_wrapper] + arguments
+    #cmd = [kcadm_wrapper] + arguments + auth_arguments
 
+    # Failed attempt at passing password via STDIN
     #t = Tempfile.new('kcadm_password')
     #t.write(self.password)
     #t.close
