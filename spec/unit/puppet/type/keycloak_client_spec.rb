@@ -137,4 +137,15 @@ describe Puppet::Type.type(:keycloak_client) do
     expect(rel.target.ref).to eq(@client.ref)
   end
 
+  it 'should autorequire client_template protocol mappers' do
+    @client[:client_template] = 'foo'
+    keycloak_protocol_mapper = Puppet::Type.type(:keycloak_protocol_mapper).new(:name => 'bar', :realm => 'test', :client_template => 'foo')
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource @client
+    catalog.add_resource keycloak_protocol_mapper
+    rel = @client.autorequire[0]
+    expect(rel.source.ref).to eq(keycloak_protocol_mapper.ref)
+    expect(rel.target.ref).to eq(@client.ref)
+  end
+
 end

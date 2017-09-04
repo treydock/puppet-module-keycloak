@@ -120,6 +120,18 @@ Puppet::Type.newtype(:keycloak_client) do
     self[:client_template]
   end
 
+  autorequire(:keycloak_protocol_mapper) do
+    requires = []
+    catalog.resources.each do |resource|
+      if resource.class.to_s == 'Puppet::Type::Keycloak_protocol_mapper'
+        if resource[:client_template] == self[:client_template]
+          requires << resource.name
+        end
+      end
+    end
+    requires
+  end
+
   def self.title_patterns
     [
       [
