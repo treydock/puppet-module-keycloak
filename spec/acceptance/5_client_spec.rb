@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak::client define:' do
+describe 'keycloak_client define:' do
   context 'creates client' do
     it 'should run successfully' do
       pp =<<-EOS

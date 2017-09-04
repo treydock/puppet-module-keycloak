@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak::realm define:' do
+describe 'keycloak_realm:' do
   context 'creates realm' do
     it 'should run successfully' do
       pp =<<-EOS

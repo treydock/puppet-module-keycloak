@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak::user_federation::ldap define:' do
+describe 'keycloak_ldap_user_provider:' do
   context 'creates ldap' do
     it 'should run successfully' do
       pp =<<-EOS
