@@ -85,7 +85,7 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
   end
 
   def self.get_realms()
-    output = kcadm('get', 'realms', nil, nil, fields = ['realm'])
+    output = kcadm('get', 'realms', nil, nil, ['realm'])
     data = JSON.parse(output)
     realms = data.map { |r| r['realm'] }
     return realms
