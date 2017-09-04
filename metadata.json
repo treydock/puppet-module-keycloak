@@ -13,7 +13,7 @@
     { "name": "puppetlabs/java", "version_requirement": ">= 1.0.0 <2.0.0" },
     { "name": "puppetlabs/java_ks", "version_requirement": ">= 1.0.0 <2.0.0" },
     { "name": "puppet/archive", "version_requirement": ">= 0.0.0 <2.0.0" },
-    { "name": "camptocamp/systemd", "version_requirement": "0.x" }
+    { "name": "camptocamp/systemd", "version_requirement": ">= 0.0.1 <1.0.0" }
   ],
   "operatingsystem_support": [
     {
