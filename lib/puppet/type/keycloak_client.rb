@@ -65,7 +65,7 @@ Puppet::Type.newtype(:keycloak_client) do
       unless p[:d].nil?
         defaultto do
           if p[:d] == :name
-            @resource[:name]
+            @resource[:resource_name]
           else
             p[:d]
           end

@@ -72,7 +72,7 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
       unless p[:d].nil?
         defaultto do
           if p[:d] == :name
-            @resource[:name]
+            @resource[:resource_name]
           else
             p[:d]
           end
