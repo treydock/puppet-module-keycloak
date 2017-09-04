@@ -42,9 +42,9 @@ Puppet::Type.newtype(:keycloak_realm) do
   end
 
   [
-    {:n => :enabled, :d => true },
-    {:n => :remember_me, :d => false },
-    {:n => :login_with_email_allowed, :d => true },
+    {:n => :enabled, :d => :true },
+    {:n => :remember_me, :d => :false },
+    {:n => :login_with_email_allowed, :d => :true },
   ].each do |p|
     newproperty(p[:n], :boolean => true) do
       desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"

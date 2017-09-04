@@ -82,7 +82,7 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
   end
 
   [
-    {:n => :import_enabled, :d => true },
+    {:n => :import_enabled, :d => :true },
   ].each do |p|
     newproperty(p[:n], :boolean => true) do
       desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
