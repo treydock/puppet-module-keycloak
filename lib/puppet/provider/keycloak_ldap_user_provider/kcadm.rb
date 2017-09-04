@@ -89,8 +89,9 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
   end
 
   def destroy
+    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
-      kcadm('delete', "components/#{resource[:id]}")
+      kcadm('delete', "components/#{resource[:id]}", resource[:realm])
     rescue Exception => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end

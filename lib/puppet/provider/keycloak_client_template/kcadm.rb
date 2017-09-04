@@ -75,8 +75,9 @@ Puppet::Type.type(:keycloak_client_template).provide(:kcadm, :parent => Puppet::
   end
 
   def destroy
+    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
-      kcadm('delete', "client-templates/#{resource[:id]}")
+      kcadm('delete', "client-templates/#{resource[:id]}", resource[:realm])
     rescue Exception => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end

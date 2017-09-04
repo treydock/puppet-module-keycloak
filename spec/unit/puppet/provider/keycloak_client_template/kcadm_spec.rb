@@ -40,7 +40,7 @@ describe Puppet::Type.type(:keycloak_client_template).provider(:kcadm) do
 
   describe 'destroy' do
     it 'should delete a realm' do
-      expect(@resource.provider).to receive(:kcadm).with('delete', 'client-templates/foo')
+      expect(@resource.provider).to receive(:kcadm).with('delete', 'client-templates/foo', 'test')
       @resource.provider.destroy
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash).to eq({})
