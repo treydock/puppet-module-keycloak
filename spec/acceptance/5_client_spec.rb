@@ -8,7 +8,7 @@ describe 'keycloak_client define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak_realm { 'test': }
+      keycloak_realm { 'test': ensure => 'present' }
       keycloak::client_template { 'openid-connect-clients':
         realm => 'test',
       }
@@ -32,7 +32,7 @@ describe 'keycloak_client define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak_realm { 'test': }
+      keycloak_realm { 'test': ensure => 'present' }
       keycloak::client_template { 'openid-connect-clients':
         realm => 'test',
       }
