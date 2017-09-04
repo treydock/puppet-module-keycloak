@@ -55,7 +55,8 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
     resources.keys.each do |name|
       if provider = components.find { |c|
         c.resource_name == resources[name][:resource_name] &&
-        c.realm == resources[name][:realm]
+        c.realm == resources[name][:realm] &&
+        c.ldap == resources[name][:ldap]
       }
         resources[name].provider = provider
       end
