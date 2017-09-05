@@ -99,8 +99,9 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
   def destroy
     fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     fail("Client template is mandatory for #{resource.type} #{resource.name}") if resource[:client_template].nil?
+    id = @property_hash[:id] || resource[:id]
     begin
-      kcadm('delete', "client-templates/#{resource[:client_template]}/protocol-mappers/models/#{@property_hash[:id]}", resource[:realm])
+      kcadm('delete', "client-templates/#{resource[:client_template]}/protocol-mappers/models/#{id}", resource[:realm])
     rescue Exception => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
