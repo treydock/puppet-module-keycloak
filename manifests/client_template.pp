@@ -28,8 +28,9 @@ define keycloak::client_template (
   }
 
   keycloak_protocol_mapper { "full name for ${name} on ${realm}":
-    consent_text => '${fullName}', #lint:ignore:single_quote_string_with_variables
-    type         => 'oidc-full-name-mapper',
+    consent_text         => '${fullName}', #lint:ignore:single_quote_string_with_variables
+    type                 => 'oidc-full-name-mapper',
+    userinfo_token_claim => false,
   }
 
   keycloak_protocol_mapper { "family name for ${name} on ${realm}":

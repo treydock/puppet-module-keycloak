@@ -67,7 +67,6 @@
   "consentText" : "${fullName}",
   "config" : {
     "id.token.claim" : "true",
-    "access.token.claim" : "true",
-    "userinfo.token.claim" : "true"
+    "access.token.claim" : "true"
   }
 } ]
