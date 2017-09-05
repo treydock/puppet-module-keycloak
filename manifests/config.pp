@@ -30,6 +30,29 @@ class keycloak::config {
     notify  => Class['keycloak::service'],
   }
 
+  file { "${keycloak::install_base}/puppet/.passwd":
+    ensure    => 'file',
+    owner     => $keycloak::user,
+    group     => $keycloak::group,
+    mode      => '0600',
+    content   => $keycloak::admin_user_password,
+    show_diff => false,
+    notify    => Exec['set-password-admin'],
+  }
+
+  exec { 'set-password-admin':
+    path        => '/bin:/usr/bin:/sbin:/usr/sbin',
+    command     => join([
+      "${keycloak::install_base}/bin/kcadm-wrapper.sh",
+      'set-password',
+      '--username', $keycloak::admin_user,
+      '--new-password', "\"${keycloak::admin_user_password}\"",
+    ], ' '),
+    refreshonly => true,
+    onlyif      => "test -f ${_add_user_keycloak_state}",
+    before      => File['kcadm-wrapper.sh'],
+  }
+
   file { "${keycloak::install_base}/standalone/configuration":
     ensure => 'directory',
     owner  => $keycloak::user,
