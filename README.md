@@ -51,7 +51,7 @@ Setup Keycloak to proxy through Apache HTTPS.
     class { 'keycloak':
       proxy_https => true
     }
-    apache::vhost { 'idp.exaple.com':
+    apache::vhost { 'idp.example.com':
       servername => 'idp.example.com',
       port        => '443',
       ssl         => true,
