@@ -133,8 +133,8 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
       data[:name] = resource[:resource_name]
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
-      data[:consentRequired] = resource[:consent_required] if @property_flush[:consent_required]
-      data[:consentText] = resource[:consent_text] if @property_flush[:consent_text]
+      data[:consentRequired] = resource[:consent_required] if resource[:consent_required]
+      data[:consentText] = resource[:consent_text] if resource[:consent_text]
       config = {}
       if resource[:type] == 'oidc-usermodel-property-mapper'
         config[:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
