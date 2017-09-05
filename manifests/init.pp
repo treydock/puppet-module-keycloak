@@ -58,7 +58,7 @@ class keycloak (
   -> Class['keycloak::install']
   -> Class["keycloak::datasource::${datasource_driver}"]
   -> Class['keycloak::config']
-  ~> Class['keycloak::service']
+  -> Class['keycloak::service']
 
   Class["keycloak::datasource::${datasource_driver}"]~>Class['keycloak::service']
 

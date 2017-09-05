@@ -26,6 +26,7 @@ class keycloak::config {
   exec { 'create-keycloak-admin':
     command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
     creates => $_add_user_keycloak_state,
+    notify  => Class['keycloak::service'],
   }
 
   file { "${keycloak::install_base}/standalone/configuration":
@@ -58,6 +59,7 @@ class keycloak::config {
     group       => $keycloak::group,
     refreshonly => true,
     logoutput   => true,
+    notify      => Class['keycloak::service'],
   }
 
   create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
