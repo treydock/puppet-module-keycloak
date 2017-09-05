@@ -56,7 +56,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
       if provider = protocol_mappers.find { |c|
         c.resource_name == resources[name][:resource_name] &&
         c.realm == resources[name][:realm] &&
-        c.client_template = resources[name][:client_template]
+        c.client_template == resources[name][:client_template]
       }
         resources[name].provider = provider
       end
