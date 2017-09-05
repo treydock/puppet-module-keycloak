@@ -100,7 +100,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
     fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     fail("Client template is mandatory for #{resource.type} #{resource.name}") if resource[:client_template].nil?
     begin
-      kcadm('delete', "client-templates/#{resource[:client_template]}/protocol-mappers/models/#{resource[:id]}", resource[:realm])
+      kcadm('delete', "client-templates/#{resource[:client_template]}/protocol-mappers/models/#{@property_hash[:id]}", resource[:realm])
     rescue Exception => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
@@ -129,7 +129,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
       fail("Client template is mandatory for #{resource.type} #{resource.name}") if resource[:client_template].nil?
 
       data = {}
-      data[:id] = resource[:id]
+      data[:id] = @property_hash[:id]
       data[:name] = resource[:resource_name]
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
@@ -137,13 +137,13 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
       data[:consentText] = resource[:consent_text] if @property_flush[:consent_text]
       config = {}
       if resource[:type] == 'oidc-usermodel-property-mapper'
-        config[:'user.attribute'] = resource[:user_attribute] if @property_flush[:user_attribute]
-        config[:'claim.name'] = resource[:claim_name] if @property_flush[:claim_name]
-        config[:'jsonType.label'] = resource[:json_type_label] if @property_flush[:json_type_label]
+        config[:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
+        config[:'claim.name'] = resource[:claim_name] if resource[:claim_name]
+        config[:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
       end
-      config[:'id.token.claim'] = resource[:id_token_claim] if @property_flush[:id_token_claim]
-      config[:'access.token.claim'] = resource[:access_token_claim] if @property_flush[:access_token_claim]
-      config[:'userinfo.token.claim'] = resource[:userinfo_token_claim] if @property_flush[:userinfo_token_claim]
+      config[:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
+      config[:'access.token.claim'] = resource[:access_token_claim] if resource[:access_token_claim]
+      config[:'userinfo.token.claim'] = resource[:userinfo_token_claim] if resource[:userinfo_token_claim]
       data[:config] = config unless config.empty?
 
       t = Tempfile.new('keycloak_protocol_mapper')
@@ -151,7 +151,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
       t.close
       Puppet.debug(IO.read(t.path))
       begin
-        kcadm('update', "client-templates/#{resource[:client_template]}/protocol-mappers/models/#{resource[:id]}", resource[:realm], t.path)
+        kcadm('update', "client-templates/#{resource[:client_template]}/protocol-mappers/models/#{@property_hash[:id]}", resource[:realm], t.path)
       rescue Exception => e
         raise Puppet::Error, "kcadm update component failed\nError message: #{e.message}"
       end
