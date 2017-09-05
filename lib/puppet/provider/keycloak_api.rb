@@ -3,6 +3,11 @@ require 'json'
 
 class Puppet::Provider::Keycloak_API < Puppet::Provider
 
+  initvars
+
+  # Unused but defined anyways
+  commands :kcadm_wrapper => '/opt/keycloak/bin/kcadm-wrapper.sh'
+
   def self.type_properties
     resource_type.validproperties.reject { |p| p.to_sym == :ensure }
   end
