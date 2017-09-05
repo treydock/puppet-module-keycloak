@@ -12,12 +12,13 @@ class keycloak::config {
   # - $keycloak::admin_user
   # - $keycloak::admin_user_password
   file { 'kcadm-wrapper.sh':
-    ensure  => 'file',
-    path    => "${keycloak::install_base}/bin/kcadm-wrapper.sh",
-    owner   => $keycloak::user,
-    group   => $keycloak::group,
-    mode    => '0750',
-    content => template('keycloak/kcadm-wrapper.sh.erb'),
+    ensure    => 'file',
+    path      => "${keycloak::install_base}/bin/kcadm-wrapper.sh",
+    owner     => $keycloak::user,
+    group     => $keycloak::group,
+    mode      => '0750',
+    content   => template('keycloak/kcadm-wrapper.sh.erb'),
+    show_diff => false,
   }
 
   $_add_user_keycloak_cmd = "${keycloak::install_base}/bin/add-user-keycloak.sh"
