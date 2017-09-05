@@ -21,7 +21,7 @@ Puppet::Type.newtype(:keycloak_client_template) do
   newparam(:id) do
     desc 'Id'
     defaultto do
-      @resource[:name]
+      @resource[:resource_name]
     end
   end
 

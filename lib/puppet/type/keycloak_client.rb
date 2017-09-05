@@ -11,17 +11,17 @@ Puppet::Type.newtype(:keycloak_client) do
     desc 'The client name'
   end
 
-  newparam(:id) do
-    desc 'Id'
+  newparam(:client_id, :namevar => true) do
+    desc 'clientId'
     defaultto do
       @resource[:name]
     end
   end
 
-  newparam(:client_id, :namevar => true) do
-    desc 'clientId'
+  newparam(:id) do
+    desc 'Id'
     defaultto do
-      @resource[:name]
+      @resource[:client_id]
     end
   end
 
