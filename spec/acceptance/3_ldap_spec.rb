@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak::user_federation::ldap define:' do
+describe 'keycloak_ldap_user_provider:' do
   context 'creates ldap' do
     it 'should run successfully' do
       pp =<<-EOS
@@ -8,15 +8,15 @@ describe 'keycloak::user_federation::ldap define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test': }
-      keycloak::user_federation::ldap { 'test':
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_ldap_user_provider { 'test':
         realm => 'test',
-        user_dn => 'ou=People,dc=test',
+        users_dn => 'ou=People,dc=test',
         connection_url => 'ldap://localhost:389',
       }
-      keycloak::user_federation::ldap_mapper { 'full-name':
+      keycloak_ldap_mapper { 'full-name':
         realm => 'test',
-        ldap  => 'test',
+        ldap  => 'test-test',
         type => 'full-name-ldap-mapper',
         ldap_attribute => 'foo',
       }
@@ -34,16 +34,16 @@ describe 'keycloak::user_federation::ldap define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test': }
-      keycloak::user_federation::ldap { 'test':
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_ldap_user_provider { 'test':
         realm => 'test',
-        user_dn => 'ou=People,dc=test',
+        users_dn => 'ou=People,dc=test',
         connection_url => 'ldap://localhost:389',
-        user_objectclasses => ['posixAccount'],
+        user_object_classes => ['posixAccount'],
       }
-      keycloak::user_federation::ldap_mapper { 'full-name':
+      keycloak_ldap_mapper { 'full-name':
         realm => 'test',
-        ldap  => 'test',
+        ldap  => 'test-test',
         type => 'full-name-ldap-mapper',
         ldap_attribute => 'bar',
       }

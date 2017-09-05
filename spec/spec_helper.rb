@@ -19,6 +19,10 @@ Dir["#{dir}/shared_examples/**/*.rb"].sort.each {|f| require f}
 
 at_exit { RSpec::Puppet::Coverage.report! }
 
+RSpec.configure do |config|
+  config.mock_with :rspec
+end
+
 add_custom_fact :concat_basedir, '/dne'
 add_custom_fact :service_provider, 'systemd', :confine => 'redhat-7-x86_64'
 add_custom_fact :staging_http_get, '/usr/bin/wget'

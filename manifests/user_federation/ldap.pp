@@ -16,46 +16,25 @@ define keycloak::user_federation::ldap (
   String $use_truststore_spi = 'ldapsOnly',
 ) {
 
-  include keycloak
-  realize Keycloak_conn_validator['keycloak']
-  Keycloak::Realm <| title == $realm |> -> Keycloak::User_federation::Ldap[$name]
+  warning('Keycloak::User_federation::Ldap is deprecated, use keycloak_ldap_user_provider type directly')
 
-  $config_dir = "${keycloak::install_base}/puppet"
-  $config     = "${config_dir}/ldap-${name}.json"
-  $kcadm = "${keycloak::install_base}/bin/kcadm.sh"
-  $auth = "--no-config --server http://localhost:8080/auth --realm master --user admin --password ${keycloak::admin_user_password}"
+  include ::keycloak
 
-  # Template uses:
-  file { $config:
-    ensure  => 'file',
-    owner   => $keycloak::user,
-    group   => $keycloak::group,
-    mode    => '0640',
-    content => template('keycloak/ldap.json.erb'),
-    before  => [Exec["create-ldap-${name}"], Exec["update-ldap-${name}"]],
-  }
-
-  exec { "create-ldap-${name}":
-    command   => "${kcadm} create components -r ${realm} -f ${config} ${auth}",
-    unless    => "${kcadm} get components/${name} -r ${realm} ${auth}",
-    cwd       => $keycloak::install_base,
-    user      => $keycloak::user,
-    group     => $keycloak::group,
-    logoutput => true,
-    require   => Keycloak_conn_validator['keycloak'],
-  }
-
-  exec { "update-ldap-${name}":
-    command     => "${kcadm} update components/${name} -r ${realm} -f ${config} ${auth}",
-    onlyif      => "${kcadm} get components/${name} -r ${realm} ${auth}",
-    #unless      => "/bin/bash -c '${kcadm} get components/${name} -r ${realm} ${auth} | grep -v 'lastSync' | sort | diff -w -u <( sort ${config} ) -'",
-    cwd         => $keycloak::install_base,
-    user        => $keycloak::user,
-    group       => $keycloak::group,
-    logoutput   => true,
-    require     => Keycloak_conn_validator['keycloak'],
-    refreshonly => true,
-    subscribe   => File[$config],
+  keycloak_ldap_user_provider { $name:
+    realm                   => $realm,
+    users_dn                => $user_dn,
+    connection_url          => $connection_url,
+    resource_name           => $resource_name,
+    priority                => $priority,
+    import_enabled          => $import_enabled,
+    user_object_classes     => $user_objectclasses,
+    username_ldap_attribute => $username_ldap_attribute,
+    rdn_ldap_attribute      => $rdn_ldap_attribute,
+    uuid_ldap_attribute     => $uuid_ldap_attribute,
+    auth_type               => $auth_type,
+    edit_mode               => $edit_mode,
+    vendor                  => $vendor,
+    use_truststore_spi      => $use_truststore_spi,
   }
 
 }

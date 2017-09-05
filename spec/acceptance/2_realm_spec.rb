@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak::realm define:' do
+describe 'keycloak_realm:' do
   context 'creates realm' do
     it 'should run successfully' do
       pp =<<-EOS
@@ -8,7 +8,7 @@ describe 'keycloak::realm define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test': }
+      keycloak_realm { 'test': ensure => 'present' }
       EOS
 
       apply_manifest(pp, :catch_failures => true)
@@ -23,7 +23,8 @@ describe 'keycloak::realm define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test':
+      keycloak_realm { 'test':
+        ensure => 'present',
         remember_me => true,
       }
       EOS

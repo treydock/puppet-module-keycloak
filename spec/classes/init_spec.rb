@@ -22,7 +22,7 @@ describe 'keycloak' do
       it { is_expected.to contain_class('keycloak::params') }
 
       it { is_expected.to contain_class('keycloak::install').that_comes_before('Class[keycloak::config]') }
-      it { is_expected.to contain_class('keycloak::config').that_notifies('Class[keycloak::service]') }
+      it { is_expected.to contain_class('keycloak::config').that_comes_before('Class[keycloak::service]') }
       it { is_expected.to contain_class('keycloak::service') }
 
       include_context 'keycloak::install'

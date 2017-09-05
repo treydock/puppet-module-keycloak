@@ -6,48 +6,43 @@ define keycloak::client_template (
   Boolean $full_scope_allowed = true,
 ) {
 
-  include keycloak
-  realize Keycloak_conn_validator['keycloak']
-  Keycloak::Realm <| title == $realm |> -> Keycloak::Client_template[$name]
+  include ::keycloak
 
-  $config_dir = "${keycloak::install_base}/puppet"
-  $config     = "${config_dir}/client-template-${name}.json"
-  $kcadm = "${keycloak::install_base}/bin/kcadm.sh"
-  $auth = "--no-config --server http://localhost:8080/auth --realm master --user admin --password ${keycloak::admin_user_password}"
-
-  # Template uses:
-  # - $protocol
-  # - $full_scope_allowed
-  file { $config:
-    ensure  => 'file',
-    owner   => $keycloak::user,
-    group   => $keycloak::group,
-    mode    => '0640',
-    content => template('keycloak/client-template.json.erb'),
-    before  => [Exec["create-client-template-${name}"], Exec["update-client-template-${name}"]],
+  keycloak_client_template { $name:
+    realm              => $realm,
+    resource_name      => $resource_name,
+    protocol           => $protocol,
+    full_scope_allowed => $full_scope_allowed,
   }
 
-  exec { "create-client-template-${name}":
-    command   => "${kcadm} create client-templates -r ${realm} -f ${config} ${auth}",
-    unless    => "${kcadm} get client-templates/${name} -r ${realm} ${auth}",
-    cwd       => $keycloak::install_base,
-    user      => $keycloak::user,
-    group     => $keycloak::group,
-    logoutput => true,
-    require   => Keycloak_conn_validator['keycloak'],
+  keycloak_protocol_mapper { "email for ${name} on ${realm}":
+    consent_text   => '${email}', #lint:ignore:single_quote_string_with_variables
+    claim_name     => 'email',
+    user_attribute => 'email',
   }
 
-  exec { "update-client-template-${name}":
-    command     => "${kcadm} update client-templates/${name} -r ${realm} -f ${config} ${auth}",
-    onlyif      => "${kcadm} get client-templates/${name} -r ${realm} ${auth}",
-    #unless    => "${kcadm} get client-templates/${name} ${auth} | diff -w ${config} -",
-    cwd         => $keycloak::install_base,
-    user        => $keycloak::user,
-    group       => $keycloak::group,
-    logoutput   => true,
-    require     => Keycloak_conn_validator['keycloak'],
-    refreshonly => true,
-    subscribe   => File[$config],
+  keycloak_protocol_mapper { "username for ${name} on ${realm}":
+    consent_text   => '${username}', #lint:ignore:single_quote_string_with_variables
+    claim_name     => 'preferred_username',
+    user_attribute => 'username',
+  }
+
+  keycloak_protocol_mapper { "full name for ${name} on ${realm}":
+    consent_text         => '${fullName}', #lint:ignore:single_quote_string_with_variables
+    type                 => 'oidc-full-name-mapper',
+    userinfo_token_claim => false,
+  }
+
+  keycloak_protocol_mapper { "family name for ${name} on ${realm}":
+    consent_text   => '${familyName}', #lint:ignore:single_quote_string_with_variables
+    claim_name     => 'family_name',
+    user_attribute => 'lastName',
+  }
+
+  keycloak_protocol_mapper { "given name for ${name} on ${realm}":
+    consent_text   => '${givenName}', #lint:ignore:single_quote_string_with_variables
+    claim_name     => 'given_name',
+    user_attribute => 'firstName',
   }
 
 }

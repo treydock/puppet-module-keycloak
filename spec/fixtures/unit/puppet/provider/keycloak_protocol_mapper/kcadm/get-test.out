@@ -1,0 +1,72 @@
+[ {
+  "id" : "164777e9-b03c-4995-8e77-c98ad61750a2",
+  "name" : "username",
+  "protocol" : "openid-connect",
+  "protocolMapper" : "oidc-usermodel-property-mapper",
+  "consentRequired" : true,
+  "consentText" : "${username}",
+  "config" : {
+    "userinfo.token.claim" : "true",
+    "user.attribute" : "username",
+    "id.token.claim" : "true",
+    "access.token.claim" : "true",
+    "claim.name" : "preferred_username",
+    "jsonType.label" : "String"
+  }
+}, {
+  "id" : "3d51da01-d3e2-42fd-8ceb-4639300ab28d",
+  "name" : "family name",
+  "protocol" : "openid-connect",
+  "protocolMapper" : "oidc-usermodel-property-mapper",
+  "consentRequired" : true,
+  "consentText" : "${familyName}",
+  "config" : {
+    "userinfo.token.claim" : "true",
+    "user.attribute" : "lastName",
+    "id.token.claim" : "true",
+    "access.token.claim" : "true",
+    "claim.name" : "family_name",
+    "jsonType.label" : "String"
+  }
+}, {
+  "id" : "add4d061-e1f9-423f-9853-7db75131ec38",
+  "name" : "email",
+  "protocol" : "openid-connect",
+  "protocolMapper" : "oidc-usermodel-property-mapper",
+  "consentRequired" : true,
+  "consentText" : "${email}",
+  "config" : {
+    "userinfo.token.claim" : "true",
+    "user.attribute" : "email",
+    "id.token.claim" : "true",
+    "access.token.claim" : "true",
+    "claim.name" : "email",
+    "jsonType.label" : "String"
+  }
+}, {
+  "id" : "04a93b24-3a05-477b-9e53-6fb3047109a8",
+  "name" : "given name",
+  "protocol" : "openid-connect",
+  "protocolMapper" : "oidc-usermodel-property-mapper",
+  "consentRequired" : true,
+  "consentText" : "${givenName}",
+  "config" : {
+    "userinfo.token.claim" : "true",
+    "user.attribute" : "firstName",
+    "id.token.claim" : "true",
+    "access.token.claim" : "true",
+    "claim.name" : "given_name",
+    "jsonType.label" : "String"
+  }
+}, {
+  "id" : "ff4459d1-e7e3-433f-a314-1607c65f1c28",
+  "name" : "full name",
+  "protocol" : "openid-connect",
+  "protocolMapper" : "oidc-full-name-mapper",
+  "consentRequired" : true,
+  "consentText" : "${fullName}",
+  "config" : {
+    "id.token.claim" : "true",
+    "access.token.claim" : "true"
+  }
+} ]

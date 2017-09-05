@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak::client define:' do
+describe 'keycloak_client define:' do
   context 'creates client' do
     it 'should run successfully' do
       pp =<<-EOS
@@ -8,11 +8,11 @@ describe 'keycloak::client define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test': }
+      keycloak_realm { 'test': ensure => 'present' }
       keycloak::client_template { 'openid-connect-clients':
         realm => 'test',
       }
-      keycloak::client { 'test.foo.bar':
+      keycloak_client { 'test.foo.bar':
         realm => 'test',
         redirect_uris   => ['https://test.foo.bar/test1'],
         client_template => 'openid-connect-clients',
@@ -32,11 +32,11 @@ describe 'keycloak::client define:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak::realm { 'test': }
+      keycloak_realm { 'test': ensure => 'present' }
       keycloak::client_template { 'openid-connect-clients':
         realm => 'test',
       }
-      keycloak::client { 'test.foo.bar':
+      keycloak_client { 'test.foo.bar':
         realm => 'test',
         redirect_uris   => ['https://test.foo.bar/test2'],
         client_template => 'openid-connect-clients',

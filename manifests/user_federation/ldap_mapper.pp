@@ -11,48 +11,20 @@ define keycloak::user_federation::ldap_mapper (
   Optional[String] $model_attribute = undef,
   ) {
 
-  include keycloak
-  realize Keycloak_conn_validator['keycloak']
-  Keycloak::Realm <| title == $realm |> -> Keycloak::User_federation::Ldap_mapper[$name]
-  Keycloak::User_federation::Ldap <| title == $ldap |> -> Keycloak::User_federation::Ldap_mapper[$name]
+  warning('Keycloak::User_federation::Ldap_mapper is deprecated, use keycloak_ldap_mapper type directly')
 
-  $id = fqdn_uuid($name)
-  $config_dir = "${keycloak::install_base}/puppet"
-  $config     = "${config_dir}/ldap-mapper-${name}.json"
-  $kcadm = "${keycloak::install_base}/bin/kcadm.sh"
-  $auth = "--no-config --server http://localhost:8080/auth --realm master --user admin --password ${keycloak::admin_user_password}"
+  include ::keycloak
 
-  # Template uses:
-  file { $config:
-    ensure  => 'file',
-    owner   => $keycloak::user,
-    group   => $keycloak::group,
-    mode    => '0640',
-    content => template('keycloak/ldap-mapper.json.erb'),
-    before  => [Exec["create-ldap-mapper-${name}"], Exec["update-ldap-mapper-${name}"]],
-  }
-
-  exec { "create-ldap-mapper-${name}":
-    command   => "${kcadm} create components -r ${realm} -f ${config} ${auth}",
-    unless    => "${kcadm} get components/${id} -r ${realm} ${auth}",
-    cwd       => $keycloak::install_base,
-    user      => $keycloak::user,
-    group     => $keycloak::group,
-    logoutput => true,
-    require   => Keycloak_conn_validator['keycloak'],
-  }
-
-  exec { "update-ldap-mapper-${name}":
-    command     => "${kcadm} update components/${id} -r ${realm} -f ${config} ${auth}",
-    onlyif      => "${kcadm} get components/${id} -r ${realm} ${auth}",
-    #unless      => "/bin/bash -c '${kcadm} get components/${name} -r ${realm} ${auth} | grep -v 'lastSync' | sort | diff -w -u <( sort ${config} ) -'",
-    cwd         => $keycloak::install_base,
-    user        => $keycloak::user,
-    group       => $keycloak::group,
-    logoutput   => true,
-    require     => Keycloak_conn_validator['keycloak'],
-    refreshonly => true,
-    subscribe   => File[$config],
+  keycloak_ldap_mapper { $name:
+    realm                => $realm,
+    ldap                 => $ldap,
+    ldap_attribute       => $ldap_attribute,
+    resource_name        => $resource_name,
+    type                 => $type,
+    is_mandatory_in_ldap => $is_mandatory_in_ldap,
+    read_only            => $read_only,
+    write_only           => $write_only,
+    user_model_attribute => $model_attribute,
   }
 
 }
