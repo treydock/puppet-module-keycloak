@@ -46,11 +46,12 @@ class keycloak::config {
       "${keycloak::install_base}/bin/kcadm-wrapper.sh",
       'set-password',
       '--username', $keycloak::admin_user,
-      '--new-password', "\"${keycloak::admin_user_password}\"",
+      '--new-password', "\$(cat ${keycloak::install_base}/puppet/.passwd)",
     ], ' '),
     refreshonly => true,
     onlyif      => "test -f ${_add_user_keycloak_state}",
-    before      => File['kcadm-wrapper.sh'],
+    require     => File['kcadm-wrapper.sh'],
+    before      => File["${keycloak::install_base}/puppet/.passwd"],
   }
 
   file { "${keycloak::install_base}/standalone/configuration":
