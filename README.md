@@ -128,11 +128,11 @@ Register a client.
 
 ### keycloak\_client_template
 
-See keycloak::client_template
+See keycloak::client_template defined type
 
 ### keycloak\_protocol_mapper
 
-See keycloak::client_template
+See keycloak::client_template defined type
 
 ## Reference
 
