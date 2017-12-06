@@ -1,8 +1,9 @@
 # See README.md for more details.
 class keycloak (
   String $version               = '3.0.0.Final',
-  Optional[String] $package_url = undef,
-  String $install_dir           = '/opt',
+  Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
+    $package_url                = undef,
+  Stdlib::Absolutepath $install_dir = '/opt',
   String $service_name          = $keycloak::params::service_name,
   String $service_ensure        = 'running',
   Boolean $service_enable       = true,
