@@ -36,13 +36,6 @@ class keycloak::config {
     mode   => '0750',
   }
 
-  file { "${keycloak::install_base}/puppet":
-    ensure => 'directory',
-    owner  => $keycloak::user,
-    group  => $keycloak::group,
-    mode   => '0750',
-  }
-
   file { "${keycloak::install_base}/config.cli":
     ensure  => 'file',
     owner   => $keycloak::user,
