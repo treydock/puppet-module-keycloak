@@ -25,19 +25,39 @@ describe 'keycloak' do
       it { is_expected.to contain_class('keycloak::config').that_comes_before('Class[keycloak::service]') }
       it { is_expected.to contain_class('keycloak::service') }
 
-      include_context 'keycloak::install'
-      include_context 'keycloak::config'
-      include_context 'keycloak::service'
+      context "keycloak::install" do
+        it do
+          is_expected.to contain_user('keycloak').only_with({
+            :ensure     => 'present',
+            :name       => 'keycloak',
+            :forcelocal => 'true',
+            :shell      => '/sbin/nologin',
+            :gid        => 'keycloak',
+            :home       => '/var/lib/keycloak',
+            :managehome => 'true',
+          })
+        end
+      end
 
-      # Test validate_bool parameters
-      [
+      context "keycloak::config" do
+        it do
+          is_expected.to contain_exec('create-keycloak-admin').with({
+            :command => '/opt/keycloak-3.0.0.Final/bin/add-user-keycloak.sh --user admin --password changeme --realm master && touch /opt/keycloak-3.0.0.Final/.create-keycloak-admin-h2',
+            :creates => '/opt/keycloak-3.0.0.Final/.create-keycloak-admin-h2',
+            :notify  => 'Class[Keycloak::Service]',
+          })
+        end
+      end
 
-      ].each do |param|
-        context "with #{param} => 'foo'" do
-          let(:params) {{ param.to_sym => 'foo' }}
-          it 'should raise an error' do
-            expect { is_expected.to compile }.to raise_error(/is not a boolean/)
-          end
+      context "keycloak::service" do
+        it do
+          is_expected.to contain_service('keycloak').only_with({
+            :ensure      => 'running',
+            :enable      => 'true',
+            :name        => 'keycloak',
+            :hasstatus   => 'true',
+            :hasrestart  => 'true',
+          })
         end
       end
 
