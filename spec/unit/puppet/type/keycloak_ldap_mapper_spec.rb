@@ -81,6 +81,21 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     expect(component[:is_mandatory_in_ldap]).to be(:false)
   end
 
+  it 'should have always_read_value_from_ldap be nil for full-name-ldap-mapper' do
+    component = described_class.new(:name => 'foo', :realm => 'test', :type => 'full-name-ldap-mapper')
+    expect(component[:always_read_value_from_ldap]).to be_nil
+  end
+
+  it 'should have always_read_value_from_ldap default to true for user-attribute-ldap-mapper' do
+    component = described_class.new(:name => 'foo', :realm => 'test', :type => 'user-attribute-ldap-mapper')
+    expect(component[:always_read_value_from_ldap]).to be(:true)
+  end
+
+  it 'should accept always_read_value_from_ldap=>false' do
+    @component[:always_read_value_from_ldap] = false
+    expect(@component[:always_read_value_from_ldap]).to eq(:false)
+  end
+
   # Test boolean properties
   [
     :read_only,
