@@ -126,6 +126,14 @@ Register a client.
       secret          => 'supersecret',
     }
 
+### keycloak::client_template
+
+Defined type that can be used to define both `keycloak_client_template` and `keycloak_protocol_mapper` resources. The example below will define a client template and several protocol mappers that are built into keycloak.
+
+    keycloak::client_template { 'oidc-clients':
+      realm => 'test',
+    }
+
 ### keycloak\_client_template
 
 See keycloak::client_template defined type
@@ -146,6 +154,8 @@ See keycloak::client_template defined type
 
 * `keycloak::install`: Installs keycloak packages.
 * `keycloak::config`: Configures keycloak.
+* `keycloak::datasource::h2`: Empty placeholder class.
+* `keycloak::datasource::mysql`: Configures MySQL datastore.
 * `keycloak::service`: Manages the keycloak service.
 * `keycloak::params`: Sets parameter defaults based on fact values.
 
@@ -153,7 +163,127 @@ See keycloak::client_template defined type
 
 #### keycloak
 
-TODO
+##### version
+
+Version of Keycloak to install and manage. Default is `3.4.1.Final`
+
+##### package_url
+
+URL of the Keycloak download. Default is based on version.
+
+##### install_dir
+
+Parent directory of where to install Keycloak. Default is `/opt`
+
+##### service_name
+
+Keycloak service name. Default is `keycloak`
+
+##### service_ensure
+
+Keycloak service ensure property. Default is `running`
+
+##### service_enable
+
+Keycloak service enable property. Default is `true`
+
+##### service_hasstatus
+
+Keycloak service hasstatus parameter. Default is `true`
+
+##### service_hasrestart
+
+Keycloak service hasrestart parameter. Default is `true`
+
+##### user
+
+Keycloak user name. Default is `keycloak`
+
+##### group
+
+Keycloak user group name. Default is `keycloak`
+
+##### user_uid
+
+Keycloak user UID. Default is `undef`
+
+##### group_gid
+
+Keycloak user group GID. Default is `undef`
+
+##### admin_user
+
+Keycloak administrative username. Default is `admin`
+
+##### admin_user_password
+
+Keycloak administrative user password. Default is `changeme`
+
+##### datasource_driver
+
+Datasource driver to use for Keycloak. Valid values are `h2` and `mysql`. Default is `h2`
+
+##### datasource_host
+
+Datasource host. Only used when datasource_driver is `mysql`.
+Default is `localhost` for MySQL.
+
+##### datasource_port
+
+Datasource port. Only used when datasource_driver is `mysql`.
+Default is `3306` for MySQL.
+
+##### datasource_dbname
+
+Datasource database name. Default is `keycloak`
+
+##### datasource_username
+
+Datasource user name. Default is `sa`
+
+##### datasource_password
+
+Datasource user password. Default is `sa`
+
+##### proxy_https
+
+Boolean that sets if HTTPS proxy should be enabled.  Set to `true` if proxying traffic through Apache. Default is `false`
+
+##### truststore
+
+Boolean that sets if truststore should be used. Default is `false`
+
+##### truststore_hosts
+
+Hash that is used to define keycloak::turststore::host resources. Default is `{}`
+
+##### truststore_password
+
+Truststore password. Default is `keycloak`
+
+##### truststore\_hostname\_verification\_policy
+
+Valid values are `WILDCARD`, `STRICT`, and `ANY`. Default is `WILDCARD`
+
+##### theme\_static\_max\_age
+
+Max cache age in seconds of static content. Default is `2592000`
+
+##### theme\_cache\_themes
+
+Boolean that sets if themes should be cached. Default is `true`
+
+##### theme\_cache\_templates
+
+Boolean that sets if templates should be cached. Default is `true`
+
+##### realms
+
+Hash that is used to define keycloak_realm resources. Default is `{}`
+
+##### client_templates
+
+Hash that is used to define keycloak::client_template resources. Default is `{}`
 
 ## Limitations
 
