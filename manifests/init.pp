@@ -1,6 +1,6 @@
 # See README.md for more details.
 class keycloak (
-  String $version               = '3.0.0.Final',
+  String $version               = '3.4.1.Final',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Stdlib::Absolutepath $install_dir = '/opt',
