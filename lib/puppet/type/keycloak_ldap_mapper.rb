@@ -70,6 +70,18 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
     end
   end
 
+  newproperty(:always_read_value_from_ldap, :boolean => true) do
+    desc 'always.read.value.from.ldap'
+    newvalues(:true, :false)
+    defaultto do
+      if @resource[:type] == 'user-attribute-ldap-mapper'
+        :true
+      else
+        nil
+      end
+    end
+  end
+
   [
     {:n => :read_only, :d => :true},
     {:n => :write_only, :d => :false},

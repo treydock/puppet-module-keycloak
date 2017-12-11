@@ -83,7 +83,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
         end
         # is.mandatory.in.ldap and user.model.attribute only belong to user-attribute-ldap-mapper
         if resource[:type] != 'user-attribute-ldap-mapper'
-          if property == :is_mandatory_in_ldap || property == :user_model_attribute
+          if property == :is_mandatory_in_ldap || property == :user_model_attribute || property == :always_read_value_from_ldap
             next
           end
         end
@@ -147,7 +147,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
           end
           # is.mandatory.in.ldap and user.model.attribute only belong to user-attribute-ldap-mapper
           if resource[:type] != 'user-attribute-ldap-mapper'
-            if property == :is_mandatory_in_ldap || property == :user_model_attribute
+            if property == :is_mandatory_in_ldap || property == :user_model_attribute || property == :always_read_value_from_ldap
               next
             end
           end
