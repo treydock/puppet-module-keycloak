@@ -1,5 +1,12 @@
 # treydock-keycloak changelog
 
+## [2.0.1](https://github.com/treydock/puppet-module-keycloak/tree/2.0.1) (2017-12-18)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.0.0...2.0.1)
+
+**Fixed bugs:**
+
+- Fix configuration order when proxy\_https is true [\#7](https://github.com/treydock/puppet-module-keycloak/pull/7) ([treydock](https://github.com/treydock))
+
 ## [2.0.0](https://github.com/treydock/puppet-module-keycloak/tree/2.0.0) (2017-12-11)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/1.0.0...2.0.0)
 

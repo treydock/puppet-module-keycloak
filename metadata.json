@@ -1,6 +1,6 @@
 {
   "name": "treydock-keycloak",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "treydock",
   "summary": "keycloak Puppet module",
   "license": "Apache-2.0",
