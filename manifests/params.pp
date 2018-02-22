@@ -13,14 +13,21 @@ class keycloak::params {
   ]
 
   case $::osfamily {
+    'Debian': {
+      $service_name       = 'keycloak'
+      $service_hasstatus  = true
+      $service_hasrestart = true
+      $user_shell         = '/usr/sbin/nologin'
+    }
     'RedHat': {
       $service_name       = 'keycloak'
       $service_hasstatus  = true
       $service_hasrestart = true
+      $user_shell         = '/sbin/nologin'
     }
 
     default: {
-      fail("Unsupported osfamily: ${::osfamily}, module ${module_name} only support osfamily RedHat")
+      fail("Unsupported osfamily: ${::osfamily}, module ${module_name} only support osfamilies Debian and Redhat")
     }
   }
 

@@ -6,7 +6,7 @@ class keycloak::install {
     ensure     => 'present',
     name       => $keycloak::user,
     forcelocal => true,
-    shell      => '/sbin/nologin',
+    shell      => $keycloak::user_shell,
     gid        => $keycloak::group,
     uid        => $keycloak::user_uid,
     home       => '/var/lib/keycloak',

@@ -290,6 +290,7 @@ Hash that is used to define keycloak::client_template resources. Default is `{}`
 This module has been tested on:
 
 * CentOS 7 x86_64
+* Debian 9 x86_64
 * RedHat 7 x86_64
 
 ## Development
