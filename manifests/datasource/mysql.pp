@@ -22,8 +22,8 @@ class keycloak::datasource::mysql (
     mode   => '0755',
   }
   file { "${$module_dir}/mysql-connector-java.jar":
-    ensure  => 'file',
-    source  => $jar_source,
+    ensure  => 'link',
+    target  => $jar_source,
     owner   => $keycloak::user,
     group   => $keycloak::group,
     mode    => '0644',
