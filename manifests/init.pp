@@ -27,6 +27,7 @@ class keycloak (
   Hash $truststore_hosts = {},
   String $truststore_password = 'keycloak',
   Enum['WILDCARD', 'STRICT', 'ANY'] $truststore_hostname_verification_policy = 'WILDCARD',
+  Integer $http_port = 8080,
   Integer $theme_static_max_age = 2592000,
   Boolean $theme_cache_themes = true,
   Boolean $theme_cache_templates = true,
@@ -65,7 +66,7 @@ class keycloak (
 
   keycloak_conn_validator { 'keycloak':
     keycloak_server => 'localhost',
-    keycloak_port   => '8080',
+    keycloak_port   => $http_port,
     use_ssl         => false,
     timeout         => 60,
     test_url        => '/auth/realms/master/.well-known/openid-configuration',
