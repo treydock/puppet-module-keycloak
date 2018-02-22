@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 describe 'keycloak' do
-  on_supported_os({
-    :supported_os => [
-      {
-        "operatingsystem" => "RedHat",
-        "operatingsystemrelease" => ["7"],
-      }
-    ]
-  }).each do |os, facts|
+  on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
         facts.merge({
           :concat_basedir => '/dne',
         })
+      end
+
+      case facts[:osfamily]
+      when /RedHat/
+        shell = '/sbin/nologin'
+      when /Debian/
+        shell = '/usr/sbin/nologin'
       end
 
       it { is_expected.to compile.with_all_deps }
@@ -31,7 +31,7 @@ describe 'keycloak' do
             :ensure     => 'present',
             :name       => 'keycloak',
             :forcelocal => 'true',
-            :shell      => '/sbin/nologin',
+            :shell      => shell,
             :gid        => 'keycloak',
             :home       => '/var/lib/keycloak',
             :managehome => 'true',
