@@ -34,7 +34,9 @@ class keycloak::install {
     extract_command => 'tar xfz %s --strip-components=1',
     source          => $keycloak::download_url,
     creates         => "${keycloak::install_dir}/keycloak-${keycloak::version}/bin",
-    cleanup         => true
+    cleanup         => true,
+    user            => 'keycloak',
+    group           => 'keycloak',
   }
 
 }
