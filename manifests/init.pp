@@ -16,6 +16,7 @@ class keycloak (
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = 'admin',
   String $admin_user_password   = 'changeme',
+  Boolean $manage_datasource = true,
   Enum['h2', 'mysql'] $datasource_driver = 'h2',
   Optional[String] $datasource_host = undef,
   Optional[Integer] $datasource_port = undef,

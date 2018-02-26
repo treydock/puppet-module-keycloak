@@ -37,11 +37,13 @@ class keycloak::datasource::mysql (
     mode   => '0644',
   }
 
-  mysql::db { $keycloak::datasource_dbname:
-    user     => $keycloak::datasource_username,
-    password => $keycloak::datasource_password,
-    host     => $keycloak::db_host,
-    grant    => 'ALL',
+  if $keycloak::manage_datasource {
+    mysql::db { $keycloak::datasource_dbname:
+      user     => $keycloak::datasource_username,
+      password => $keycloak::datasource_password,
+      host     => $keycloak::db_host,
+      grant    => 'ALL',
+    }
   }
 
 }
