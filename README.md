@@ -215,7 +215,7 @@ Keycloak user group GID. Default is `undef`
 
 Keycloak administrative username. Default is `admin`
 
-##### admin_user_password
+##### admin\_user\_password
 
 Keycloak administrative user password. Default is `changeme`
 
@@ -264,6 +264,10 @@ Truststore password. Default is `keycloak`
 ##### truststore\_hostname\_verification\_policy
 
 Valid values are `WILDCARD`, `STRICT`, and `ANY`. Default is `WILDCARD`
+
+##### http_port
+
+HTTP port used by Keycloak. Default is `8080`
 
 ##### theme\_static\_max\_age
 
