@@ -219,6 +219,12 @@ Keycloak administrative username. Default is `admin`
 
 Keycloak administrative user password. Default is `changeme`
 
+##### manage_datasource
+
+Boolean that determines if configured datasource will be managed.
+Only applies when `datasource_driver` is `mysql`.
+Default is `true`.
+
 ##### datasource_driver
 
 Datasource driver to use for Keycloak. Valid values are `h2` and `mysql`. Default is `h2`

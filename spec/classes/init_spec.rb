@@ -39,6 +39,26 @@ describe 'keycloak' do
         end
       end
 
+      context "keycloak::datasource::mysql" do
+        let(:params) {{ :datasource_driver => 'mysql' }}
+        it { is_expected.to contain_class('keycloak::install').that_comes_before('Class[keycloak::datasource::mysql]') }
+        it { is_expected.to contain_class('keycloak::datasource::mysql').that_comes_before('Class[keycloak::config]') }
+
+        it do
+          is_expected.to contain_mysql__db('keycloak').with({
+            :user     => 'sa',
+            :password => 'sa',
+            :host     => 'localhost',
+            :grant    => 'ALL',
+          })
+        end
+
+        context 'manage_datasource => false' do
+          let(:params) {{ :datasource_driver => 'mysql', :manage_datasource => false }}
+          it { is_expected.not_to contain_mysql__db('keycloak') }
+        end
+      end
+
       context "keycloak::config" do
         it do
           is_expected.to contain_exec('create-keycloak-admin').with({
