@@ -1,5 +1,12 @@
 # treydock-keycloak changelog
 
+## [2.2.1](https://github.com/treydock/puppet-module-keycloak/tree/2.2.1) (2018-02-27)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.2.0...2.2.1)
+
+**Fixed bugs:**
+
+- Do not show diff of files that may contain passwords [\#14](https://github.com/treydock/puppet-module-keycloak/pull/14) ([treydock](https://github.com/treydock))
+
 ## [2.2.0](https://github.com/treydock/puppet-module-keycloak/tree/2.2.0) (2018-02-26)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.1.0...2.2.0)
 
