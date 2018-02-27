@@ -61,11 +61,35 @@ describe 'keycloak' do
 
       context "keycloak::config" do
         it do
+          is_expected.to contain_file('kcadm-wrapper.sh').only_with(
+            :ensure    => 'file',
+            :path      => '/opt/keycloak-3.4.1.Final/bin/kcadm-wrapper.sh',
+            :owner     => 'keycloak',
+            :group     => 'keycloak',
+            :mode      => '0750',
+            :content   => /.*/,
+            :show_diff => 'false',
+          )
+        end
+
+        it do
           is_expected.to contain_exec('create-keycloak-admin').with({
             :command => '/opt/keycloak-3.4.1.Final/bin/add-user-keycloak.sh --user admin --password changeme --realm master && touch /opt/keycloak-3.4.1.Final/.create-keycloak-admin-h2',
             :creates => '/opt/keycloak-3.4.1.Final/.create-keycloak-admin-h2',
             :notify  => 'Class[Keycloak::Service]',
           })
+        end
+
+        it do
+          is_expected.to contain_file('/opt/keycloak-3.4.1.Final/config.cli').only_with(
+            :ensure     => 'file',
+            :owner      => 'keycloak',
+            :group      => 'keycloak',
+            :mode       => '0600',
+            :content    => /.*/,
+            :notify     => 'Exec[jboss-cli.sh --file=config.cli]',
+            :show_diff  => 'false',
+          )
         end
       end
 
