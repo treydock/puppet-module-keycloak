@@ -63,6 +63,11 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     expect(@protocol_mapper[:type]).to eq('oidc-full-name-mapper')
   end
 
+  it 'should allow valid type' do
+    @protocol_mapper[:type] = 'saml-user-property-mapper'
+    expect(@protocol_mapper[:type]).to eq('saml-user-property-mapper')
+  end
+
   it 'should not allow invalid type' do
     expect {
       @protocol_mapper[:type] = 'foo'
@@ -100,6 +105,26 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     expect(component[:json_type_label]).to eq('String')
   end
 
+  it 'should have friendly_name as nil' do
+    expect(@protocol_mapper[:friendly_name]).to be_nil
+  end
+
+  it 'should allow valid friendly_name' do
+    @protocol_mapper[:type] = 'saml-user-property-mapper'
+    @protocol_mapper[:friendly_name] = 'email'
+    expect(@protocol_mapper[:friendly_name]).to eq('email')
+  end
+
+  it 'should have attribute_name as nil' do
+    expect(@protocol_mapper[:attribute_name]).to be_nil
+  end
+
+  it 'should allow valid attribute_name' do
+    @protocol_mapper[:type] = 'saml-user-property-mapper'
+    @protocol_mapper[:attribute_name] = 'email'
+    expect(@protocol_mapper[:attribute_name]).to eq('email')
+  end
+
   # Test boolean properties
   [
     :consent_required,
@@ -124,6 +149,11 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
         @protocol_mapper[p] = 'foo'
       }.to raise_error
     end
+  end
+
+  it 'should accept value for attribute_nameformat' do
+    @protocol_mapper[:attribute_nameformat] = 'Basic'
+    expect(@protocol_mapper[:attribute_nameformat]).to eq('Basic')
   end
 
   it 'should autorequire keycloak_conn_validator' do
