@@ -1,5 +1,19 @@
 # treydock-keycloak changelog
 
+## [2.3.0](https://github.com/treydock/puppet-module-keycloak/tree/2.3.0) (2018-03-08)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.2.1...2.3.0)
+
+**Implemented enhancements:**
+
+- Allow keycloak\_protocol\_mapper attribute\_nameformat to be simpler values [\#18](https://github.com/treydock/puppet-module-keycloak/pull/18) ([treydock](https://github.com/treydock))
+- Add SAML username protocol mapper to keycloak::client\_template [\#17](https://github.com/treydock/puppet-module-keycloak/pull/17) ([treydock](https://github.com/treydock))
+- Support SAML role list protocol mapper [\#16](https://github.com/treydock/puppet-module-keycloak/pull/16) ([treydock](https://github.com/treydock))
+- Add SAML support to keycloak\_protocol\_mapper and keycloak::client\_template [\#15](https://github.com/treydock/puppet-module-keycloak/pull/15) ([treydock](https://github.com/treydock))
+
+**Fixed bugs:**
+
+- Fix SAML username protocol mapper to match keycloak code [\#19](https://github.com/treydock/puppet-module-keycloak/pull/19) ([treydock](https://github.com/treydock))
+
 ## [2.2.1](https://github.com/treydock/puppet-module-keycloak/tree/2.2.1) (2018-02-27)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.2.0...2.2.1)
 
