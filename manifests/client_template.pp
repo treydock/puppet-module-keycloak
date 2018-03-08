@@ -48,6 +48,16 @@ define keycloak::client_template (
   }
 
   if $protocol == 'saml' {
+    keycloak_protocol_mapper { "username for ${name} on ${realm}":
+      protocol             => $protocol,
+      type                 => 'saml-user-property-mapper',
+      consent_text         => "\${username}",
+      attribute_nameformat => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+      user_attribute       => 'username',
+      friendly_name        => 'username',
+      attribute_name       => 'urn:oid:0.9.2342.19200300.100.1.1'
+    }
+
     keycloak_protocol_mapper { "X500 email for ${name} on ${realm}":
       protocol             => $protocol,
       type                 => 'saml-user-property-mapper',
