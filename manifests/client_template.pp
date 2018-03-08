@@ -52,7 +52,7 @@ define keycloak::client_template (
       protocol             => $protocol,
       type                 => 'saml-user-property-mapper',
       consent_text         => "\${username}",
-      attribute_nameformat => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+      attribute_nameformat => 'uri',
       user_attribute       => 'username',
       friendly_name        => 'username',
       attribute_name       => 'urn:oid:0.9.2342.19200300.100.1.1'
@@ -62,7 +62,7 @@ define keycloak::client_template (
       protocol             => $protocol,
       type                 => 'saml-user-property-mapper',
       consent_text         => "\${email}",
-      attribute_nameformat => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+      attribute_nameformat => 'uri',
       user_attribute       => 'email',
       friendly_name        => 'email',
       attribute_name       => 'urn:oid:1.2.840.113549.1.9.1'
@@ -72,7 +72,7 @@ define keycloak::client_template (
       protocol             => $protocol,
       type                 => 'saml-user-property-mapper',
       consent_text         => "\${givenName}",
-      attribute_nameformat => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+      attribute_nameformat => 'uri',
       user_attribute       => 'firstName',
       friendly_name        => 'givenName',
       attribute_name       => 'urn:oid:2.5.4.42'
@@ -82,7 +82,7 @@ define keycloak::client_template (
       protocol             => $protocol,
       type                 => 'saml-user-property-mapper',
       consent_text         => "\${familyName}",
-      attribute_nameformat => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+      attribute_nameformat => 'uri',
       user_attribute       => 'lastName',
       friendly_name        => 'surname',
       attribute_name       => 'urn:oid:2.5.4.4'
@@ -93,7 +93,7 @@ define keycloak::client_template (
       type                 => 'saml-role-list-mapper',
       consent_required     => false,
       single               => false,
-      attribute_nameformat => 'Basic',
+      attribute_nameformat => 'basic',
       attribute_name       => 'Role',
     }
   }

@@ -5,6 +5,22 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
 
   mk_resource_methods
 
+  def self.attribute_nameformat_map
+    {
+      :uri => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+      :basic => 'Basic',
+      :unspecified => 'Unspecified',
+    }
+  end
+
+  def self.get_attribute_nameformat(v)
+    attribute_nameformat_map[v.to_sym]
+  end
+
+  def self.get_attribute_nameformat_reverse(v)
+    attribute_nameformat_map.invert[v]
+  end
+
   def self.instances
     protocol_mappers = []
 
@@ -52,7 +68,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
           end
           if protocol_mapper[:protocol] == 'saml'
             protocol_mapper[:attribute_name] = d['config']['attribute.name']
-            protocol_mapper[:attribute_nameformat] = d['config']['attribute.nameformat']
+            protocol_mapper[:attribute_nameformat] = get_attribute_nameformat_reverse(d['config']['attribute.nameformat'])
           end
           if protocol_mapper[:type] == 'saml-role-list-mapper'
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
@@ -106,7 +122,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
     end
     if resource[:protocol] == 'saml'
       data[:config][:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
-      data[:config][:'attribute.nameformat'] = resource[:attribute_nameformat] if resource[:attribute_nameformat]
+      data[:config][:'attribute.nameformat'] = self.class.get_attribute_nameformat(resource[:attribute_nameformat]) if resource[:attribute_nameformat]
     end
     if resource[:type] == 'saml-role-list-mapper'
       data[:config][:single] = resource[:single].to_s if resource[:single]
@@ -182,7 +198,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
       end
       if resource[:protocol] == 'saml'
         config[:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
-        config[:'attribute.nameformat'] = resource[:attribute_nameformat] if resource[:attribute_nameformat]
+        config[:'attribute.nameformat'] = self.class.get_attribute_nameformat(resource[:attribute_nameformat]) if resource[:attribute_nameformat]
       end
       if resource[:type] == 'saml-role-list-mapper'
         config[:single] = resource[:single].to_s if resource[:single]
