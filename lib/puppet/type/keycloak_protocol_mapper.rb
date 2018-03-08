@@ -45,7 +45,8 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
     newvalues(
       'oidc-usermodel-property-mapper',
       'oidc-full-name-mapper',
-      'saml-user-property-mapper'
+      'saml-user-property-mapper',
+      'saml-role-list-mapper'
     )
     defaultto 'oidc-usermodel-property-mapper'
     munge { |v| v }
@@ -149,6 +150,18 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
     desc "attribute.nameformat"
   end
 
+  newproperty(:single, :boolean => true) do
+    desc "single"
+    newvalues(:true, :false)
+    defaultto do
+      if @resource['type'] == 'saml-role-list-mapper'
+        :false
+      else
+        nil
+      end
+    end
+  end
+
   autorequire(:keycloak_conn_validator) do
     requires = []
     catalog.resources.each do |resource|
@@ -203,11 +216,14 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
     if self[:friendly_name] && self[:type] != 'saml-user-property-mapper'
       self.fail "friendly_name is not valid for type #{self[:type]}"
     end
-    if self[:attribute_name] && self[:type] != 'saml-user-property-mapper'
+    if self[:attribute_name] && self[:protocol] != 'saml'
       self.fail "attribute_name is not valid for type #{self[:type]}"
     end
     if self[:attribute_nameformat] && self[:protocol] != 'saml'
       self.fail "attribute_nameformat is not valid for protocol #{self[:protocol]}"
+    end
+    if self[:single] && self[:type] != 'saml-role-list-mapper'
+      self.fail "single is not valid for type #{self[:type]}"
     end
   end
 

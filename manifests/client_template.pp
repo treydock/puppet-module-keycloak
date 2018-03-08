@@ -77,6 +77,15 @@ define keycloak::client_template (
       friendly_name        => 'surname',
       attribute_name       => 'urn:oid:2.5.4.4'
     }
+
+    keycloak_protocol_mapper { "role list for ${name} on ${realm}":
+      protocol             => $protocol,
+      type                 => 'saml-role-list-mapper',
+      consent_required     => false,
+      single               => false,
+      attribute_nameformat => 'Basic',
+      attribute_name       => 'Role',
+    }
   }
 
 }
