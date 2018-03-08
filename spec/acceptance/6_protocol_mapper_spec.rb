@@ -57,4 +57,39 @@ describe 'keycloak_protocol_mapper type:' do
       apply_manifest(pp, :catch_changes => true)
     end
   end
+
+  context 'creates saml protocol_mapper' do
+    it 'should run successfully' do
+      pp =<<-EOS
+      include mysql::server
+      class { 'keycloak':
+        datasource_driver => 'mysql',
+      }
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_client_template { 'saml on test':
+        ensure => 'present',
+        protocol => 'saml',
+      }
+      keycloak_protocol_mapper { "email for saml on test":
+        protocol       => 'saml',
+        type           => 'saml-user-property-mapper',
+        consent_text   => '${email}',
+        user_attribute => 'email',
+        friendly_name  => 'email',
+        attribute_name => 'email',
+      }
+      keycloak_protocol_mapper { "firstName for saml on test":
+        protocol       => 'saml',
+        type           => 'saml-user-property-mapper',
+        consent_text   => '${givenName}',
+        user_attribute => 'firstName',
+        friendly_name  => 'firstName',
+        attribute_name => 'firstName',
+      }
+      EOS
+
+      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes => true)
+    end
+  end
 end

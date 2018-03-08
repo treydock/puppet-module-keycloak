@@ -42,63 +42,111 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
 
   newparam(:type) do
     desc 'protocolMapper'
-    newvalues('oidc-usermodel-property-mapper', 'oidc-full-name-mapper')
+    newvalues(
+      'oidc-usermodel-property-mapper',
+      'oidc-full-name-mapper',
+      'saml-user-property-mapper'
+    )
     defaultto 'oidc-usermodel-property-mapper'
     munge { |v| v }
   end
 
-  [
-    {:n => :user_attribute, :d => :name},
-    {:n => :json_type_label, :d => 'String'},
-  ].each do |p|
-    newproperty(p[:n]) do
-      desc "#{p[:n].to_s.gsub('_','.')}"
-      defaultto do
-        if @resource[:type] == 'oidc-full-name-mapper'
-          nil
-        else
-          if p[:d] == :name
-            @resource[:resource_name]
-          else
-            p[:d]
-          end
-        end
+  newproperty(:user_attribute) do
+    desc "user.attribute"
+    defaultto do
+      if @resource[:type] == 'oidc-usermodel-property-mapper' or @resource[:type] == 'saml-user-property-mapper'
+        @resource[:resource_name]
+      else
+        nil
       end
     end
   end
 
-  [
-    {:n => :consent_text, :d => nil},
-    {:n => :claim_name, :d => nil},
-  ].each do |p|
-    newproperty(p[:n]) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-
-      unless p[:d].nil?
-        defaultto do
-          if p[:d] == :name
-            @resource[:resource_name]
-          else
-            p[:d]
-          end
-        end
+  newproperty(:json_type_label) do
+    desc "json.type.label"
+    defaultto do
+      if @resource[:type] == 'oidc-usermodel-property-mapper'
+        'String'
+      else
+        nil
       end
     end
   end
 
-  [
-    {:n => :consent_required, :d => :true},
-    {:n => :id_token_claim, :d => :true},
-    {:n => :access_token_claim, :d => :true},
-    {:n => :userinfo_token_claim, :d => :true},
-  ].each do |p|
-    newproperty(p[:n], :boolean => true) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-      newvalues(:true, :false)
-      unless p[:d].nil?
-        defaultto p[:d]
+  newproperty(:friendly_name) do
+    desc "friendly.name"
+    defaultto do
+      if @resource[:type] == 'saml-user-property-mapper'
+        @resource[:resource_name]
+      else
+        nil
       end
     end
+  end
+
+  newproperty(:attribute_name) do
+    desc "attribute.name"
+    defaultto do
+      if @resource[:type] == 'saml-user-property-mapper'
+        @resource[:resource_name]
+      else
+        nil
+      end
+    end
+  end
+
+  newproperty(:consent_text) do
+    desc "consentText"
+  end
+
+  newproperty(:claim_name) do
+    desc "claim.name"
+  end
+
+  newproperty(:consent_required, :boolean => true) do
+    desc "consentRequired"
+    newvalues(:true, :false)
+    defaultto :true
+  end
+
+  newproperty(:id_token_claim, :boolean => true) do
+    desc "id.token.claim"
+    newvalues(:true, :false)
+    defaultto do
+      if @resource['protocol'] == 'openid-connect'
+        :true
+      else
+        nil
+      end
+    end
+  end
+
+  newproperty(:access_token_claim, :boolean => true) do
+    desc "access.token.claim"
+    newvalues(:true, :false)
+    defaultto do
+      if @resource['protocol'] == 'openid-connect'
+        :true
+      else
+        nil
+      end
+    end
+  end
+
+  newproperty(:userinfo_token_claim, :boolean => true) do
+    desc "userinfo.token.claim"
+    newvalues(:true, :false)
+    defaultto do
+      if @resource['protocol'] == 'openid-connect'
+        :true
+      else
+        nil
+      end
+    end
+  end
+
+  newproperty(:attribute_nameformat) do
+    desc "attribute.nameformat"
   end
 
   autorequire(:keycloak_conn_validator) do
@@ -149,6 +197,18 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
         ],
       ],
     ]
+  end
+
+  validate do
+    if self[:friendly_name] && self[:type] != 'saml-user-property-mapper'
+      self.fail "friendly_name is not valid for type #{self[:type]}"
+    end
+    if self[:attribute_name] && self[:type] != 'saml-user-property-mapper'
+      self.fail "attribute_name is not valid for type #{self[:type]}"
+    end
+    if self[:attribute_nameformat] && self[:protocol] != 'saml'
+      self.fail "attribute_nameformat is not valid for protocol #{self[:protocol]}"
+    end
   end
 
 end
