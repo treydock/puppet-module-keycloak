@@ -54,7 +54,7 @@ define keycloak::client_template (
       consent_text         => "\${username}",
       attribute_nameformat => 'uri',
       user_attribute       => 'username',
-      friendly_name        => 'username',
+      friendly_name        => 'userid',
       attribute_name       => 'urn:oid:0.9.2342.19200300.100.1.1'
     }
 
