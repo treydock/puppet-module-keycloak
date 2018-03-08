@@ -156,6 +156,19 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     expect(@protocol_mapper[:attribute_nameformat]).to eq('Basic')
   end
 
+  it 'should accept value for single' do
+    @protocol_mapper[:single] = false
+    expect(@protocol_mapper[:single]).to eq(:false)
+    @protocol_mapper[:single] = 'false'
+    expect(@protocol_mapper[:single]).to eq(:false)
+  end
+
+  it 'should not accept invalid value for single' do
+    expect {
+      @protocol_mapper[:single] = 'foo'
+    }.to raise_error
+  end
+
   it 'should autorequire keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(:name => 'keycloak')
     catalog = Puppet::Resource::Catalog.new
