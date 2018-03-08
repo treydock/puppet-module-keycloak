@@ -153,7 +153,15 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
 
   it 'should accept value for attribute_nameformat' do
     @protocol_mapper[:attribute_nameformat] = 'Basic'
-    expect(@protocol_mapper[:attribute_nameformat]).to eq('Basic')
+    expect(@protocol_mapper[:attribute_nameformat]).to eq(:basic)
+    @protocol_mapper[:attribute_nameformat] = 'uri'
+    expect(@protocol_mapper[:attribute_nameformat]).to eq(:uri)
+  end
+
+  it 'should not accept invalid value for attribute_nameformat' do
+    expect {
+      @protocol_mapper[:attribute_nameformat] = 'foo'
+    }.to raise_error
   end
 
   it 'should accept value for single' do

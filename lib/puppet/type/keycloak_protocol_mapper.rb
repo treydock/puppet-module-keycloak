@@ -148,6 +148,14 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
 
   newproperty(:attribute_nameformat) do
     desc "attribute.nameformat"
+    validate do |v|
+      if ! [:basic, :uri, :unspecified].include?(v.downcase.to_sym)
+        raise ArgumentError, "attribute_nameformat must be one of basic, uri, or unspecified"
+      end
+    end
+    munge do |v|
+      v.downcase.to_sym
+    end
   end
 
   newproperty(:single, :boolean => true) do
