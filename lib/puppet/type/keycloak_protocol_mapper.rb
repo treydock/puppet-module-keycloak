@@ -205,16 +205,16 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
       [
         /^((.+) for (\S+) on (\S+))$/,
         [
-          [ :name, lambda{|x| x} ],
-          [ :resource_name, lambda{|x| x} ],
-          [ :client_template, lambda{|x| x} ],
-          [ :realm, lambda{|x| x} ],
+          [:name],
+          [:resource_name],
+          [:client_template],
+          [:realm],
         ],
       ],
       [
         /(.*)/,
         [
-          [ :name, lambda{|x| x} ],
+          [:name],
         ],
       ],
     ]

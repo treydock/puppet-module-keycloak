@@ -69,15 +69,15 @@ Puppet::Type.newtype(:keycloak_client_template) do
       [
         /^((\S+) on (\S+))$/,
         [
-          [ :name, lambda{|x| x} ],
-          [ :resource_name, lambda{|x| x} ],
-          [ :realm, lambda{|x| x} ],
+          [:name],
+          [:resource_name],
+          [:realm],
         ],
       ],
       [
         /(.*)/,
         [
-          [ :name, lambda{|x| x} ],
+          [:name],
         ],
       ],
     ]
