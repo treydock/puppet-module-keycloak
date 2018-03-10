@@ -1,5 +1,12 @@
 # treydock-keycloak changelog
 
+## [2.3.1](https://github.com/treydock/puppet-module-keycloak/tree/2.3.1) (2018-03-10)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.3.0...2.3.1)
+
+**Fixed bugs:**
+
+- Fix title patterns that use procs are not supported [\#21](https://github.com/treydock/puppet-module-keycloak/pull/21) ([alexjfisher](https://github.com/alexjfisher))
+
 ## [2.3.0](https://github.com/treydock/puppet-module-keycloak/tree/2.3.0) (2018-03-08)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.2.1...2.3.0)
 
