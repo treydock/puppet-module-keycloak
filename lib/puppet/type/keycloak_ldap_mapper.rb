@@ -130,16 +130,16 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
       [
         /^((.+) for (\S+) on (\S+))$/,
         [
-          [ :name, lambda{|x| x} ],
-          [ :resource_name, lambda{|x| x} ],
-          [ :ldap, lambda{|x| x} ],
-          [ :realm, lambda{|x| x} ],
+          [:name],
+          [:resource_name],
+          [:ldap],
+          [:realm],
         ],
       ],
       [
         /(.*)/,
         [
-          [ :name, lambda{|x| x} ],
+          [:name],
         ],
       ],
     ]
