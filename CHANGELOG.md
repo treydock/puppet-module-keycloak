@@ -1,5 +1,16 @@
 # treydock-keycloak changelog
 
+## [2.4.0](https://github.com/treydock/puppet-module-keycloak/tree/2.4.0) (2018-06-04)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.3.1...2.4.0)
+
+**Implemented enhancements:**
+
+- Add keycloak\_api configuration type [\#22](https://github.com/treydock/puppet-module-keycloak/pull/22) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- Are the types in this module compatible with biemond/wildfly? [\#20](https://github.com/treydock/puppet-module-keycloak/issues/20)
+
 ## [2.3.1](https://github.com/treydock/puppet-module-keycloak/tree/2.3.1) (2018-03-10)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.3.0...2.3.1)
 
