@@ -142,6 +142,20 @@ See keycloak::client_template defined type
 
 See keycloak::client_template defined type
 
+### keycloak\_api
+
+The keycloak_api type can be used to define how this module's types access the Keycloak API if this module is only used for the types/providers and the module's `kcadm-wrapper.sh` is not installed.
+
+    keycloak_api { 'keycloak'
+      install_base => '/opt/keycloak',
+      server       => 'http://localhost:8080/auth',
+      realm        => 'master',
+      user         => 'admin',
+      password     => 'changeme',
+    }
+
+The path for `install_base` will be joined with `bin/kcadm.sh` to produce the full path to `kcadm.sh`.
+
 ## Reference
 
 ### Classes
