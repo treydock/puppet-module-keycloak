@@ -8,6 +8,22 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
   # Unused but defined anyways
   commands :kcadm_wrapper => '/opt/keycloak/bin/kcadm-wrapper.sh'
 
+  @install_base = nil
+  @server = nil
+  @realm = nil
+  @user = nil
+  @password = nil
+  @use_wrapper = true
+
+  class << self
+    attr_accessor :install_base
+    attr_accessor :server
+    attr_accessor :realm
+    attr_accessor :user
+    attr_accessor :password
+    attr_accessor :use_wrapper
+  end
+
   def self.type_properties
     resource_type.validproperties.reject { |p| p.to_sym == :ensure }
   end
@@ -50,7 +66,18 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
       arguments << '--fields'
       arguments << fields.join(',')
     end
-    cmd = [kcadm_wrapper] + arguments
+    if self.use_wrapper == false || self.use_wrapper == :false
+      auth_arguments = [
+        '--no-config',
+        '--server', self.server,
+        '--realm', self.realm,
+        '--user', self.user,
+        '--password', self.password,
+      ]
+      cmd = [File.join(self.install_base, 'bin/kcadm.sh')] + arguments + auth_arguments
+    else
+      cmd = [kcadm_wrapper] + arguments
+    end
 
     execute(cmd, :combine => false, :failonfail => true)
   end
