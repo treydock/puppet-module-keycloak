@@ -1,3 +1,14 @@
+# @summary Add host to Keycloak truststore
+#
+# @example
+#   keycloak::truststore::host { 'ldap1.example.com':
+#     certificate => '/etc/openldap/certs/0a00000.0',
+#   }
+#
+# @param certificate
+#   Path to host certificate
+# @param ensure
+#   Host ensure value passed to `java_ks` resource.
 #
 define keycloak::truststore::host (
   String $certificate,

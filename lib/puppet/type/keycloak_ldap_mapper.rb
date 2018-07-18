@@ -1,9 +1,15 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'provider', 'keycloak_api'))
 
 Puppet::Type.newtype(:keycloak_ldap_mapper) do
-  @doc = %q{
-  
+  desc <<-DESC
+Manage Keycloak LDAP attribute mappers
+@example Add full name attribute mapping
+  keycloak_ldap_mapper { 'full name for LDAP-test on test:
+    ensure         => 'present',
+    type           => 'full-name-ldap-mapper',
+    ldap_attribute => 'gecos',
   }
+  DESC
 
   extend PuppetX::Keycloak::Type
   add_autorequires()

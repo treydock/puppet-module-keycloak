@@ -2,9 +2,14 @@ require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_client_template) do
-  @doc = %q{
-  
+  desc <<-DESC
+Manage Keycloak client templates
+@example Define a OpenID Connect client template in the test realm
+  keycloak_client_template { 'oidc-clients on test':
+    protocol           => 'openid-connect',
+    full_scope_allowed => true,
   }
+  DESC
 
   extend PuppetX::Keycloak::Type
   add_autorequires()

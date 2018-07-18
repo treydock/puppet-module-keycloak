@@ -3,9 +3,15 @@ require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_protocol_mapper) do
-  @doc = %q{
-  
+  desc <<-DESC
+Manage Keycloak protocol mappers
+@example Add email protocol mapper to oidc-client client template in realm test
+  keycloak_protocol_mapper { "email for oidc-clients on test":
+    consent_text   => '${email}',
+    claim_name     => 'email',
+    user_attribute => 'email',
   }
+  DESC
 
   extend PuppetX::Keycloak::Type
   add_autorequires()

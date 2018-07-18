@@ -21,3 +21,7 @@ Gemfile.lock
 
 # Puppet module generated
 pkg/
+
+# Docs
+doc/
+.yardoc/
