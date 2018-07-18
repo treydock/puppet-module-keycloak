@@ -1,5 +1,16 @@
 # treydock-keycloak changelog
 
+## [2.5.0](https://github.com/treydock/puppet-module-keycloak/tree/2.5.0) (2018-07-18)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.4.0...2.5.0)
+
+**Implemented enhancements:**
+
+- Support setting auth\_type=simple related properties for keycloak\_ldap\_user\_provider type [\#24](https://github.com/treydock/puppet-module-keycloak/pull/24) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- bindDn and bindCredential for  keycloak\_ldap\_user\_provider [\#23](https://github.com/treydock/puppet-module-keycloak/issues/23)
+
 ## [2.4.0](https://github.com/treydock/puppet-module-keycloak/tree/2.4.0) (2018-06-04)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.3.1...2.4.0)
 
