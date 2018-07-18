@@ -65,6 +65,7 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
     {:n => :username_ldap_attribute, :d => 'uid'},
     {:n => :rdn_ldap_attribute, :d => 'uid'},
     {:n => :uuid_ldap_attribute, :d => 'entryUUID'},
+    {:n => :bind_dn, :d => nil},
   ].each do |p|
     newproperty(p[:n]) do
       desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
@@ -81,13 +82,35 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
     end
   end
 
+  newproperty(:bind_credential) do
+    desc "bindCredential"
+
+    def change_to_s(currentvalue, newvalue)
+      if currentvalue == :absent
+        return "created bind_credential"
+      else
+        return "changed bind_credential"
+      end
+    end
+
+    def is_to_s( currentvalue )
+      return '[old bind_credential redacted]'
+    end
+    def should_to_s( newvalue )
+      return '[new bind_credential redacted]'
+    end
+  end
+
   [
     {:n => :import_enabled, :d => :true },
+    {:n => :use_kerberos_for_password_authentication, :d => nil}
   ].each do |p|
     newproperty(p[:n], :boolean => true) do
       desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
       newvalues(:true, :false)
-      defaultto p[:d]
+      unless p[:d].nil?
+        defaultto p[:d]
+      end
     end
   end
 
@@ -158,6 +181,18 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
         ],
       ],
     ]
+  end
+
+  validate do
+    if self[:use_kerberos_for_password_authentication] && self[:auth_type] == 'none'
+      self.fail "use_kerberos_for_password_authentication is not valid for auth_type none"
+    end
+    if self[:bind_credential] && self[:auth_type] == 'none'
+      self.fail "bind_credential is not valid for auth_type none"
+    end
+    if self[:bind_dn] && self[:auth_type] == 'none'
+      self.fail "bind_dn is not valid for auth_type none"
+    end
   end
 
 end
