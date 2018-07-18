@@ -27,6 +27,36 @@ describe 'keycloak_protocol_mapper type:' do
       apply_manifest(pp, :catch_failures => true)
       apply_manifest(pp, :catch_changes => true)
     end
+
+    it 'should have created a client template' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-templates/oidc -r test' do
+        data = JSON.parse(stdout)
+        expect(data['name']).to eq('oidc')
+        expect(data['protocol']).to eq('openid-connect')
+        expect(data['fullScopeAllowed']).to eq(true)
+      end
+    end
+
+    it 'should have created protocol mapper username' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-templates/oidc/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'username' }[0]
+        expect(mapper['consentText']).to eq('${username}')
+        expect(mapper['config']['claim.name']).to eq('preferred_username')
+        expect(mapper['config']['user.attribute']).to eq('username')
+        expect(mapper['config']['userinfo.token.claim']).to eq('true')
+      end
+    end
+
+    it 'should have created protocol mapper full name' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-templates/oidc/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'full name' }[0]
+        expect(mapper['consentText']).to eq('${fullName}')
+        expect(mapper['protocolMapper']).to eq('oidc-full-name-mapper')
+        expect(mapper['config']['userinfo.token.claim']).to eq('false')
+      end
+    end
   end
 
   context 'updates protocol_mapper' do
@@ -55,6 +85,27 @@ describe 'keycloak_protocol_mapper type:' do
 
       apply_manifest(pp, :catch_failures => true)
       apply_manifest(pp, :catch_changes => true)
+    end
+
+    it 'should have updated protocol mapper username' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-templates/oidc/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'username' }[0]
+        expect(mapper['consentText']).to eq('${username}')
+        expect(mapper['config']['claim.name']).to eq('preferred_username')
+        expect(mapper['config']['user.attribute']).to eq('username')
+        expect(mapper['config']['userinfo.token.claim']).to eq('false')
+      end
+    end
+
+    it 'should have updated protocol mapper full name' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-templates/oidc/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'full name' }[0]
+        expect(mapper['consentText']).to eq('${fullName}')
+        expect(mapper['protocolMapper']).to eq('oidc-full-name-mapper')
+        expect(mapper['config']['userinfo.token.claim']).to eq('true')
+      end
     end
   end
 
@@ -90,6 +141,39 @@ describe 'keycloak_protocol_mapper type:' do
 
       apply_manifest(pp, :catch_failures => true)
       apply_manifest(pp, :catch_changes => true)
+    end
+
+    it 'should have created a client template' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-templates/saml -r test' do
+        data = JSON.parse(stdout)
+        expect(data['name']).to eq('saml')
+        expect(data['protocol']).to eq('saml')
+        expect(data['fullScopeAllowed']).to eq(true)
+      end
+    end
+
+    it 'should have created protocol mapper email' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-templates/saml/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'email' }[0]
+        expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
+        expect(mapper['consentText']).to eq('${email}')
+        expect(mapper['config']['attribute.name']).to eq('email')
+        expect(mapper['config']['user.attribute']).to eq('email')
+        expect(mapper['config']['friendly.name']).to eq('email')
+      end
+    end
+
+    it 'should have created protocol mapper firstName' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-templates/saml/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'firstName' }[0]
+        expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
+        expect(mapper['consentText']).to eq('${givenName}')
+        expect(mapper['config']['attribute.name']).to eq('firstName')
+        expect(mapper['config']['user.attribute']).to eq('firstName')
+        expect(mapper['config']['friendly.name']).to eq('firstName')
+      end
     end
   end
 end
