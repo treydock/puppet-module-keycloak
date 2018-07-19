@@ -14,6 +14,13 @@ describe 'keycloak_realm:' do
       apply_manifest(pp, :catch_failures => true)
       apply_manifest(pp, :catch_changes => true)
     end
+
+    it 'should have created a realm' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
+        data = JSON.parse(stdout)
+        expect(data['id']).to eq('test')
+      end
+    end
   end
 
   context 'updates realm' do
@@ -31,6 +38,13 @@ describe 'keycloak_realm:' do
 
       apply_manifest(pp, :catch_failures => true)
       apply_manifest(pp, :catch_changes => true)
+    end
+
+    it 'should have updated the realm' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
+        data = JSON.parse(stdout)
+        expect(data['rememberMe']).to eq(true)
+      end
     end
   end
 end

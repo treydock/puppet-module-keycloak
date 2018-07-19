@@ -23,6 +23,23 @@ describe 'keycloak_client define:' do
       apply_manifest(pp, :catch_failures => true)
       apply_manifest(pp, :catch_changes => true)
     end
+
+    it 'should have created a client' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do
+        data = JSON.parse(stdout)
+        expect(data['id']).to eq('test.foo.bar')
+        expect(data['clientId']).to eq('test.foo.bar')
+        expect(data['clientTemplate']).to eq('openid-connect-clients')
+        expect(data['redirectUris']).to eq(['https://test.foo.bar/test1'])
+      end
+    end
+
+    it 'should have set the client secret' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do
+        data = JSON.parse(stdout)
+        expect(data['value']).to eq('foobar')
+      end
+    end
   end
 
   context 'updates client' do
@@ -46,6 +63,23 @@ describe 'keycloak_client define:' do
 
       apply_manifest(pp, :catch_failures => true)
       apply_manifest(pp, :catch_changes => true)
+    end
+
+    it 'should have updated a client' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do
+        data = JSON.parse(stdout)
+        expect(data['id']).to eq('test.foo.bar')
+        expect(data['clientId']).to eq('test.foo.bar')
+        expect(data['clientTemplate']).to eq('openid-connect-clients')
+        expect(data['redirectUris']).to eq(['https://test.foo.bar/test2'])
+      end
+    end
+
+    it 'should have set the same client secret' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do
+        data = JSON.parse(stdout)
+        expect(data['value']).to eq('foobar')
+      end
     end
   end
 end
