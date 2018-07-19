@@ -17,7 +17,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
   it 'should add to catalog without raising an error' do
     catalog = Puppet::Resource::Catalog.new
     expect {
-      catalog.add_resource resource 
+      catalog.add_resource resource
     }.to_not raise_error
   end
 
@@ -114,6 +114,16 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     }.to raise_error
   end
 
+  defaults = {
+    :priority => '0',
+    :batch_size_for_sync => '1000',
+    :username_ldap_attribute => 'uid',
+    :rdn_ldap_attribute => 'uid',
+    :uuid_ldap_attribute => 'entryUUID',
+    :import_enabled => :true,
+    :user_object_classes => ['inetOrgPerson','organizationalPerson'],
+  }
+
   # Test basic properties
   [
     :users_dn,
@@ -127,6 +137,11 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     it "should accept a #{p.to_s}" do
       config[p] = 'foo'
       expect(resource[p]).to eq('foo')
+    end
+    if defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
     end
   end
 
@@ -152,6 +167,11 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
         resource
       }.to raise_error
     end
+    if defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
+    end
   end
 
   # Array properties
@@ -161,6 +181,11 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     it 'should accept array' do
       config[p] = ['foo','bar']
       expect(resource[p]).to eq(['foo','bar'])
+    end
+    if defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
     end
   end
 

@@ -48,7 +48,15 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
       'saml-user-property-mapper',
       'saml-role-list-mapper'
     )
-    defaultto 'oidc-usermodel-property-mapper'
+    defaultto do
+      if @resource[:protocol] == 'openid-connect'
+        'oidc-usermodel-property-mapper'
+      elsif @resource[:protocol] == 'saml'
+        'saml-user-property-mapper'
+      else
+        nil
+      end
+    end
     munge { |v| v }
   end
 
@@ -221,6 +229,12 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   validate do
+    if self[:protocol] == 'openid-connect' && ! ['oidc-usermodel-property-mapper', 'oidc-full-name-mapper'].include?(self[:type])
+      self.fail "type #{self[:type]} is not valid for protocol openid-connect"
+    end
+    if self[:protocol] == 'saml' && ! ['saml-user-property-mapper', 'saml-role-list-mapper'].include?(self[:type])
+      self.fail "type #{self[:type]} is not valid for protocol saml"
+    end
     if self[:friendly_name] && self[:type] != 'saml-user-property-mapper'
       self.fail "friendly_name is not valid for type #{self[:type]}"
     end
