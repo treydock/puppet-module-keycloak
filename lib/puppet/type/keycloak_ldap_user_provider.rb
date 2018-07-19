@@ -1,9 +1,13 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'provider', 'keycloak_api'))
+require_relative '../../puppet_x/keycloak/type'
+require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_ldap_user_provider) do
   @doc = %q{
   
   }
+
+  extend PuppetX::Keycloak::Type
+  add_autorequires()
 
   ensurable
 
@@ -57,29 +61,41 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
     munge {|v| v }
   end
 
-  [
-    {:n => :users_dn, :d => nil},
-    {:n => :connection_url, :d => nil},
-    {:n => :priority, :d => '0'},
-    {:n => :batch_size_for_sync, :d => '1000'},
-    {:n => :username_ldap_attribute, :d => 'uid'},
-    {:n => :rdn_ldap_attribute, :d => 'uid'},
-    {:n => :uuid_ldap_attribute, :d => 'entryUUID'},
-    {:n => :bind_dn, :d => nil},
-  ].each do |p|
-    newproperty(p[:n]) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
+  newproperty(:users_dn) do
+    desc 'usersDn'
+  end
 
-      unless p[:d].nil?
-        defaultto do
-          if p[:d] == :name
-            @resource[:resource_name]
-          else
-            p[:d]
-          end
-        end
-      end
-    end
+  newproperty(:connection_url) do
+    desc 'connectionUrl'
+  end
+
+  newproperty(:priority) do
+    desc 'priority'
+    defaultto '0'
+  end
+
+  newproperty(:batch_size_for_sync) do
+    desc 'batchSizeForSync'
+    defaultto '1000'
+  end
+
+  newproperty(:username_ldap_attribute) do
+    desc 'usernameLdapAttribute'
+    defaultto 'uid'
+  end
+
+  newproperty(:rdn_ldap_attribute) do
+    desc 'rdnLdapAttribute'
+    defaultto 'uid'
+  end
+
+  newproperty(:uuid_ldap_attribute) do
+    desc 'uuidLdapAttribute'
+    defaultto 'entryUUID'
+  end
+
+  newproperty(:bind_dn) do
+    desc 'bindDn'
   end
 
   newproperty(:bind_credential) do
@@ -101,67 +117,21 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
     end
   end
 
-  [
-    {:n => :import_enabled, :d => :true },
-    {:n => :use_kerberos_for_password_authentication, :d => nil}
-  ].each do |p|
-    newproperty(p[:n], :boolean => true) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-      newvalues(:true, :false)
-      unless p[:d].nil?
-        defaultto p[:d]
-      end
-    end
+
+  newproperty(:import_enabled, :boolean => true) do
+    desc 'importEnabled'
+    newvalues(:true, :false)
+    defaultto :true
   end
 
-  [
-    {:n => :user_object_classes, :d => ['inetOrgPerson', 'organizationalPerson']},
-  ].each do |p|
-    newproperty(p[:n], :array_matching => :all) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-      defaultto p[:d]
-
-      def insync?(is)
-        if is.is_a?(Array) and @should.is_a?(Array)
-          is.sort == @should.sort
-        else
-          is == @should
-        end
-      end
-
-      def change_to_s(currentvalue, newvalue)
-        currentvalue = currentvalue.join(',') if currentvalue != :absent
-        newvalue = newvalue.join(',')
-        super(currentvalue, newvalue)
-      end
-
-      def is_to_s(currentvalue)
-        if currentvalue.is_a?(Array)
-          currentvalue.join(',')
-        else
-          currentvalue
-        end
-      end
-      alias :should_to_s :is_to_s
-    end
+  newproperty(:use_kerberos_for_password_authentication, :boolean => true) do
+    desc 'useKerberosForPasswordAuthentication'
+    newvalues(:true, :false)
   end
 
-  autorequire(:keycloak_conn_validator) do
-    requires = []
-    catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_conn_validator'
-        requires << resource.name
-      end
-    end
-    requires
-  end
-
-  autorequire(:file) do
-    [ 'kcadm-wrapper.sh' ]
-  end
-
-  autorequire(:keycloak_realm) do
-    self[:realm]
+  newproperty(:user_object_classes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+    desc 'userObjectClasses'
+    defaultto ['inetOrgPerson', 'organizationalPerson']
   end
 
   def self.title_patterns
@@ -194,5 +164,4 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
       self.fail "bind_dn is not valid for auth_type none"
     end
   end
-
 end

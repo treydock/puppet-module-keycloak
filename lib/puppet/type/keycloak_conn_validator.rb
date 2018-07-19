@@ -48,5 +48,4 @@ Puppet::Type.newtype(:keycloak_conn_validator) do
       Integer(value)
     end
   end
-
 end

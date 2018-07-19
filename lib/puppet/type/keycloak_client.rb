@@ -1,9 +1,13 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'provider', 'keycloak_api'))
+require_relative '../../puppet_x/keycloak/type'
+require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_client) do
   @doc = %q{
   
   }
+
+  extend PuppetX::Keycloak::Type
+  add_autorequires()
 
   ensurable
 
@@ -55,92 +59,45 @@ Puppet::Type.newtype(:keycloak_client) do
     munge { |v| v }
   end
 
-  [
-    {:n => :client_authenticator_type, :d => 'client-secret'},
-    {:n => :client_template, :d => nil},
-  ].each do |p|
-    newproperty(p[:n]) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-
-      unless p[:d].nil?
-        defaultto do
-          if p[:d] == :name
-            @resource[:resource_name]
-          else
-            p[:d]
-          end
-        end
-      end
-    end
+  newproperty(:client_authenticator_type) do
+    desc "clientAuthenticatorType"
+    defaultto 'client-secret'
   end
 
-  [
-    {:n => :enabled, :d => :true },
-    {:n => :direct_access_grants_enabled, :d => :true},
-    {:n => :public_client, :d => :false},
-  ].each do |p|
-    newproperty(p[:n], :boolean => true) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-      newvalues(:true, :false)
-      defaultto p[:d]
-    end
+  newproperty(:client_template) do
+    desc 'clientTemplate'
   end
 
-  [
-    {:n => :redirect_uris, :d => []},
-    {:n => :web_origins, :d => []}
-  ].each do |p|
-    newproperty(p[:n], :array_matching => :all) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-      unless p[:d].nil?
-        defaultto p[:d]
-      end
-
-      def insync?(is)
-        if is.is_a?(Array) and @should.is_a?(Array)
-          is.sort == @should.sort
-        else
-          is == @should
-        end
-      end
-
-      def change_to_s(currentvalue, newvalue)
-        currentvalue = currentvalue.join(',') if currentvalue != :absent
-        newvalue = newvalue.join(',')
-        super(currentvalue, newvalue)
-      end
-
-      def is_to_s(currentvalue)
-        if currentvalue.is_a?(Array)
-          currentvalue.join(',')
-        else
-          currentvalue
-        end
-      end
-      alias :should_to_s :is_to_s
-    end
+  newproperty(:enabled, :boolean => true) do
+    desc "enabled"
+    newvalues(:true, :false)
+    defaultto :true
   end
 
-  autorequire(:keycloak_conn_validator) do
-    requires = []
-    catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_conn_validator'
-        requires << resource.name
-      end
-    end
-    requires
+  newproperty(:direct_access_grants_enabled, :boolean => true) do
+    desc "enabled"
+    newvalues(:true, :false)
+    defaultto :true
   end
 
-  autorequire(:file) do
-    [ 'kcadm-wrapper.sh' ]
+  newproperty(:public_client, :boolean => true) do
+    desc "enabled"
+    newvalues(:true, :false)
+    defaultto :false
   end
 
-  autorequire(:keycloak_realm) do
-    self[:realm]
+  newproperty(:redirect_uris, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+    desc "redirectUris"
+    defaultto []
+  end
+
+  newproperty(:web_origins, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+    desc "webOrigins"
+    defaultto []
   end
 
   autorequire(:keycloak_client_template) do
-    self[:client_template]
+    [ self[:client_template] ]
   end
 
   autorequire(:keycloak_protocol_mapper) do
@@ -173,5 +130,4 @@ Puppet::Type.newtype(:keycloak_client) do
       ],
     ]
   end
-
 end

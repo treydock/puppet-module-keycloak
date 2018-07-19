@@ -1,9 +1,13 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'provider', 'keycloak_api'))
+require_relative '../../puppet_x/keycloak/type'
+require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_client_template) do
   @doc = %q{
   
   }
+
+  extend PuppetX::Keycloak::Type
+  add_autorequires()
 
   ensurable
 
@@ -36,32 +40,10 @@ Puppet::Type.newtype(:keycloak_client_template) do
     munge { |v| v }
   end
 
-  [
-    {:n => :full_scope_allowed, :d => :true },
-  ].each do |p|
-    newproperty(p[:n], :boolean => true) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-      newvalues(:true, :false)
-      defaultto p[:d]
-    end
-  end
-
-  autorequire(:keycloak_conn_validator) do
-    requires = []
-    catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_conn_validator'
-        requires << resource.name
-      end
-    end
-    requires
-  end
-
-  autorequire(:file) do
-    [ 'kcadm-wrapper.sh' ]
-  end
-
-  autorequire(:keycloak_realm) do
-    self[:realm]
+  newproperty(:full_scope_allowed, :boolean => true) do
+    desc "fullScopeAllowed"
+    newvalues(:true, :false)
+    defaultto :true
   end
 
   def self.title_patterns
@@ -82,5 +64,4 @@ Puppet::Type.newtype(:keycloak_client_template) do
       ],
     ]
   end
-
 end
