@@ -1,31 +1,41 @@
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_protocol_mapper) do
-  before(:each) do
-    @protocol_mapper = described_class.new(:name => 'foo', :realm => 'test', :client_template => 'oidc')
+  let(:default_config) do
+    {
+      :name => 'foo',
+      :realm => 'test',
+      :client_template => 'oidc',
+    }
+  end
+  let(:config) do
+    default_config
+  end
+  let(:resource) do
+    described_class.new(config)
   end
 
   it 'should add to catalog without raising an error' do
     catalog = Puppet::Resource::Catalog.new
     expect {
-      catalog.add_resource @protocol_mapper 
+      catalog.add_resource resource
     }.to_not raise_error
   end
 
   it 'should have a name' do
-    expect(@protocol_mapper[:name]).to eq('foo')
+    expect(resource[:name]).to eq('foo')
   end
 
   it 'should have resource_name default to name' do
-    expect(@protocol_mapper[:resource_name]).to eq('foo')
+    expect(resource[:resource_name]).to eq('foo')
   end
 
   it 'should have id default to name-realm' do
-    expect(@protocol_mapper[:id]).to eq('b84ed8ed-a7b1-502f-83f6-90132e68adef')
+    expect(resource[:id]).to eq('b84ed8ed-a7b1-502f-83f6-90132e68adef')
   end
 
   it 'should have realm' do
-    expect(@protocol_mapper[:realm]).to eq('test')
+    expect(resource[:realm]).to eq('test')
   end
 
   it 'should handle componsite name' do
@@ -45,34 +55,203 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
   end
 
   it 'should default to protocol=openid-connect' do
-    expect(@protocol_mapper[:protocol]).to eq('openid-connect')
+    expect(resource[:protocol]).to eq('openid-connect')
   end
 
   it 'should not allow invalid protocol' do
+    config[:protocol] = 'foo'
     expect {
-      @protocol_mapper[:protocol] = 'foo'
+      resource
     }.to raise_error
   end
 
   it 'should default to type=oidc-usermodel-property-mapper' do
-    expect(@protocol_mapper[:type]).to eq('oidc-usermodel-property-mapper')
+    expect(resource[:type]).to eq('oidc-usermodel-property-mapper')
   end
 
   it 'should allow valid type' do
-    @protocol_mapper[:type] = 'oidc-full-name-mapper'
-    expect(@protocol_mapper[:type]).to eq('oidc-full-name-mapper')
+    config[:type] = 'oidc-full-name-mapper'
+    expect(resource[:type]).to eq('oidc-full-name-mapper')
   end
 
   it 'should allow valid type' do
-    @protocol_mapper[:type] = 'saml-user-property-mapper'
-    expect(@protocol_mapper[:type]).to eq('saml-user-property-mapper')
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-user-property-mapper'
+    expect(resource[:type]).to eq('saml-user-property-mapper')
   end
 
   it 'should not allow invalid type' do
+    config[:type] = 'foo'
     expect {
-      @protocol_mapper[:type] = 'foo'
+      resource
     }.to raise_error
   end
+
+  it 'should have user_attribute be nil for full-name-ldap-mapper' do
+    config[:type] = 'oidc-full-name-mapper'
+    expect(resource[:user_attribute]).to be_nil
+  end
+
+  it 'should have user_attribute default to name for oidc-usermodel-property-mapper' do
+    config[:type] = 'oidc-usermodel-property-mapper'
+    expect(resource[:user_attribute]).to eq('foo')
+  end
+
+  it 'should have user_attribute default to name for saml-user-property-mapper' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-user-property-mapper'
+    expect(resource[:user_attribute]).to eq('foo')
+  end
+
+  it 'should have json_type_label be nil for full-name-ldap-mapper' do
+    config[:type] = 'oidc-full-name-mapper'
+    expect(resource[:json_type_label]).to be_nil
+  end
+
+  it 'should have json_type_label default to String for oidc-usermodel-property-mapper' do
+    config[:type] = 'oidc-usermodel-property-mapper'
+    expect(resource[:json_type_label]).to eq('String')
+  end
+
+  it 'should have friendly_name as nil' do
+    expect(resource[:friendly_name]).to be_nil
+  end
+
+  it 'should default friend_name for saml' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-user-property-mapper'
+    expect(resource[:friendly_name]).to eq('foo')
+  end
+
+  it 'should allow valid friendly_name' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-user-property-mapper'
+    config[:friendly_name] = 'email'
+    expect(resource[:friendly_name]).to eq('email')
+  end
+
+  it 'should have attribute_name as nil' do
+    expect(resource[:attribute_name]).to be_nil
+  end
+
+  it 'should default attribute_name for saml' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-user-property-mapper'
+    expect(resource[:attribute_name]).to eq('foo')
+  end
+
+  it 'should allow valid attribute_name' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-user-property-mapper'
+    config[:attribute_name] = 'email'
+    expect(resource[:attribute_name]).to eq('email')
+  end
+
+  it 'should default for id_token_claim' do
+    expect(resource[:id_token_claim]).to eq(:true)
+  end
+
+  it 'should not default id_token_claim for saml' do
+    config[:protocol] = 'saml'
+    expect(resource[:id_token_claim]).to be_nil
+  end
+
+  it 'should accept true for id_token_claim' do
+    config[:id_token_claim] = true
+    expect(resource[:id_token_claim]).to eq(:true)
+  end
+
+  it 'should accept true for id_token_claim as string' do
+    config[:id_token_claim] = 'true'
+    expect(resource[:id_token_claim]).to eq(:true)
+  end
+
+  it 'should accept false for id_token_claim' do
+    config[:id_token_claim] = false
+    expect(resource[:id_token_claim]).to eq(:false)
+  end
+
+  it 'should accept false for id_token_claim as string' do
+    config[:id_token_claim] = 'false'
+    expect(resource[:id_token_claim]).to eq(:false)
+  end
+
+  it "should not accept strings for id_token_claim" do
+    config[:id_token_claim] = 'foo'
+    expect {
+      resource
+    }.to raise_error
+  end
+
+  it 'should default for access_token_claim' do
+    expect(resource[:access_token_claim]).to eq(:true)
+  end
+
+  it 'should not default access_token_claim for saml' do
+    config[:protocol] = 'saml'
+    expect(resource[:access_token_claim]).to be_nil
+  end
+
+  it 'should accept true for access_token_claim' do
+    config[:access_token_claim] = true
+    expect(resource[:access_token_claim]).to eq(:true)
+    config[:access_token_claim] = 'true'
+    expect(resource[:access_token_claim]).to eq(:true)
+  end
+
+  it 'should accept false for access_token_claim' do
+    config[:access_token_claim] = false
+    expect(resource[:access_token_claim]).to eq(:false)
+    config[:access_token_claim] = 'false'
+    expect(resource[:access_token_claim]).to eq(:false)
+  end
+
+  it "should not accept strings for access_token_claim" do
+    config[:access_token_claim] = 'foo'
+    expect {
+      resource
+    }.to raise_error
+  end
+
+  it 'should default for userinfo_token_claim' do
+    expect(resource[:userinfo_token_claim]).to eq(:true)
+  end
+
+  it 'should not default userinfo_token_claim for saml' do
+    config[:protocol] = 'saml'
+    expect(resource[:userinfo_token_claim]).to be_nil
+  end
+
+  it 'should accept true for userinfo_token_claim' do
+    config[:userinfo_token_claim] = true
+    expect(resource[:userinfo_token_claim]).to eq(:true)
+  end
+
+  it 'should accept true for userinfo_token_claim as string' do
+    config[:userinfo_token_claim] = 'true'
+    expect(resource[:userinfo_token_claim]).to eq(:true)
+  end
+
+  it 'should accept false for userinfo_token_claim' do
+    config[:userinfo_token_claim] = false
+    expect(resource[:userinfo_token_claim]).to eq(:false)
+  end
+
+  it 'should accept false for userinfo_token_claim as string' do
+    config[:userinfo_token_claim] = 'false'
+    expect(resource[:userinfo_token_claim]).to eq(:false)
+  end
+
+  it "should not accept strings for userinfo_token_claim" do
+    config[:userinfo_token_claim] = 'foo'
+    expect {
+      resource
+    }.to raise_error
+  end
+
+  defaults = {
+    :consent_required => :true,
+  }
 
   # Test basic properties
   [
@@ -80,141 +259,140 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     :claim_name,
   ].each do |p|
     it "should accept a #{p.to_s}" do
-      @protocol_mapper[p] = 'foo'
-      expect(@protocol_mapper[p]).to eq('foo')
+      config[p] = 'foo'
+      expect(resource[p]).to eq('foo')
     end
-  end
-
-  it 'should have user_attribute be nil for full-name-ldap-mapper' do
-    component = described_class.new(:name => 'foo', :realm => 'test', :type => 'oidc-full-name-mapper')
-    expect(component[:user_attribute]).to be_nil
-  end
-
-  it 'should have user_attribute default to name for oidc-usermodel-property-mapper' do
-    component = described_class.new(:name => 'foo', :realm => 'test', :type => 'oidc-usermodel-property-mapper')
-    expect(component[:user_attribute]).to eq('foo')
-  end
-
-  it 'should have json_type_label be nil for full-name-ldap-mapper' do
-    component = described_class.new(:name => 'foo', :realm => 'test', :type => 'oidc-full-name-mapper')
-    expect(component[:json_type_label]).to be_nil
-  end
-
-  it 'should have json_type_label default to String for oidc-usermodel-property-mapper' do
-    component = described_class.new(:name => 'foo', :realm => 'test', :type => 'oidc-usermodel-property-mapper')
-    expect(component[:json_type_label]).to eq('String')
-  end
-
-  it 'should have friendly_name as nil' do
-    expect(@protocol_mapper[:friendly_name]).to be_nil
-  end
-
-  it 'should allow valid friendly_name' do
-    @protocol_mapper[:type] = 'saml-user-property-mapper'
-    @protocol_mapper[:friendly_name] = 'email'
-    expect(@protocol_mapper[:friendly_name]).to eq('email')
-  end
-
-  it 'should have attribute_name as nil' do
-    expect(@protocol_mapper[:attribute_name]).to be_nil
-  end
-
-  it 'should allow valid attribute_name' do
-    @protocol_mapper[:type] = 'saml-user-property-mapper'
-    @protocol_mapper[:attribute_name] = 'email'
-    expect(@protocol_mapper[:attribute_name]).to eq('email')
+    if defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
+    end
   end
 
   # Test boolean properties
   [
     :consent_required,
-    :id_token_claim,
-    :access_token_claim,
-    :userinfo_token_claim,
   ].each do |p|
     it "should accept true for #{p.to_s}" do
-      @protocol_mapper[p] = true
-      expect(@protocol_mapper[p]).to eq(:true)
-      @protocol_mapper[p] = 'true'
-      expect(@protocol_mapper[p]).to eq(:true)
+      config[p] = true
+      expect(resource[p]).to eq(:true)
+    end
+    it "should accept true for #{p.to_s} as string" do
+      config[p] = 'true'
+      expect(resource[p]).to eq(:true)
     end
     it "should accept false for #{p.to_s}" do
-      @protocol_mapper[p] = false
-      expect(@protocol_mapper[p]).to eq(:false)
-      @protocol_mapper[p] = 'false'
-      expect(@protocol_mapper[p]).to eq(:false)
+      config[p] = false
+      expect(resource[p]).to eq(:false)
+    end
+    it "should accept false for #{p.to_s} as string" do
+      config[p] = 'false'
+      expect(resource[p]).to eq(:false)
     end
     it "should not accept strings for #{p.to_s}" do
+      config[p] = 'foo'
       expect {
-        @protocol_mapper[p] = 'foo'
+        resource
       }.to raise_error
+    end
+    if defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
     end
   end
 
   it 'should accept value for attribute_nameformat' do
-    @protocol_mapper[:attribute_nameformat] = 'Basic'
-    expect(@protocol_mapper[:attribute_nameformat]).to eq(:basic)
-    @protocol_mapper[:attribute_nameformat] = 'uri'
-    expect(@protocol_mapper[:attribute_nameformat]).to eq(:uri)
+    config[:protocol] = 'saml'
+    config[:attribute_nameformat] = 'Basic'
+    expect(resource[:attribute_nameformat]).to eq(:basic)
+  end
+
+  it 'should accept value for attribute_nameformat' do
+    config[:protocol] = 'saml'
+    config[:attribute_nameformat] = 'uri'
+    expect(resource[:attribute_nameformat]).to eq(:uri)
   end
 
   it 'should not accept invalid value for attribute_nameformat' do
+    config[:protocol] = 'saml'
+    config[:attribute_nameformat] = 'foo'
     expect {
-      @protocol_mapper[:attribute_nameformat] = 'foo'
+      resource
     }.to raise_error
   end
 
   it 'should accept value for single' do
-    @protocol_mapper[:single] = false
-    expect(@protocol_mapper[:single]).to eq(:false)
-    @protocol_mapper[:single] = 'false'
-    expect(@protocol_mapper[:single]).to eq(:false)
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-role-list-mapper'
+    config[:single] = false
+    expect(resource[:single]).to eq(:false)
+  end
+
+  it 'should accept value for single string' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-role-list-mapper'
+    config[:single] = 'false'
+    expect(resource[:single]).to eq(:false)
+  end
+
+  it 'should have default for single' do
+    expect(resource[:single]).to be_nil
+  end
+
+  it 'should have default for single and saml-role-list-mapper' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-role-list-mapper'
+    expect(resource[:single]).to eq(:false)
   end
 
   it 'should not accept invalid value for single' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-role-list-mapper'
+    config[:single] = 'foo'
     expect {
-      @protocol_mapper[:single] = 'foo'
+      resource
     }.to raise_error
   end
 
   it 'should autorequire keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(:name => 'keycloak')
     catalog = Puppet::Resource::Catalog.new
-    catalog.add_resource @protocol_mapper
+    catalog.add_resource resource
     catalog.add_resource keycloak_conn_validator
-    rel = @protocol_mapper.autorequire[0]
+    rel = resource.autorequire[0]
     expect(rel.source.ref).to eq(keycloak_conn_validator.ref)
-    expect(rel.target.ref).to eq(@protocol_mapper.ref)
+    expect(rel.target.ref).to eq(resource.ref)
   end
 
   it 'should autorequire kcadm-wrapper.sh' do
     file = Puppet::Type.type(:file).new(:name => 'kcadm-wrapper.sh', :path => '/opt/keycloak/bin/kcadm-wrapper.sh')
     catalog = Puppet::Resource::Catalog.new
-    catalog.add_resource @protocol_mapper
+    catalog.add_resource resource
     catalog.add_resource file
-    rel = @protocol_mapper.autorequire[0]
+    rel = resource.autorequire[0]
     expect(rel.source.ref).to eq(file.ref)
-    expect(rel.target.ref).to eq(@protocol_mapper.ref)
+    expect(rel.target.ref).to eq(resource.ref)
   end
 
   it 'should autorequire keycloak_realm' do
     keycloak_realm = Puppet::Type.type(:keycloak_realm).new(:name => 'test')
     catalog = Puppet::Resource::Catalog.new
-    catalog.add_resource @protocol_mapper
+    catalog.add_resource resource
     catalog.add_resource keycloak_realm
-    rel = @protocol_mapper.autorequire[0]
+    rel = resource.autorequire[0]
     expect(rel.source.ref).to eq(keycloak_realm.ref)
-    expect(rel.target.ref).to eq(@protocol_mapper.ref)
+    expect(rel.target.ref).to eq(resource.ref)
   end
 
   it 'should autorequire keycloak_client_template' do
     keycloak_client_template = Puppet::Type.type(:keycloak_client_template).new(:name => 'oidc', :realm => 'test')
     catalog = Puppet::Resource::Catalog.new
-    catalog.add_resource @protocol_mapper
+    catalog.add_resource resource
     catalog.add_resource keycloak_client_template
-    rel = @protocol_mapper.autorequire[0]
+    rel = resource.autorequire[0]
     expect(rel.source.ref).to eq(keycloak_client_template.ref)
-    expect(rel.target.ref).to eq(@protocol_mapper.ref)
+    expect(rel.target.ref).to eq(resource.ref)
   end
 
 end
