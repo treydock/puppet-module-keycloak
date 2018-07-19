@@ -1,9 +1,14 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'provider', 'keycloak_api'))
+require_relative '../provider/keycloak_api'
+require_relative '../../puppet_x/keycloak/type'
+require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_protocol_mapper) do
   @doc = %q{
   
   }
+
+  extend PuppetX::Keycloak::Type
+  add_autorequires()
 
   ensurable
 
@@ -178,24 +183,6 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
     end
   end
 
-  autorequire(:keycloak_conn_validator) do
-    requires = []
-    catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_conn_validator'
-        requires << resource.name
-      end
-    end
-    requires
-  end
-
-  autorequire(:file) do
-    [ 'kcadm-wrapper.sh' ]
-  end
-
-  autorequire(:keycloak_realm) do
-    [ self[:realm] ]
-  end
-
   autorequire(:keycloak_client_template) do
     requires = []
     catalog.resources.each do |resource|
@@ -248,5 +235,4 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
       self.fail "single is not valid for type #{self[:type]}"
     end
   end
-
 end

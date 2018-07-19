@@ -1,9 +1,13 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'provider', 'keycloak_api'))
+require_relative '../../puppet_x/keycloak/type'
+require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_realm) do
   @doc = %q{
   
   }
+
+  extend PuppetX::Keycloak::Type
+  add_autorequires(false)
 
   ensurable
 
@@ -18,53 +22,49 @@ Puppet::Type.newtype(:keycloak_realm) do
     end
   end
 
-  [
-    {:n => :display_name, :d => nil},
-    {:n => :display_name_html, :d => nil},
-    {:n => :login_theme, :d => 'keycloak'},
-    {:n => :account_theme, :d => 'keycloak'},
-    {:n => :admin_theme, :d => 'keycloak'},
-    {:n => :email_theme, :d => 'keycloak'},
-  ].each do |p|
-    newproperty(p[:n]) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-
-      unless p[:d].nil?
-        defaultto do
-          if p[:d] == :name
-            @resource[:name]
-          else
-            p[:d]
-          end
-        end
-      end
-    end
+  newproperty(:display_name) do
+    desc 'displayName'
   end
 
-  [
-    {:n => :enabled, :d => :true },
-    {:n => :remember_me, :d => :false },
-    {:n => :login_with_email_allowed, :d => :true },
-  ].each do |p|
-    newproperty(p[:n], :boolean => true) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-      newvalues(:true, :false)
-      defaultto p[:d]
-    end
+  newproperty(:display_name_html) do
+    desc 'displayNameHtml'
   end
 
-  autorequire(:keycloak_conn_validator) do
-    requires = []
-    catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_conn_validator'
-        requires << resource.name
-      end
-    end
-    requires
+  newproperty(:login_theme) do
+    desc 'loginTheme'
+    defaultto 'keycloak'
   end
 
-  autorequire(:file) do
-    [ 'kcadm-wrapper.sh' ]
+  newproperty(:account_theme) do
+    desc 'accountTheme'
+    defaultto 'keycloak'
   end
 
+  newproperty(:admin_theme) do
+    desc 'adminTheme'
+    defaultto 'keycloak'
+  end
+
+  newproperty(:email_theme) do
+    desc 'emailTheme'
+    defaultto 'keycloak'
+  end
+
+  newproperty(:enabled, :boolean => true) do
+    desc 'enabled'
+    newvalues(:true, :false)
+    defaultto :true
+  end
+
+  newproperty(:remember_me, :boolean => true) do
+    desc 'rememberMe'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:login_with_email_allowed, :boolean => true) do
+    desc 'loginWithEmailAllowed'
+    newvalues(:true, :false)
+    defaultto :true
+  end
 end

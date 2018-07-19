@@ -5,6 +5,9 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
   
   }
 
+  extend PuppetX::Keycloak::Type
+  add_autorequires()
+
   ensurable
 
   newparam(:name, :namevar => true) do
@@ -40,23 +43,12 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
     desc 'parentId'
   end
 
-  [
-    {:n => :ldap_attribute, :d => nil},
-    {:n => :user_model_attribute, :d => nil},
-  ].each do |p|
-    newproperty(p[:n]) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
+  newproperty(:ldap_attribute) do
+    desc 'ldapAttribute'
+  end
 
-      unless p[:d].nil?
-        defaultto do
-          if p[:d] == :name
-            @resource[:resource_name]
-          else
-            p[:d]
-          end
-        end
-      end
-    end
+  newproperty(:user_model_attribute) do
+    desc 'userModelAttribute'
   end
 
   newproperty(:is_mandatory_in_ldap) do
@@ -82,35 +74,16 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
     end
   end
 
-  [
-    {:n => :read_only, :d => :true},
-    {:n => :write_only, :d => :false},
-  ].each do |p|
-    newproperty(p[:n], :boolean => true) do
-      desc "#{Puppet::Provider::Keycloak_API.camelize(p[:n])}"
-      newvalues(:true, :false)
-      unless p[:d].nil?
-        defaultto p[:d]
-      end
-    end
+  newproperty(:read_only, :boolean => true) do
+    desc "readOnly"
+    newvalues(:true, :false)
+    defaultto :true
   end
 
-  autorequire(:keycloak_conn_validator) do
-    requires = []
-    catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_conn_validator'
-        requires << resource.name
-      end
-    end
-    requires
-  end
-
-  autorequire(:file) do
-    [ 'kcadm-wrapper.sh' ]
-  end
-
-  autorequire(:keycloak_realm) do
-    [ self[:realm] ]
+  newproperty(:write_only, :boolean => true) do
+    desc "writeOnly"
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   autorequire(:keycloak_ldap_user_provider) do
@@ -144,5 +117,4 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
       ],
     ]
   end
-
 end
