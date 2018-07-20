@@ -1,5 +1,23 @@
 # treydock-keycloak changelog
 
+## [2.6.0](https://github.com/treydock/puppet-module-keycloak/tree/2.6.0) (2018-07-20)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.5.0...2.6.0)
+
+**Implemented enhancements:**
+
+- Add search\_scope and custom\_user\_search\_filter properties to keycloak\_ldap\_user\_provider type [\#29](https://github.com/treydock/puppet-module-keycloak/pull/29) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- Support customUserSearchFilter [\#25](https://github.com/treydock/puppet-module-keycloak/issues/25)
+
+**Merged pull requests:**
+
+- Use puppet-strings for documentation [\#30](https://github.com/treydock/puppet-module-keycloak/pull/30) ([treydock](https://github.com/treydock))
+- Fix for keycloak\_protocol\_mapper type property and type unit test improvements [\#28](https://github.com/treydock/puppet-module-keycloak/pull/28) ([treydock](https://github.com/treydock))
+- Explicitly define all type properties [\#27](https://github.com/treydock/puppet-module-keycloak/pull/27) ([treydock](https://github.com/treydock))
+- Improve acceptance tests [\#26](https://github.com/treydock/puppet-module-keycloak/pull/26) ([treydock](https://github.com/treydock))
+
 ## [2.5.0](https://github.com/treydock/puppet-module-keycloak/tree/2.5.0) (2018-07-18)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.4.0...2.5.0)
 
