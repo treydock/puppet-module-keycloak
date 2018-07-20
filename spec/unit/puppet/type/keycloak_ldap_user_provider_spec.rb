@@ -114,6 +114,60 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     }.to raise_error
   end
 
+  it 'should allow string one for search_scope' do
+    config[:search_scope] = 'one'
+    expect(resource[:search_scope]).to eq('1')
+  end
+
+  it 'should allow string one_level for search_scope' do
+    config[:search_scope] = 'one_level'
+    expect(resource[:search_scope]).to eq('1')
+  end
+
+  it 'should allow string 1 for search_scope' do
+    config[:search_scope] = '1'
+    expect(resource[:search_scope]).to eq('1')
+  end
+
+  it 'should allow 1 for search_scope' do
+    config[:search_scope] = 1
+    expect(resource[:search_scope]).to eq('1')
+  end
+
+  it 'should allow string subtree for search_scope' do
+    config[:search_scope] = 'subtree'
+    expect(resource[:search_scope]).to eq('2')
+  end
+
+  it 'should allow string 2 for search_scope' do
+    config[:search_scope] = '2'
+    expect(resource[:search_scope]).to eq('2')
+  end
+
+  it 'should allow 2 for search_scope' do
+    config[:search_scope] = 2
+    expect(resource[:search_scope]).to eq('2')
+  end
+
+  it 'should not allow invalid search_scope' do
+    config[:search_scope] = 'foo'
+    expect { resource }.to raise_error
+  end
+
+  it 'should default custom_user_search_filter' do
+    expect(resource[:custom_user_search_filter]).to eq(:absent)
+  end
+
+  it 'should accept valid custom_user_search_filter' do
+    config[:custom_user_search_filter] = '(foo=bar)'
+    expect(resource[:custom_user_search_filter]).to eq('(foo=bar)')
+  end
+
+  it 'should not allow invalid custom_user_search_filter' do
+    config[:custom_user_search_filter] = 'foo=bar'
+    expect { resource }.to raise_error(Puppet::Error, /must start with "\(" and end with "\)"/)
+  end
+
   defaults = {
     :priority => '0',
     :batch_size_for_sync => '1000',

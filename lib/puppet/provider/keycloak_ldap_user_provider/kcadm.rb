@@ -72,6 +72,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
         else
           value = resource[property.to_sym]
         end
+        next if value == :absent
         data[:config][camelize(property).gsub(/ldap/i, 'LDAP')] = [value]
       end
     end
@@ -128,6 +129,9 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
             value = resource[property.to_sym].join(',')
           else
             value = resource[property.to_sym]
+          end
+          if value == :absent
+            value = ''
           end
           data[:config][camelize(property).gsub(/ldap/i, 'LDAP')] = [value]
         end

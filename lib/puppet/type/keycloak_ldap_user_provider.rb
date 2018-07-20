@@ -134,6 +134,33 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
     defaultto ['inetOrgPerson', 'organizationalPerson']
   end
 
+  newproperty(:search_scope) do
+    desc 'searchScope'
+    newvalues(:one, :one_level, :subtree, '1', '2', 1, 2)
+    munge do |v|
+      if ['one', 'one_level'].include?(v.to_s)
+        '1'
+      elsif v.to_s == 'subtree'
+        '2'
+      else
+        v.to_s
+      end
+    end
+  end
+
+  newproperty(:custom_user_search_filter) do
+    desc 'customUserSearchFilter'
+    newvalues(/.*/, :absent)
+    defaultto(:absent)
+    validate do |v|
+      if v != :absent
+        unless v.start_with?('(') && v.end_with?(')')
+          raise ArgumentError, 'custom_user_search_filter must start with "(" and end with ")"'
+        end
+      end
+    end
+  end
+
   def self.title_patterns
     [
       [
