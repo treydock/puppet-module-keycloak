@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.14
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-puppet-module-keycloak">puppet-module-keycloak</h1>
+
+<p><a href="https://forge.puppetlabs.com/treydock/keycloak"><img
+src="http://img.shields.io/puppetforge/v/treydock/keycloak.svg"></a> <a
+href="https://travis-ci.org/treydock/puppet-module-keycloak"><img
+src="https://travis-ci.org/treydock/puppet-module-keycloak.png"></a></p>
+
+<h4 id="label-Table+of+Contents">Table of Contents</h4>
+<ol><li>
+<p><a href="#label-Overview">Overview</a></p>
+</li><li>
+<p><a href="#label-Usage">Usage - Configuration options</a></p>
+</li><li>
+<p><a href="#label-Reference">Reference - Parameter and detailed reference to all
+options</a></p>
+</li><li>
+<p><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></p>
+</li><li>
+<p><a href="#label-Development">Development - Guide for contributing to the
+module</a></p>
+</li></ol>
+
+<h2 id="label-Overview">Overview</h2>
+
+<p>The keycloak module allows easy installation and management of Keycloak.</p>
+
+<h2 id="label-Usage">Usage</h2>
+
+<h3 id="label-keycloak">keycloak</h3>
+
+<p>Install Keycloak using default database storage.</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;: }</code></pre>
+
+<p>Install keycloak and use a local MySQL server for database storage</p>
+
+<pre class="code ruby"><code class="ruby">include mysql::server
+class { &#39;keycloak&#39;:
+  datasource_driver   =&gt; &#39;mysql&#39;,
+  datasource_host     =&gt; &#39;localhost&#39;,
+  datasource_port     =&gt; 3306,
+  datasource_dbname   =&gt; &#39;keycloak&#39;,
+  datasource_username =&gt; &#39;keycloak&#39;,
+  datasource_password =&gt; &#39;foobar&#39;,
+}</code></pre>
+
+<p>Configure a SSL certificate truststore and add a LDAP server&#39;s
+certificate to the truststore.</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
+  truststore                              =&gt; true,
+  truststore_password                     =&gt; &#39;supersecret&#39;,
+  truststore_hostname_verification_policy =&gt; &#39;STRICT&#39;,
+}
+keycloak::truststore::host { &#39;ldap1.example.com&#39;:
+  certificate =&gt; &#39;/etc/openldap/certs/0a00000.0&#39;,
+}</code></pre>
+
+<p>Setup Keycloak to proxy through Apache HTTPS.</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
+  proxy_https =&gt; true
+}
+apache::vhost { &#39;idp.example.com&#39;:
+  servername =&gt; &#39;idp.example.com&#39;,
+  port        =&gt; &#39;443&#39;,
+  ssl         =&gt; true,
+  manage_docroot  =&gt; false,
+  docroot         =&gt; &#39;/var/www/html&#39;,
+  proxy_preserve_host =&gt; true,
+  proxy_pass          =&gt; [
+    {&#39;path&#39; =&gt; &#39;/&#39;, &#39;url&#39; =&gt; &#39;http://localhost:8080/&#39;}
+  ],
+  request_headers     =&gt; [
+    &#39;set X-Forwarded-Proto &quot;https&quot;&#39;,
+    &#39;set X-Forwarded-Port &quot;443&quot;&#39;
+  ],
+  ssl_cert            =&gt; &#39;/etc/pki/tls/certs/idp.example.com/crt&#39;,
+  ssl_key             =&gt; &#39;/etc/pki/tls/private/idp.example.com.key&#39;,
+}</code></pre>
+
+<p>Setup a host for theme development so that theme changes don&#39;t require
+a service restart, not recommended for production.</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
+  theme_static_max_age  =&gt; -1,
+  theme_cache_themes    =&gt; false,
+  theme_cache_templates =&gt; false,
+}</code></pre>
+
+<h3 id="label-keycloak_realm">keycloak_realm</h3>
+
+<p>Define a Keycloak realm that uses username and not email for login and to
+use a local branded theme.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_realm { &#39;test&#39;:
+  ensure                   =&gt; &#39;present&#39;,
+  remember_me              =&gt; true,
+  login_with_email_allowed =&gt; false,
+  login_theme              =&gt; &#39;my_theme&#39;,
+}</code></pre>
+
+<h3 id="label-keycloak_ldap_user_provider">keycloak_ldap_user_provider</h3>
+
+<p>Define a LDAP user provider so that authentication can be performed against
+LDAP. The example below uses two LDAP servers, disables importing of users
+and assumes the SSL certificates are trusted and do not require being in
+the truststore.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_ldap_user_provider { &#39;LDAP on test&#39;:
+  ensure             =&gt; &#39;present&#39;,
+  users_dn           =&gt; &#39;ou=People,dc=example,dc=com&#39;,
+  connection_url     =&gt; &#39;ldaps://ldap1.example.com:636 ldaps://ldap2.example.com:636&#39;,
+  import_enabled     =&gt; false,
+  use_truststore_spi =&gt; &#39;never&#39;,
+}</code></pre>
+
+<p><strong>NOTE</strong> The <code>Id</code> for the above resource would be
+<code>LDAP-test</code> where the format is
+<code>${resource_name}-${realm}</code>.</p>
+
+<h3 id="label-keycloak_ldap_mapper">keycloak_ldap_mapper</h3>
+
+<p>Use the LDAP attribute &#39;gecos&#39; as the full name attribute.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_ldap_mapper { &#39;full name for LDAP-test on test:
+  ensure         =&gt; &#39;present&#39;,
+  resource_name  =&gt; &#39;full name&#39;,
+  type           =&gt; &#39;full-name-ldap-mapper&#39;,
+  ldap_attribute =&gt; &#39;gecos&#39;,
+}</code></pre>
+
+<h3 id="label-keycloak_client">keycloak_client</h3>
+
+<p>Register a client.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_client { &#39;www.example.com&#39;:
+  ensure          =&gt; &#39;present&#39;,
+  realm           =&gt; &#39;test&#39;,
+  redirect_uris   =&gt; [
+    &quot;https://www.example.com/oidc&quot;,
+    &quot;https://www.example.com&quot;,
+  ],
+  client_template =&gt; &#39;oidc-clients&#39;,
+  secret          =&gt; &#39;supersecret&#39;,
+}</code></pre>
+
+<h3 id="label-keycloak-3A-3Aclient_template">keycloak::client_template</h3>
+
+<p>Defined type that can be used to define both
+<code>keycloak_client_template</code> and
+<code>keycloak_protocol_mapper</code> resources. The example below will
+define a client template and several protocol mappers that are built into
+keycloak.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak::client_template { &#39;oidc-clients&#39;:
+  realm =&gt; &#39;test&#39;,
+}</code></pre>
+
+<h3 id="label-keycloak_client_template">keycloak_client_template</h3>
+
+<p>Define a Client Template in Keycloak:</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_client_template { &#39;oidc-clients&#39;:
+  realm              =&gt; &#39;test&#39;,
+  resource_name      =&gt; &#39;oidc-clients&#39;,
+  protocol           =&gt; &#39;openid-connect&#39;,
+  full_scope_allowed =&gt; true,
+}</code></pre>
+
+<h3 id="label-keycloak_protocol_mapper">keycloak_protocol_mapper</h3>
+
+<p>Associate a Protocol Mapper to a given template. The name in the following
+example will add the <code>email</code> protocol mapper to client template
+<code>oidc-clients</code> in the realm <code>test</code>.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_protocol_mapper { &quot;email for oidc-clients on test&quot;:
+  consent_text   =&gt; &#39;${email}&#39;,
+  claim_name     =&gt; &#39;email&#39;,
+  user_attribute =&gt; &#39;email&#39;,
+}</code></pre>
+
+<h3 id="label-keycloak_api">keycloak_api</h3>
+
+<p>The keycloak_api type can be used to define how this module&#39;s types
+access the Keycloak API if this module is only used for the types/providers
+and the module&#39;s <code>kcadm-wrapper.sh</code> is not installed.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_api { &#39;keycloak&#39;
+  install_base =&gt; &#39;/opt/keycloak&#39;,
+  server       =&gt; &#39;http://localhost:8080/auth&#39;,
+  realm        =&gt; &#39;master&#39;,
+  user         =&gt; &#39;admin&#39;,
+  password     =&gt; &#39;changeme&#39;,
+}</code></pre>
+
+<p>The path for <code>install_base</code> will be joined with
+<code>bin/kcadm.sh</code> to produce the full path to
+<code>kcadm.sh</code>.</p>
+
+<h2 id="label-Reference">Reference</h2>
+
+<p><a
+href="http://treydock.github.io/puppet-module-keycloak/">treydock.github.io/puppet-module-keycloak/</a></p>
+
+<h2 id="label-Limitations">Limitations</h2>
+
+<p>This module has been tested on:</p>
+<ul><li>
+<p>CentOS 7 x86_64</p>
+</li><li>
+<p>Debian 9 x86_64</p>
+</li><li>
+<p>RedHat 7 x86_64</p>
+</li></ul>
+
+<h2 id="label-Development">Development</h2>
+
+<h3 id="label-Testing">Testing</h3>
+
+<p>Testing requires the following dependencies:</p>
+<ul><li>
+<p>rake</p>
+</li><li>
+<p>bundler</p>
+</li></ul>
+
+<p>Install gem dependencies</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
+</code></pre>
+
+<p>Run unit tests</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_test'>test</span>
+</code></pre>
+
+<p>If you have Vagrant &gt;= 1.2.0 installed you can run system tests</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_beaker'>beaker</span>
+</code></pre>
+</div></div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

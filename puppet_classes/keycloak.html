@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: keycloak
+  
+    &mdash; Documentation by YARD 0.9.14
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::keycloak";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (k)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">keycloak</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: keycloak</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd><span class='object_link'><a href="keycloak_3A_3Aparams.html" title="puppet_classes::keycloak::params (puppet_class)">keycloak::params</a></span></dd>
+  </dl>
+  
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/init.pp
+    </dd>
+  </dl>
+</div>
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+<p>summary Manage Keycloak</p>
+
+  </div>
+</div>
+
+
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>include ::keycloak</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>version</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;3.4.1.Final&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Version of Keycloak to install and manage. Default is
+<code>3.4.1.Final</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_url</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>URL of the Keycloak download. Default is based on version.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>install_dir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/opt&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Parent directory of where to install Keycloak. Default is
+<code>/opt</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::params::service_name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak service name. Default is <code>keycloak</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_ensure</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;running&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak service ensure property. Default is <code>running</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_enable</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak service enable property. Default is <code>true</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_hasstatus</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::params::service_hasstatus</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak service hasstatus parameter. Default is <code>true</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_hasrestart</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::params::service_hasrestart</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak service hasrestart parameter. Default is <code>true</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak user name. Default is <code>keycloak</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>group</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak user group name. Default is <code>keycloak</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_uid</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak user UID. Default is <code>undef</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>group_gid</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak user group GID. Default is <code>undef</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>admin_user</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;admin&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak administrative username. Default is <code>admin</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>admin_user_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;changeme&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak administrative user password. Default is <code>changeme</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_datasource</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that determines if configured datasource will be managed. Only
+applies when <code>datasource_driver</code> is <code>mysql</code>. Default
+is <code>true</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datasource_driver</span>
+      
+      
+        <span class='type'>(<tt>Enum['h2', 'mysql']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;h2&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Datasource driver to use for Keycloak. Valid values are <code>h2</code> and
+<code>mysql</code>. Default is <code>h2</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datasource_host</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Datasource host. Only used when datasource_driver is <code>mysql</code>.
+Default is <code>localhost</code> for MySQL.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datasource_port</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Datasource port. Only used when datasource_driver is <code>mysql</code>.
+Default is <code>3306</code> for MySQL.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datasource_dbname</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Datasource database name. Default is <code>keycloak</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datasource_username</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;sa&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Datasource user name. Default is <code>sa</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datasource_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;sa&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Datasource user password. Default is <code>sa</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>proxy_https</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if HTTPS proxy should be enabled. Set to
+<code>true</code> if proxying traffic through Apache. Default is
+<code>false</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>truststore</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if truststore should be used. Default is
+<code>false</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>truststore_hosts</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash that is used to define <code>keycloak::turststore::host</code>
+resources. Default is <code>{}</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>truststore_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Truststore password. Default is <code>keycloak</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>truststore_hostname_verification_policy</span>
+      
+      
+        <span class='type'>(<tt>Enum['WILDCARD', 'STRICT', 'ANY']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;WILDCARD&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Valid values are <code>WILDCARD</code>, <code>STRICT</code>, and
+<code>ANY</code>. Default is <code>WILDCARD</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>8080</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>HTTP port used by Keycloak. Default is <code>8080</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>theme_static_max_age</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>2592000</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Max cache age in seconds of static content. Default is
+<code>2592000</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>theme_cache_themes</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if themes should be cached. Default is <code>true</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>theme_cache_templates</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if templates should be cached. Default is
+<code>true</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>realms</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash that is used to define keycloak_realm resources. Default is
+<code>{}</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>client_templates</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash that is used to define keycloak::client_template resources. Default is
+<code>{}</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_java_opts</span>
+      
+      
+        <span class='type'>(<tt>Variant[String, Array]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::params::service_java_opts</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 108</span>
+
+class keycloak (
+  String $version               = &#39;3.4.1.Final&#39;,
+  Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
+    $package_url                = undef,
+  Stdlib::Absolutepath $install_dir = &#39;/opt&#39;,
+  String $service_name          = $keycloak::params::service_name,
+  String $service_ensure        = &#39;running&#39;,
+  Boolean $service_enable       = true,
+  Boolean $service_hasstatus    = $keycloak::params::service_hasstatus,
+  Boolean $service_hasrestart   = $keycloak::params::service_hasrestart,
+  Variant[String, Array] $service_java_opts = $keycloak::params::service_java_opts,
+  String $user                  = &#39;keycloak&#39;,
+  String $group                 = &#39;keycloak&#39;,
+  Optional[Integer] $user_uid   = undef,
+  Optional[Integer] $group_gid  = undef,
+  String $admin_user            = &#39;admin&#39;,
+  String $admin_user_password   = &#39;changeme&#39;,
+  Boolean $manage_datasource = true,
+  Enum[&#39;h2&#39;, &#39;mysql&#39;] $datasource_driver = &#39;h2&#39;,
+  Optional[String] $datasource_host = undef,
+  Optional[Integer] $datasource_port = undef,
+  String $datasource_dbname = &#39;keycloak&#39;,
+  String $datasource_username = &#39;sa&#39;,
+  String $datasource_password = &#39;sa&#39;,
+  Boolean $proxy_https = false,
+  Boolean $truststore = false,
+  Hash $truststore_hosts = {},
+  String $truststore_password = &#39;keycloak&#39;,
+  Enum[&#39;WILDCARD&#39;, &#39;STRICT&#39;, &#39;ANY&#39;] $truststore_hostname_verification_policy = &#39;WILDCARD&#39;,
+  Integer $http_port = 8080,
+  Integer $theme_static_max_age = 2592000,
+  Boolean $theme_cache_themes = true,
+  Boolean $theme_cache_templates = true,
+  Hash $realms = {},
+  Hash $client_templates = {},
+) inherits keycloak::params {
+
+  $download_url = pick($package_url, &quot;https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz&quot;)
+  case $datasource_driver {
+    &#39;h2&#39;: {
+      $datasource_connection_url = &quot;jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE&quot;
+    }
+    &#39;mysql&#39;: {
+      $db_host = pick($datasource_host, &#39;localhost&#39;)
+      $db_port = pick($datasource_port, 3306)
+      $datasource_connection_url = &quot;jdbc:mysql://${db_host}:${db_port}/${datasource_dbname}&quot;
+    }
+    default: {}
+  }
+
+  $install_base = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;
+
+  include ::java
+  contain &#39;keycloak::install&#39;
+  contain &quot;keycloak::datasource::${datasource_driver}&quot;
+  contain &#39;keycloak::config&#39;
+  contain &#39;keycloak::service&#39;
+
+  Class[&#39;::java&#39;]
+  -&gt; Class[&#39;keycloak::install&#39;]
+  -&gt; Class[&quot;keycloak::datasource::${datasource_driver}&quot;]
+  -&gt; Class[&#39;keycloak::config&#39;]
+  -&gt; Class[&#39;keycloak::service&#39;]
+
+  Class[&quot;keycloak::datasource::${datasource_driver}&quot;]~&gt;Class[&#39;keycloak::service&#39;]
+
+  keycloak_conn_validator { &#39;keycloak&#39;:
+    keycloak_server =&gt; &#39;localhost&#39;,
+    keycloak_port   =&gt; $http_port,
+    use_ssl         =&gt; false,
+    timeout         =&gt; 60,
+    test_url        =&gt; &#39;/auth/realms/master/.well-known/openid-configuration&#39;,
+    require         =&gt; Class[&#39;keycloak::service&#39;],
+  }
+
+  create_resources(&#39;keycloak_realm&#39;, $realms)
+  create_resources(&#39;keycloak::client_template&#39;, $client_templates)
+
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
