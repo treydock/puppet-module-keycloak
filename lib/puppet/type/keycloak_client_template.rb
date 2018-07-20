@@ -21,14 +21,14 @@ Manage Keycloak client templates
   end
 
   newparam(:resource_name, :namevar => true) do
-    desc 'The client template name'
+    desc 'The client template name. Defaults to `name`.'
     defaultto do
       @resource[:name]
     end
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Defaults to `resource_name`.'
     defaultto do
       @resource[:resource_name]
     end

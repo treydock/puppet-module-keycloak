@@ -27,14 +27,14 @@ Manage Keycloak clients
   end
 
   newparam(:client_id, :namevar => true) do
-    desc 'clientId'
+    desc 'clientId. Defaults to `name`.'
     defaultto do
       @resource[:name]
     end
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Defaults to `client_id`'
     defaultto do
       @resource[:client_id]
     end

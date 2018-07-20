@@ -24,14 +24,14 @@ Manage Keycloak LDAP user providers
   end
 
   newparam(:resource_name) do
-    desc 'The LDAP user provider name'
+    desc 'The LDAP user provider name. Defaults to `name`.'
     defaultto do
       @resource[:name]
     end
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Defaults to "`resource_name`-`realm`"'
     defaultto do
       "#{@resource[:resource_name]}-#{@resource[:realm]}"
     end

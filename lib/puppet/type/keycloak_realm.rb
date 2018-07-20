@@ -23,7 +23,7 @@ Manage Keycloak realms
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Default to `name`.'
     defaultto do
       @resource[:name]
     end
