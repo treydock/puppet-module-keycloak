@@ -1,9 +1,15 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'provider', 'keycloak_api'))
 
 Puppet::Type.newtype(:keycloak_ldap_mapper) do
-  @doc = %q{
-  
+  desc <<-DESC
+Manage Keycloak LDAP attribute mappers
+@example Add full name attribute mapping
+  keycloak_ldap_mapper { 'full name for LDAP-test on test:
+    ensure         => 'present',
+    type           => 'full-name-ldap-mapper',
+    ldap_attribute => 'gecos',
   }
+  DESC
 
   extend PuppetX::Keycloak::Type
   add_autorequires()
@@ -15,14 +21,14 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Defaults to UUID generated from `name`.'
     defaultto do
       Puppet::Provider::Keycloak_API.name_uuid(@resource[:name])
     end
   end
 
   newparam(:resource_name) do
-    desc 'The LDAP mapper name'
+    desc 'The LDAP mapper name. Defaults to `name`'
     defaultto do
       @resource[:name]
     end
@@ -52,7 +58,7 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
   end
 
   newproperty(:is_mandatory_in_ldap) do
-    desc 'is.mandatory.in.ldap'
+    desc 'is.mandatory.in.ldap. Defaults to `false` unless `type` is `full-name-ldap-mapper`.'
     defaultto do
       if @resource[:type] == 'full-name-ldap-mapper'
         nil
@@ -63,7 +69,7 @@ Puppet::Type.newtype(:keycloak_ldap_mapper) do
   end
 
   newproperty(:always_read_value_from_ldap, :boolean => true) do
-    desc 'always.read.value.from.ldap'
+    desc 'always.read.value.from.ldap. Defaults to `true` if `type` is `user-attribute-ldap-mapper`.'
     newvalues(:true, :false)
     defaultto do
       if @resource[:type] == 'user-attribute-ldap-mapper'

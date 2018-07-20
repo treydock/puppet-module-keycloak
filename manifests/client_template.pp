@@ -1,3 +1,18 @@
+# @summary Manage Keycloak client template
+#
+# @example
+#   keycloak::client_template { 'oidc-clients':
+#     realm => 'test',
+#   }
+#
+# @param realm
+#   Realm of the client template.
+# @param resource_name
+#   Name of the client template resource
+# @param protocol
+#   The protocol of the client template.
+# @param full_scope_allowed
+#   full_scope_allowed property for `keycloak_client_template` resource.
 #
 define keycloak::client_template (
   String $realm,

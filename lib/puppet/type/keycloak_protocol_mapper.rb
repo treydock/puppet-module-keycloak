@@ -3,9 +3,15 @@ require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_protocol_mapper) do
-  @doc = %q{
-  
+  desc <<-DESC
+Manage Keycloak protocol mappers
+@example Add email protocol mapper to oidc-client client template in realm test
+  keycloak_protocol_mapper { "email for oidc-clients on test":
+    consent_text   => '${email}',
+    claim_name     => 'email',
+    user_attribute => 'email',
   }
+  DESC
 
   extend PuppetX::Keycloak::Type
   add_autorequires()
@@ -17,14 +23,14 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Defaults to UUID based on `name`.'
     defaultto do
       Puppet::Provider::Keycloak_API.name_uuid(@resource[:name])
     end
   end
 
   newparam(:resource_name, :namevar => true) do
-    desc 'The protocol mapper name'
+    desc 'The protocol mapper name. Defaults to `name`.'
     defaultto do
       @resource[:name]
     end
@@ -46,7 +52,12 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newparam(:type) do
-    desc 'protocolMapper'
+    desc <<-DESC
+    protocolMapper.
+
+    Default is `oidc-usermodel-property-mapper` for `protocol` `openid-connect` and
+    `saml-user-property-mapper` for `protocol` `saml`.
+    DESC
     newvalues(
       'oidc-usermodel-property-mapper',
       'oidc-full-name-mapper',
@@ -66,7 +77,7 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newproperty(:user_attribute) do
-    desc "user.attribute"
+    desc "user.attribute. Default to `resource_name` for `type` `oidc-usermodel-property-mapper` or `saml-user-property-mapper`"
     defaultto do
       if @resource[:type] == 'oidc-usermodel-property-mapper' or @resource[:type] == 'saml-user-property-mapper'
         @resource[:resource_name]
@@ -77,7 +88,7 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newproperty(:json_type_label) do
-    desc "json.type.label"
+    desc "json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`."
     defaultto do
       if @resource[:type] == 'oidc-usermodel-property-mapper'
         'String'
@@ -88,7 +99,7 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newproperty(:friendly_name) do
-    desc "friendly.name"
+    desc "friendly.name. Default to `resource_name` for `type` `saml-user-property-mapper`."
     defaultto do
       if @resource[:type] == 'saml-user-property-mapper'
         @resource[:resource_name]
@@ -99,7 +110,7 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newproperty(:attribute_name) do
-    desc "attribute.name"
+    desc "attribute.name Default to `resource_name` for `type` `saml-user-property-mapper`."
     defaultto do
       if @resource[:type] == 'saml-user-property-mapper'
         @resource[:resource_name]
@@ -124,7 +135,7 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newproperty(:id_token_claim, :boolean => true) do
-    desc "id.token.claim"
+    desc "id.token.claim. Default to `true` for `protocol` `openid-connect`."
     newvalues(:true, :false)
     defaultto do
       if @resource['protocol'] == 'openid-connect'
@@ -136,7 +147,7 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newproperty(:access_token_claim, :boolean => true) do
-    desc "access.token.claim"
+    desc "access.token.claim. Default to `true` for `protocol` `openid-connect`."
     newvalues(:true, :false)
     defaultto do
       if @resource['protocol'] == 'openid-connect'
@@ -148,7 +159,7 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newproperty(:userinfo_token_claim, :boolean => true) do
-    desc "userinfo.token.claim"
+    desc "userinfo.token.claim. Default to `true` for `protocol` `openid-connect`."
     newvalues(:true, :false)
     defaultto do
       if @resource['protocol'] == 'openid-connect'
@@ -172,7 +183,7 @@ Puppet::Type.newtype(:keycloak_protocol_mapper) do
   end
 
   newproperty(:single, :boolean => true) do
-    desc "single"
+    desc "single. Default to `false` for `type` `saml-role-list-mapper`."
     newvalues(:true, :false)
     defaultto do
       if @resource['type'] == 'saml-role-list-mapper'

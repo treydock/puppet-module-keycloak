@@ -2,9 +2,16 @@ require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_realm) do
-  @doc = %q{
-  
+  desc <<-DESC
+Manage Keycloak realms
+@example Add a realm with a custom theme
+  keycloak_realm { 'test':
+    ensure                   => 'present',
+    remember_me              => true,
+    login_with_email_allowed => false,
+    login_theme              => 'my_theme',
   }
+  DESC
 
   extend PuppetX::Keycloak::Type
   add_autorequires(false)
@@ -16,7 +23,7 @@ Puppet::Type.newtype(:keycloak_realm) do
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Default to `name`.'
     defaultto do
       @resource[:name]
     end

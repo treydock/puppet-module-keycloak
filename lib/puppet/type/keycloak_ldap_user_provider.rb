@@ -2,9 +2,17 @@ require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_ldap_user_provider) do
-  @doc = %q{
-  
+  desc <<-DESC
+Manage Keycloak LDAP user providers
+@example Add LDAP user provider to test realm
+  keycloak_ldap_user_provider { 'LDAP on test':
+    ensure             => 'present',
+    users_dn           => 'ou=People,dc=example,dc=com',
+    connection_url     => 'ldaps://ldap1.example.com:636 ldaps://ldap2.example.com:636',
+    import_enabled     => false,
+    use_truststore_spi => 'never',
   }
+  DESC
 
   extend PuppetX::Keycloak::Type
   add_autorequires()
@@ -16,14 +24,14 @@ Puppet::Type.newtype(:keycloak_ldap_user_provider) do
   end
 
   newparam(:resource_name) do
-    desc 'The LDAP user provider name'
+    desc 'The LDAP user provider name. Defaults to `name`.'
     defaultto do
       @resource[:name]
     end
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Defaults to "`resource_name`-`realm`"'
     defaultto do
       "#{@resource[:resource_name]}-#{@resource[:realm]}"
     end

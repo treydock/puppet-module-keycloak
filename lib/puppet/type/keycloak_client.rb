@@ -2,9 +2,20 @@ require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_client) do
-  @doc = %q{
-  
+  desc <<-DESC
+Manage Keycloak clients
+@example Add a OpenID Connect client
+  keycloak_client { 'www.example.com':
+    ensure          => 'present',
+    realm           => 'test',
+    redirect_uris   => [
+      "https://www.example.com/oidc",
+      "https://www.example.com",
+    ],
+    client_template => 'oidc-clients',
+    secret          => 'supersecret',
   }
+  DESC
 
   extend PuppetX::Keycloak::Type
   add_autorequires()
@@ -16,14 +27,14 @@ Puppet::Type.newtype(:keycloak_client) do
   end
 
   newparam(:client_id, :namevar => true) do
-    desc 'clientId'
+    desc 'clientId. Defaults to `name`.'
     defaultto do
       @resource[:name]
     end
   end
 
   newparam(:id) do
-    desc 'Id'
+    desc 'Id. Defaults to `client_id`'
     defaultto do
       @resource[:client_id]
     end

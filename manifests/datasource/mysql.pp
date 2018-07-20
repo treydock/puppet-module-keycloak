@@ -1,4 +1,10 @@
-# Private class.
+# @summary Manage MySQL datasource
+#
+# @api private
+#
+# @param jar_source
+#   Path to MySQL connector jar file.
+#
 class keycloak::datasource::mysql (
   $jar_source = '/usr/share/java/mysql-connector-java.jar',
 ) {

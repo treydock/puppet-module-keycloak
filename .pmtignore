@@ -11,3 +11,5 @@ tests/
 log/
 junit/
 tmp/
+doc/
+.yardoc/

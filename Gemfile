@@ -15,6 +15,7 @@ group :development, :test do
   gem 'puppet-syntax',            :require => false
   gem 'simplecov',                :require => false
   gem 'json_pure', '~>1.x',       :require => false
+  gem 'puppet-strings',           :require => false
 end
 
 group :system_tests do

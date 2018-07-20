@@ -1,15 +1,13 @@
 Puppet::Type.newtype(:keycloak_conn_validator) do
+  desc <<-DESC
+Verify that a connection can be successfully established between a node
+and the keycloak server.  Its primary use is as a precondition to
+prevent configuration changes from being applied if the keycloak
+server cannot be reached, but it could potentially be used for other
+purposes such as monitoring.
+  DESC
 
-  @doc = "Verify that a connection can be successfully established between a node
-          and the keycloak server.  Its primary use is as a precondition to
-          prevent configuration changes from being applied if the keycloak
-          server cannot be reached, but it could potentially be used for other
-          purposes such as monitoring."
-
-  ensurable do
-    defaultvalues
-    defaultto :present
-  end
+  ensurable
 
   newparam(:name, :namevar => true) do
     desc 'An arbitrary name used as the identity of the resource.'
