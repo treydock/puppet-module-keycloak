@@ -13,6 +13,7 @@ describe 'keycloak_ldap_user_provider:' do
         realm => 'test',
         users_dn => 'ou=People,dc=test',
         connection_url => 'ldap://localhost:389',
+        custom_user_search_filter => '(objectClass=posixAccount)',
       }
       keycloak_ldap_mapper { 'full-name':
         realm => 'test',
@@ -31,6 +32,7 @@ describe 'keycloak_ldap_user_provider:' do
         data = JSON.parse(stdout)
         expect(data['config']['usersDn']).to eq(['ou=People,dc=test'])
         expect(data['config']['connectionUrl']).to eq(['ldap://localhost:389'])
+        expect(data['config']['customUserSearchFilter']).to eq(['(objectClass=posixAccount)'])
       end
     end
 
@@ -76,6 +78,7 @@ describe 'keycloak_ldap_user_provider:' do
         expect(data['config']['usersDn']).to eq(['ou=People,dc=test'])
         expect(data['config']['connectionUrl']).to eq(['ldap://localhost:389'])
         expect(data['config']['userObjectClasses']).to eq(['posixAccount'])
+        expect(data['config'].key?('customUserSearchFilter')).to eq(false)
       end
     end
 
