@@ -11,7 +11,7 @@ describe 'keycloak class:' do
       apply_manifest(pp, :catch_changes => true)
     end
 
-    describe file('/opt/keycloak-3.4.1.Final') do
+    describe file('/opt/keycloak-4.2.1.Final') do
       it { should be_directory }
     end
 

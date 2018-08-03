@@ -1,0 +1,31 @@
+{
+  "id" : "test.foo.bar",
+  "clientId" : "test.foo.bar",
+  "surrogateAuthRequired" : false,
+  "enabled" : true,
+  "clientAuthenticatorType" : "client-secret",
+  "redirectUris" : [ "https://test.foo.bar/test2" ],
+  "webOrigins" : [ ],
+  "notBefore" : 0,
+  "bearerOnly" : false,
+  "consentRequired" : false,
+  "standardFlowEnabled" : true,
+  "implicitFlowEnabled" : false,
+  "directAccessGrantsEnabled" : true,
+  "serviceAccountsEnabled" : false,
+  "authorizationServicesEnabled" : false,
+  "publicClient" : false,
+  "frontchannelLogout" : false,
+  "protocol" : "openid-connect",
+  "attributes" : { },
+  "authenticationFlowBindingOverrides" : { },
+  "fullScopeAllowed" : true,
+  "nodeReRegistrationTimeout" : -1,
+  "defaultClientScopes" : [ "email", "role_list" ],
+  "optionalClientScopes" : [ "address", "phone", "offline_access" ],
+  "access" : {
+    "view" : true,
+    "configure" : true,
+    "manage" : true
+  }
+}

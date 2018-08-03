@@ -5,7 +5,7 @@
 #
 # @param version
 #   Version of Keycloak to install and manage.
-#   Default is `3.4.1.Final`.
+#   Default is `4.2.1.Final`.
 # @param package_url
 #   URL of the Keycloak download.
 #   Default is based on version.
@@ -115,7 +115,7 @@
 #   Default is not set
 #
 class keycloak (
-  String $version               = '3.4.1.Final',
+  String $version               = '4.2.1.Final',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Stdlib::Absolutepath $install_dir = '/opt',

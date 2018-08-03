@@ -12,14 +12,24 @@ describe Puppet::Type.type(:keycloak_realm).provider(:kcadm) do
   describe 'self.instances' do
     it 'should create instances' do
       allow(@provider).to receive(:kcadm).with('get', 'realms').and_return(my_fixture_read('get.out'))
+      allow(@provider).to receive(:get_client_scopes).with('test', 'default').and_return({'profile' => '8a6759cb-3950-48a2-b29b-c2c06fc3379b'})
+      allow(@provider).to receive(:get_client_scopes).with('test', 'optional').and_return({'address' => '1cda5a52-aa2c-4b07-b620-30b703619581'})
+      allow(@provider).to receive(:get_client_scopes).with('master', 'default').and_return({'profile' => '8a6759cb-3950-48a2-b29b-c2c06fc3379b'})
+      allow(@provider).to receive(:get_client_scopes).with('master', 'optional').and_return({'address' => '1cda5a52-aa2c-4b07-b620-30b703619581'})
       expect(@provider.instances.length).to eq(2)
     end
 
     it 'should return the resource for a fileset' do
       allow(@provider).to receive(:kcadm).with('get', 'realms').and_return(my_fixture_read('get.out'))
+      allow(@provider).to receive(:get_client_scopes).with('test', 'default').and_return({'profile' => '8a6759cb-3950-48a2-b29b-c2c06fc3379b'})
+      allow(@provider).to receive(:get_client_scopes).with('test', 'optional').and_return({'address' => '1cda5a52-aa2c-4b07-b620-30b703619581'})
+      allow(@provider).to receive(:get_client_scopes).with('master', 'default').and_return({'profile' => '8a6759cb-3950-48a2-b29b-c2c06fc3379b'})
+      allow(@provider).to receive(:get_client_scopes).with('master', 'optional').and_return({'address' => '1cda5a52-aa2c-4b07-b620-30b703619581'})
       property_hash = @provider.instances[0].instance_variable_get("@property_hash")
       expect(property_hash[:enabled]).to eq(:true)
       expect(property_hash[:login_with_email_allowed]).to eq(:false)
+      expect(property_hash[:default_client_scopes]).to eq(['profile'])
+      expect(property_hash[:optional_client_scopes]).to eq(['address'])
     end
   end
 =begin
@@ -70,7 +80,7 @@ describe Puppet::Type.type(:keycloak_realm).provider(:kcadm) do
       temp = Tempfile.new('keycloak_realm')
       allow(Tempfile).to receive(:new).with('keycloak_realm').and_return(temp)
       expect(@resource.provider).to receive(:kcadm).with('update', 'realms/test', nil, temp.path)
-      @resource.provider.login_with_email_allowed = false
+      @resource.provider.login_with_email_allowed = :false
       @resource.provider.flush
     end
   end

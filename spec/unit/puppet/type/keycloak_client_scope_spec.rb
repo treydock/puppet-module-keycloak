@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:keycloak_client_template) do
+describe Puppet::Type.type(:keycloak_client_scope) do
   let(:default_config) do
     {
       :name => 'foo',
@@ -55,13 +55,22 @@ describe Puppet::Type.type(:keycloak_client_template) do
     }.to raise_error
   end
 
+  it 'should have default for consent_screen_text' do
+    expect(resource[:consent_screen_text]).to eq('${fooScopeConsentText}')
+  end
+
+  it 'should allow values for consent_screen_text' do
+    config[:consent_screen_text] = '${foo}'
+    expect(resource[:consent_screen_text]).to eq('${foo}')
+  end
+
   defaults = {
     :full_scope_allowed => :true
   }
 
   # Test boolean properties
   [
-    :full_scope_allowed,
+    :display_on_consent_screen,
   ].each do |p|
     it "should accept true for #{p.to_s}" do
       config[p] = true

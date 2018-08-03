@@ -1,0 +1,22 @@
+[ {
+  "id" : "3e40378d-d26d-471f-b2c7-7a3d9651e588",
+  "name" : "role_list"
+}, {
+  "id" : "96f8b56b-7b3a-44cf-82a5-ffbda49271bd",
+  "name" : "address"
+}, {
+  "id" : "a83d9575-d122-4af1-afb0-10edb851798e",
+  "name" : "phone"
+}, {
+  "id" : "b8ebafcc-485f-44d2-9fe6-f4ed0da80980",
+  "name" : "email"
+}, {
+  "id" : "dbd3b1c1-9159-46d9-a879-9602972f1994",
+  "name" : "offline_access"
+}, {
+  "id" : "ee85ec64-4853-4fd4-a2f4-ff578016c9b5",
+  "name" : "profile"
+}, {
+  "id" : "openid-connect-clients",
+  "name" : "openid-connect-clients"
+} ]

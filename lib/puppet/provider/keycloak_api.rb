@@ -54,6 +54,9 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
 
     arguments = [ action, resource ]
+    if ['create','update'].include?(action)
+      arguments << '-o'
+    end
     if realm
       arguments << '-r'
       arguments << realm

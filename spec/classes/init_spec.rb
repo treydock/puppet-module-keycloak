@@ -63,7 +63,7 @@ describe 'keycloak' do
         it do
           is_expected.to contain_file('kcadm-wrapper.sh').only_with(
             :ensure    => 'file',
-            :path      => '/opt/keycloak-3.4.1.Final/bin/kcadm-wrapper.sh',
+            :path      => '/opt/keycloak-4.2.1.Final/bin/kcadm-wrapper.sh',
             :owner     => 'keycloak',
             :group     => 'keycloak',
             :mode      => '0750',
@@ -74,14 +74,14 @@ describe 'keycloak' do
 
         it do
           is_expected.to contain_exec('create-keycloak-admin').with({
-            :command => '/opt/keycloak-3.4.1.Final/bin/add-user-keycloak.sh --user admin --password changeme --realm master && touch /opt/keycloak-3.4.1.Final/.create-keycloak-admin-h2',
-            :creates => '/opt/keycloak-3.4.1.Final/.create-keycloak-admin-h2',
+            :command => '/opt/keycloak-4.2.1.Final/bin/add-user-keycloak.sh --user admin --password changeme --realm master && touch /opt/keycloak-4.2.1.Final/.create-keycloak-admin-h2',
+            :creates => '/opt/keycloak-4.2.1.Final/.create-keycloak-admin-h2',
             :notify  => 'Class[Keycloak::Service]',
           })
         end
 
         it do
-          is_expected.to contain_file('/opt/keycloak-3.4.1.Final/config.cli').only_with(
+          is_expected.to contain_file('/opt/keycloak-4.2.1.Final/config.cli').only_with(
             :ensure     => 'file',
             :owner      => 'keycloak',
             :group      => 'keycloak',

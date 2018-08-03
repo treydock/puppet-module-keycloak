@@ -7,6 +7,7 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
     @resource = @type.new({
       :name => 'foo',
       :realm => 'test',
+      :default_client_scopes => ['profile']
     })
   end
 
@@ -55,7 +56,14 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
     it 'should create a realm' do
       temp = Tempfile.new('keycloak_client')
       allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
-      expect(@resource.provider).to receive(:kcadm).with('create', 'clients', 'test', temp.path)
+      allow(@resource.provider).to receive(:kcadm).with('get', 'client-scopes', 'test', nil, ['id','name']).and_return(my_fixture_read('get-scopes.out'))
+      expect(@resource.provider).to receive(:kcadm).with('create', 'clients', 'test', temp.path).and_return(my_fixture_read('get-client.out'))
+      expect(@resource.provider).to receive(:kcadm).with('delete', 'clients/foo/default-client-scopes/b8ebafcc-485f-44d2-9fe6-f4ed0da80980', 'test')
+      expect(@resource.provider).to receive(:kcadm).with('delete', 'clients/foo/default-client-scopes/3e40378d-d26d-471f-b2c7-7a3d9651e588', 'test')
+      expect(@resource.provider).to receive(:kcadm).with('delete', 'clients/foo/optional-client-scopes/96f8b56b-7b3a-44cf-82a5-ffbda49271bd', 'test')
+      expect(@resource.provider).to receive(:kcadm).with('delete', 'clients/foo/optional-client-scopes/a83d9575-d122-4af1-afb0-10edb851798e', 'test')
+      expect(@resource.provider).to receive(:kcadm).with('delete', 'clients/foo/optional-client-scopes/dbd3b1c1-9159-46d9-a879-9602972f1994', 'test')
+      expect(@resource.provider).to receive(:kcadm).with('update', 'clients/foo/default-client-scopes/ee85ec64-4853-4fd4-a2f4-ff578016c9b5', 'test')
       @resource.provider.create
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash[:ensure]).to eq(:present)
@@ -76,6 +84,21 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       temp = Tempfile.new('keycloak_client')
       allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
       expect(@resource.provider).to receive(:kcadm).with('update', 'clients/foo', 'test', temp.path)
+      @resource.provider.redirect_uris = ['foobar']
+      @resource.provider.flush
+    end
+
+    it 'should update default_client_scopes' do
+      hash = @resource.provider.instance_variable_get(:@property_hash)
+      hash = @resource.to_hash
+      @resource.provider.instance_variable_set(:@property_hash, hash)
+      temp = Tempfile.new('keycloak_client')
+      allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
+      allow(@resource.provider).to receive(:kcadm).with('get', 'client-scopes', 'test', nil, ['id','name']).and_return(my_fixture_read('get-scopes.out'))
+      expect(@resource.provider).to receive(:kcadm).with('update', 'clients/foo', 'test', temp.path)
+      expect(@resource.provider).to receive(:kcadm).with('delete', 'clients/foo/default-client-scopes/ee85ec64-4853-4fd4-a2f4-ff578016c9b5', 'test')
+      expect(@resource.provider).to receive(:kcadm).with('update', 'clients/foo/default-client-scopes/openid-connect-clients', 'test')
+      @resource.provider.default_client_scopes = ['openid-connect-clients']
       @resource.provider.redirect_uris = ['foobar']
       @resource.provider.flush
     end

@@ -52,7 +52,8 @@ Puppet::Type.newtype(:keycloak_api) do
 
   def generate
     [
-      :keycloak_client_template,
+      :keycloak_client_protocol_mapper,
+      :keycloak_client_scope,
       :keycloak_client,
       :keycloak_ldap_mapper,
       :keycloak_ldap_user_provider,
