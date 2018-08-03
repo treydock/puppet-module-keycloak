@@ -74,4 +74,12 @@ Manage Keycloak realms
     newvalues(:true, :false)
     defaultto :true
   end
+
+  newproperty(:default_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+    desc 'Default Client Scopes'
+  end
+
+  newproperty(:optional_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+    desc 'Optional Client Scopes'
+  end
 end

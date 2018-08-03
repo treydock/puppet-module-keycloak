@@ -63,6 +63,9 @@ describe Puppet::Type.type(:keycloak_client) do
     :enabled => :true,
     :direct_access_grants_enabled => :true,
     :public_client => :false,
+    :full_scope_allowed => :true,
+    :default_client_scopes => [],
+    :optional_client_scopes => [],
     :redirect_uris => [],
     :web_origins => [],
   }
@@ -70,7 +73,6 @@ describe Puppet::Type.type(:keycloak_client) do
   # Test basic properties
   [
     :secret,
-    :client_template,
   ].each do |p|
     it "should accept a #{p.to_s}" do
       config[p] = 'foo'
@@ -88,6 +90,7 @@ describe Puppet::Type.type(:keycloak_client) do
     :enabled,
     :direct_access_grants_enabled,
     :public_client,
+    :full_scope_allowed,
   ].each do |p|
     it "should accept true for #{p.to_s}" do
       config[p] = true
@@ -120,10 +123,12 @@ describe Puppet::Type.type(:keycloak_client) do
 
   # Array properties
   [
+    :default_client_scopes,
+    :optional_client_scopes,
     :redirect_uris,
     :web_origins,
   ].each do |p|
-    it 'should accept array' do
+    it "should accept array for #{p}" do
       config[p] = ['foo','bar']
       expect(resource[p]).to eq(['foo','bar'])
     end
@@ -164,20 +169,20 @@ describe Puppet::Type.type(:keycloak_client) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire keycloak_client_template' do
-    config[:client_template] = 'foo'
-    keycloak_client_template = Puppet::Type.type(:keycloak_client_template).new(:name => 'foo', :realm => 'test')
+  it 'should autorequire keycloak_client_scope' do
+    config[:default_client_scopes] = ['foo']
+    keycloak_client_scope = Puppet::Type.type(:keycloak_client_scope).new(:name => 'foo', :realm => 'test')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
-    catalog.add_resource keycloak_client_template
+    catalog.add_resource keycloak_client_scope
     rel = resource.autorequire[0]
-    expect(rel.source.ref).to eq(keycloak_client_template.ref)
+    expect(rel.source.ref).to eq(keycloak_client_scope.ref)
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire client_template protocol mappers' do
-    config[:client_template] = 'foo'
-    keycloak_protocol_mapper = Puppet::Type.type(:keycloak_protocol_mapper).new(:name => 'bar', :realm => 'test', :client_template => 'foo')
+  it 'should autorequire client_scope protocol mappers' do
+    config[:default_client_scopes] = ['foo']
+    keycloak_protocol_mapper = Puppet::Type.type(:keycloak_protocol_mapper).new(:name => 'bar', :realm => 'test', :client_scope => 'foo')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_protocol_mapper

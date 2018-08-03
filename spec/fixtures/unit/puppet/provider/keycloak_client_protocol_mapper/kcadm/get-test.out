@@ -1,19 +1,19 @@
 [ {
-  "id" : "dd6d7973-3af3-4499-b16f-fc31690eb565",
-  "name" : "email verified",
+  "id" : "96e5ac2e-df32-4393-abce-0154109eaa92",
+  "name" : "username",
   "protocol" : "openid-connect",
   "protocolMapper" : "oidc-usermodel-property-mapper",
   "consentRequired" : false,
   "config" : {
     "userinfo.token.claim" : "true",
-    "user.attribute" : "emailVerified",
+    "user.attribute" : "username",
     "id.token.claim" : "true",
     "access.token.claim" : "true",
-    "claim.name" : "email_verified",
-    "jsonType.label" : "boolean"
+    "claim.name" : "preferred_username",
+    "jsonType.label" : "String"
   }
 }, {
-  "id" : "03dd7d68-25d4-4f1a-9b57-dbdefb9536d0",
+  "id" : "78e146de-e8d6-4530-a8fc-86d3e82ac55d",
   "name" : "email",
   "protocol" : "openid-connect",
   "protocolMapper" : "oidc-usermodel-property-mapper",

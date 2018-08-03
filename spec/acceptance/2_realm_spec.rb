@@ -21,6 +21,22 @@ describe 'keycloak_realm:' do
         expect(data['id']).to eq('test')
       end
     end
+
+    it 'should have left default-client-scopes' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do
+        data = JSON.parse(stdout)
+        names = data.map { |d| d['name'] }.sort
+        expect(names).to eq(['email', 'profile', 'role_list'])
+      end
+    end
+
+    it 'should have left optional-client-scopes' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-optional-client-scopes' do
+        data = JSON.parse(stdout)
+        names = data.map { |d| d['name'] }.sort
+        expect(names).to eq(['address', 'offline_access', 'phone'])
+      end
+    end
   end
 
   context 'updates realm' do
@@ -33,6 +49,7 @@ describe 'keycloak_realm:' do
       keycloak_realm { 'test':
         ensure => 'present',
         remember_me => true,
+        default_client_scopes => ['profile'],
       }
       EOS
 
@@ -44,6 +61,14 @@ describe 'keycloak_realm:' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
         data = JSON.parse(stdout)
         expect(data['rememberMe']).to eq(true)
+      end
+    end
+
+    it 'should have updated the realm default-client-scopes' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do
+        data = JSON.parse(stdout)
+        names = data.map { |d| d['name'] }
+        expect(names).to eq(['profile'])
       end
     end
   end

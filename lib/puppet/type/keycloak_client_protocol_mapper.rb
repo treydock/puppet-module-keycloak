@@ -2,11 +2,11 @@ require_relative '../provider/keycloak_api'
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
-Puppet::Type.newtype(:keycloak_protocol_mapper) do
+Puppet::Type.newtype(:keycloak_client_protocol_mapper) do
   desc <<-DESC
 Manage Keycloak protocol mappers
-@example Add email protocol mapper to oidc-client client scope in realm test
-  keycloak_protocol_mapper { "email for oidc-clients on test":
+@example Add email protocol mapper to test.example.com client in realm test
+  keycloak_client_protocol_mapper { "email for test.example.com on test":
     claim_name     => 'email',
     user_attribute => 'email',
   }
@@ -35,8 +35,8 @@ Manage Keycloak protocol mappers
     end
   end
 
-  newparam(:client_scope, :namevar => true) do
-    desc 'client scope'
+  newparam(:client, :namevar => true) do
+    desc 'client'
   end
 
   newparam(:realm, :namevar => true) do
@@ -183,11 +183,11 @@ Manage Keycloak protocol mappers
     end
   end
 
-  autorequire(:keycloak_client_scope) do
+  autorequire(:keycloak_client) do
     requires = []
     catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_client_scope'
-        if resource[:resource_name] == self[:client_scope]
+      if resource.class.to_s == 'Puppet::Type::Keycloak_client'
+        if resource[:client_id] == self[:client]
           requires << resource.name
         end
       end
@@ -202,7 +202,7 @@ Manage Keycloak protocol mappers
         [
           [:name],
           [:resource_name],
-          [:client_scope],
+          [:client],
           [:realm],
         ],
       ],

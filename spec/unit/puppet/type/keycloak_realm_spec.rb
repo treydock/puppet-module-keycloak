@@ -92,6 +92,22 @@ describe Puppet::Type.type(:keycloak_realm) do
     end
   end
 
+  # Array properties
+  [
+    :default_client_scopes,
+    :optional_client_scopes,
+  ].each do |p|
+    it "should accept array for #{p}" do
+      config[p] = ['foo','bar']
+      expect(resource[p]).to eq(['foo','bar'])
+    end
+    if defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
+    end
+  end
+
   it 'should autorequire keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(:name => 'keycloak')
     catalog = Puppet::Resource::Catalog.new

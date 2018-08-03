@@ -1,13 +1,12 @@
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
-Puppet::Type.newtype(:keycloak_client_template) do
+Puppet::Type.newtype(:keycloak_client_scope) do
   desc <<-DESC
-Manage Keycloak client templates
-@example Define a OpenID Connect client template in the test realm
-  keycloak_client_template { 'oidc-clients on test':
-    protocol           => 'openid-connect',
-    full_scope_allowed => true,
+Manage Keycloak client scopes
+@example Define a OpenID Connect client scope in the test realm
+  keycloak_client_scope { 'email on test':
+    protocol => 'openid-connect',
   }
   DESC
 
@@ -17,11 +16,11 @@ Manage Keycloak client templates
   ensurable
 
   newparam(:name, :namevar => true) do
-    desc 'The client template name'
+    desc 'The client scope name'
   end
 
   newparam(:resource_name, :namevar => true) do
-    desc 'The client template name. Defaults to `name`.'
+    desc 'The client scope name. Defaults to `name`.'
     defaultto do
       @resource[:name]
     end
@@ -45,8 +44,15 @@ Manage Keycloak client templates
     munge { |v| v }
   end
 
-  newproperty(:full_scope_allowed, :boolean => true) do
-    desc "fullScopeAllowed"
+  newproperty(:consent_screen_text) do
+    desc "consent.screen.text"
+    defaultto do
+      "${#{@resource[:resource_name]}ScopeConsentText}"
+    end
+  end
+
+  newproperty(:display_on_consent_screen, :boolean => true) do
+    desc "display.on.consent.screen"
     newvalues(:true, :false)
     defaultto :true
   end

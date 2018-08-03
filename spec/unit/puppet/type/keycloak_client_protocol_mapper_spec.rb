@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:keycloak_protocol_mapper) do
+describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
   let(:default_config) do
     {
       :name => 'foo',
       :realm => 'test',
-      :client_scope => 'oidc',
+      :client => 'test.example.com',
     }
   end
   let(:config) do
@@ -39,18 +39,18 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
   end
 
   it 'should handle componsite name' do
-    component = described_class.new(:name => 'foo for oidc on test')
-    expect(component[:name]).to eq('foo for oidc on test')
+    component = described_class.new(:name => 'foo for test.example.com on test')
+    expect(component[:name]).to eq('foo for test.example.com on test')
     expect(component[:resource_name]).to eq('foo')
-    expect(component[:client_scope]).to eq('oidc')
+    expect(component[:client]).to eq('test.example.com')
     expect(component[:realm]).to eq('test')
   end
 
   it 'should handle componsite name with space' do
-    component = described_class.new(:name => 'full name for oidc on test')
-    expect(component[:name]).to eq('full name for oidc on test')
+    component = described_class.new(:name => 'full name for test.example.com on test')
+    expect(component[:name]).to eq('full name for test.example.com on test')
     expect(component[:resource_name]).to eq('full name')
-    expect(component[:client_scope]).to eq('oidc')
+    expect(component[:client]).to eq('test.example.com')
     expect(component[:realm]).to eq('test')
   end
 
@@ -381,13 +381,13 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire keycloak_client_scope' do
-    keycloak_client_scope = Puppet::Type.type(:keycloak_client_scope).new(:name => 'oidc', :realm => 'test')
+  it 'should autorequire keycloak_client' do
+    keycloak_client = Puppet::Type.type(:keycloak_client).new(:name => 'test.example.com', :realm => 'test')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
-    catalog.add_resource keycloak_client_scope
+    catalog.add_resource keycloak_client
     rel = resource.autorequire[0]
-    expect(rel.source.ref).to eq(keycloak_client_scope.ref)
+    expect(rel.source.ref).to eq(keycloak_client.ref)
     expect(rel.target.ref).to eq(resource.ref)
   end
 

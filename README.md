@@ -6,6 +6,8 @@
 #### Table of Contents
 
 1. [Overview](#overview)
+    * [Upgrade to 3.x](#upgrade-to-3x)
+    * [Supported Versions of Keycloak](#supported-versions-of-keycloak)
 2. [Usage - Configuration options](#usage)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
@@ -14,6 +16,23 @@
 ## Overview
 
 The keycloak module allows easy installation and management of Keycloak.
+
+### Upgrade to 3.x
+
+There are several key differences between 2.x and 3.x of this module that were required to support Keycloak 4.x.
+
+* The default version of Keycloak deployed by this module has been bumped to 4.2.1
+* `keycloak_client_template` type has become `keycloak_client_scope` but with different properties.
+* The protocol mapper types had `consent_text` and `consent_required` parameters removed.
+* The `keycloak::client_template` defined type is left as a helper but is deprecated.
+
+### Supported Versions of Keycloak
+
+| Keycloak Version | Keycloak Puppet module versions |
+| ---------------- | ------------------------------- |
+| 3.x              | 2.x                             |
+| 4.x              | 3.x                             |
+
 
 ## Usage
 

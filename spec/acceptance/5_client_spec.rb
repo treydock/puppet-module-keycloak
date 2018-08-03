@@ -9,14 +9,11 @@ describe 'keycloak_client define:' do
         datasource_driver => 'mysql',
       }
       keycloak_realm { 'test': ensure => 'present' }
-      keycloak::client_template { 'openid-connect-clients':
-        realm => 'test',
-      }
       keycloak_client { 'test.foo.bar':
-        realm => 'test',
-        redirect_uris   => ['https://test.foo.bar/test1'],
-        client_template => 'openid-connect-clients',
-        secret => 'foobar',
+        realm                 => 'test',
+        redirect_uris         => ['https://test.foo.bar/test1'],
+        default_client_scopes => ['address'],
+        secret                => 'foobar',
       }
       EOS
 
@@ -29,7 +26,7 @@ describe 'keycloak_client define:' do
         data = JSON.parse(stdout)
         expect(data['id']).to eq('test.foo.bar')
         expect(data['clientId']).to eq('test.foo.bar')
-        expect(data['clientTemplate']).to eq('openid-connect-clients')
+        expect(data['defaultClientScopes']).to eq(['address'])
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test1'])
       end
     end
@@ -50,14 +47,11 @@ describe 'keycloak_client define:' do
         datasource_driver => 'mysql',
       }
       keycloak_realm { 'test': ensure => 'present' }
-      keycloak::client_template { 'openid-connect-clients':
-        realm => 'test',
-      }
       keycloak_client { 'test.foo.bar':
-        realm => 'test',
-        redirect_uris   => ['https://test.foo.bar/test2'],
-        client_template => 'openid-connect-clients',
-        secret => 'foobar',
+        realm                 => 'test',
+        redirect_uris         => ['https://test.foo.bar/test2'],
+        default_client_scopes => ['profile', 'email'],
+        secret                => 'foobar',
       }
       EOS
 
@@ -70,7 +64,7 @@ describe 'keycloak_client define:' do
         data = JSON.parse(stdout)
         expect(data['id']).to eq('test.foo.bar')
         expect(data['clientId']).to eq('test.foo.bar')
-        expect(data['clientTemplate']).to eq('openid-connect-clients')
+        expect(data['defaultClientScopes']).to eq(['profile', 'email'])
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test2'])
       end
     end

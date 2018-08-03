@@ -75,8 +75,20 @@ Manage Keycloak clients
     defaultto 'client-secret'
   end
 
-  newproperty(:client_template) do
-    desc 'clientTemplate'
+  newproperty(:default_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+    desc 'defaultClientScopes'
+    defaultto []
+  end
+
+  newproperty(:optional_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+    desc 'optionalClientScopes'
+    defaultto []
+  end
+
+  newproperty(:full_scope_allowed, :boolean => true) do
+    desc 'fullScopeAllowed'
+    newvalues(:true, :false)
+    defaultto(:true)
   end
 
   newproperty(:enabled, :boolean => true) do
@@ -107,15 +119,29 @@ Manage Keycloak clients
     defaultto []
   end
 
-  autorequire(:keycloak_client_template) do
-    [ self[:client_template] ]
+  autorequire(:keycloak_client_scope) do
+    requires = []
+    catalog.resources.each do |resource|
+      if resource.class.to_s == 'Puppet::Type::Keycloak_client_scope'
+        if self[:default_client_scopes].include?(resource[:resource_name])
+          requires << resource.name
+        end
+        if self[:optional_client_scopes].include?(resource[:resource_name])
+          requires << resource.name
+        end
+      end
+    end
+    requires
   end
 
   autorequire(:keycloak_protocol_mapper) do
     requires = []
     catalog.resources.each do |resource|
       if resource.class.to_s == 'Puppet::Type::Keycloak_protocol_mapper'
-        if resource[:client_template] == self[:client_template]
+        if self[:default_client_scopes].include?(resource[:client_scope])
+          requires << resource.name
+        end
+        if self[:optional_client_scopes].include?(resource[:client_scope])
           requires << resource.name
         end
       end
