@@ -21,17 +21,12 @@ class keycloak::datasource::oracle (
     mode   => '0755',
   }
 
-  if ($jar_file != undef) and ($jar_source != undef) {
-    file { "${$module_dir}/${jar_file}":
+  file { "${$module_dir}/${jar_file}":
       ensure => 'file',
       source => $jar_source,
       owner  => $keycloak::user,
       group  => $keycloak::group,
       mode   => '0644',
-    }
-  }
-  else {
-    fail('Using Oracle RDBMS requires definition of jar_file and jar_source for Oracle JDBC driver. Refer to module documentation')
   }
 
   file { "${$module_dir}/module.xml":

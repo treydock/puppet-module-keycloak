@@ -172,6 +172,10 @@ class keycloak (
     default: {}
   }
 
+  if ($datasource_driver = 'oracle') and (($oracle_jar_file == undef) or ($oracle_jar_source == undef)) {
+    fail('Using Oracle RDBMS requires definition of jar_file and jar_source for Oracle JDBC driver. Refer to module documentation')
+  }
+
   $install_base = "${keycloak::install_dir}/keycloak-${keycloak::version}"
 
   include ::java
