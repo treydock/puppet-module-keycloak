@@ -107,6 +107,12 @@
 # @param client_templates
 #   Hash that is used to define keycloak::client_template resources.
 #   Default is `{}`.
+# @param oracle_jar_file
+#   Oracle JDBC driver to use. Only use if $datasource_driver is set to oracle
+#   Default is not defined
+# @param oracle_jar_source
+#   Source for Oracle JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to oracle
+#   Default is not set
 #
 class keycloak (
   String $version               = '3.4.1.Final',
@@ -144,6 +150,8 @@ class keycloak (
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
   Hash $client_templates = {},
+  Optional[String] $oracle_jar_file = undef,
+  Optional[String] $oracle_jar_source = undef,
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
