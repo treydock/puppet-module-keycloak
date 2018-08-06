@@ -51,16 +51,19 @@
 #   Default is `true`.
 # @param datasource_driver
 #   Datasource driver to use for Keycloak.
-#   Valid values are `h2` and `mysql`.
+#   Valid values are `h2`, `mysql` and 'oracle'
 #   Default is `h2`.
 # @param datasource_host
 #   Datasource host.
-#   Only used when datasource_driver is `mysql`.
+#   Only used when datasource_driver is `mysql` or 'oracle'
 #   Default is `localhost` for MySQL.
 # @param datasource_port
 #   Datasource port.
-#   Only used when datasource_driver is `mysql`.
+#   Only used when datasource_driver is `mysql` or 'oracle'
 #   Default is `3306` for MySQL.
+# @param datasource_url
+#   Datasource url.
+#   Default datasource URLs are defined in init class.
 # @param datasource_dbname
 #   Datasource database name.
 #   Default is `keycloak`.
@@ -123,9 +126,10 @@ class keycloak (
   String $admin_user            = 'admin',
   String $admin_user_password   = 'changeme',
   Boolean $manage_datasource = true,
-  Enum['h2', 'mysql'] $datasource_driver = 'h2',
+  Enum['h2', 'mysql','oracle'] $datasource_driver = 'h2',
   Optional[String] $datasource_host = undef,
   Optional[Integer] $datasource_port = undef,
+  Optional[String] $datasource_url = undef,
   String $datasource_dbname = 'keycloak',
   String $datasource_username = 'sa',
   String $datasource_password = 'sa',
@@ -145,13 +149,18 @@ class keycloak (
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
   case $datasource_driver {
     'h2': {
-      $datasource_connection_url = "jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE"
-    }
+      $datasource_connection_url = pick($datasource_url, "jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE")
+      }
     'mysql': {
       $db_host = pick($datasource_host, 'localhost')
       $db_port = pick($datasource_port, 3306)
-      $datasource_connection_url = "jdbc:mysql://${db_host}:${db_port}/${datasource_dbname}"
-    }
+      $datasource_connection_url = pick($datasource_url, "jdbc:mysql://${db_host}:${db_port}/${datasource_dbname}")
+      }
+    'oracle': {
+      $db_host = pick($datasource_host, 'localhost')
+      $db_port = pick($datasource_port, 1521)
+      $datasource_connection_url = pick($datasource_url, "jdbc:oracle:thin:@${db_host}:${db_port}:${datasource_dbname}")
+      }
     default: {}
   }
 
