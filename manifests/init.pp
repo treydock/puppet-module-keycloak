@@ -104,6 +104,21 @@
 # @param client_templates
 #   Hash that is used to define keycloak::client_template resources.
 #   Default is `{}`.
+# @param https 
+#   Defines if https should be configured.
+#   Default is false.
+# @param ssl_keystore_file 
+#   Name of the keystore file. Will be placed in configuration folder in Keycloak installation
+#   Default is not set.
+# @param ssl_keystore_source 
+#   Path to the keystore to be copied from.
+#   Default is not set
+# @param ssl_keystore_pass 
+#   Password to SSL keystore.
+#   Default is not set.
+# @param https_port 
+#   Port for HTTPS connection.
+#   Default is 8443
 #
 class keycloak (
   String $version               = '3.4.1.Final',
@@ -140,6 +155,12 @@ class keycloak (
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
   Hash $client_templates = {},
+  Boolean $https = false,
+  Integer $https_port = 8443,
+  Optional[String] $ssl_keystore_file = undef,
+  Optional[String] $ssl_keystore_source = undef,
+  Optional[String] $ssl_keystore_pass = undef,
+
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
