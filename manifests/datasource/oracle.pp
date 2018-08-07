@@ -22,11 +22,11 @@ class keycloak::datasource::oracle (
   }
 
   file { "${module_dir}/${jar_file}":
-      ensure => 'file',
-      source => $jar_source,
-      owner  => $keycloak::user,
-      group  => $keycloak::group,
-      mode   => '0644',
+    ensure => 'file',
+    source => $jar_source,
+    owner  => $keycloak::user,
+    group  => $keycloak::group,
+    mode   => '0644',
   }
 
   file { "${$module_dir}/module.xml":
