@@ -104,6 +104,12 @@
 # @param client_templates
 #   Hash that is used to define keycloak::client_template resources.
 #   Default is `{}`.
+# @param oracle_jar_file
+#   Oracle JDBC driver to use. Only use if $datasource_driver is set to oracle
+#   Default is not defined
+# @param oracle_jar_source
+#   Source for Oracle JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to oracle
+#   Default is not set
 # @param https 
 #   Defines if https should be configured.
 #   Default is false.
@@ -155,6 +161,8 @@ class keycloak (
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
   Hash $client_templates = {},
+  Optional[String] $oracle_jar_file = undef,
+  Optional[String] $oracle_jar_source = undef,
   Boolean $https = false,
   Integer $https_port = 8443,
   Optional[String] $ssl_keystore_file = undef,
@@ -174,6 +182,10 @@ class keycloak (
       $datasource_connection_url = "jdbc:mysql://${db_host}:${db_port}/${datasource_dbname}"
     }
     default: {}
+  }
+
+  if ($datasource_driver == 'oracle') and (($oracle_jar_file == undef) or ($oracle_jar_source == undef)) {
+    fail('Using Oracle RDBMS requires definition of jar_file and jar_source for Oracle JDBC driver. Refer to module documentation')
   }
 
   $install_base = "${keycloak::install_dir}/keycloak-${keycloak::version}"

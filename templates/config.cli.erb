@@ -29,6 +29,15 @@ end-if
 /subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=background-validation-millis)
 /subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=flush-strategy)
 <%- end -%>
+<%- elsif scope['keycloak::datasource_driver'] == 'oracle' -%>
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation, value=true)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1 FROM DUAL")
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
+if (outcome != success) of /subsystem=datasources/jdbc-driver=oracle:read-resource
+/subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=org.oracle,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
+end-if
+<%- end -%>
 <%- if scope['keycloak::truststore'] -%>
 if (outcome != success) of /subsystem=keycloak-server/spi=truststore:read-resource
 /subsystem=keycloak-server/spi=truststore/:add
