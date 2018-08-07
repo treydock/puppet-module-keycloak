@@ -192,16 +192,18 @@ class keycloak (
 
   Class["keycloak::datasource::${datasource_driver}"]~>Class['keycloak::service']
 
-  keycloak_conn_validator { 'keycloak':
-    keycloak_server => 'localhost',
-    keycloak_port   => $http_port,
-    use_ssl         => false,
-    timeout         => 60,
-    test_url        => '/auth/realms/master/.well-known/openid-configuration',
-    require         => Class['keycloak::service'],
+# Keycloak conn validator is active only for HTTP connection, as HTTPS connection works only with Puppet certs and not custom keystore (Ticket SERVER-1543)
+  if ! $keycloak::https {
+    keycloak_conn_validator { 'keycloak':
+      keycloak_server => $keycloak_ip,
+      keycloak_port   => $http_port,
+      use_ssl         => false,
+      timeout         => 60,
+      test_url        => '/auth/realms/master/.well-known/openid-configuration',
+      require         => Class['keycloak::service'],
+    }
   }
 
   create_resources('keycloak_realm', $realms)
   create_resources('keycloak::client_template', $client_templates)
-
 }

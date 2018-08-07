@@ -2,4 +2,14 @@
 
 KCADM="<%= scope['keycloak::install_base'] %>/bin/kcadm.sh"
 
+<%- if scope['keycloak::https'] -%>
+KEYCLOAK_TRUSTSTORE_PATH="<%= scope['keycloak::install_base'] %>/standalone/configuration/<%= scope['keycloak::ssl_keystore_file'] %>"
+KEYCLOAK_TRUSTSTORE_PASS="<%= scope['keycloak::ssl_keystore_pass'] %>"
+#Adding trustore information to Keycloak session
+${KCADM} config truststore --trustpass ${KEYCLOAK_TRUSTSTORE_PASS} ${KEYCLOAK_TRUSTSTORE_PATH}
+
+${KCADM} "$@" --server https://<%= @facts['networking']['fqdn'] %>:<%= scope['keycloak::https_port'] %>/auth --realm master --user <%= scope['keycloak::admin_user'] %> --password <%= scope['keycloak::admin_user_password'] %>
+<%- else -%>
 ${KCADM} "$@" --no-config --server http://localhost:<%= scope['keycloak::http_port'] %>/auth --realm master --user <%= scope['keycloak::admin_user'] %> --password <%= scope['keycloak::admin_user_password'] %>
+<%- end -%>
+

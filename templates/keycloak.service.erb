@@ -5,9 +5,16 @@ After=network.target
 [Service]
 Type=idle
 #Environment="JAVA_OPTS=-Xms1024m -Xmx20480m -XX:MaxPermSize=768m"
+
+<%- if scope['keycloak::https'] -%>
+Environment="KEYCLOACK_BIND_PORT=-Djboss.https.port=<%= scope['keycloak::https_port'] %>"
+<%- else %>
+Environment="KEYCLOACK_BIND_PORT=-Djboss.http.port=<%= scope['keycloak::http_port'] %>"
+<%- end -%>
+
 User=<%= scope['keycloak::user'] %>
 Group=<%= scope['keycloak::group'] %>
-ExecStart=<%= scope['keycloak::install_base'] %>/bin/standalone.sh -b 0.0.0.0 -Djboss.http.port=<%= scope['keycloak::http_port'] %>
+ExecStart=<%= scope['keycloak::install_base'] %>/bin/standalone.sh -b 0.0.0.0 ${KEYCLOACK_BIND_PORT}
 TimeoutStartSec=600
 TimeoutStopSec=600
 

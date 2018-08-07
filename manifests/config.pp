@@ -37,6 +37,17 @@ class keycloak::config {
     mode   => '0750',
   }
 
+  if $keycloak::https {
+    #Copy keycloak keystore
+    file {'Keycloak keystore':
+      path   => "${keycloak::install_base}/standalone/configuration/${keycloak::ssl_keystore_file}",
+      owner  => $keycloak::user,
+      group  => $keycloak::group,
+      mode   => '0600',
+      source => "${keycloak::ssl_keystore_source}/${keycloak::ssl_keystore_file}"
+    }
+  }
+
   file { "${keycloak::install_base}/config.cli":
     ensure    => 'file',
     owner     => $keycloak::user,
