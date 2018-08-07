@@ -195,7 +195,7 @@ class keycloak (
 # Keycloak conn validator is active only for HTTP connection, as HTTPS connection works only with Puppet certs and not custom keystore (Ticket SERVER-1543)
   if ! $keycloak::https {
     keycloak_conn_validator { 'keycloak':
-      keycloak_server => $keycloak_ip,
+      keycloak_server => localhost,
       keycloak_port   => $http_port,
       use_ssl         => false,
       timeout         => 60,
