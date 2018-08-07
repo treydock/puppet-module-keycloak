@@ -21,7 +21,7 @@ class keycloak::datasource::oracle (
     mode   => '0755',
   }
 
-  file { "${$module_dir}/${jar_file}":
+  file { "${module_dir}/${jar_file}":
       ensure => 'file',
       source => $jar_source,
       owner  => $keycloak::user,
