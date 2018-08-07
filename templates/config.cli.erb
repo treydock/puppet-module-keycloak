@@ -54,4 +54,31 @@ batch
 /subsystem=undertow/server=default-server/https-listener=https:add(socket-binding=https, security-realm=HTTPSRealm)
 run-batch
 end-if
+if (outcome == success) of /subsystem=remoting/http-connector=http-remoting-connector/:read-resource
+/subsystem=remoting/http-connector=http-remoting-connector/:write-attribute(name=connector-ref, value=https)
+end-if
+if (outcome == success) of /subsystem=undertow/server=default-server/http-listener=default/:read-resource
+/subsystem=undertow/server=default-server/http-listener=default:remove
+end-if
+/core-service=management/security-realm="ManagementRealm"/server-identity=ssl:add(keystore-path=<%= scope['keycloak::ssl_keystore_file'] %>, keystore-relative-to="jboss.server.config.dir", keystore-password=<%= scope['keycloak::ssl_keystore_pass'] %>)
+/core-service=management/management-interface=http-interface/:write-attribute(name=secure-socket-binding, value=management-https)
+/core-service=management/management-interface=http-interface/:undefine-attribute(name=socket-binding)
+<%- else -%>
+if (outcome == success) of /core-service=management/security-realm=HTTPSRealm:read-resource
+/core-service=management/security-realm=HTTPSRealm:remove
+end-if
+if (outcome == success) of /subsystem=undertow/server=default-server/https-listener=https/:read-resource
+/subsystem=undertow/server=default-server/https-listener=https/:remove
+end-if
+if (outcome != success) of /subsystem=undertow/server=default-server/http-listener=default/:read-resource
+/subsystem=undertow/server=default-server/http-listener=default:add(socket-binding=http)
+end-if
+if (outcome == success) of /core-service=management/security-realm="ManagementRealm"/server-identity=ssl/:read-resource
+/core-service=management/security-realm="ManagementRealm"/server-identity=ssl/:remove
+end-if
+if (outcome == success) of /subsystem=remoting/http-connector=http-remoting-connector/:read-resource
+/subsystem=remoting/http-connector=http-remoting-connector/:write-attribute(name=connector-ref, value=default)
+end-if
+/core-service=management/management-interface=http-interface/:undefine-attribute(name=secure-socket-binding)
+/core-service=management/management-interface=http-interface/:write-attribute(name=socket-binding, value=management-http)
 <%- end -%>
