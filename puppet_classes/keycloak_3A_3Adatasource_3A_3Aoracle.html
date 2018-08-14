@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: keycloak::install
+  Puppet Class: keycloak::datasource::oracle
   
     &mdash; Documentation by YARD 0.9.15
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_classes::keycloak::install";
+  pathId = "puppet_classes::keycloak::datasource::oracle";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (k)</a> &raquo;
     <span class='title'><span class='object_link'>Puppet Classes</span></span>
      &raquo; 
-    <span class="title">keycloak::install</span>
+    <span class="title">keycloak::datasource::oracle</span>
   
 </div>
 
@@ -59,14 +59,14 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: keycloak::install</h1>
+      <div id="content"><h1>Puppet Class: keycloak::datasource::oracle</h1>
 <div class="box_info">
   
   
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/install.pp
+      manifests/datasource/oracle.pp
     </dd>
   </dl>
 </div>
@@ -82,7 +82,50 @@
 
 
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>jar_file</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::oracle_jar_file</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jar_source</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::oracle_jar_source</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>module_source</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;puppet:///modules/keycloak/database/oracle/module.xml&#39;</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -128,54 +171,48 @@
 36
 37
 38
-39
-40
-41
-42</pre>
+39</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/install.pp', line 2</span>
+        <pre class="code"><span class="info file"># File 'manifests/datasource/oracle.pp', line 2</span>
 
-class keycloak::install {
+class keycloak::datasource::oracle (
+  $jar_file      = $keycloak::oracle_jar_file,
+  $jar_source    = $keycloak::oracle_jar_source,
+  $module_source = &#39;puppet:///modules/keycloak/database/oracle/module.xml&#39;,
+) {
   assert_private()
 
-  user { &#39;keycloak&#39;:
-    ensure     =&gt; &#39;present&#39;,
-    name       =&gt; $keycloak::user,
-    forcelocal =&gt; true,
-    shell      =&gt; $keycloak::user_shell,
-    gid        =&gt; $keycloak::group,
-    uid        =&gt; $keycloak::user_uid,
-    home       =&gt; &#39;/var/lib/keycloak&#39;,
-    managehome =&gt; true,
-  }
+  $module_dir = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/oracle/main&quot;
 
-  group { &#39;keycloak&#39;:
-    ensure     =&gt; &#39;present&#39;,
-    name       =&gt; $keycloak::group,
-    forcelocal =&gt; true,
-    gid        =&gt; $keycloak::group_gid,
+  exec { &quot;mkdir -p ${module_dir}&quot;:
+    path    =&gt; &#39;/usr/bin:/bin&#39;,
+    creates =&gt; $module_dir,
+    user    =&gt; $keycloak::user,
+    group   =&gt; $keycloak::group,
   }
-
-  file { &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;:
+  -&gt; file { $module_dir:
     ensure =&gt; &#39;directory&#39;,
     owner  =&gt; $keycloak::user,
     group  =&gt; $keycloak::group,
     mode   =&gt; &#39;0755&#39;,
   }
-  -&gt; archive { &quot;keycloak-${keycloak::version}.tar.gz&quot;:
-    ensure          =&gt; &#39;present&#39;,
-    extract         =&gt; true,
-    path            =&gt; &quot;/tmp/keycloak-${keycloak::version}.tar.gz&quot;,
-    extract_path    =&gt; &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;,
-    extract_command =&gt; &#39;tar xfz %s --strip-components=1&#39;,
-    source          =&gt; $keycloak::download_url,
-    creates         =&gt; &quot;${keycloak::install_dir}/keycloak-${keycloak::version}/bin&quot;,
-    cleanup         =&gt; true,
-    user            =&gt; &#39;keycloak&#39;,
-    group           =&gt; &#39;keycloak&#39;,
+
+  file { &quot;${module_dir}/${jar_file}&quot;:
+    ensure =&gt; &#39;file&#39;,
+    source =&gt; $jar_source,
+    owner  =&gt; $keycloak::user,
+    group  =&gt; $keycloak::group,
+    mode   =&gt; &#39;0644&#39;,
   }
 
+  file { &quot;${$module_dir}/module.xml&quot;:
+    ensure =&gt; &#39;file&#39;,
+    source =&gt; $module_source,
+    owner  =&gt; $keycloak::user,
+    group  =&gt; $keycloak::group,
+    mode   =&gt; &#39;0644&#39;,
+  }
 }</pre>
       </td>
     </tr>

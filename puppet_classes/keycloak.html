@@ -6,7 +6,7 @@
 <title>
   Puppet Class: keycloak
   
-    &mdash; Documentation by YARD 0.9.14
+    &mdash; Documentation by YARD 0.9.15
   
 </title>
 
@@ -106,13 +106,13 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;3.4.1.Final&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;4.2.1.Final&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
 <p>Version of Keycloak to install and manage. Default is
-<code>3.4.1.Final</code>.</p>
+<code>4.2.1.Final</code>.</p>
 </div>
       
     </li>
@@ -377,7 +377,7 @@ is <code>true</code>.</p>
         <span class='name'>datasource_driver</span>
       
       
-        <span class='type'>(<tt>Enum['h2', 'mysql']</tt>)</span>
+        <span class='type'>(<tt>Enum['h2', 'mysql','oracle']</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>&#39;h2&#39;</tt>)</em>
@@ -385,8 +385,8 @@ is <code>true</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource driver to use for Keycloak. Valid values are <code>h2</code> and
-<code>mysql</code>. Default is <code>h2</code>.</p>
+<p>Datasource driver to use for Keycloak. Valid values are <code>h2</code>,
+<code>mysql</code> and &#39;oracle&#39; Default is <code>h2</code>.</p>
 </div>
       
     </li>
@@ -404,8 +404,8 @@ is <code>true</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource host. Only used when datasource_driver is <code>mysql</code>.
-Default is <code>localhost</code> for MySQL.</p>
+<p>Datasource host. Only used when datasource_driver is <code>mysql</code> or
+&#39;oracle&#39; Default is <code>localhost</code> for MySQL.</p>
 </div>
       
     </li>
@@ -423,8 +423,26 @@ Default is <code>localhost</code> for MySQL.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource port. Only used when datasource_driver is <code>mysql</code>.
-Default is <code>3306</code> for MySQL.</p>
+<p>Datasource port. Only used when datasource_driver is <code>mysql</code> or
+&#39;oracle&#39; Default is <code>3306</code> for MySQL.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datasource_url</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Datasource url. Default datasource URLs are defined in init class.</p>
 </div>
       
     </li>
@@ -692,6 +710,44 @@ resources. Default is <code>{}</code>.</p>
   
     <li>
       
+        <span class='name'>oracle_jar_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Oracle JDBC driver to use. Only use if $datasource_driver is set to oracle
+Default is not defined</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>oracle_jar_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Source for Oracle JDBC driver - could be puppet link or local file on the
+node. Only use if $datasource_driver is set to oracle Default is not set</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>service_java_opts</span>
       
       
@@ -713,15 +769,6 @@ resources. Default is <code>{}</code>.</p>
         <pre class="lines">
 
 
-108
-109
-110
-111
-112
-113
-114
-115
-116
 117
 118
 119
@@ -791,13 +838,34 @@ resources. Default is <code>{}</code>.</p>
 183
 184
 185
-186</pre>
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 108</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 117</span>
 
 class keycloak (
-  String $version               = &#39;3.4.1.Final&#39;,
+  String $version               = &#39;4.2.1.Final&#39;,
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Stdlib::Absolutepath $install_dir = &#39;/opt&#39;,
@@ -814,9 +882,10 @@ class keycloak (
   String $admin_user            = &#39;admin&#39;,
   String $admin_user_password   = &#39;changeme&#39;,
   Boolean $manage_datasource = true,
-  Enum[&#39;h2&#39;, &#39;mysql&#39;] $datasource_driver = &#39;h2&#39;,
+  Enum[&#39;h2&#39;, &#39;mysql&#39;,&#39;oracle&#39;] $datasource_driver = &#39;h2&#39;,
   Optional[String] $datasource_host = undef,
   Optional[Integer] $datasource_port = undef,
+  Optional[String] $datasource_url = undef,
   String $datasource_dbname = &#39;keycloak&#39;,
   String $datasource_username = &#39;sa&#39;,
   String $datasource_password = &#39;sa&#39;,
@@ -831,19 +900,30 @@ class keycloak (
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
   Hash $client_templates = {},
+  Optional[String] $oracle_jar_file = undef,
+  Optional[String] $oracle_jar_source = undef,
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, &quot;https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz&quot;)
   case $datasource_driver {
     &#39;h2&#39;: {
-      $datasource_connection_url = &quot;jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE&quot;
-    }
+      $datasource_connection_url = pick($datasource_url, &quot;jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE&quot;)
+      }
     &#39;mysql&#39;: {
       $db_host = pick($datasource_host, &#39;localhost&#39;)
       $db_port = pick($datasource_port, 3306)
-      $datasource_connection_url = &quot;jdbc:mysql://${db_host}:${db_port}/${datasource_dbname}&quot;
-    }
+      $datasource_connection_url = pick($datasource_url, &quot;jdbc:mysql://${db_host}:${db_port}/${datasource_dbname}&quot;)
+      }
+    &#39;oracle&#39;: {
+      $db_host = pick($datasource_host, &#39;localhost&#39;)
+      $db_port = pick($datasource_port, 1521)
+      $datasource_connection_url = pick($datasource_url, &quot;jdbc:oracle:thin:@${db_host}:${db_port}:${datasource_dbname}&quot;)
+      }
     default: {}
+  }
+
+  if ($datasource_driver == &#39;oracle&#39;) and (($oracle_jar_file == undef) or ($oracle_jar_source == undef)) {
+    fail(&#39;Using Oracle RDBMS requires definition of jar_file and jar_source for Oracle JDBC driver. Refer to module documentation&#39;)
   }
 
   $install_base = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;

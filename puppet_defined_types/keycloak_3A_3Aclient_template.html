@@ -6,7 +6,7 @@
 <title>
   Defined Type: keycloak::client_template
   
-    &mdash; Documentation by YARD 0.9.14
+    &mdash; Documentation by YARD 0.9.15
   
 </title>
 
@@ -146,25 +146,6 @@
       
     </li>
   
-    <li>
-      
-        <span class='name'>full_scope_allowed</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>true</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>full_scope_allowed property for <code>keycloak_client_template</code>
-resource.</p>
-</div>
-      
-    </li>
-  
 </ul>
 
 
@@ -175,6 +156,8 @@ resource.</p>
         <pre class="lines">
 
 
+15
+16
 17
 18
 19
@@ -262,66 +245,49 @@ resource.</p>
 101
 102
 103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116</pre>
+104</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/client_template.pp', line 17</span>
+        <pre class="code"><span class="info file"># File 'manifests/client_template.pp', line 15</span>
 
 define keycloak::client_template (
   String $realm,
   String $resource_name = $name,
   Enum[&#39;openid-connect&#39;, &#39;saml&#39;] $protocol = &#39;openid-connect&#39;,
-  Boolean $full_scope_allowed = true,
 ) {
+
+  warning(&#39;The keycloak::client_template defined type is deprecated. Use keycloak_client_scope and keycloak_protocol_mapper directly.&#39;)
 
   include ::keycloak
 
-  keycloak_client_template { $name:
-    realm              =&gt; $realm,
-    resource_name      =&gt; $resource_name,
-    protocol           =&gt; $protocol,
-    full_scope_allowed =&gt; $full_scope_allowed,
+  keycloak_client_scope { $name:
+    realm         =&gt; $realm,
+    resource_name =&gt; $resource_name,
+    protocol      =&gt; $protocol,
   }
 
   if $protocol == &#39;openid-connect&#39; {
     keycloak_protocol_mapper { &quot;email for ${name} on ${realm}&quot;:
-      consent_text   =&gt; &#39;${email}&#39;, #lint:ignore:single_quote_string_with_variables
       claim_name     =&gt; &#39;email&#39;,
       user_attribute =&gt; &#39;email&#39;,
     }
 
     keycloak_protocol_mapper { &quot;username for ${name} on ${realm}&quot;:
-      consent_text   =&gt; &#39;${username}&#39;, #lint:ignore:single_quote_string_with_variables
       claim_name     =&gt; &#39;preferred_username&#39;,
       user_attribute =&gt; &#39;username&#39;,
     }
 
     keycloak_protocol_mapper { &quot;full name for ${name} on ${realm}&quot;:
-      consent_text         =&gt; &#39;${fullName}&#39;, #lint:ignore:single_quote_string_with_variables
       type                 =&gt; &#39;oidc-full-name-mapper&#39;,
       userinfo_token_claim =&gt; false,
     }
 
     keycloak_protocol_mapper { &quot;family name for ${name} on ${realm}&quot;:
-      consent_text   =&gt; &#39;${familyName}&#39;, #lint:ignore:single_quote_string_with_variables
       claim_name     =&gt; &#39;family_name&#39;,
       user_attribute =&gt; &#39;lastName&#39;,
     }
 
     keycloak_protocol_mapper { &quot;given name for ${name} on ${realm}&quot;:
-      consent_text   =&gt; &#39;${givenName}&#39;, #lint:ignore:single_quote_string_with_variables
       claim_name     =&gt; &#39;given_name&#39;,
       user_attribute =&gt; &#39;firstName&#39;,
     }
@@ -331,7 +297,6 @@ define keycloak::client_template (
     keycloak_protocol_mapper { &quot;username for ${name} on ${realm}&quot;:
       protocol             =&gt; $protocol,
       type                 =&gt; &#39;saml-user-property-mapper&#39;,
-      consent_text         =&gt; &quot;\${username}&quot;,
       attribute_nameformat =&gt; &#39;uri&#39;,
       user_attribute       =&gt; &#39;username&#39;,
       friendly_name        =&gt; &#39;userid&#39;,
@@ -341,7 +306,6 @@ define keycloak::client_template (
     keycloak_protocol_mapper { &quot;X500 email for ${name} on ${realm}&quot;:
       protocol             =&gt; $protocol,
       type                 =&gt; &#39;saml-user-property-mapper&#39;,
-      consent_text         =&gt; &quot;\${email}&quot;,
       attribute_nameformat =&gt; &#39;uri&#39;,
       user_attribute       =&gt; &#39;email&#39;,
       friendly_name        =&gt; &#39;email&#39;,
@@ -351,7 +315,6 @@ define keycloak::client_template (
     keycloak_protocol_mapper { &quot;X500 givenName for ${name} on ${realm}&quot;:
       protocol             =&gt; $protocol,
       type                 =&gt; &#39;saml-user-property-mapper&#39;,
-      consent_text         =&gt; &quot;\${givenName}&quot;,
       attribute_nameformat =&gt; &#39;uri&#39;,
       user_attribute       =&gt; &#39;firstName&#39;,
       friendly_name        =&gt; &#39;givenName&#39;,
@@ -361,7 +324,6 @@ define keycloak::client_template (
     keycloak_protocol_mapper { &quot;X500 surname for ${name} on ${realm}&quot;:
       protocol             =&gt; $protocol,
       type                 =&gt; &#39;saml-user-property-mapper&#39;,
-      consent_text         =&gt; &quot;\${familyName}&quot;,
       attribute_nameformat =&gt; &#39;uri&#39;,
       user_attribute       =&gt; &#39;lastName&#39;,
       friendly_name        =&gt; &#39;surname&#39;,
@@ -371,7 +333,6 @@ define keycloak::client_template (
     keycloak_protocol_mapper { &quot;role list for ${name} on ${realm}&quot;:
       protocol             =&gt; $protocol,
       type                 =&gt; &#39;saml-role-list-mapper&#39;,
-      consent_required     =&gt; false,
       single               =&gt; false,
       attribute_nameformat =&gt; &#39;basic&#39;,
       attribute_name       =&gt; &#39;Role&#39;,

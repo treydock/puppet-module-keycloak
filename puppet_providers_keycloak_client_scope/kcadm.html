@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Puppet Class: keycloak::service
+  Provider: kcadm
   
     &mdash; Documentation by YARD 0.9.15
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_classes::keycloak::service";
+  pathId = "puppet_providers_keycloak_client_scope::kcadm";
   relpath = '../';
 </script>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <iframe id="nav" src="../puppet_provider_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -37,9 +37,9 @@
         <div id="menu">
   
     <a href="../_index.html">Index (k)</a> &raquo;
-    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+    <span class='title'><span class='object_link'>Providers</span></span>
      &raquo; 
-    <span class="title">keycloak::service</span>
+    <span class="title">kcadm</span>
   
 </div>
 
@@ -59,15 +59,17 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Puppet Class: keycloak::service</h1>
+      <div id="content"><h1>Provider: kcadm</h1>
 <div class="box_info">
-  
-  
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/service.pp
+      lib/puppet/provider/keycloak_client_scope/kcadm.rb
     </dd>
+  </dl>
+  <dl>
+    <dt>Resource type:</dt>
+    <dd><span class='object_link'><a href="../puppet_types/keycloak_client_scope.html" title="puppet_types::keycloak_client_scope (puppet_type)">keycloak_client_scope</a></span></dd>
   </dl>
 </div>
 
@@ -75,70 +77,17 @@
 <div class="docstring">
   <div class="discussion">
     
-<p>Private class.</p>
+<p>“”</p>
 
   </div>
 </div>
-
-
 <div class="tags">
   
 
-</div><div class="method_details_list">
-  <table class="source_code">
-    <tr>
-      <td>
-        <pre class="lines">
-
-
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21</pre>
-      </td>
-      <td>
-        <pre class="code"><span class="info file"># File 'manifests/service.pp', line 2</span>
-
-class keycloak::service {
-  assert_private()
-
-  if $::service_provider == &#39;systemd&#39; {
-    ::systemd::unit_file { &#39;keycloak.service&#39;:
-      content =&gt; template(&#39;keycloak/keycloak.service.erb&#39;),
-      notify  =&gt; Service[&#39;keycloak&#39;],
-    }
-    Exec[&#39;systemctl-daemon-reload&#39;] -&gt; Service[&#39;keycloak&#39;]
-  }
-
-  service { &#39;keycloak&#39;:
-    ensure     =&gt; $keycloak::service_ensure,
-    enable     =&gt; $keycloak::service_enable,
-    name       =&gt; $keycloak::service_name,
-    hasstatus  =&gt; $keycloak::service_hasstatus,
-    hasrestart =&gt; $keycloak::service_hasrestart,
-  }
-
-}</pre>
-      </td>
-    </tr>
-  </table>
 </div>
+
+
+
 </div>
 
       <div id="footer">

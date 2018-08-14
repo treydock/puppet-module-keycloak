@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.14
+    &mdash; Documentation by YARD 0.9.15
   
 </title>
 
@@ -68,6 +68,12 @@ src="https://travis-ci.org/treydock/puppet-module-keycloak.png"></a></p>
 <h4 id="label-Table+of+Contents">Table of Contents</h4>
 <ol><li>
 <p><a href="#label-Overview">Overview</a></p>
+<ul><li>
+<p><a href="#label-Upgrade+to+3x">Upgrade to 3.x</a></p>
+</li><li>
+<p><a href="#label-Supported+versions+of+keycloak">Supported Versions of
+Keycloak</a></p>
+</li></ul>
 </li><li>
 <p><a href="#label-Usage">Usage - Configuration options</a></p>
 </li><li>
@@ -83,6 +89,29 @@ module</a></p>
 <h2 id="label-Overview">Overview</h2>
 
 <p>The keycloak module allows easy installation and management of Keycloak.</p>
+
+<h3 id="label-Upgrade+to+3.x">Upgrade to 3.x</h3>
+
+<p>There are several key differences between 2.x and 3.x of this module that
+were required to support Keycloak 4.x.</p>
+<ul><li>
+<p>The default version of Keycloak deployed by this module has been bumped to
+4.2.1</p>
+</li><li>
+<p><code>keycloak_client_template</code> type has become
+<code>keycloak_client_scope</code> but with different properties.</p>
+</li><li>
+<p>The protocol mapper types had <code>consent_text</code> and
+<code>consent_required</code> parameters removed.</p>
+</li><li>
+<p>The <code>keycloak::client_template</code> defined type is left as a helper
+but is deprecated.</p>
+</li></ul>
+
+<h3 id="label-Supported+Versions+of+Keycloak">Supported Versions of Keycloak</h3>
+
+<p>| Keycloak Version | Keycloak Puppet module versions | | —————- |
+——————————- | | 3.x | 2.x | | 4.x | 3.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
@@ -208,7 +237,7 @@ the truststore.</p>
 <h3 id="label-keycloak-3A-3Aclient_template">keycloak::client_template</h3>
 
 <p>Defined type that can be used to define both
-<code>keycloak_client_template</code> and
+<code>keycloak_client_scope</code> and
 <code>keycloak_protocol_mapper</code> resources. The example below will
 define a client template and several protocol mappers that are built into
 keycloak.</p>
@@ -217,25 +246,35 @@ keycloak.</p>
   realm =&gt; &#39;test&#39;,
 }</code></pre>
 
-<h3 id="label-keycloak_client_template">keycloak_client_template</h3>
+<p><strong>NOTE</strong>: This define is deprecated as templates were replaced
+by client scopes in Keycloak 4.x.</p>
 
-<p>Define a Client Template in Keycloak:</p>
+<h3 id="label-keycloak_client_scope">keycloak_client_scope</h3>
 
-<pre class="code ruby"><code class="ruby">keycloak_client_template { &#39;oidc-clients&#39;:
-  realm              =&gt; &#39;test&#39;,
-  resource_name      =&gt; &#39;oidc-clients&#39;,
-  protocol           =&gt; &#39;openid-connect&#39;,
-  full_scope_allowed =&gt; true,
+<p>Define a Client Scope of <code>email</code> for realm <code>test</code> in
+Keycloak:</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_client_scope { &#39;email on test&#39;:
+  protocol =&gt; &#39;openid-connect&#39;,
 }</code></pre>
 
 <h3 id="label-keycloak_protocol_mapper">keycloak_protocol_mapper</h3>
 
-<p>Associate a Protocol Mapper to a given template. The name in the following
-example will add the <code>email</code> protocol mapper to client template
-<code>oidc-clients</code> in the realm <code>test</code>.</p>
+<p>Associate a Protocol Mapper to a given Client Scope. The name in the
+following example will add the <code>email</code> protocol mapper to client
+scope <code>oidc-email</code> in the realm <code>test</code>.</p>
 
-<pre class="code ruby"><code class="ruby">keycloak_protocol_mapper { &quot;email for oidc-clients on test&quot;:
-  consent_text   =&gt; &#39;${email}&#39;,
+<pre class="code ruby"><code class="ruby">keycloak_protocol_mapper { &quot;email for oidc-email on test&quot;:
+  claim_name     =&gt; &#39;email&#39;,
+  user_attribute =&gt; &#39;email&#39;,
+}</code></pre>
+
+<h3 id="label-keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</h3>
+
+<p>Add <code>email</code> protocol mapper to <code>test.example.com</code>
+client in realm <code>test</code></p>
+
+<pre class="code ruby"><code class="ruby">keycloak_client_protocol_mapper { &quot;email for test.example.com on test&quot;:
   claim_name     =&gt; &#39;email&#39;,
   user_attribute =&gt; &#39;email&#39;,
 }</code></pre>

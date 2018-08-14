@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Resource Type: keycloak_protocol_mapper
+  Resource Type: keycloak_client_protocol_mapper
   
     &mdash; Documentation by YARD 0.9.15
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_types::keycloak_protocol_mapper";
+  pathId = "puppet_types::keycloak_client_protocol_mapper";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (k)</a> &raquo;
     <span class='title'><span class='object_link'>Resource Types</span></span>
      &raquo; 
-    <span class="title">keycloak_protocol_mapper</span>
+    <span class="title">keycloak_client_protocol_mapper</span>
   
 </div>
 
@@ -59,12 +59,12 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Resource Type: keycloak_protocol_mapper</h1>
+      <div id="content"><h1>Resource Type: keycloak_client_protocol_mapper</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      lib/puppet/type/keycloak_protocol_mapper.rb
+      lib/puppet/type/keycloak_client_protocol_mapper.rb
     </dd>
   </dl>
   
@@ -72,7 +72,7 @@
     <dt>Providers:</dt>
     <dd>
       
-        <span class='object_link'><a href="../puppet_providers_keycloak_protocol_mapper/kcadm.html" title="puppet_providers_keycloak_protocol_mapper::kcadm (puppet_provider)">kcadm</a></span><br/>
+        <span class='object_link'><a href="../puppet_providers_keycloak_client_protocol_mapper/kcadm.html" title="puppet_providers_keycloak_client_protocol_mapper::kcadm (puppet_provider)">kcadm</a></span><br/>
       
     </dd>
   </dl>
@@ -96,10 +96,10 @@
     
       
         <p class="example_title"><div class='inline'>
-<p>Add email protocol mapper to oidc-client client scope in realm test</p>
+<p>Add email protocol mapper to test.example.com client in realm test</p>
 </div></p>
       
-      <pre class="example code"><code>keycloak_protocol_mapper { &quot;email for oidc-clients on test&quot;:
+      <pre class="example code"><code>keycloak_client_protocol_mapper { &quot;email for test.example.com on test&quot;:
   claim_name     =&gt; &#39;email&#39;,
   user_attribute =&gt; &#39;email&#39;,
 }</code></pre>
@@ -416,13 +416,13 @@
   <ul>
     
     <li>
-      <span class="name">client_scope</span>
+      <span class="name">client</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>client scope</p>
+<p>client</p>
 
         </div>
       </div>
