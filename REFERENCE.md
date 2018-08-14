@@ -28,7 +28,8 @@ _Private Classes_
 
 * [`keycloak_api`](#keycloak_api): Type that configures API connection parameters for other keycloak types that use the Keycloak API.
 * [`keycloak_client`](#keycloak_client): Manage Keycloak clients
-* [`keycloak_client_template`](#keycloak_client_template): Manage Keycloak client templates
+* [`keycloak_client_protocol_mapper`](#keycloak_client_protocol_mapper): Manage Keycloak protocol mappers
+* [`keycloak_client_scope`](#keycloak_client_scope): Manage Keycloak client scopes
 * [`keycloak_conn_validator`](#keycloak_conn_validator): Verify that a connection can be successfully established between a node and the keycloak server.  Its primary use is as a precondition to pre
 * [`keycloak_ldap_mapper`](#keycloak_ldap_mapper): Manage Keycloak LDAP attribute mappers
 * [`keycloak_ldap_user_provider`](#keycloak_ldap_user_provider): Manage Keycloak LDAP user providers
@@ -58,9 +59,9 @@ The following parameters are available in the `keycloak` class.
 Data type: `String`
 
 Version of Keycloak to install and manage.
-Default is `3.4.1.Final`.
+Default is `4.2.1.Final`.
 
-Default value: '3.4.1.Final'
+Default value: '4.2.1.Final'
 
 ##### `package_url`
 
@@ -475,14 +476,6 @@ The protocol of the client template.
 
 Default value: 'openid-connect'
 
-##### `full_scope_allowed`
-
-Data type: `Boolean`
-
-full_scope_allowed property for `keycloak_client_template` resource.
-
-Default value: `true`
-
 ### keycloak::truststore::host
 
 Add host to Keycloak truststore
@@ -591,14 +584,14 @@ Manage Keycloak clients
 
 ```puppet
 keycloak_client { 'www.example.com':
-  ensure          => 'present',
-  realm           => 'test',
-  redirect_uris   => [
+  ensure                => 'present',
+  realm                 => 'test',
+  redirect_uris         => [
     "https://www.example.com/oidc",
     "https://www.example.com",
   ],
-  client_template => 'oidc-clients',
-  secret          => 'supersecret',
+  default_client_scopes => ['profile','email'],
+  secret                => 'supersecret',
 }
 ```
 
@@ -628,9 +621,25 @@ clientAuthenticatorType
 
 Default value: client-secret
 
-##### `client_template`
+##### `default_client_scopes`
 
-clientTemplate
+defaultClientScopes
+
+Default value: []
+
+##### `optional_client_scopes`
+
+optionalClientScopes
+
+Default value: []
+
+##### `full_scope_allowed`
+
+Valid values: `true`, `false`
+
+fullScopeAllowed
+
+Default value: true
 
 ##### `enabled`
 
@@ -694,24 +703,24 @@ realm
 
 secret
 
-### keycloak_client_template
+### keycloak_client_protocol_mapper
 
-Manage Keycloak client templates
+Manage Keycloak protocol mappers
 
 #### Examples
 
-##### Define a OpenID Connect client template in the test realm
+##### Add email protocol mapper to test.example.com client in realm test
 
 ```puppet
-keycloak_client_template { 'oidc-clients on test':
-  protocol           => 'openid-connect',
-  full_scope_allowed => true,
+keycloak_client_protocol_mapper { "email for test.example.com on test":
+  claim_name     => 'email',
+  user_attribute => 'email',
 }
 ```
 
 #### Properties
 
-The following properties are available in the `keycloak_client_template` type.
+The following properties are available in the `keycloak_client_protocol_mapper` type.
 
 ##### `ensure`
 
@@ -729,27 +738,148 @@ protocol
 
 Default value: openid-connect
 
-##### `full_scope_allowed`
+##### `user_attribute`
+
+user.attribute. Default to `resource_name` for `type` `oidc-usermodel-property-mapper` or `saml-user-property-mapper`
+
+##### `json_type_label`
+
+json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`.
+
+##### `friendly_name`
+
+friendly.name. Default to `resource_name` for `type` `saml-user-property-mapper`.
+
+##### `attribute_name`
+
+attribute.name Default to `resource_name` for `type` `saml-user-property-mapper`.
+
+##### `claim_name`
+
+claim.name
+
+##### `id_token_claim`
 
 Valid values: `true`, `false`
 
-fullScopeAllowed
+id.token.claim. Default to `true` for `protocol` `openid-connect`.
 
-Default value: true
+##### `access_token_claim`
+
+Valid values: `true`, `false`
+
+access.token.claim. Default to `true` for `protocol` `openid-connect`.
+
+##### `userinfo_token_claim`
+
+Valid values: `true`, `false`
+
+userinfo.token.claim. Default to `true` for `protocol` `openid-connect`.
+
+##### `attribute_nameformat`
+
+attribute.nameformat
+
+##### `single`
+
+Valid values: `true`, `false`
+
+single. Default to `false` for `type` `saml-role-list-mapper`.
 
 #### Parameters
 
-The following parameters are available in the `keycloak_client_template` type.
+The following parameters are available in the `keycloak_client_protocol_mapper` type.
 
 ##### `name`
 
 namevar
 
-The client template name
+The protocol mapper name
+
+##### `id`
+
+Id. Defaults to UUID based on `name`.
 
 ##### `resource_name`
 
-The client template name. Defaults to `name`.
+The protocol mapper name. Defaults to `name`.
+
+##### `client`
+
+client
+
+##### `realm`
+
+realm
+
+##### `type`
+
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper, saml-role-list-mapper
+
+protocolMapper.
+
+Default is `oidc-usermodel-property-mapper` for `protocol` `openid-connect` and
+`saml-user-property-mapper` for `protocol` `saml`.
+
+### keycloak_client_scope
+
+Manage Keycloak client scopes
+
+#### Examples
+
+##### Define a OpenID Connect client scope in the test realm
+
+```puppet
+keycloak_client_scope { 'email on test':
+  protocol => 'openid-connect',
+}
+```
+
+#### Properties
+
+The following properties are available in the `keycloak_client_scope` type.
+
+##### `ensure`
+
+Valid values: present, absent
+
+The basic property that the resource should be in.
+
+Default value: present
+
+##### `protocol`
+
+Valid values: openid-connect, saml
+
+protocol
+
+Default value: openid-connect
+
+##### `consent_screen_text`
+
+consent.screen.text
+
+##### `display_on_consent_screen`
+
+Valid values: `true`, `false`
+
+display.on.consent.screen
+
+Default value: true
+
+#### Parameters
+
+The following parameters are available in the `keycloak_client_scope` type.
+
+##### `name`
+
+namevar
+
+The client scope name
+
+##### `resource_name`
+
+The client scope name. Defaults to `name`.
 
 ##### `id`
 
@@ -1085,11 +1215,10 @@ Manage Keycloak protocol mappers
 
 #### Examples
 
-##### Add email protocol mapper to oidc-client client template in realm test
+##### Add email protocol mapper to oidc-client client scope in realm test
 
 ```puppet
 keycloak_protocol_mapper { "email for oidc-clients on test":
-  consent_text   => '${email}',
   claim_name     => 'email',
   user_attribute => 'email',
 }
@@ -1131,21 +1260,9 @@ friendly.name. Default to `resource_name` for `type` `saml-user-property-mapper`
 
 attribute.name Default to `resource_name` for `type` `saml-user-property-mapper`.
 
-##### `consent_text`
-
-consentText
-
 ##### `claim_name`
 
 claim.name
-
-##### `consent_required`
-
-Valid values: `true`, `false`
-
-consentRequired
-
-Default value: true
 
 ##### `id_token_claim`
 
@@ -1193,9 +1310,9 @@ Id. Defaults to UUID based on `name`.
 
 The protocol mapper name. Defaults to `name`.
 
-##### `client_template`
+##### `client_scope`
 
-client template
+client scope
 
 ##### `realm`
 
@@ -1294,6 +1411,14 @@ Valid values: `true`, `false`
 loginWithEmailAllowed
 
 Default value: true
+
+##### `default_client_scopes`
+
+Default Client Scopes
+
+##### `optional_client_scopes`
+
+Optional Client Scopes
 
 #### Parameters
 
