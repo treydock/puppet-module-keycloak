@@ -149,29 +149,36 @@ Register a client.
 
 ### keycloak::client_template
 
-Defined type that can be used to define both `keycloak_client_template` and `keycloak_protocol_mapper` resources. The example below will define a client template and several protocol mappers that are built into keycloak.
+Defined type that can be used to define both `keycloak_client_scope` and `keycloak_protocol_mapper` resources. The example below will define a client template and several protocol mappers that are built into keycloak.
 
     keycloak::client_template { 'oidc-clients':
       realm => 'test',
     }
 
-### keycloak\_client_template
+**NOTE**: This define is deprecated as templates were replaced by client scopes in Keycloak 4.x.
 
-Define a Client Template in Keycloak:
+### keycloak\_client_scope
 
-    keycloak_client_template { 'oidc-clients':
-      realm              => 'test',
-      resource_name      => 'oidc-clients',
-      protocol           => 'openid-connect',
-      full_scope_allowed => true,
+Define a Client Scope of `email` for realm `test` in Keycloak:
+
+    keycloak_client_scope { 'email on test':
+      protocol => 'openid-connect',
     }
 
 ### keycloak\_protocol_mapper
 
-Associate a Protocol Mapper to a given template.  The name in the following example will add the `email` protocol mapper to client template `oidc-clients` in the realm `test`.
+Associate a Protocol Mapper to a given Client Scope.  The name in the following example will add the `email` protocol mapper to client scope `oidc-email` in the realm `test`.
 
-    keycloak_protocol_mapper { "email for oidc-clients on test":
-      consent_text   => '${email}',
+    keycloak_protocol_mapper { "email for oidc-email on test":
+      claim_name     => 'email',
+      user_attribute => 'email',
+    }
+
+### keycloak\_client\_protocol\_mapper
+
+Add `email` protocol mapper to `test.example.com` client in realm `test`
+
+    keycloak_client_protocol_mapper { "email for test.example.com on test":
       claim_name     => 'email',
       user_attribute => 'email',
     }

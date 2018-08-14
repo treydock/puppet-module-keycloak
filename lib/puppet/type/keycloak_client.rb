@@ -6,14 +6,14 @@ Puppet::Type.newtype(:keycloak_client) do
 Manage Keycloak clients
 @example Add a OpenID Connect client
   keycloak_client { 'www.example.com':
-    ensure          => 'present',
-    realm           => 'test',
-    redirect_uris   => [
+    ensure                => 'present',
+    realm                 => 'test',
+    redirect_uris         => [
       "https://www.example.com/oidc",
       "https://www.example.com",
     ],
-    client_template => 'oidc-clients',
-    secret          => 'supersecret',
+    default_client_scopes => ['profile','email'],
+    secret                => 'supersecret',
   }
   DESC
 
