@@ -1,5 +1,12 @@
 # treydock-keycloak changelog
 
+## [2.7.0](https://github.com/treydock/puppet-module-keycloak/tree/2.7.0) (2018-08-14)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.6.0...2.7.0)
+
+**Implemented enhancements:**
+
+- Oracle support [\#33](https://github.com/treydock/puppet-module-keycloak/pull/33) ([cborisa](https://github.com/cborisa))
+
 ## [2.6.0](https://github.com/treydock/puppet-module-keycloak/tree/2.6.0) (2018-07-20)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.5.0...2.6.0)
 
