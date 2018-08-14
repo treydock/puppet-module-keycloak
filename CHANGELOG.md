@@ -1,5 +1,17 @@
 # treydock-keycloak changelog
 
+## [3.0.0](https://github.com/treydock/puppet-module-keycloak/tree/3.0.0) (2018-08-14)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.7.1...3.0.0)
+
+**Merged pull requests:**
+
+- BREAKING: Major overhaul to support Keycloak 4.x [\#32](https://github.com/treydock/puppet-module-keycloak/pull/32) ([treydock](https://github.com/treydock))
+- Update module dependency version ranges [\#35](https://github.com/treydock/puppet-module-keycloak/pull/35) ([treydock](https://github.com/treydock))
+
+**Implemented enhancements:**
+
+- Support Keycloak 4.x [\#31](https://github.com/treydock/puppet-module-keycloak/issues/31)
+
 ## [2.7.1](https://github.com/treydock/puppet-module-keycloak/tree/2.7.1) (2018-08-14)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.7.0...2.7.1)
 
