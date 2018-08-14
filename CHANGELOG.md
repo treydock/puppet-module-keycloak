@@ -1,5 +1,12 @@
 # treydock-keycloak changelog
 
+## [2.7.1](https://github.com/treydock/puppet-module-keycloak/tree/2.7.1) (2018-08-14)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.7.0...2.7.1)
+
+**Fixed bugs:**
+
+- Update reference [\#36](https://github.com/treydock/puppet-module-keycloak/pull/36) ([treydock](https://github.com/treydock))
+
 ## [2.7.0](https://github.com/treydock/puppet-module-keycloak/tree/2.7.0) (2018-08-14)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.6.0...2.7.0)
 
