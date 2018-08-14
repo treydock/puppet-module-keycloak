@@ -10,6 +10,7 @@ _Public Classes_
 * [`keycloak`](#keycloak): summary Manage Keycloak
 * [`keycloak::config`](#keycloakconfig): Private class.
 * [`keycloak::datasource::h2`](#keycloakdatasourceh2): Private class.
+* [`keycloak::datasource::oracle`](#keycloakdatasourceoracle): Private class.
 * [`keycloak::install`](#keycloakinstall): Private class.
 * [`keycloak::params`](#keycloakparams): Private class.
 * [`keycloak::service`](#keycloakservice): Private class.
@@ -190,10 +191,10 @@ Default value: `true`
 
 ##### `datasource_driver`
 
-Data type: `Enum['h2', 'mysql']`
+Data type: `Enum['h2', 'mysql','oracle']`
 
 Datasource driver to use for Keycloak.
-Valid values are `h2` and `mysql`.
+Valid values are `h2`, `mysql` and 'oracle'
 Default is `h2`.
 
 Default value: 'h2'
@@ -203,7 +204,7 @@ Default value: 'h2'
 Data type: `Optional[String]`
 
 Datasource host.
-Only used when datasource_driver is `mysql`.
+Only used when datasource_driver is `mysql` or 'oracle'
 Default is `localhost` for MySQL.
 
 Default value: `undef`
@@ -213,8 +214,17 @@ Default value: `undef`
 Data type: `Optional[Integer]`
 
 Datasource port.
-Only used when datasource_driver is `mysql`.
+Only used when datasource_driver is `mysql` or 'oracle'
 Default is `3306` for MySQL.
+
+Default value: `undef`
+
+##### `datasource_url`
+
+Data type: `Optional[String]`
+
+Datasource url.
+Default datasource URLs are defined in init class.
 
 Default value: `undef`
 
@@ -345,6 +355,24 @@ Default is `{}`.
 
 Default value: {}
 
+##### `oracle_jar_file`
+
+Data type: `Optional[String]`
+
+Oracle JDBC driver to use. Only use if $datasource_driver is set to oracle
+Default is not defined
+
+Default value: `undef`
+
+##### `oracle_jar_source`
+
+Data type: `Optional[String]`
+
+Source for Oracle JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to oracle
+Default is not set
+
+Default value: `undef`
+
 ##### `service_java_opts`
 
 Data type: `Variant[String, Array]`
@@ -360,6 +388,38 @@ Private class.
 ### keycloak::datasource::h2
 
 Private class.
+
+### keycloak::datasource::oracle
+
+Private class.
+
+#### Parameters
+
+The following parameters are available in the `keycloak::datasource::oracle` class.
+
+##### `jar_file`
+
+Data type: `Any`
+
+
+
+Default value: $keycloak::oracle_jar_file
+
+##### `jar_source`
+
+Data type: `Any`
+
+
+
+Default value: $keycloak::oracle_jar_source
+
+##### `module_source`
+
+Data type: `Any`
+
+
+
+Default value: 'puppet:///modules/keycloak/database/oracle/module.xml'
 
 ### keycloak::install
 
@@ -620,11 +680,11 @@ The client name
 
 ##### `client_id`
 
-clientId
+clientId. Defaults to `name`.
 
 ##### `id`
 
-Id
+Id. Defaults to `client_id`
 
 ##### `realm`
 
@@ -689,11 +749,11 @@ The client template name
 
 ##### `resource_name`
 
-The client template name
+The client template name. Defaults to `name`.
 
 ##### `id`
 
-Id
+Id. Defaults to `resource_name`.
 
 ##### `realm`
 
@@ -797,13 +857,13 @@ userModelAttribute
 
 ##### `is_mandatory_in_ldap`
 
-is.mandatory.in.ldap
+is.mandatory.in.ldap. Defaults to `false` unless `type` is `full-name-ldap-mapper`.
 
 ##### `always_read_value_from_ldap`
 
 Valid values: `true`, `false`
 
-always.read.value.from.ldap
+always.read.value.from.ldap. Defaults to `true` if `type` is `user-attribute-ldap-mapper`.
 
 ##### `read_only`
 
@@ -833,11 +893,11 @@ The LDAP mapper name
 
 ##### `id`
 
-Id
+Id. Defaults to UUID generated from `name`.
 
 ##### `resource_name`
 
-The LDAP mapper name
+The LDAP mapper name. Defaults to `name`
 
 ##### `type`
 
@@ -1009,11 +1069,11 @@ The LDAP user provider name
 
 ##### `resource_name`
 
-The LDAP user provider name
+The LDAP user provider name. Defaults to `name`.
 
 ##### `id`
 
-Id
+Id. Defaults to "`resource_name`-`realm`"
 
 ##### `realm`
 
@@ -1057,19 +1117,19 @@ Default value: openid-connect
 
 ##### `user_attribute`
 
-user.attribute
+user.attribute. Default to `resource_name` for `type` `oidc-usermodel-property-mapper` or `saml-user-property-mapper`
 
 ##### `json_type_label`
 
-json.type.label
+json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`.
 
 ##### `friendly_name`
 
-friendly.name
+friendly.name. Default to `resource_name` for `type` `saml-user-property-mapper`.
 
 ##### `attribute_name`
 
-attribute.name
+attribute.name Default to `resource_name` for `type` `saml-user-property-mapper`.
 
 ##### `consent_text`
 
@@ -1091,19 +1151,19 @@ Default value: true
 
 Valid values: `true`, `false`
 
-id.token.claim
+id.token.claim. Default to `true` for `protocol` `openid-connect`.
 
 ##### `access_token_claim`
 
 Valid values: `true`, `false`
 
-access.token.claim
+access.token.claim. Default to `true` for `protocol` `openid-connect`.
 
 ##### `userinfo_token_claim`
 
 Valid values: `true`, `false`
 
-userinfo.token.claim
+userinfo.token.claim. Default to `true` for `protocol` `openid-connect`.
 
 ##### `attribute_nameformat`
 
@@ -1113,7 +1173,7 @@ attribute.nameformat
 
 Valid values: `true`, `false`
 
-single
+single. Default to `false` for `type` `saml-role-list-mapper`.
 
 #### Parameters
 
@@ -1127,11 +1187,11 @@ The protocol mapper name
 
 ##### `id`
 
-Id
+Id. Defaults to UUID based on `name`.
 
 ##### `resource_name`
 
-The protocol mapper name
+The protocol mapper name. Defaults to `name`.
 
 ##### `client_template`
 
@@ -1145,7 +1205,10 @@ realm
 
 Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper, saml-role-list-mapper
 
-protocolMapper
+protocolMapper.
+
+Default is `oidc-usermodel-property-mapper` for `protocol` `openid-connect` and
+`saml-user-property-mapper` for `protocol` `saml`.
 
 ### keycloak_realm
 
@@ -1244,5 +1307,5 @@ The realm name
 
 ##### `id`
 
-Id
+Id. Default to `name`.
 
