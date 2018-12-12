@@ -109,6 +109,15 @@ Manage Keycloak LDAP user providers
   newproperty(:bind_credential) do
     desc "bindCredential"
 
+    def insync?(is)
+      if is =~ /^[\*]+$/
+        Puppet.warning("Parameter 'bind_credential' is set and Puppet has no way to check current value")
+        true
+      else
+        false
+      end
+    end
+
     def change_to_s(currentvalue, newvalue)
       if currentvalue == :absent
         return "created bind_credential"
