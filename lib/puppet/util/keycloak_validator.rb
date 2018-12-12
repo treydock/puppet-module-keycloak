@@ -1,4 +1,4 @@
-require 'puppet/network/http_pool'
+require 'net/http'
 
 module Puppet
   module Util
@@ -8,14 +8,12 @@ module Puppet
       attr_reader :keycloak_port
       attr_reader :use_ssl
       attr_reader :test_path
-      attr_reader :test_headers
 
       def initialize(keycloak_server, keycloak_port, use_ssl=false, test_path = "/auth/admin/serverinfo")
         @keycloak_server = keycloak_server
         @keycloak_port   = keycloak_port
         @use_ssl         = use_ssl
         @test_path       = test_path
-        @test_headers    = { "Accept" => "application/json" }
       end
 
       # Utility method; attempts to make an http/https connection to the keycloak server.
@@ -27,9 +25,13 @@ module Puppet
         # All that we care about is that we are able to connect successfully via
         # http(s), so here we're simpling hitting a somewhat arbitrary low-impact URL
         # on the keycloak server.
-        conn = Puppet::Network::HttpPool.http_instance(keycloak_server, keycloak_port, use_ssl)
+        http = Net::HTTP.new(@keycloak_server, @keycloak_port)
+        http.use_ssl = @use_ssl
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        request = Net::HTTP::Get.new(@test_path)
+        request.add_field("Accept", "application/json")
+        response = http.request(request)
 
-        response = conn.get(test_path, test_headers)
         unless response.kind_of?(Net::HTTPSuccess) || response.kind_of?(Net::HTTPUnauthorized)
           Puppet.notice "Unable to connect to keycloak server (http#{use_ssl ? "s" : ""}://#{keycloak_server}:#{keycloak_port}): [#{response.code}] #{response.msg}"
           return false
