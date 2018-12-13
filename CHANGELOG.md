@@ -1,5 +1,18 @@
 # treydock-keycloak changelog
 
+## [3.1.0](https://github.com/treydock/puppet-module-keycloak/tree/3.1.0) (2018-12-13)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.0.0...3.1.0)
+
+**Implemented enhancements:**
+
+- Bump dependency ranges for stdlib and mysql [\#40](https://github.com/treydock/puppet-module-keycloak/pull/40) ([treydock](https://github.com/treydock))
+- Support Puppet 6 and drop support for Puppet 4 [\#39](https://github.com/treydock/puppet-module-keycloak/pull/39) ([treydock](https://github.com/treydock))
+- Use beaker 4.x [\#37](https://github.com/treydock/puppet-module-keycloak/pull/37) ([treydock](https://github.com/treydock))
+
+**Fixed bugs:**
+
+- Fix keycloak\_ldap\_user\_provider bind\_credential property to be idempotent [\#38](https://github.com/treydock/puppet-module-keycloak/pull/38) ([treydock](https://github.com/treydock))
+
 ## [3.0.0](https://github.com/treydock/puppet-module-keycloak/tree/3.0.0) (2018-08-14)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.7.1...3.0.0)
 
