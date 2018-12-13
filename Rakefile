@@ -31,3 +31,26 @@ task :test => [
   :lint,
   :spec,
 ]
+
+desc "Run release prep commands"
+task :release_prep, [:release] do |t, args|
+  metadata_json = File.join(File.dirname(__FILE__), 'metadata.json')
+  metadata = JSON.load(File.read(metadata_json))
+  author = metadata['author']
+  project = metadata['project_page'].split('/')[-1]
+  if args[:release].nil?
+    release = metadata['version']
+  else
+    release = args[:release]
+  end
+
+
+  sh "github_changelog_generator --user #{author} --project #{project} --output /dev/stdout --future-release #{release}"
+  sh "puppet strings generate --format markdown"
+end
+
+desc "Run release commands"
+task :release do
+  Rake::Task[:build].invoke
+  Rake::Task[:'strings:gh_pages:update'].invoke
+end

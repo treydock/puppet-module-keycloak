@@ -16,6 +16,7 @@ group :development, :test do
   gem 'simplecov',                :require => false
   gem 'json_pure', '~>1.x',       :require => false
   gem 'puppet-strings',           :require => false
+  gem 'github_changelog_generator', :require => false
 end
 
 group :system_tests do
