@@ -169,6 +169,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
   end
 
   defaults = {
+    :enabled => :true,
     :priority => '0',
     :batch_size_for_sync => '1000',
     :username_ldap_attribute => 'uid',
@@ -201,6 +202,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
 
   # Test boolean properties
   [
+    :enabled,
     :import_enabled,
   ].each do |p|
     it "should accept true for #{p.to_s}" do
