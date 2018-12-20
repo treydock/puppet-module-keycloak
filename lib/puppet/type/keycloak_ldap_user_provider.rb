@@ -41,6 +41,12 @@ Manage Keycloak LDAP user providers
     desc 'parentId'
   end
 
+  newproperty(:enabled, :boolean => true) do
+    desc 'enabled'
+    newvalues(:true, :false)
+    defaultto :true
+  end
+
   newproperty(:auth_type) do
     desc 'authType'
     defaultto 'none'
