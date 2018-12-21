@@ -1,5 +1,13 @@
 # treydock-keycloak changelog
 
+## [3.2.0](https://github.com/treydock/puppet-module-keycloak/tree/3.2.0) (2018-12-21)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.1.0...3.2.0)
+
+**Implemented enhancements:**
+
+- Support SSSD User Provider [\#42](https://github.com/treydock/puppet-module-keycloak/pull/42) ([treydock](https://github.com/treydock))
+- Add enabled property to keycloak\_ldap\_user\_provider [\#41](https://github.com/treydock/puppet-module-keycloak/pull/41) ([treydock](https://github.com/treydock))
+
 ## [3.1.0](https://github.com/treydock/puppet-module-keycloak/tree/3.1.0) (2018-12-13)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.0.0...3.1.0)
 

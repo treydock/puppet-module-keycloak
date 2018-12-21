@@ -7,13 +7,14 @@
 
 _Public Classes_
 
-* [`keycloak`](#keycloak): summary Manage Keycloak
+* [`keycloak`](#keycloak): Manage Keycloak
 * [`keycloak::config`](#keycloakconfig): Private class.
 * [`keycloak::datasource::h2`](#keycloakdatasourceh2): Private class.
 * [`keycloak::datasource::oracle`](#keycloakdatasourceoracle): Private class.
 * [`keycloak::install`](#keycloakinstall): Private class.
 * [`keycloak::params`](#keycloakparams): Private class.
 * [`keycloak::service`](#keycloakservice): Private class.
+* [`keycloak::sssd`](#keycloaksssd): Private class.
 
 _Private Classes_
 
@@ -35,12 +36,13 @@ _Private Classes_
 * [`keycloak_ldap_user_provider`](#keycloak_ldap_user_provider): Manage Keycloak LDAP user providers
 * [`keycloak_protocol_mapper`](#keycloak_protocol_mapper): Manage Keycloak protocol mappers
 * [`keycloak_realm`](#keycloak_realm): Manage Keycloak realms
+* [`keycloak_sssd_user_provider`](#keycloak_sssd_user_provider): Manage Keycloak SSSD user providers
 
 ## Classes
 
 ### keycloak
 
-summary Manage Keycloak
+Manage Keycloak
 
 #### Examples
 
@@ -374,6 +376,78 @@ Default is not set
 
 Default value: `undef`
 
+##### `with_sssd_support`
+
+Data type: `Boolean`
+
+Boolean that determines if SSSD user provider support should be available
+
+Default value: `false`
+
+##### `libunix_dbus_java_source`
+
+Data type: `Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]`
+
+Source URL of libunix-dbus-java
+
+Default value: $keycloak::params::libunix_dbus_java_source
+
+##### `install_libunix_dbus_java_build_dependencies`
+
+Data type: `Boolean`
+
+Boolean that determines of libunix-dbus-java build dependencies are managed by this module
+
+Default value: `true`
+
+##### `libunix_dbus_java_build_dependencies`
+
+Data type: `Array`
+
+Packages needed to build libunix-dbus-java
+
+Default value: $keycloak::params::libunix_dbus_java_build_dependencies
+
+##### `libunix_dbus_java_libdir`
+
+Data type: `Stdlib::Absolutepath`
+
+Path to directory to install libunix-dbus-java libraries
+
+Default value: $keycloak::params::libunix_dbus_java_libdir
+
+##### `jna_package_name`
+
+Data type: `String`
+
+Package name for jna
+
+Default value: $keycloak::params::jna_package_name
+
+##### `manage_sssd_config`
+
+Data type: `Boolean`
+
+Boolean that determines if SSSD ifp config for Keycloak is managed
+
+Default value: `true`
+
+##### `sssd_ifp_user_attributes`
+
+Data type: `Array`
+
+user_attributes to define for SSSD ifp service
+
+Default value: []
+
+##### `restart_sssd`
+
+Data type: `Boolean`
+
+Boolean that determines if SSSD should be restarted
+
+Default value: `true`
+
 ##### `service_java_opts`
 
 Data type: `Variant[String, Array]`
@@ -431,6 +505,10 @@ Private class.
 Private class.
 
 ### keycloak::service
+
+Private class.
+
+### keycloak::sssd
 
 Private class.
 
@@ -1075,6 +1153,14 @@ The basic property that the resource should be in.
 
 Default value: present
 
+##### `enabled`
+
+Valid values: `true`, `false`
+
+enabled
+
+Default value: true
+
 ##### `auth_type`
 
 Valid values: none, simple
@@ -1433,4 +1519,90 @@ The realm name
 ##### `id`
 
 Id. Default to `name`.
+
+### keycloak_sssd_user_provider
+
+Manage Keycloak SSSD user providers
+
+#### Examples
+
+##### Add SSSD user provider to test realm
+
+```puppet
+keycloak_sssd_user_provider { 'SSSD on test':
+  ensure => 'present',
+}
+```
+
+#### Properties
+
+The following properties are available in the `keycloak_sssd_user_provider` type.
+
+##### `ensure`
+
+Valid values: present, absent
+
+The basic property that the resource should be in.
+
+Default value: present
+
+##### `enabled`
+
+Valid values: `true`, `false`
+
+enabled
+
+Default value: true
+
+##### `priority`
+
+priority
+
+Default value: 0
+
+##### `cache_policy`
+
+Valid values: DEFAULT, EVICT_DAILY, EVICT_WEEKLY, MAX_LIFESPAN, NO_CACHE
+
+cachePolicy
+
+Default value: DEFAULT
+
+##### `eviction_day`
+
+evictionDay
+
+##### `eviction_hour`
+
+evictionHour
+
+##### `eviction_minute`
+
+evictionMinute
+
+##### `max_lifespan`
+
+maxLifespan
+
+#### Parameters
+
+The following parameters are available in the `keycloak_sssd_user_provider` type.
+
+##### `name`
+
+namevar
+
+The SSSD user provider name
+
+##### `resource_name`
+
+The SSSD user provider name. Defaults to `name`.
+
+##### `id`
+
+Id. Defaults to "`resource_name`-`realm`"
+
+##### `realm`
+
+parentId
 
