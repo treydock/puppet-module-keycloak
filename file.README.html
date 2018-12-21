@@ -219,6 +219,17 @@ the truststore.</p>
   ldap_attribute =&gt; &#39;gecos&#39;,
 }</code></pre>
 
+<h3 id="label-keycloak_sssd_user_provider">keycloak_sssd_user_provider</h3>
+
+<p>Define SSSD user provider. <strong>NOTE</strong> This type requires that
+SSSD be properly configured and Keycloak service restarted after SSSD ifp
+service is setup. Also requires <code>keycloak</code> class be called with
+<code>with_sssd_support</code> set to <code>true</code>.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_sssd_user_provider { &#39;SSSD on test&#39;:
+  ensure =&gt; &#39;present&#39;,
+}</code></pre>
+
 <h3 id="label-keycloak_client">keycloak_client</h3>
 
 <p>Register a client.</p>

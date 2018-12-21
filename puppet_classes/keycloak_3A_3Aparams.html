@@ -132,7 +132,27 @@
 31
 32
 33
-34</pre>
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/params.pp', line 2</span>
@@ -149,6 +169,7 @@ class keycloak::params {
     &#39;-Djboss.modules.system.pkgs=org.jboss.byteman&#39;,
     &#39;-Djava.awt.headless=true&#39;,
   ]
+  $libunix_dbus_java_source = &#39;https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz&#39;
 
   case $::osfamily {
     &#39;Debian&#39;: {
@@ -156,12 +177,31 @@ class keycloak::params {
       $service_hasstatus  = true
       $service_hasrestart = true
       $user_shell         = &#39;/usr/sbin/nologin&#39;
+      $libunix_dbus_java_build_dependencies = [
+        &#39;zlib1g-dev&#39;,
+        &#39;libtool&#39;,
+        &#39;automake&#39;,
+        &#39;autoconf&#39;,
+        &#39;make&#39;,
+      ]
+      $libunix_dbus_java_libdir = &#39;/usr/lib&#39;
+      $jna_package_name = &#39;libjna-java&#39;
     }
     &#39;RedHat&#39;: {
       $service_name       = &#39;keycloak&#39;
       $service_hasstatus  = true
       $service_hasrestart = true
       $user_shell         = &#39;/sbin/nologin&#39;
+      $libunix_dbus_java_build_dependencies = [
+        &#39;which&#39;,
+        &#39;zlib-devel&#39;,
+        &#39;libtool&#39;,
+        &#39;automake&#39;,
+        &#39;autoconf&#39;,
+        &#39;make&#39;,
+      ]
+      $libunix_dbus_java_libdir = &#39;/usr/lib64&#39;
+      $jna_package_name = &#39;jna&#39;
     }
 
     default: {

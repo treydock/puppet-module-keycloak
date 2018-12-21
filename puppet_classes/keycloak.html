@@ -76,12 +76,13 @@
   </dl>
 </div>
 
+  <h2>Summary</h2>
+  Manage Keycloak
+
 <h2>Overview</h2>
 <div class="docstring">
   <div class="discussion">
     
-<p>summary Manage Keycloak</p>
-
   </div>
 </div>
 
@@ -748,6 +749,169 @@ node. Only use if $datasource_driver is set to oracle Default is not set</p>
   
     <li>
       
+        <span class='name'>with_sssd_support</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that determines if SSSD user provider support should be available</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>libunix_dbus_java_source</span>
+      
+      
+        <span class='type'>(<tt>Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::params::libunix_dbus_java_source</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Source URL of libunix-dbus-java</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>install_libunix_dbus_java_build_dependencies</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that determines of libunix-dbus-java build dependencies are managed
+by this module</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>libunix_dbus_java_build_dependencies</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::params::libunix_dbus_java_build_dependencies</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Packages needed to build libunix-dbus-java</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>libunix_dbus_java_libdir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::params::libunix_dbus_java_libdir</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to directory to install libunix-dbus-java libraries</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jna_package_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$keycloak::params::jna_package_name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Package name for jna</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_sssd_config</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that determines if SSSD ifp config for Keycloak is managed</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sssd_ifp_user_attributes</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>user_attributes to define for SSSD ifp service</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>restart_sssd</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that determines if SSSD should be restarted</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>service_java_opts</span>
       
       
@@ -769,24 +933,6 @@ node. Only use if $datasource_driver is set to oracle Default is not set</p>
         <pre class="lines">
 
 
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
 135
 136
 137
@@ -859,10 +1005,43 @@ node. Only use if $datasource_driver is set to oracle Default is not set</p>
 204
 205
 206
-207</pre>
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 117</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 135</span>
 
 class keycloak (
   String $version               = &#39;4.2.1.Final&#39;,
@@ -902,6 +1081,16 @@ class keycloak (
   Hash $client_templates = {},
   Optional[String] $oracle_jar_file = undef,
   Optional[String] $oracle_jar_source = undef,
+  Boolean $with_sssd_support = false,
+  Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
+    $libunix_dbus_java_source = $keycloak::params::libunix_dbus_java_source,
+  Boolean $install_libunix_dbus_java_build_dependencies = true,
+  Array $libunix_dbus_java_build_dependencies = $keycloak::params::libunix_dbus_java_build_dependencies,
+  Stdlib::Absolutepath $libunix_dbus_java_libdir = $keycloak::params::libunix_dbus_java_libdir,
+  String $jna_package_name = $keycloak::params::jna_package_name,
+  Boolean $manage_sssd_config = true,
+  Array $sssd_ifp_user_attributes = [],
+  Boolean $restart_sssd = true,
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, &quot;https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz&quot;)
@@ -941,6 +1130,11 @@ class keycloak (
   -&gt; Class[&#39;keycloak::service&#39;]
 
   Class[&quot;keycloak::datasource::${datasource_driver}&quot;]~&gt;Class[&#39;keycloak::service&#39;]
+
+  if $with_sssd_support {
+    contain &#39;keycloak::sssd&#39;
+    Class[&#39;keycloak::sssd&#39;] ~&gt; Class[&#39;keycloak::service&#39;]
+  }
 
   keycloak_conn_validator { &#39;keycloak&#39;:
     keycloak_server =&gt; &#39;localhost&#39;,
