@@ -132,6 +132,14 @@ Use the LDAP attribute 'gecos' as the full name attribute.
       ldap_attribute => 'gecos',
     }
 
+### keycloak\_sssd\_user\_provider
+
+Define SSSD user provider.  **NOTE** This type requires that SSSD be properly configured and Keycloak service restarted after SSSD ifp service is setup.  Also requires `keycloak` class be called with `with_sssd_support` set to `true`.
+
+    keycloak_sssd_user_provider { 'SSSD on test':
+      ensure => 'present',
+    }
+
 ### keycloak_client
 
 Register a client.

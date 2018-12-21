@@ -1,0 +1,116 @@
+[ {
+  "id" : "aa3159d1-deca-4252-bfd7-9c319f7ecaad",
+  "name" : "sssd",
+  "providerId" : "sssd",
+  "providerType" : "org.keycloak.storage.UserStorageProvider",
+  "parentId" : "test",
+  "config" : {
+    "cachePolicy" : [ "DEFAULT" ],
+    "priority" : [ "0" ],
+    "enabled" : [ "true" ]
+  }
+}, {
+  "id" : "9f3c11f3-0617-4201-936d-049628b58690",
+  "name" : "aes-generated",
+  "providerId" : "aes-generated",
+  "providerType" : "org.keycloak.keys.KeyProvider",
+  "parentId" : "test",
+  "config" : {
+    "priority" : [ "100" ]
+  }
+}, {
+  "id" : "a59f22de-8255-4de5-bcf1-f783201b61fd",
+  "name" : "Allowed Client Templates",
+  "providerId" : "allowed-client-templates",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "authenticated",
+  "config" : {
+    "allow-default-scopes" : [ "true" ]
+  }
+}, {
+  "id" : "ef5b60a4-80a4-48cc-b38c-4b524a8da8e6",
+  "name" : "Consent Required",
+  "providerId" : "consent-required",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : { }
+}, {
+  "id" : "728306de-f679-4080-b1a0-5bbee74cd5bc",
+  "name" : "Trusted Hosts",
+  "providerId" : "trusted-hosts",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : {
+    "host-sending-registration-request-must-match" : [ "true" ],
+    "client-uris-must-match" : [ "true" ]
+  }
+}, {
+  "id" : "d7770d63-d182-415a-98ee-160d7fc6b30f",
+  "name" : "Allowed Protocol Mapper Types",
+  "providerId" : "allowed-protocol-mappers",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : {
+    "allowed-protocol-mapper-types" : [ "oidc-address-mapper", "oidc-usermodel-attribute-mapper", "saml-role-list-mapper", "saml-user-property-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-full-name-mapper", "saml-user-attribute-mapper", "oidc-usermodel-property-mapper" ]
+  }
+}, {
+  "id" : "60c245ae-96cb-45ed-baa8-71af655deda0",
+  "name" : "Full Scope Disabled",
+  "providerId" : "scope",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : { }
+}, {
+  "id" : "17c6ae48-05a0-4a00-bfc1-828a93969c6f",
+  "name" : "Allowed Client Templates",
+  "providerId" : "allowed-client-templates",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : {
+    "allow-default-scopes" : [ "true" ]
+  }
+}, {
+  "id" : "ed3d4777-bc52-435c-9c56-f22f35c71efd",
+  "name" : "Allowed Protocol Mapper Types",
+  "providerId" : "allowed-protocol-mappers",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "authenticated",
+  "config" : {
+    "allowed-protocol-mapper-types" : [ "oidc-usermodel-attribute-mapper", "oidc-address-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-full-name-mapper", "oidc-usermodel-property-mapper", "saml-role-list-mapper" ]
+  }
+}, {
+  "id" : "fd18746f-2d5e-48f7-b09b-8b2fe8033f99",
+  "name" : "hmac-generated",
+  "providerId" : "hmac-generated",
+  "providerType" : "org.keycloak.keys.KeyProvider",
+  "parentId" : "test",
+  "config" : {
+    "priority" : [ "100" ]
+  }
+}, {
+  "id" : "db87c9f3-02b7-4473-8e87-607bd38aae80",
+  "name" : "rsa-generated",
+  "providerId" : "rsa-generated",
+  "providerType" : "org.keycloak.keys.KeyProvider",
+  "parentId" : "test",
+  "config" : {
+    "priority" : [ "100" ]
+  }
+}, {
+  "id" : "43e2a84b-3a42-4fc6-9129-7d9ba6183058",
+  "name" : "Max Clients Limit",
+  "providerId" : "max-clients",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "test",
+  "subType" : "anonymous",
+  "config" : {
+    "max-clients" : [ "200" ]
+  }
+} ]
