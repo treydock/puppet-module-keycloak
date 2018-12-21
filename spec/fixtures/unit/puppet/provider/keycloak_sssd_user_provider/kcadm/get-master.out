@@ -1,0 +1,94 @@
+[ {
+  "id" : "e8478c3d-77b5-4959-9a17-ec2c50aeb694",
+  "name" : "rsa-generated",
+  "providerId" : "rsa-generated",
+  "providerType" : "org.keycloak.keys.KeyProvider",
+  "parentId" : "master",
+  "config" : {
+    "priority" : [ "100" ]
+  }
+}, {
+  "id" : "87adc258-478c-4b01-bfc7-22453280215b",
+  "name" : "hmac-generated",
+  "providerId" : "hmac-generated",
+  "providerType" : "org.keycloak.keys.KeyProvider",
+  "parentId" : "master",
+  "config" : {
+    "priority" : [ "100" ]
+  }
+}, {
+  "id" : "aaeef002-ad5a-46a0-8a67-5a1706039009",
+  "name" : "Consent Required",
+  "providerId" : "consent-required",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "master",
+  "subType" : "anonymous",
+  "config" : { }
+}, {
+  "id" : "df7eda6b-d22c-425f-ab34-271483d601b8",
+  "name" : "Allowed Protocol Mapper Types",
+  "providerId" : "allowed-protocol-mappers",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "master",
+  "subType" : "authenticated",
+  "config" : {
+    "allowed-protocol-mapper-types" : [ "oidc-sha256-pairwise-sub-mapper", "saml-user-attribute-mapper", "saml-user-property-mapper", "oidc-full-name-mapper", "oidc-usermodel-attribute-mapper", "saml-role-list-mapper", "oidc-usermodel-property-mapper", "oidc-address-mapper" ],
+    "consent-required-for-all-mappers" : [ "true" ]
+  }
+}, {
+  "id" : "3f2d9fd5-1536-4e5a-8c00-924dae617498",
+  "name" : "Allowed Client Templates",
+  "providerId" : "allowed-client-templates",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "master",
+  "subType" : "authenticated",
+  "config" : { }
+}, {
+  "id" : "5d7f0d42-88b1-4c17-953d-142292aade20",
+  "name" : "Allowed Protocol Mapper Types",
+  "providerId" : "allowed-protocol-mappers",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "master",
+  "subType" : "anonymous",
+  "config" : {
+    "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "saml-role-list-mapper", "oidc-address-mapper", "saml-user-property-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-attribute-mapper", "oidc-full-name-mapper", "saml-user-attribute-mapper" ],
+    "consent-required-for-all-mappers" : [ "true" ]
+  }
+}, {
+  "id" : "39f2b387-982a-45b4-a2fb-4c158fbf5425",
+  "name" : "Full Scope Disabled",
+  "providerId" : "scope",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "master",
+  "subType" : "anonymous",
+  "config" : { }
+}, {
+  "id" : "4c04934e-88ea-4764-80d6-e4c260ee1181",
+  "name" : "Trusted Hosts",
+  "providerId" : "trusted-hosts",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "master",
+  "subType" : "anonymous",
+  "config" : {
+    "host-sending-registration-request-must-match" : [ "true" ],
+    "client-uris-must-match" : [ "true" ]
+  }
+}, {
+  "id" : "c0ec0527-9f18-4eeb-99fb-a1cc8f1068ef",
+  "name" : "Max Clients Limit",
+  "providerId" : "max-clients",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "master",
+  "subType" : "anonymous",
+  "config" : {
+    "max-clients" : [ "200" ]
+  }
+}, {
+  "id" : "e9a9ca6e-a1c5-42ef-9978-f5e95cf1fcc2",
+  "name" : "Allowed Client Templates",
+  "providerId" : "allowed-client-templates",
+  "providerType" : "org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy",
+  "parentId" : "master",
+  "subType" : "anonymous",
+  "config" : { }
+} ]

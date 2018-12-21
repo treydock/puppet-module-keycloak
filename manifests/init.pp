@@ -1,4 +1,4 @@
-# summary Manage Keycloak
+# @summary Manage Keycloak
 #
 # @example
 #   include ::keycloak
@@ -113,6 +113,18 @@
 # @param oracle_jar_source
 #   Source for Oracle JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to oracle
 #   Default is not set
+# @param with_sssd_support
+#   Boolean that determines if SSSD user provider support should be available
+# @param libunix_dbus_java_source
+#   Source URL of libunix-dbus-java
+# @param install_libunix_dbus_java_build_dependencies
+#   Boolean that determines of libunix-dbus-java build dependencies are managed by this module
+# @param libunix_dbus_java_build_dependencies
+#   Packages needed to build libunix-dbus-java
+# @param libunix_dbus_java_libdir
+#   Path to directory to install libunix-dbus-java libraries
+# @param jna_package_name
+#   Package name for jna
 #
 class keycloak (
   String $version               = '4.2.1.Final',
@@ -152,6 +164,13 @@ class keycloak (
   Hash $client_templates = {},
   Optional[String] $oracle_jar_file = undef,
   Optional[String] $oracle_jar_source = undef,
+  Boolean $with_sssd_support = false,
+  Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
+    $libunix_dbus_java_source = $keycloak::params::libunix_dbus_java_source,
+  Boolean $install_libunix_dbus_java_build_dependencies = true,
+  Array $libunix_dbus_java_build_dependencies = $keycloak::params::libunix_dbus_java_build_dependencies,
+  Stdlib::Absolutepath $libunix_dbus_java_libdir = $keycloak::params::libunix_dbus_java_libdir,
+  String $jna_package_name = $keycloak::params::jna_package_name,
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
@@ -191,6 +210,11 @@ class keycloak (
   -> Class['keycloak::service']
 
   Class["keycloak::datasource::${datasource_driver}"]~>Class['keycloak::service']
+
+  if $with_sssd_support {
+    contain 'keycloak::sssd'
+    Class['keycloak::sssd'] ~> Class['keycloak::service']
+  }
 
   keycloak_conn_validator { 'keycloak':
     keycloak_server => 'localhost',
