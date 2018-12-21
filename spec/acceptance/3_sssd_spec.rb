@@ -3,15 +3,6 @@ require 'spec_helper_acceptance'
 describe 'keycloak_sssd_user_provider:' do
   context 'bootstrap sssd' do
     it 'should be successful' do
-      # Apply keycloak class first to ensure keycloak user exists
-      pp =<<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-        with_sssd_support => true,
-      }
-      EOS
-      apply_manifest(pp, :catch_failures => true)
       on hosts, 'puppet resource package sssd-dbus ensure=installed'
       on hosts, 'puppet resource package sssd-ldap ensure=installed'
       sssd_conf = <<-EOS
@@ -22,10 +13,6 @@ auth_provider = ldap
 chpass_provider = ldap
 access_provider = ldap
 
-[ifp]
-allowed_uids = root, keycloak
-user_attributes = +mail, +gecos, +sn, +givenname
-
 [sssd]
 config_file_version = 2
 debug_level = 0x02F0
@@ -35,12 +22,12 @@ services = ifp
       create_remote_file(hosts, '/etc/sssd/sssd.conf', sssd_conf)
       on hosts, 'chmod 0600 /etc/sssd/sssd.conf'
       on hosts, 'systemctl restart sssd'
-      on hosts, 'systemctl restart keycloak'
     end
   end
   context 'creates sssd' do
     it 'should run successfully' do
       pp =<<-EOS
+      service { 'sssd': ensure => 'running' }
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -70,6 +57,7 @@ services = ifp
   context 'updates sssd' do
     it 'should run successfully' do
       pp =<<-EOS
+      service { 'sssd': ensure => 'running' }
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -100,6 +88,7 @@ services = ifp
   context 'deletes sssd' do
     it 'should run successfully' do
       pp =<<-EOS
+      service { 'sssd': ensure => 'running' }
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',

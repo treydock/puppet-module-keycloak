@@ -66,4 +66,33 @@ class keycloak::sssd {
     name   => $keycloak::jna_package_name,
   }
 
+  if $keycloak::manage_sssd_config {
+    if empty($keycloak::sssd_ifp_user_attributes) {
+      $user_attributes = undef
+    } else {
+      $attrs = $keycloak::sssd_ifp_user_attributes.map |$a| { "+${a}" }
+      $user_attributes = "user_attributes = ${join($attrs, ', ')}"
+    }
+
+    $sssd_config = delete_undef_values([
+      '# File managed by Puppet',
+      '[ifp]',
+      'allowed_uids = root, keycloak',
+      $user_attributes,
+    ])
+    if $keycloak::restart_sssd {
+      $sssd_notify = Service['sssd']
+    } else {
+      $sssd_notify = undef
+    }
+    file { '/etc/sssd/conf.d/keycloak.conf':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
+      content => join($sssd_config, "\n"),
+      notify  => $sssd_notify,
+    }
+  }
+
 }

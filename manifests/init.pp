@@ -125,6 +125,12 @@
 #   Path to directory to install libunix-dbus-java libraries
 # @param jna_package_name
 #   Package name for jna
+# @param manage_sssd_config
+#   Boolean that determines if SSSD ifp config for Keycloak is managed
+# @param sssd_ifp_user_attributes
+#   user_attributes to define for SSSD ifp service
+# @param restart_sssd
+#   Boolean that determines if SSSD should be restarted
 #
 class keycloak (
   String $version               = '4.2.1.Final',
@@ -171,6 +177,9 @@ class keycloak (
   Array $libunix_dbus_java_build_dependencies = $keycloak::params::libunix_dbus_java_build_dependencies,
   Stdlib::Absolutepath $libunix_dbus_java_libdir = $keycloak::params::libunix_dbus_java_libdir,
   String $jna_package_name = $keycloak::params::jna_package_name,
+  Boolean $manage_sssd_config = true,
+  Array $sssd_ifp_user_attributes = [],
+  Boolean $restart_sssd = true,
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
