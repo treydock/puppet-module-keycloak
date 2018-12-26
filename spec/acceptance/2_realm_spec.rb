@@ -26,7 +26,9 @@ describe 'keycloak_realm:' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do
         data = JSON.parse(stdout)
         names = data.map { |d| d['name'] }.sort
-        expect(names).to eq(['email', 'profile', 'role_list'])
+        expect(names).to include('email')
+        expect(names).to include('profile')
+        expect(names).to include('role_list')
       end
     end
 
@@ -34,7 +36,9 @@ describe 'keycloak_realm:' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-optional-client-scopes' do
         data = JSON.parse(stdout)
         names = data.map { |d| d['name'] }.sort
-        expect(names).to eq(['address', 'offline_access', 'phone'])
+        expect(names).to include('address')
+        expect(names).to include('offline_access')
+        expect(names).to include('phone')
       end
     end
   end

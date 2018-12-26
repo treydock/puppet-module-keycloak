@@ -11,7 +11,7 @@ describe 'keycloak class:' do
       apply_manifest(pp, :catch_changes => true)
     end
 
-    describe file('/opt/keycloak-4.2.1.Final') do
+    describe file("/opt/keycloak-#{RSpec.configuration.keycloak_version}") do
       it { should be_directory }
     end
 
@@ -19,13 +19,6 @@ describe 'keycloak class:' do
       it { should be_enabled }
       it { should be_running }
     end
-
-#    describe file('/etc/keycloak.conf') do
-#      it { should be_file }
-#      it { should be_mode 644 }
-#      it { should be_owned_by 'root' }
-#      it { should be_grouped_into 'root' }
-#    end
   end
 
   context 'default with mysql datasource' do
