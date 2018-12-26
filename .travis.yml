@@ -16,10 +16,22 @@ matrix:
       env: BEAKER_set="centos-7-x64-docker" BEAKER_PUPPET_COLLECTION=puppet5
       bundler_args:
       script: bundle exec rake beaker
+    - rvm: 2.4.4
+      sudo: required
+      services: docker
+      env: BEAKER_set="centos-7-x64-docker" BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_keycloak_version=4.8.1.Final
+      bundler_args:
+      script: bundle exec rake beaker
     - rvm: 2.5.1
       sudo: required
       services: docker
       env: BEAKER_set="centos-7-x64-docker" BEAKER_PUPPET_COLLECTION=puppet6
+      bundler_args:
+      script: bundle exec rake beaker
+    - rvm: 2.5.1
+      sudo: required
+      services: docker
+      env: BEAKER_set="centos-7-x64-docker" BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_keycloak_version=4.8.1.Final
       bundler_args:
       script: bundle exec rake beaker
     - rvm: 2.4.4
@@ -28,10 +40,22 @@ matrix:
       env: BEAKER_set="debian-9-docker" BEAKER_PUPPET_COLLECTION=puppet5
       bundler_args:
       script: bundle exec rake beaker
+    - rvm: 2.4.4
+      sudo: required
+      services: docker
+      env: BEAKER_set="debian-9-docker" BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_keycloak_version=4.8.1.Final
+      bundler_args:
+      script: bundle exec rake beaker
     - rvm: 2.5.1
       sudo: required
       services: docker
       env: BEAKER_set="debian-9-docker" BEAKER_PUPPET_COLLECTION=puppet6
+      bundler_args:
+      script: bundle exec rake beaker
+    - rvm: 2.5.1
+      sudo: required
+      services: docker
+      env: BEAKER_set="debian-9-docker" BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_keycloak_version=4.8.1.Final
       bundler_args:
       script: bundle exec rake beaker
 notifications:
