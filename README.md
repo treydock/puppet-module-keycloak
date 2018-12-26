@@ -42,6 +42,24 @@ Install Keycloak using default database storage.
 
     class { 'keycloak': }
 
+Install a specific version of Keycloak.
+
+```puppet
+class { 'keycloak':
+  version => '4.8.1.Final',
+}
+```
+
+Upgrading Keycloak version works by changing `version` parameter as long as the `datasource_driver` is not the default of `h2`. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to `/opt/keycloak`, applying all changes to new version and then restarting the `keycloak` service.
+
+If the previous `version` was `4.2.1.Final` using the following will upgrade to `4.9.0.Final`:
+
+```puppet
+class { 'keycloak':
+  version => '4.9.0.Final',
+}
+```
+
 Install keycloak and use a local MySQL server for database storage
 
     include mysql::server
