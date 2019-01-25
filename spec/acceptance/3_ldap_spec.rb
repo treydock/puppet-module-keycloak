@@ -21,6 +21,12 @@ describe 'keycloak_ldap_user_provider:' do
         type => 'full-name-ldap-mapper',
         ldap_attribute => 'foo',
       }
+      keycloak_ldap_mapper { "first name for LDAP-test on test":
+        ensure               => 'present',
+        type                 => 'user-attribute-ldap-mapper',
+        user_model_attribute => 'firstName',
+        ldap_attribute       => 'givenName',
+      }
       EOS
 
       apply_manifest(pp, :catch_failures => true)
@@ -42,6 +48,16 @@ describe 'keycloak_ldap_user_provider:' do
         d = data.select { |o| o['name'] == 'full-name' }[0]
         expect(d['providerId']).to eq('full-name-ldap-mapper')
         expect(d['config']['ldap.full.name.attribute']).to eq(['foo'])
+      end
+    end
+
+    it 'should have set firstName LDAP mapper' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
+        data = JSON.parse(stdout)
+        d = data.select { |o| o['name'] == 'first name' }[0]
+        expect(d['providerId']).to eq('user-attribute-ldap-mapper')
+        expect(d['config']['user.model.attribute']).to eq(['firstName'])
+        expect(d['config']['ldap.attribute']).to eq(['givenName'])
       end
     end
   end

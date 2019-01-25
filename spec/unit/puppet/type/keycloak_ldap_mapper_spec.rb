@@ -95,9 +95,17 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     expect(resource[:always_read_value_from_ldap]).to eq(:false)
   end
 
+  it 'should have write_only with no default' do
+    expect(resource[:write_only]).to be_nil
+  end
+
+  it 'should have write_only default to false for full-name-ldap-mapper' do
+    config[:type] = 'full-name-ldap-mapper'
+    expect(resource[:write_only]).to be(:false)
+  end
+
   defaults = {
     :read_only => :true,
-    :write_only => :false
   }
 
   # Test basic properties

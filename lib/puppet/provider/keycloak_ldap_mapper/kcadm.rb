@@ -87,6 +87,12 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
             next
           end
         end
+        # write.only only belongs to full-name-ldap-mapper
+        if resource[:type] != 'full-name-ldap-mapper'
+          if property == :write_only
+            next
+          end
+        end
         data[:config][key] = [resource[property.to_sym]]
       end
     end
@@ -148,6 +154,12 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
           # is.mandatory.in.ldap and user.model.attribute only belong to user-attribute-ldap-mapper
           if resource[:type] != 'user-attribute-ldap-mapper'
             if property == :is_mandatory_in_ldap || property == :user_model_attribute || property == :always_read_value_from_ldap
+              next
+            end
+          end
+          # write.only only belongs to full-name-ldap-mapper
+          if resource[:type] != 'full-name-ldap-mapper'
+            if property == :write_only
               next
             end
           end

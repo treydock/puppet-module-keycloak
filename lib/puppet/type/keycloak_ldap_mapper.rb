@@ -52,11 +52,11 @@ Manage Keycloak LDAP attribute mappers
   end
 
   newproperty(:ldap_attribute) do
-    desc 'ldapAttribute'
+    desc 'ldap.attribute'
   end
 
   newproperty(:user_model_attribute) do
-    desc 'userModelAttribute'
+    desc 'user.model.attribute'
   end
 
   newproperty(:is_mandatory_in_ldap) do
@@ -83,15 +83,21 @@ Manage Keycloak LDAP attribute mappers
   end
 
   newproperty(:read_only, :boolean => true) do
-    desc "readOnly"
+    desc "read.nly"
     newvalues(:true, :false)
     defaultto :true
   end
 
   newproperty(:write_only, :boolean => true) do
-    desc "writeOnly"
+    desc "write.only.  Defaults to `false` if `type` is `full-name-ldap-mapper`."
     newvalues(:true, :false)
-    defaultto :false
+    defaultto do
+      if @resource[:type] == 'full-name-ldap-mapper'
+        :false
+      else
+        nil
+      end
+    end
   end
 
   autorequire(:keycloak_ldap_user_provider) do
