@@ -1,4 +1,6 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'provider', 'keycloak_api'))
+require_relative '../provider/keycloak_api'
+require_relative '../../puppet_x/keycloak/type'
+require_relative '../../puppet_x/keycloak/array_property'
 
 Puppet::Type.newtype(:keycloak_ldap_mapper) do
   desc <<-DESC
