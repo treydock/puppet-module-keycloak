@@ -68,7 +68,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
     fail("Ldap is mandatory for #{resource.type} #{resource.name}") if resource[:ldap].nil?
 
     data = {}
-    data[:id] = resource[:id]
+    data[:id] = resource[:id] || name_uuid(resource[:name])
     data[:name] = resource[:resource_name]
     data[:parentId] = resource[:ldap]
     data[:providerId] = resource[:type]
@@ -112,7 +112,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
   def destroy
     fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
-      kcadm('delete', "components/#{resource[:id]}", resource[:realm])
+      kcadm('delete', "components/#{id}", resource[:realm])
     rescue Exception => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
@@ -172,7 +172,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
       t.close
       Puppet.debug(IO.read(t.path))
       begin
-        kcadm('update', "components/#{resource[:id]}", resource[:realm], t.path)
+        kcadm('update', "components/#{id}", resource[:realm], t.path)
       rescue Exception => e
         raise Puppet::Error, "kcadm update component failed\nError message: #{e.message}"
       end

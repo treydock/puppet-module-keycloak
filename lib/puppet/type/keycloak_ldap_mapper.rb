@@ -23,10 +23,7 @@ Manage Keycloak LDAP attribute mappers
   end
 
   newparam(:id) do
-    desc 'Id. Defaults to UUID generated from `name`.'
-    defaultto do
-      Puppet::Provider::Keycloak_API.name_uuid(@resource[:name])
-    end
+    desc 'Id.'
   end
 
   newparam(:resource_name) do

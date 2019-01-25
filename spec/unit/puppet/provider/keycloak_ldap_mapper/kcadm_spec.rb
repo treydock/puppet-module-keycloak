@@ -63,6 +63,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper).provider(:kcadm) do
 
   describe 'destroy' do
     it 'should delete a realm' do
+      allow(@resource.provider).to receive(:id).and_return('b84ed8ed-a7b1-502f-83f6-90132e68adef')
       expect(@resource.provider).to receive(:kcadm).with('delete', 'components/b84ed8ed-a7b1-502f-83f6-90132e68adef', 'test')
       @resource.provider.destroy
       property_hash = @resource.provider.instance_variable_get("@property_hash")
@@ -72,6 +73,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper).provider(:kcadm) do
 
   describe 'flush' do
     it 'should update a realm' do
+      allow(@resource.provider).to receive(:id).and_return('b84ed8ed-a7b1-502f-83f6-90132e68adef')
       temp = Tempfile.new('keycloak_component')
       allow(Tempfile).to receive(:new).with('keycloak_component').and_return(temp)
       expect(@resource.provider).to receive(:kcadm).with('update', 'components/b84ed8ed-a7b1-502f-83f6-90132e68adef', 'test', temp.path)

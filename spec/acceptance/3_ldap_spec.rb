@@ -185,4 +185,31 @@ describe 'keycloak_ldap_user_provider:' do
       end
     end
   end
+
+  context 'ensure => absent' do
+    it 'should run successfully' do
+      pp =<<-EOS
+      include mysql::server
+      class { 'keycloak':
+        datasource_driver => 'mysql',
+      }
+      keycloak_ldap_mapper { 'full-name':
+        ensure => 'absent',
+        realm  => 'test',
+        ldap   => 'LDAP-test',
+      }
+      EOS
+
+      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes => true)
+    end
+
+    it 'should have deleted ldap mapper' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
+        data = JSON.parse(stdout)
+        d = data.select { |o| o['name'] == 'full-name' }[0]
+        expect(d).to be_nil
+      end
+    end
+  end
 end
