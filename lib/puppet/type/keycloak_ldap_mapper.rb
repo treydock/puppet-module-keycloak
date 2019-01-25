@@ -128,4 +128,16 @@ Manage Keycloak LDAP attribute mappers
       ],
     ]
   end
+
+  validate do
+    required_properties = [
+      :realm,
+      :ldap,
+    ]
+    required_properties.each do |property|
+      if self[property].nil?
+        fail "You must provide a value for #{property}"
+      end
+    end
+  end
 end

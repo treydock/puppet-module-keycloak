@@ -64,9 +64,6 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
   end
 
   def create
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
-    fail("Ldap is mandatory for #{resource.type} #{resource.name}") if resource[:ldap].nil?
-
     data = {}
     data[:id] = resource[:id] || name_uuid(resource[:name])
     data[:name] = resource[:resource_name]
@@ -110,7 +107,6 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
   end
 
   def destroy
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
       kcadm('delete', "components/#{id}", resource[:realm])
     rescue Exception => e
@@ -137,9 +133,6 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
 
   def flush
     if not @property_flush.empty?
-      fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
-      fail("Ldap is mandatory for #{resource.type} #{resource.name}") if resource[:ldap].nil?
-
       data = {}
       data[:providerId] = resource[:type]
       data[:providerType] = 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'

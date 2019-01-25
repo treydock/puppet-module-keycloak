@@ -199,4 +199,20 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
+  [
+    :realm,
+    :ldap,
+  ].each do |property|
+    it "should require property #{property} when ensure => present" do
+      config.delete(property)
+      config[:ensure] = :present
+      expect { resource }.to raise_error(Puppet::Error, /You must provide a value for #{property}/)
+    end
+    it "should require property #{property} when ensure => absent" do
+      config.delete(property)
+      config[:ensure] = :absent
+      expect { resource }.to raise_error(Puppet::Error, /You must provide a value for #{property}/)
+    end
+  end
+
 end
