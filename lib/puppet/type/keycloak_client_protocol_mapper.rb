@@ -22,10 +22,7 @@ Manage Keycloak protocol mappers
   end
 
   newparam(:id) do
-    desc 'Id. Defaults to UUID based on `name`.'
-    defaultto do
-      Puppet::Provider::Keycloak_API.name_uuid(@resource[:name])
-    end
+    desc 'Id.'
   end
 
   newparam(:resource_name, :namevar => true) do

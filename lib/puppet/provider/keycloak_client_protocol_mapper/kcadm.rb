@@ -96,7 +96,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, :parent => P
     fail("Client is mandatory for #{resource.type} #{resource.name}") if resource[:client].nil?
 
     data = {}
-    data[:id] = resource[:id]
+    data[:id] = resource[:id] || name_uuid(resource[:name])
     data[:name] = resource[:resource_name]
     data[:protocol] = resource[:protocol]
     data[:protocolMapper] = resource[:type]
@@ -139,7 +139,6 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, :parent => P
   def destroy
     fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     fail("Client is mandatory for #{resource.type} #{resource.name}") if resource[:client].nil?
-    id = @property_hash[:id] || resource[:id]
     begin
       kcadm('delete', "clients/#{resource[:client]}/protocol-mappers/models/#{id}", resource[:realm])
     rescue Exception => e
@@ -170,7 +169,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, :parent => P
       fail("Client is mandatory for #{resource.type} #{resource.name}") if resource[:client].nil?
 
       data = {}
-      data[:id] = @property_hash[:id]
+      data[:id] = id
       data[:name] = resource[:resource_name]
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
@@ -204,7 +203,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, :parent => P
       t.close
       Puppet.debug(IO.read(t.path))
       begin
-        kcadm('update', "clients/#{resource[:client]}/protocol-mappers/models/#{@property_hash[:id]}", resource[:realm], t.path)
+        kcadm('update', "clients/#{resource[:client]}/protocol-mappers/models/#{id}", resource[:realm], t.path)
       rescue Exception => e
         raise Puppet::Error, "kcadm update component failed\nError message: #{e.message}"
       end
