@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.16
+    &mdash; Documentation by YARD 0.9.18
   
 </title>
 
@@ -120,6 +120,26 @@ but is deprecated.</p>
 <p>Install Keycloak using default database storage.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;: }</code></pre>
+
+<p>Install a specific version of Keycloak.</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
+  version =&gt; &#39;4.8.1.Final&#39;,
+}</code></pre>
+
+<p>Upgrading Keycloak version works by changing <code>version</code> parameter
+as long as the <code>datasource_driver</code> is not the default of
+<code>h2</code>. An upgrade involves installing the new version without
+touching the old version, updating the symlink which defaults to
+<code>/opt/keycloak</code>, applying all changes to new version and then
+restarting the <code>keycloak</code> service.</p>
+
+<p>If the previous <code>version</code> was <code>4.2.1.Final</code> using the
+following will upgrade to <code>4.9.0.Final</code>:</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
+  version =&gt; &#39;4.9.0.Final&#39;,
+}</code></pre>
 
 <p>Install keycloak and use a local MySQL server for database storage</p>
 
