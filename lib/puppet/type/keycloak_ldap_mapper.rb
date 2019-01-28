@@ -80,7 +80,7 @@ Manage Keycloak LDAP attribute mappers
   end
 
   newproperty(:read_only, :boolean => true) do
-    desc "read.nly"
+    desc "read.only"
     newvalues(:true, :false)
     defaultto :true
   end

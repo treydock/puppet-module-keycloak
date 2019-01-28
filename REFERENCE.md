@@ -876,7 +876,7 @@ The protocol mapper name
 
 ##### `id`
 
-Id. Defaults to UUID based on `name`.
+Id.
 
 ##### `resource_name`
 
@@ -1057,11 +1057,11 @@ Default value: present
 
 ##### `ldap_attribute`
 
-ldapAttribute
+ldap.attribute
 
 ##### `user_model_attribute`
 
-userModelAttribute
+user.model.attribute
 
 ##### `is_mandatory_in_ldap`
 
@@ -1077,7 +1077,7 @@ always.read.value.from.ldap. Defaults to `true` if `type` is `user-attribute-lda
 
 Valid values: `true`, `false`
 
-readOnly
+read.only
 
 Default value: true
 
@@ -1085,9 +1085,7 @@ Default value: true
 
 Valid values: `true`, `false`
 
-writeOnly
-
-Default value: false
+write.only.  Defaults to `false` if `type` is `full-name-ldap-mapper`.
 
 #### Parameters
 
@@ -1101,7 +1099,7 @@ The LDAP mapper name
 
 ##### `id`
 
-Id. Defaults to UUID generated from `name`.
+Id.
 
 ##### `resource_name`
 
@@ -1390,7 +1388,7 @@ The protocol mapper name
 
 ##### `id`
 
-Id. Defaults to UUID based on `name`.
+Id.
 
 ##### `resource_name`
 

@@ -1,5 +1,25 @@
 # treydock-keycloak changelog
 
+## [3.3.0](https://github.com/treydock/puppet-module-keycloak/tree/3.3.0) (2019-01-28)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.2.0...3.3.0)
+
+**Implemented enhancements:**
+
+- Better ID handling [\#47](https://github.com/treydock/puppet-module-keycloak/pull/47) ([treydock](https://github.com/treydock))
+
+**Fixed bugs:**
+
+- Fix keycloak\_ldap\_mapper id handling and write\_only property [\#46](https://github.com/treydock/puppet-module-keycloak/pull/46) ([treydock](https://github.com/treydock))
+- Fix PuppetX usage for keycloak\_ldap\_mapper [\#45](https://github.com/treydock/puppet-module-keycloak/pull/45) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- keycloak\_ldap\_mapper with user-attribute-ldap-mapper [\#44](https://github.com/treydock/puppet-module-keycloak/issues/44)
+
+**Merged pull requests:**
+
+- Test against Keycloak 4.8.1.Final and document version handling and upgrade [\#43](https://github.com/treydock/puppet-module-keycloak/pull/43) ([treydock](https://github.com/treydock))
+
 ## [3.2.0](https://github.com/treydock/puppet-module-keycloak/tree/3.2.0) (2018-12-21)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.1.0...3.2.0)
 
