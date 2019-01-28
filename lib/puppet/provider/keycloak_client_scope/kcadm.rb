@@ -73,7 +73,7 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, :parent => Puppet::Pro
   def destroy
     fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
-      kcadm('delete', "client-scopes/#{resource[:id]}", resource[:realm])
+      kcadm('delete', "client-scopes/#{id}", resource[:realm])
     rescue Exception => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
@@ -113,7 +113,7 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, :parent => Puppet::Pro
       t.close
       Puppet.debug(IO.read(t.path))
       begin
-        kcadm('update', "client-scopes/#{resource[:id]}", resource[:realm], t.path)
+        kcadm('update', "client-scopes/#{id}", resource[:realm], t.path)
       rescue Exception => e
         raise Puppet::Error, "kcadm update client-scope failed\nError message: #{e.message}"
       end

@@ -162,7 +162,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
   def destroy
     fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
-      kcadm('delete', "clients/#{resource[:id]}", resource[:realm])
+      kcadm('delete', "clients/#{id}", resource[:realm])
     rescue Exception => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
@@ -205,7 +205,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         t.close
         Puppet.debug(IO.read(t.path))
         begin
-          kcadm('update', "clients/#{resource[:id]}", resource[:realm], t.path)
+          kcadm('update', "clients/#{id}", resource[:realm], t.path)
         rescue Exception => e
           raise Puppet::Error, "kcadm update client failed\nError message: #{e.message}"
         end
@@ -219,10 +219,10 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         begin
           remove_default_scopes.each do |s|
             scope_id = scope_map[s]
-            output = kcadm('delete', "clients/#{resource[:id]}/default-client-scopes/#{scope_id}", resource[:realm])
+            output = kcadm('delete', "clients/#{id}/default-client-scopes/#{scope_id}", resource[:realm])
           end
         rescue Exception => e
-          raise Puppet::Error, "kcadm delete clients/#{resource[:id]}/default-client-scopes/#{scope_id}: #{e.message}"
+          raise Puppet::Error, "kcadm delete clients/#{id}/default-client-scopes/#{scope_id}: #{e.message}"
         end
       end
       if @property_flush[:optional_client_scopes]
@@ -230,10 +230,10 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         begin
           remove_optional_scopes.each do |s|
             scope_id = scope_map[s]
-            output = kcadm('delete', "clients/#{resource[:id]}/optional-client-scopes/#{scope_id}", resource[:realm])
+            output = kcadm('delete', "clients/#{id}/optional-client-scopes/#{scope_id}", resource[:realm])
           end
         rescue Exception => e
-          raise Puppet::Error, "kcadm delete clients/#{resource[:id]}/optional-client-scopes/#{scope_id}: #{e.message}"
+          raise Puppet::Error, "kcadm delete clients/#{id}/optional-client-scopes/#{scope_id}: #{e.message}"
         end
       end
       if @property_flush[:default_client_scopes]
@@ -241,10 +241,10 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         begin
           add_default_scopes.each do |s|
             scope_id = scope_map[s]
-            output = kcadm('update', "clients/#{resource[:id]}/default-client-scopes/#{scope_id}", resource[:realm])
+            output = kcadm('update', "clients/#{id}/default-client-scopes/#{scope_id}", resource[:realm])
           end
         rescue Exception => e
-          raise Puppet::Error, "kcadm update clients/#{resource[:id]}/default-client-scopes/#{scope_id}: #{e.message}"
+          raise Puppet::Error, "kcadm update clients/#{id}/default-client-scopes/#{scope_id}: #{e.message}"
         end
       end
       if @property_flush[:optional_client_scopes]
@@ -252,10 +252,10 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         begin
           add_optional_scopes.each do |s|
             scope_id = scope_map[s]
-            output = kcadm('update', "clients/#{resource[:id]}/optional-client-scopes/#{scope_id}", resource[:realm])
+            output = kcadm('update', "clients/#{id}/optional-client-scopes/#{scope_id}", resource[:realm])
           end
         rescue Exception => e
-          raise Puppet::Error, "kcadm update clients/#{resource[:id]}/optional-client-scopes/#{scope_id}: #{e.message}"
+          raise Puppet::Error, "kcadm update clients/#{id}/optional-client-scopes/#{scope_id}: #{e.message}"
         end
       end
     end

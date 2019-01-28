@@ -40,6 +40,9 @@ describe Puppet::Type.type(:keycloak_client_scope).provider(:kcadm) do
 
   describe 'destroy' do
     it 'should delete a realm' do
+      hash = @resource.provider.instance_variable_get(:@property_hash)
+      hash = @resource.to_hash
+      @resource.provider.instance_variable_set(:@property_hash, hash)
       expect(@resource.provider).to receive(:kcadm).with('delete', 'client-scopes/foo', 'test')
       @resource.provider.destroy
       property_hash = @resource.provider.instance_variable_get("@property_hash")
@@ -49,6 +52,9 @@ describe Puppet::Type.type(:keycloak_client_scope).provider(:kcadm) do
 
   describe 'flush' do
     it 'should update a realm' do
+      hash = @resource.provider.instance_variable_get(:@property_hash)
+      hash = @resource.to_hash
+      @resource.provider.instance_variable_set(:@property_hash, hash)
       temp = Tempfile.new('keycloak_client_scope')
       allow(Tempfile).to receive(:new).with('keycloak_client_scope').and_return(temp)
       expect(@resource.provider).to receive(:kcadm).with('update', 'client-scopes/foo', 'test', temp.path)
