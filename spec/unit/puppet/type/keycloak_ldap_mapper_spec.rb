@@ -30,8 +30,8 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     expect(resource[:resource_name]).to eq('foo')
   end
 
-  it 'should have id default to name-realm' do
-    expect(resource[:id]).to eq('b84ed8ed-a7b1-502f-83f6-90132e68adef')
+  it 'should not have id default' do
+    expect(resource[:id]).to be_nil
   end
 
   it 'should have realm' do
@@ -95,9 +95,17 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     expect(resource[:always_read_value_from_ldap]).to eq(:false)
   end
 
+  it 'should have write_only with no default' do
+    expect(resource[:write_only]).to be_nil
+  end
+
+  it 'should have write_only default to false for full-name-ldap-mapper' do
+    config[:type] = 'full-name-ldap-mapper'
+    expect(resource[:write_only]).to be(:false)
+  end
+
   defaults = {
     :read_only => :true,
-    :write_only => :false
   }
 
   # Test basic properties
@@ -189,6 +197,22 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     rel = resource.autorequire[0]
     expect(rel.source.ref).to eq(keycloak_ldap_user_provider.ref)
     expect(rel.target.ref).to eq(resource.ref)
+  end
+
+  [
+    :realm,
+    :ldap,
+  ].each do |property|
+    it "should require property #{property} when ensure => present" do
+      config.delete(property)
+      config[:ensure] = :present
+      expect { resource }.to raise_error(Puppet::Error, /You must provide a value for #{property}/)
+    end
+    it "should require property #{property} when ensure => absent" do
+      config.delete(property)
+      config[:ensure] = :absent
+      expect { resource }.to raise_error(Puppet::Error, /You must provide a value for #{property}/)
+    end
   end
 
 end

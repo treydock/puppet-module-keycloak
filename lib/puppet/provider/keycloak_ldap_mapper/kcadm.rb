@@ -64,11 +64,8 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
   end
 
   def create
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
-    fail("Ldap is mandatory for #{resource.type} #{resource.name}") if resource[:ldap].nil?
-
     data = {}
-    data[:id] = resource[:id]
+    data[:id] = resource[:id] || name_uuid(resource[:name])
     data[:name] = resource[:resource_name]
     data[:parentId] = resource[:ldap]
     data[:providerId] = resource[:type]
@@ -84,6 +81,12 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
         # is.mandatory.in.ldap and user.model.attribute only belong to user-attribute-ldap-mapper
         if resource[:type] != 'user-attribute-ldap-mapper'
           if property == :is_mandatory_in_ldap || property == :user_model_attribute || property == :always_read_value_from_ldap
+            next
+          end
+        end
+        # write.only only belongs to full-name-ldap-mapper
+        if resource[:type] != 'full-name-ldap-mapper'
+          if property == :write_only
             next
           end
         end
@@ -104,9 +107,8 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
   end
 
   def destroy
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
-      kcadm('delete', "components/#{resource[:id]}", resource[:realm])
+      kcadm('delete', "components/#{id}", resource[:realm])
     rescue Exception => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
@@ -131,9 +133,6 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
 
   def flush
     if not @property_flush.empty?
-      fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
-      fail("Ldap is mandatory for #{resource.type} #{resource.name}") if resource[:ldap].nil?
-
       data = {}
       data[:providerId] = resource[:type]
       data[:providerType] = 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'
@@ -151,6 +150,12 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
               next
             end
           end
+          # write.only only belongs to full-name-ldap-mapper
+          if resource[:type] != 'full-name-ldap-mapper'
+            if property == :write_only
+              next
+            end
+          end
           data[:config][key] = [resource[property.to_sym]]
         end
       end
@@ -160,7 +165,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
       t.close
       Puppet.debug(IO.read(t.path))
       begin
-        kcadm('update', "components/#{resource[:id]}", resource[:realm], t.path)
+        kcadm('update', "components/#{id}", resource[:realm], t.path)
       rescue Exception => e
         raise Puppet::Error, "kcadm update component failed\nError message: #{e.message}"
       end
