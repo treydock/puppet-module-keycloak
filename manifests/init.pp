@@ -131,6 +131,8 @@
 #   user_attributes to define for SSSD ifp service
 # @param restart_sssd
 #   Boolean that determines if SSSD should be restarted
+# @param service_environment_file
+#   Path to the file with environment variables for the systemd service
 #
 class keycloak (
   String $version               = '4.2.1.Final',
@@ -180,6 +182,7 @@ class keycloak (
   Boolean $manage_sssd_config = true,
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
+  Optional[String] $service_environment_file = undef
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
