@@ -1,16 +1,6 @@
 # Private class.
 class keycloak::params {
 
-  $service_java_opts  = [
-    '-server',
-    '-Xms64m',
-    '-Xmx512m',
-    '-XX:MetaspaceSize=96M',
-    '-XX:MaxMetaspaceSize=256m',
-    '-Djava.net.preferIPv4Stack=true',
-    '-Djboss.modules.system.pkgs=org.jboss.byteman',
-    '-Djava.awt.headless=true',
-  ]
   $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz'
 
   case $::osfamily {

@@ -450,11 +450,11 @@ Default value: `true`
 
 ##### `service_java_opts`
 
+Sets additional options to Java virtual machine environment variable.
+
 Data type: `Variant[String, Array]`
 
-
-
-Default value: $keycloak::params::service_java_opts
+Default value: `undef`
 
 ### keycloak::config
 
