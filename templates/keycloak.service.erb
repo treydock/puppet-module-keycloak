@@ -5,6 +5,9 @@ After=network.target
 [Service]
 Type=idle
 #Environment="JAVA_OPTS=-Xms1024m -Xmx20480m -XX:MaxPermSize=768m"
+<% if scope['keycloak::service_environment_file'] -%>
+EnvironmentFile=<%= scope['keycloak::service_environment_file'] %>
+<% end -%>
 User=<%= scope['keycloak::user'] %>
 Group=<%= scope['keycloak::group'] %>
 ExecStart=<%= scope['keycloak::install_base'] %>/bin/standalone.sh -b 0.0.0.0 -Djboss.http.port=<%= scope['keycloak::http_port'] %>
