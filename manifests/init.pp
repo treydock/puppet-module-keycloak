@@ -182,7 +182,7 @@ class keycloak (
   Boolean $manage_sssd_config = true,
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
-  Optional[String] $service_environment_file = undef
+  Optional[Stdlib::Absolutepath] $service_environment_file = undef
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")

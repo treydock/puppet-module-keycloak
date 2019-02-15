@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=idle
 #Environment="JAVA_OPTS=-Xms1024m -Xmx20480m -XX:MaxPermSize=768m"
-<% if !scope['keycloak::service_environment_file'].nil? -%>
+<% if scope['keycloak::service_environment_file'] -%>
 EnvironmentFile=<%= scope['keycloak::service_environment_file'] %>
 <% end -%>
 User=<%= scope['keycloak::user'] %>
