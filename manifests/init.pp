@@ -27,6 +27,8 @@
 # @param service_hasrestart
 #   Keycloak service hasrestart parameter.
 #   Default is `true`.
+# @param service_java_opts
+#   Sets additional options to Java virtual machine environment variable.
 # @param user
 #   Keycloak user name.
 #   Default is `keycloak`.
@@ -144,7 +146,8 @@ class keycloak (
   Boolean $service_enable       = true,
   Boolean $service_hasstatus    = $keycloak::params::service_hasstatus,
   Boolean $service_hasrestart   = $keycloak::params::service_hasrestart,
-  Variant[String, Array] $service_java_opts = $keycloak::params::service_java_opts,
+  Optional[Variant[String, Array]]
+    $service_java_opts = undef,
   String $user                  = 'keycloak',
   String $group                 = 'keycloak',
   Optional[Integer] $user_uid   = undef,
