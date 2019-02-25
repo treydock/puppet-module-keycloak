@@ -128,6 +128,14 @@ Default is `true`.
 
 Default value: $keycloak::params::service_hasrestart
 
+##### `service_java_opts`
+
+Data type: `Optional[Variant[String, Array]]`
+
+Sets additional options to Java virtual machine environment variable.
+
+Default value: `undef`
+
 ##### `user`
 
 Data type: `String`
@@ -448,11 +456,11 @@ Boolean that determines if SSSD should be restarted
 
 Default value: `true`
 
-##### `service_java_opts`
+##### `service_environment_file`
 
-Sets additional options to Java virtual machine environment variable.
+Data type: `Optional[Stdlib::Absolutepath]`
 
-Data type: `Variant[String, Array]`
+Path to the file with environment variables for the systemd service
 
 Default value: `undef`
 

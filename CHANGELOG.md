@@ -1,5 +1,18 @@
 # treydock-keycloak changelog
 
+## [3.4.0](https://github.com/treydock/puppet-module-keycloak/tree/3.4.0) (2019-02-25)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.3.0...3.4.0)
+
+**Implemented enhancements:**
+
+- JAVA\_OPTS via systemd unit Environment variable [\#51](https://github.com/treydock/puppet-module-keycloak/pull/51) ([danifr](https://github.com/danifr))
+- Add option for service environment file [\#50](https://github.com/treydock/puppet-module-keycloak/pull/50) ([asieraguado](https://github.com/asieraguado))
+
+**Closed issues:**
+
+- `service\_java\_opts` parameter not actually being used [\#49](https://github.com/treydock/puppet-module-keycloak/issues/49)
+- Dependency error while installing Keycloak from scratch [\#48](https://github.com/treydock/puppet-module-keycloak/issues/48)
+
 ## [3.3.0](https://github.com/treydock/puppet-module-keycloak/tree/3.3.0) (2019-01-28)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.2.0...3.3.0)
 
