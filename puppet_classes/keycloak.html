@@ -247,6 +247,24 @@
   
     <li>
       
+        <span class='name'>service_java_opts</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[String, Array]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets additional options to Java virtual machine environment variable.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>user</span>
       
       
@@ -912,14 +930,19 @@ by this module</p>
   
     <li>
       
-        <span class='name'>service_java_opts</span>
+        <span class='name'>service_environment_file</span>
       
       
-        <span class='type'>(<tt>Variant[String, Array]</tt>)</span>
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$keycloak::params::service_java_opts</tt>)</em>
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to the file with environment variables for the systemd service</p>
+</div>
       
     </li>
   
@@ -933,10 +956,6 @@ by this module</p>
         <pre class="lines">
 
 
-135
-136
-137
-138
 139
 140
 141
@@ -1038,10 +1057,16 @@ by this module</p>
 237
 238
 239
-240</pre>
+240
+241
+242
+243
+244
+245
+246</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 135</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 139</span>
 
 class keycloak (
   String $version               = &#39;4.2.1.Final&#39;,
@@ -1053,7 +1078,8 @@ class keycloak (
   Boolean $service_enable       = true,
   Boolean $service_hasstatus    = $keycloak::params::service_hasstatus,
   Boolean $service_hasrestart   = $keycloak::params::service_hasrestart,
-  Variant[String, Array] $service_java_opts = $keycloak::params::service_java_opts,
+  Optional[Variant[String, Array]]
+    $service_java_opts = undef,
   String $user                  = &#39;keycloak&#39;,
   String $group                 = &#39;keycloak&#39;,
   Optional[Integer] $user_uid   = undef,
@@ -1091,6 +1117,7 @@ class keycloak (
   Boolean $manage_sssd_config = true,
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
+  Optional[Stdlib::Absolutepath] $service_environment_file = undef
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, &quot;https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz&quot;)

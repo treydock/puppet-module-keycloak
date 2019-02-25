@@ -142,33 +142,13 @@
 41
 42
 43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54</pre>
+44</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/params.pp', line 2</span>
 
 class keycloak::params {
 
-  $service_java_opts  = [
-    &#39;-server&#39;,
-    &#39;-Xms64m&#39;,
-    &#39;-Xmx512m&#39;,
-    &#39;-XX:MetaspaceSize=96M&#39;,
-    &#39;-XX:MaxMetaspaceSize=256m&#39;,
-    &#39;-Djava.net.preferIPv4Stack=true&#39;,
-    &#39;-Djboss.modules.system.pkgs=org.jboss.byteman&#39;,
-    &#39;-Djava.awt.headless=true&#39;,
-  ]
   $libunix_dbus_java_source = &#39;https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz&#39;
 
   case $::osfamily {
