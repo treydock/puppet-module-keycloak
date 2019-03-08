@@ -1,5 +1,5 @@
 # Private class.
-class keycloak::datasource::postgres (
+class keycloak::datasource::postgresql (
   $jar_file      = $keycloak::postgresql_jar_file,
   $jar_source    = $keycloak::postgresql_jar_source,
   $module_source = 'puppet:///modules/keycloak/database/postgresql/module.xml',
