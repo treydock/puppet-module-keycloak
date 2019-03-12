@@ -36,4 +36,10 @@ class keycloak::datasource::postgresql (
     group  => $keycloak::group,
     mode   => '0644',
   }
+  -> file_line { 'driver_file':
+    ensure  => 'present',
+    path    => "${module_dir}/module.xml",
+    line    => "<resource-root path=\"${jar_file}\"/>",
+    match   => '<resource-root path="postgresql9.jar"/>'
+  }
 }
