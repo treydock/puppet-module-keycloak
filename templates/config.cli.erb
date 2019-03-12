@@ -38,7 +38,7 @@ if (outcome != success) of /subsystem=datasources/jdbc-driver=oracle:read-resour
 end-if
 <%- elsif scope['keycloak::datasource_driver'] == 'postgresql' -%>
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation, value=true)
-/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1 FROM DUAL")
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1")
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
 if (outcome != success) of /subsystem=datasources/jdbc-driver=postgresql:read-resource
