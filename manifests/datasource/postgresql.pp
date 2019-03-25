@@ -2,7 +2,7 @@
 class keycloak::datasource::postgresql (
   $jar_file      = $keycloak::postgresql_jar_file,
   $jar_source    = $keycloak::postgresql_jar_source,
-  $module_source = 'puppet:///modules/keycloak/database/postgresql/module.xml',
+  $module_source = 'keycloak/database/postgresql/module.xml.erb',
 ) {
   assert_private()
 
@@ -30,16 +30,10 @@ class keycloak::datasource::postgresql (
   }
 
   file { "${$module_dir}/module.xml":
-    ensure => 'file',
-    source => $module_source,
-    owner  => $keycloak::user,
-    group  => $keycloak::group,
-    mode   => '0644',
-  }
-  -> file_line { 'driver_file':
-    ensure  => 'present',
-    path    => "${module_dir}/module.xml",
-    line    => "<resource-root path=\"${jar_file}\"/>",
-    match   => '<resource-root path="postgresql9.jar"/>'
+    ensure  => 'file',
+    content => template($module_source),
+    owner   => $keycloak::user,
+    group   => $keycloak::group,
+    mode    => '0644',
   }
 }
