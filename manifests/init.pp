@@ -29,6 +29,8 @@
 #   Default is `true`.
 # @param service_java_opts
 #   Sets additional options to Java virtual machine environment variable.
+# @param manage_user
+#   Defines if the module should manage the Linux user for Keycloak installation
 # @param user
 #   Keycloak user name.
 #   Default is `keycloak`.
@@ -148,6 +150,7 @@ class keycloak (
   Boolean $service_hasrestart   = $keycloak::params::service_hasrestart,
   Optional[Variant[String, Array]]
     $service_java_opts = undef,
+  Boolean $manage_user = true,
   String $user                  = 'keycloak',
   String $group                 = 'keycloak',
   Optional[Integer] $user_uid   = undef,
@@ -185,7 +188,7 @@ class keycloak (
   Boolean $manage_sssd_config = true,
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
-  Optional[Stdlib::Absolutepath] $service_environment_file = undef
+  Optional[Stdlib::Absolutepath] $service_environment_file = undef,
 ) inherits keycloak::params {
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
