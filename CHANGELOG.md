@@ -1,5 +1,12 @@
 # treydock-keycloak changelog
 
+## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.4.0...3.5.0)
+
+**Implemented enhancements:**
+
+- manage user support [\#53](https://github.com/treydock/puppet-module-keycloak/pull/53) ([cborisa](https://github.com/cborisa))
+
 ## [3.4.0](https://github.com/treydock/puppet-module-keycloak/tree/3.4.0) (2019-02-25)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.3.0...3.4.0)
 

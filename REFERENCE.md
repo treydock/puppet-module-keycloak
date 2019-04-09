@@ -136,6 +136,14 @@ Sets additional options to Java virtual machine environment variable.
 
 Default value: `undef`
 
+##### `manage_user`
+
+Data type: `Boolean`
+
+Defines if the module should manage the Linux user for Keycloak installation
+
+Default value: `true`
+
 ##### `user`
 
 Data type: `String`
