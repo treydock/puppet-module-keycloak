@@ -130,8 +130,7 @@
 38
 39
 40
-41
-42</pre>
+41</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/install.pp', line 2</span>
@@ -139,24 +138,24 @@
 class keycloak::install {
   assert_private()
 
-  user { &#39;keycloak&#39;:
-    ensure     =&gt; &#39;present&#39;,
-    name       =&gt; $keycloak::user,
-    forcelocal =&gt; true,
-    shell      =&gt; $keycloak::user_shell,
-    gid        =&gt; $keycloak::group,
-    uid        =&gt; $keycloak::user_uid,
-    home       =&gt; &#39;/var/lib/keycloak&#39;,
-    managehome =&gt; true,
+  if $keycloak::manage_user {
+    user { &#39;keycloak&#39;:
+      ensure     =&gt; &#39;present&#39;,
+      name       =&gt; $keycloak::user,
+      forcelocal =&gt; true,
+      shell      =&gt; $keycloak::user_shell,
+      gid        =&gt; $keycloak::group,
+      uid        =&gt; $keycloak::user_uid,
+      home       =&gt; &#39;/var/lib/keycloak&#39;,
+      managehome =&gt; true,
+    }
+    group { &#39;keycloak&#39;:
+      ensure     =&gt; &#39;present&#39;,
+      name       =&gt; $keycloak::group,
+      forcelocal =&gt; true,
+      gid        =&gt; $keycloak::group_gid,
+    }
   }
-
-  group { &#39;keycloak&#39;:
-    ensure     =&gt; &#39;present&#39;,
-    name       =&gt; $keycloak::group,
-    forcelocal =&gt; true,
-    gid        =&gt; $keycloak::group_gid,
-  }
-
   file { &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;:
     ensure =&gt; &#39;directory&#39;,
     owner  =&gt; $keycloak::user,
@@ -172,10 +171,9 @@ class keycloak::install {
     source          =&gt; $keycloak::download_url,
     creates         =&gt; &quot;${keycloak::install_dir}/keycloak-${keycloak::version}/bin&quot;,
     cleanup         =&gt; true,
-    user            =&gt; &#39;keycloak&#39;,
-    group           =&gt; &#39;keycloak&#39;,
+    user            =&gt; $keycloak::user,
+    group           =&gt; $keycloak::group,
   }
-
 }</pre>
       </td>
     </tr>
