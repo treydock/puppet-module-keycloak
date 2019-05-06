@@ -82,4 +82,31 @@ Manage Keycloak realms
   newproperty(:optional_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
     desc 'Optional Client Scopes'
   end
+
+  newproperty(:events_enabled, :boolean => true) do
+    desc 'eventsEnabled'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:events_expiration) do
+    desc 'eventsExpiration'
+  end
+
+  newproperty(:events_listeners, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+    desc 'eventsListeners'
+    defaultto ['jboss-logging']
+  end
+
+  newproperty(:admin_events_enabled, :boolean => true) do
+    desc 'adminEventsEnabled'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:admin_events_details_enabled, :boolean => true) do
+    desc 'adminEventsDetailsEnabled'
+    newvalues(:true, :false)
+    defaultto :false
+  end
 end
