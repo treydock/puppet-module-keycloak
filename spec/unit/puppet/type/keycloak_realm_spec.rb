@@ -36,6 +36,10 @@ describe Puppet::Type.type(:keycloak_realm) do
     :enabled => :true,
     :remember_me => :false,
     :login_with_email_allowed => :true,
+    :events_enabled => :false,
+    :events_listeners => ['jboss-logging'],
+    :admin_events_enabled => :false,
+    :admin_events_details_enabled => :false,
   }
 
   # Test basic properties
@@ -46,6 +50,7 @@ describe Puppet::Type.type(:keycloak_realm) do
     :account_theme,
     :admin_theme,
     :email_theme,
+    :events_expiration,
   ].each do |p|
     it "should accept a #{p.to_s}" do
       config[p] = 'foo'
@@ -62,6 +67,9 @@ describe Puppet::Type.type(:keycloak_realm) do
   [
     :remember_me,
     :login_with_email_allowed,
+    :events_enabled,
+    :admin_events_enabled,
+    :admin_events_details_enabled,
   ].each do |p|
     it "should accept true for #{p.to_s}" do
       config[p] = true
@@ -96,6 +104,7 @@ describe Puppet::Type.type(:keycloak_realm) do
   [
     :default_client_scopes,
     :optional_client_scopes,
+    :events_listeners,
   ].each do |p|
     it "should accept array for #{p}" do
       config[p] = ['foo','bar']
