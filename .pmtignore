@@ -1,15 +1,26 @@
-import/
-/spec/fixtures/
-.tmp
-*.lock
-*.local
-.rbenv-gemsets
+# IDE related
+.idea/
+.project/
+
+# Testing and development
+.vagrant/
+spec/fixtures/modules/
+spec/fixtures/manifests/
+.rspec_system/
+.vagrant/
+/log
+
+# Ruby and RVM
 .ruby-version
-build/
-docs/
-tests/
-log/
-junit/
-tmp/
+.rvmrc
+
+# Bundler
+Gemfile.lock
+.bundle/
+
+# Puppet module generated
+pkg/
+
+# Docs
 doc/
 .yardoc/

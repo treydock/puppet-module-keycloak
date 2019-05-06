@@ -31,7 +31,7 @@ There are several key differences between 2.x and 3.x of this module that were r
 | Keycloak Version | Keycloak Puppet module versions |
 | ---------------- | ------------------------------- |
 | 3.x              | 2.x                             |
-| 4.x              | 3.x                             |
+| 4.x - 6.x        | 3.x                             |
 
 
 ## Usage
