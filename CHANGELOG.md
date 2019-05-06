@@ -1,5 +1,20 @@
 # treydock-keycloak changelog
 
+## [3.6.0](https://github.com/treydock/puppet-module-keycloak/tree/3.6.0) (2019-05-06)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.5.0...3.6.0)
+
+**Implemented enhancements:**
+
+- Support managing realm's events config [\#55](https://github.com/treydock/puppet-module-keycloak/pull/55) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- Upgrading Keycloak does not execute migration scripts [\#52](https://github.com/treydock/puppet-module-keycloak/issues/52)
+
+**Merged pull requests:**
+
+- Test against Keycloak 6 [\#54](https://github.com/treydock/puppet-module-keycloak/pull/54) ([treydock](https://github.com/treydock))
+
 ## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.4.0...3.5.0)
 

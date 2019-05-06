@@ -1520,6 +1520,40 @@ Default Client Scopes
 
 Optional Client Scopes
 
+##### `events_enabled`
+
+Valid values: `true`, `false`
+
+eventsEnabled
+
+Default value: false
+
+##### `events_expiration`
+
+eventsExpiration
+
+##### `events_listeners`
+
+eventsListeners
+
+Default value: ['jboss-logging']
+
+##### `admin_events_enabled`
+
+Valid values: `true`, `false`
+
+adminEventsEnabled
+
+Default value: false
+
+##### `admin_events_details_enabled`
+
+Valid values: `true`, `false`
+
+adminEventsDetailsEnabled
+
+Default value: false
+
 #### Parameters
 
 The following parameters are available in the `keycloak_realm` type.
