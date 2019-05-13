@@ -1,5 +1,12 @@
 # treydock-keycloak changelog
 
+## [3.6.1](https://github.com/treydock/puppet-module-keycloak/tree/3.6.1) (2019-05-13)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.6.0...3.6.1)
+
+**Fixed bugs:**
+
+- Fix handling of events config during updates [\#56](https://github.com/treydock/puppet-module-keycloak/pull/56) ([treydock](https://github.com/treydock))
+
 ## [3.6.0](https://github.com/treydock/puppet-module-keycloak/tree/3.6.0) (2019-05-06)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.5.0...3.6.0)
 
