@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.18
+    &mdash; Documentation by YARD 0.9.19
   
 </title>
 
@@ -119,13 +119,15 @@ but is deprecated.</p>
 
 <p>Install Keycloak using default database storage.</p>
 
-<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;: }</code></pre>
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;: }
+</code></pre>
 
 <p>Install a specific version of Keycloak.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
   version =&gt; &#39;4.8.1.Final&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <p>Upgrading Keycloak version works by changing <code>version</code> parameter
 as long as the <code>datasource_driver</code> is not the default of
@@ -139,7 +141,8 @@ following will upgrade to <code>4.9.0.Final</code>:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
   version =&gt; &#39;4.9.0.Final&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <p>Install keycloak and use a local MySQL server for database storage</p>
 
@@ -151,7 +154,8 @@ class { &#39;keycloak&#39;:
   datasource_dbname   =&gt; &#39;keycloak&#39;,
   datasource_username =&gt; &#39;keycloak&#39;,
   datasource_password =&gt; &#39;foobar&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <p>Configure a SSL certificate truststore and add a LDAP server&#39;s
 certificate to the truststore.</p>
@@ -163,7 +167,8 @@ certificate to the truststore.</p>
 }
 keycloak::truststore::host { &#39;ldap1.example.com&#39;:
   certificate =&gt; &#39;/etc/openldap/certs/0a00000.0&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <p>Setup Keycloak to proxy through Apache HTTPS.</p>
 
@@ -186,7 +191,8 @@ apache::vhost { &#39;idp.example.com&#39;:
   ],
   ssl_cert            =&gt; &#39;/etc/pki/tls/certs/idp.example.com/crt&#39;,
   ssl_key             =&gt; &#39;/etc/pki/tls/private/idp.example.com.key&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <p>Setup a host for theme development so that theme changes don&#39;t require
 a service restart, not recommended for production.</p>
@@ -195,7 +201,8 @@ a service restart, not recommended for production.</p>
   theme_static_max_age  =&gt; -1,
   theme_cache_themes    =&gt; false,
   theme_cache_templates =&gt; false,
-}</code></pre>
+}
+</code></pre>
 
 <h3 id="label-keycloak_realm">keycloak_realm</h3>
 
@@ -207,7 +214,8 @@ use a local branded theme.</p>
   remember_me              =&gt; true,
   login_with_email_allowed =&gt; false,
   login_theme              =&gt; &#39;my_theme&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <h3 id="label-keycloak_ldap_user_provider">keycloak_ldap_user_provider</h3>
 
@@ -222,7 +230,8 @@ the truststore.</p>
   connection_url     =&gt; &#39;ldaps://ldap1.example.com:636 ldaps://ldap2.example.com:636&#39;,
   import_enabled     =&gt; false,
   use_truststore_spi =&gt; &#39;never&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <p><strong>NOTE</strong> The <code>Id</code> for the above resource would be
 <code>LDAP-test</code> where the format is
@@ -237,7 +246,8 @@ the truststore.</p>
   resource_name  =&gt; &#39;full name&#39;,
   type           =&gt; &#39;full-name-ldap-mapper&#39;,
   ldap_attribute =&gt; &#39;gecos&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <h3 id="label-keycloak_sssd_user_provider">keycloak_sssd_user_provider</h3>
 
@@ -248,7 +258,8 @@ service is setup. Also requires <code>keycloak</code> class be called with
 
 <pre class="code ruby"><code class="ruby">keycloak_sssd_user_provider { &#39;SSSD on test&#39;:
   ensure =&gt; &#39;present&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <h3 id="label-keycloak_client">keycloak_client</h3>
 
@@ -263,7 +274,8 @@ service is setup. Also requires <code>keycloak</code> class be called with
   ],
   client_template =&gt; &#39;oidc-clients&#39;,
   secret          =&gt; &#39;supersecret&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <h3 id="label-keycloak-3A-3Aclient_template">keycloak::client_template</h3>
 
@@ -275,7 +287,8 @@ keycloak.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak::client_template { &#39;oidc-clients&#39;:
   realm =&gt; &#39;test&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <p><strong>NOTE</strong>: This define is deprecated as templates were replaced
 by client scopes in Keycloak 4.x.</p>
@@ -287,7 +300,8 @@ Keycloak:</p>
 
 <pre class="code ruby"><code class="ruby">keycloak_client_scope { &#39;email on test&#39;:
   protocol =&gt; &#39;openid-connect&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <h3 id="label-keycloak_protocol_mapper">keycloak_protocol_mapper</h3>
 
@@ -298,7 +312,8 @@ scope <code>oidc-email</code> in the realm <code>test</code>.</p>
 <pre class="code ruby"><code class="ruby">keycloak_protocol_mapper { &quot;email for oidc-email on test&quot;:
   claim_name     =&gt; &#39;email&#39;,
   user_attribute =&gt; &#39;email&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <h3 id="label-keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</h3>
 
@@ -308,7 +323,8 @@ client in realm <code>test</code></p>
 <pre class="code ruby"><code class="ruby">keycloak_client_protocol_mapper { &quot;email for test.example.com on test&quot;:
   claim_name     =&gt; &#39;email&#39;,
   user_attribute =&gt; &#39;email&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <h3 id="label-keycloak_api">keycloak_api</h3>
 
@@ -322,7 +338,8 @@ and the module&#39;s <code>kcadm-wrapper.sh</code> is not installed.</p>
   realm        =&gt; &#39;master&#39;,
   user         =&gt; &#39;admin&#39;,
   password     =&gt; &#39;changeme&#39;,
-}</code></pre>
+}
+</code></pre>
 
 <p>The path for <code>install_base</code> will be joined with
 <code>bin/kcadm.sh</code> to produce the full path to
