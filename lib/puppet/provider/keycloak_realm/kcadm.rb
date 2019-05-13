@@ -197,11 +197,10 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes].include?(property)
         if @property_flush[property.to_sym] # || resource[property.to_sym]
-          if property.to_s =~ /events/
-            events_config[camelize(property)] = convert_property_value(resource[property.to_sym])
-          else
-            data[camelize(property)] = convert_property_value(resource[property.to_sym])
-          end
+          data[camelize(property)] = convert_property_value(resource[property.to_sym])
+        end
+        if property.to_s =~ /events/
+          events_config[camelize(property)] = convert_property_value(resource[property.to_sym])
         end
       end
 
