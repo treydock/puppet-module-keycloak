@@ -1,5 +1,5 @@
 HOSTS:
-  centos-6-x64:
+  centos-6:
     roles:
       - agent
     platform: el-6-x86_64
@@ -9,8 +9,12 @@ HOSTS:
     docker_cmd:
       - '/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget cronie git'
+      - 'yum install -y wget which cronie'
     docker_container_name: 'keycloak-el6'
 CONFIG:
   log_level: debug
   type: foss
+ssh:
+  password: root
+  auth_methods: ["password"]
+
