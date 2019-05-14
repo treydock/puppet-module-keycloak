@@ -1,5 +1,6 @@
-module PuppetX
-  module Keycloak
+module PuppetX # rubocop:disable Style/ClassAndModuleChildren
+  module Keycloak # rubocop:disable Style/ClassAndModuleChildren
+    # Module for shared type configs
     module Type
       def add_autorequires(realm = true)
         autorequire(:keycloak_conn_validator) do
@@ -13,12 +14,12 @@ module PuppetX
         end
 
         autorequire(:file) do
-          [ 'kcadm-wrapper.sh' ]
+          ['kcadm-wrapper.sh']
         end
 
-        if realm
+        if realm # rubocop:disable Style/GuardClause
           autorequire(:keycloak_realm) do
-            [ self[:realm] ]
+            [self[:realm]]
           end
         end
       end

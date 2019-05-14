@@ -2,8 +2,8 @@ require 'spec_helper_acceptance'
 
 describe 'keycloak_client_protocol_mapper type:' do
   context 'creates protocol_mapper' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -24,11 +24,11 @@ describe 'keycloak_client_protocol_mapper type:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have created client protocol mapper username' do
+    it 'has created client protocol mapper username' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
@@ -38,7 +38,7 @@ describe 'keycloak_client_protocol_mapper type:' do
       end
     end
 
-    it 'should have created protocol mapper full name' do
+    it 'has created protocol mapper full name' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'full name' }[0]
@@ -49,8 +49,8 @@ describe 'keycloak_client_protocol_mapper type:' do
   end
 
   context 'updates protocol_mapper' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -72,11 +72,11 @@ describe 'keycloak_client_protocol_mapper type:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have updated protocol mapper username' do
+    it 'has updated protocol mapper username' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
@@ -86,7 +86,7 @@ describe 'keycloak_client_protocol_mapper type:' do
       end
     end
 
-    it 'should have updated protocol mapper full name' do
+    it 'has updated protocol mapper full name' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'full name' }[0]

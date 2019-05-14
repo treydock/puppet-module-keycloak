@@ -2,8 +2,8 @@ require 'spec_helper_acceptance'
 
 describe 'keycloak_ldap_user_provider:' do
   context 'creates ldap' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -29,11 +29,11 @@ describe 'keycloak_ldap_user_provider:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have created a LDAP user provider' do
+    it 'has created a LDAP user provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/LDAP-test -r test' do
         data = JSON.parse(stdout)
         expect(data['config']['usersDn']).to eq(['ou=People,dc=test'])
@@ -42,7 +42,7 @@ describe 'keycloak_ldap_user_provider:' do
       end
     end
 
-    it 'should have created a LDAP mapper' do
+    it 'has created a LDAP mapper' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
         data = JSON.parse(stdout)
         d = data.select { |o| o['name'] == 'full-name' }[0]
@@ -51,7 +51,7 @@ describe 'keycloak_ldap_user_provider:' do
       end
     end
 
-    it 'should have set firstName LDAP mapper' do
+    it 'has set firstName LDAP mapper' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
         data = JSON.parse(stdout)
         d = data.select { |o| o['name'] == 'first name' }[0]
@@ -63,8 +63,8 @@ describe 'keycloak_ldap_user_provider:' do
   end
 
   context 'updates ldap' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -84,11 +84,11 @@ describe 'keycloak_ldap_user_provider:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have updated a LDAP user provider' do
+    it 'has updated a LDAP user provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/LDAP-test -r test' do
         data = JSON.parse(stdout)
         expect(data['config']['usersDn']).to eq(['ou=People,dc=test'])
@@ -98,7 +98,7 @@ describe 'keycloak_ldap_user_provider:' do
       end
     end
 
-    it 'should have updated a LDAP mapper' do
+    it 'has updated a LDAP mapper' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
         data = JSON.parse(stdout)
         d = data.select { |o| o['name'] == 'full-name' }[0]
@@ -109,8 +109,8 @@ describe 'keycloak_ldap_user_provider:' do
   end
 
   context 'creates ldap with simple auth' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -127,29 +127,29 @@ describe 'keycloak_ldap_user_provider:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have created a LDAP user provider' do
+    it 'has created a LDAP user provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/LDAP2-test -r test' do
         data = JSON.parse(stdout)
         expect(data['config']['authType']).to eq(['simple'])
         expect(data['config']['bindDn']).to eq(['cn=read,ou=People,dc=test'])
-        expect(data['config']['bindCredential'][0]).to match(/^[\*]+$/)
+        expect(data['config']['bindCredential'][0]).to match(%r{^[\*]+$})
       end
     end
 
-    it 'should have set bindCredential' do
+    it 'has set bindCredential' do
       on hosts, "mysql keycloak -BN -e 'SELECT VALUE FROM COMPONENT_CONFIG WHERE NAME=\"bindCredential\" AND COMPONENT_ID=\"LDAP2-test\"'" do
-        expect(stdout).to match(/^test$/)
+        expect(stdout).to match(%r{^test$})
       end
     end
   end
 
   context 'updates ldap auth' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -166,29 +166,29 @@ describe 'keycloak_ldap_user_provider:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have updated a LDAP user provider' do
+    it 'has updated a LDAP user provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/LDAP-test -r test' do
         data = JSON.parse(stdout)
         expect(data['config']['authType']).to eq(['simple'])
         expect(data['config']['bindDn']).to eq(['cn=read,ou=People,dc=test'])
-        expect(data['config']['bindCredential'][0]).to match(/^[\*]+$/)
+        expect(data['config']['bindCredential'][0]).to match(%r{^[\*]+$})
       end
     end
 
-    it 'should have set bindCredential' do
+    it 'has set bindCredential' do
       on hosts, "mysql keycloak -BN -e 'SELECT VALUE FROM COMPONENT_CONFIG WHERE NAME=\"bindCredential\" AND COMPONENT_ID=\"LDAP-test\"'" do
-        expect(stdout).to match(/^test$/)
+        expect(stdout).to match(%r{^test$})
       end
     end
   end
 
   context 'ensure => absent' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -200,11 +200,11 @@ describe 'keycloak_ldap_user_provider:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have deleted ldap mapper' do
+    it 'has deleted ldap mapper' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
         data = JSON.parse(stdout)
         d = data.select { |o| o['name'] == 'full-name' }[0]

@@ -2,8 +2,8 @@ require 'spec_helper_acceptance'
 
 describe 'keycloak_client define:' do
   context 'creates client' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -17,11 +17,11 @@ describe 'keycloak_client define:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have created a client' do
+    it 'has created a client' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do
         data = JSON.parse(stdout)
         expect(data['id']).to eq('test.foo.bar')
@@ -31,7 +31,7 @@ describe 'keycloak_client define:' do
       end
     end
 
-    it 'should have set the client secret' do
+    it 'has set the client secret' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do
         data = JSON.parse(stdout)
         expect(data['value']).to eq('foobar')
@@ -40,8 +40,8 @@ describe 'keycloak_client define:' do
   end
 
   context 'updates client' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -55,11 +55,11 @@ describe 'keycloak_client define:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have updated a client' do
+    it 'has updated a client' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do
         data = JSON.parse(stdout)
         expect(data['id']).to eq('test.foo.bar')
@@ -69,7 +69,7 @@ describe 'keycloak_client define:' do
       end
     end
 
-    it 'should have set the same client secret' do
+    it 'has set the same client secret' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do
         data = JSON.parse(stdout)
         expect(data['value']).to eq('foobar')

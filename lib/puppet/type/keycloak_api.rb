@@ -16,7 +16,7 @@ Puppet::Type.newtype(:keycloak_api) do
       password     => 'changeme',
     }
   DESC
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'Keycloak API config'
   end
 
@@ -44,7 +44,7 @@ Puppet::Type.newtype(:keycloak_api) do
     defaultto('changeme')
   end
 
-  newparam(:use_wrapper, :boolean => true) do
+  newparam(:use_wrapper, boolean: true) do
     desc 'Boolean that determines if kcadm_wrapper.sh should be used'
     newvalues(:true, :false)
     defaultto :false
@@ -71,5 +71,4 @@ Puppet::Type.newtype(:keycloak_api) do
 
     []
   end
-
 end

@@ -15,11 +15,11 @@ Manage Keycloak LDAP user providers
   DESC
 
   extend PuppetX::Keycloak::Type
-  add_autorequires()
+  add_autorequires
 
   ensurable
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'The LDAP user provider name'
   end
 
@@ -37,11 +37,11 @@ Manage Keycloak LDAP user providers
     end
   end
 
-  newparam(:realm, :namevar => true) do
+  newparam(:realm, namevar: true) do
     desc 'parentId'
   end
 
-  newproperty(:enabled, :boolean => true) do
+  newproperty(:enabled, boolean: true) do
     desc 'enabled'
     newvalues(:true, :false)
     defaultto :true
@@ -51,28 +51,28 @@ Manage Keycloak LDAP user providers
     desc 'authType'
     defaultto 'none'
     newvalues('none', 'simple')
-    munge {|v| v }
+    munge { |v| v }
   end
 
   newproperty(:edit_mode) do
     desc 'editMode'
     defaultto 'READ_ONLY'
     newvalues('READ_ONLY', 'WRITABLE', 'UNSYNCED')
-    munge {|v| v }
+    munge { |v| v }
   end
 
   newproperty(:vendor) do
     desc 'vendor'
     defaultto 'other'
     newvalues('ad', 'rhds', 'tivoli', 'eDirectory', 'other')
-    munge {|v| v }
+    munge { |v| v }
   end
 
   newproperty(:use_truststore_spi) do
     desc 'useTruststoreSpi'
     defaultto 'ldapsOnly'
     newvalues('always', 'ldapsOnly', 'never')
-    munge {|v| v }
+    munge { |v| v }
   end
 
   newproperty(:users_dn) do
@@ -113,10 +113,10 @@ Manage Keycloak LDAP user providers
   end
 
   newproperty(:bind_credential) do
-    desc "bindCredential"
+    desc 'bindCredential'
 
     def insync?(is)
-      if is =~ /^[\*]+$/
+      if is =~ %r{^[\*]+$}
         Puppet.warning("Parameter 'bind_credential' is set and Puppet has no way to check current value")
         true
       else
@@ -124,35 +124,35 @@ Manage Keycloak LDAP user providers
       end
     end
 
-    def change_to_s(currentvalue, newvalue)
+    def change_to_s(currentvalue, _newvalue)
       if currentvalue == :absent
-        return "created bind_credential"
+        'created bind_credential'
       else
-        return "changed bind_credential"
+        'changed bind_credential'
       end
     end
 
-    def is_to_s( currentvalue )
-      return '[old bind_credential redacted]'
+    def is_to_s(_currentvalue) # rubocop:disable Style/PredicateName
+      '[old bind_credential redacted]'
     end
-    def should_to_s( newvalue )
-      return '[new bind_credential redacted]'
+
+    def should_to_s(_newvalue)
+      '[new bind_credential redacted]'
     end
   end
 
-
-  newproperty(:import_enabled, :boolean => true) do
+  newproperty(:import_enabled, boolean: true) do
     desc 'importEnabled'
     newvalues(:true, :false)
     defaultto :true
   end
 
-  newproperty(:use_kerberos_for_password_authentication, :boolean => true) do
+  newproperty(:use_kerberos_for_password_authentication, boolean: true) do
     desc 'useKerberosForPasswordAuthentication'
     newvalues(:true, :false)
   end
 
-  newproperty(:user_object_classes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+  newproperty(:user_object_classes, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'userObjectClasses'
     defaultto ['inetOrgPerson', 'organizationalPerson']
   end
@@ -173,7 +173,7 @@ Manage Keycloak LDAP user providers
 
   newproperty(:custom_user_search_filter) do
     desc 'customUserSearchFilter'
-    newvalues(/.*/, :absent)
+    newvalues(%r{.*}, :absent)
     defaultto(:absent)
     validate do |v|
       if v != :absent
@@ -187,7 +187,7 @@ Manage Keycloak LDAP user providers
   def self.title_patterns
     [
       [
-        /^((\S+) on (\S+))$/,
+        %r{^((\S+) on (\S+))$},
         [
           [:name],
           [:resource_name],
@@ -195,7 +195,7 @@ Manage Keycloak LDAP user providers
         ],
       ],
       [
-        /(.*)/,
+        %r{(.*)},
         [
           [:name],
         ],
@@ -205,13 +205,13 @@ Manage Keycloak LDAP user providers
 
   validate do
     if self[:use_kerberos_for_password_authentication] && self[:auth_type] == 'none'
-      self.fail "use_kerberos_for_password_authentication is not valid for auth_type none"
+      raise Puppet::Error, 'use_kerberos_for_password_authentication is not valid for auth_type none'
     end
     if self[:bind_credential] && self[:auth_type] == 'none'
-      self.fail "bind_credential is not valid for auth_type none"
+      raise Puppet::Error, 'bind_credential is not valid for auth_type none'
     end
     if self[:bind_dn] && self[:auth_type] == 'none'
-      self.fail "bind_dn is not valid for auth_type none"
+      raise Puppet::Error, 'bind_dn is not valid for auth_type none'
     end
   end
 end

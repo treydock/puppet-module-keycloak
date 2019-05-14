@@ -18,15 +18,15 @@ Manage Keycloak clients
   DESC
 
   extend PuppetX::Keycloak::Type
-  add_autorequires()
+  add_autorequires
 
   ensurable
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'The client name'
   end
 
-  newparam(:client_id, :namevar => true) do
+  newparam(:client_id, namevar: true) do
     desc 'clientId. Defaults to `name`.'
     defaultto do
       @resource[:name]
@@ -40,26 +40,27 @@ Manage Keycloak clients
     end
   end
 
-  newparam(:realm, :namevar => true) do
+  newparam(:realm, namevar: true) do
     desc 'realm'
   end
 
   newparam(:secret) do
     desc 'secret'
 
-    def change_to_s(currentvalue, newvalue)
+    def change_to_s(currentvalue, _newvalue)
       if currentvalue == :absent
-        return "created secret"
+        'created secret'
       else
-        return "changed secret"
+        'changed secret'
       end
     end
 
-    def is_to_s( currentvalue )
-      return '[old secret redacted]'
+    def is_to_s(_currentvalue) # rubocop:disable Style/PredicateName
+      '[old secret redacted]'
     end
-    def should_to_s( newvalue )
-      return '[new secret redacted]'
+
+    def should_to_s(_newvalue)
+      '[new secret redacted]'
     end
   end
 
@@ -71,64 +72,63 @@ Manage Keycloak clients
   end
 
   newproperty(:client_authenticator_type) do
-    desc "clientAuthenticatorType"
+    desc 'clientAuthenticatorType'
     defaultto 'client-secret'
   end
 
-  newproperty(:default_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+  newproperty(:default_client_scopes, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'defaultClientScopes'
     defaultto []
   end
 
-  newproperty(:optional_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+  newproperty(:optional_client_scopes, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'optionalClientScopes'
     defaultto []
   end
 
-  newproperty(:full_scope_allowed, :boolean => true) do
+  newproperty(:full_scope_allowed, boolean: true) do
     desc 'fullScopeAllowed'
     newvalues(:true, :false)
     defaultto(:true)
   end
 
-  newproperty(:enabled, :boolean => true) do
-    desc "enabled"
+  newproperty(:enabled, boolean: true) do
+    desc 'enabled'
     newvalues(:true, :false)
     defaultto :true
   end
 
-  newproperty(:direct_access_grants_enabled, :boolean => true) do
-    desc "enabled"
+  newproperty(:direct_access_grants_enabled, boolean: true) do
+    desc 'enabled'
     newvalues(:true, :false)
     defaultto :true
   end
 
-  newproperty(:public_client, :boolean => true) do
-    desc "enabled"
+  newproperty(:public_client, boolean: true) do
+    desc 'enabled'
     newvalues(:true, :false)
     defaultto :false
   end
 
-  newproperty(:redirect_uris, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
-    desc "redirectUris"
+  newproperty(:redirect_uris, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'redirectUris'
     defaultto []
   end
 
-  newproperty(:web_origins, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
-    desc "webOrigins"
+  newproperty(:web_origins, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webOrigins'
     defaultto []
   end
 
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_client_scope'
-        if self[:default_client_scopes].include?(resource[:resource_name])
-          requires << resource.name
-        end
-        if self[:optional_client_scopes].include?(resource[:resource_name])
-          requires << resource.name
-        end
+      next unless resource.class.to_s == 'Puppet::Type::Keycloak_client_scope'
+      if self[:default_client_scopes].include?(resource[:resource_name])
+        requires << resource.name
+      end
+      if self[:optional_client_scopes].include?(resource[:resource_name])
+        requires << resource.name
       end
     end
     requires
@@ -137,13 +137,12 @@ Manage Keycloak clients
   autorequire(:keycloak_protocol_mapper) do
     requires = []
     catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_protocol_mapper'
-        if self[:default_client_scopes].include?(resource[:client_scope])
-          requires << resource.name
-        end
-        if self[:optional_client_scopes].include?(resource[:client_scope])
-          requires << resource.name
-        end
+      next unless resource.class.to_s == 'Puppet::Type::Keycloak_protocol_mapper'
+      if self[:default_client_scopes].include?(resource[:client_scope])
+        requires << resource.name
+      end
+      if self[:optional_client_scopes].include?(resource[:client_scope])
+        requires << resource.name
       end
     end
     requires
@@ -152,7 +151,7 @@ Manage Keycloak clients
   def self.title_patterns
     [
       [
-        /^((\S+) on (\S+))$/,
+        %r{^((\S+) on (\S+))$},
         [
           [:name],
           [:client_id],
@@ -160,7 +159,7 @@ Manage Keycloak clients
         ],
       ],
       [
-        /(.*)/,
+        %r{(.*)},
         [
           [:name],
         ],

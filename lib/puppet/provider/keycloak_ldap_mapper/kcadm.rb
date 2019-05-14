@@ -1,21 +1,18 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
-Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Provider::Keycloak_API) do
-  desc ""
+Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
+  desc ''
 
   mk_resource_methods
 
   def self.instances
     components = []
-
-    realms = get_realms()
-
     realms.each do |realm|
       output = kcadm('get', 'components', realm)
       Puppet.debug("#{realm} components: #{output}")
       begin
         data = JSON.parse(output)
-      rescue JSON::ParserError => e
+      rescue JSON::ParserError
         Puppet.debug('Unable to parse output from kcadm get components')
         data = []
       end
@@ -32,14 +29,14 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
         component[:type] = d['providerId']
         component[:name] = "#{component[:resource_name]} for #{component[:ldap]} on #{component[:realm]}"
         type_properties.each do |property|
-          if property == :ldap_attribute and component[:type] == 'full-name-ldap-mapper'
-            key = 'ldap.full.name.attribute'
-          else
-            key = property.to_s.gsub('_', '.')
-          end
+          key = if property == :ldap_attribute && component[:type] == 'full-name-ldap-mapper'
+                  'ldap.full.name.attribute'
+                else
+                  property.to_s.tr('_', '.')
+                end
           next unless d['config'].key?(key)
           value = d['config'][key][0]
-          if !!value == value
+          if !!value == value # rubocop:disable Style/DoubleNegation
             value = value.to_s.to_sym
           end
           component[property.to_sym] = value
@@ -53,13 +50,13 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
   def self.prefetch(resources)
     components = instances
     resources.keys.each do |name|
-      if provider = components.find { |c|
+      provider = components.find do |c|
         c.resource_name == resources[name][:resource_name] &&
-        c.realm == resources[name][:realm] &&
-        c.ldap == resources[name][:ldap]
-      }
-        resources[name].provider = provider
+          c.realm == resources[name][:realm] &&
+          c.ldap == resources[name][:ldap]
       end
+      next unless provider
+      resources[name].provider = provider
     end
   end
 
@@ -72,26 +69,25 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
     data[:providerType] = 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'
     data[:config] = {}
     type_properties.each do |property|
-      if resource[property.to_sym]
-        if property == :ldap_attribute and resource[:type] == 'full-name-ldap-mapper'
-          key = 'ldap.full.name.attribute'
-        else
-          key = property.to_s.gsub('_', '.')
+      next unless resource[property.to_sym]
+      key = if property == :ldap_attribute && resource[:type] == 'full-name-ldap-mapper'
+              'ldap.full.name.attribute'
+            else
+              property.to_s.tr('_', '.')
+            end
+      # is.mandatory.in.ldap and user.model.attribute only belong to user-attribute-ldap-mapper
+      if resource[:type] != 'user-attribute-ldap-mapper'
+        if [:is_mandatory_in_ldap, :user_model_attribute, :always_read_value_from_ldap].include?(property)
+          next
         end
-        # is.mandatory.in.ldap and user.model.attribute only belong to user-attribute-ldap-mapper
-        if resource[:type] != 'user-attribute-ldap-mapper'
-          if property == :is_mandatory_in_ldap || property == :user_model_attribute || property == :always_read_value_from_ldap
-            next
-          end
-        end
-        # write.only only belongs to full-name-ldap-mapper
-        if resource[:type] != 'full-name-ldap-mapper'
-          if property == :write_only
-            next
-          end
-        end
-        data[:config][key] = [resource[property.to_sym]]
       end
+      # write.only only belongs to full-name-ldap-mapper
+      if resource[:type] != 'full-name-ldap-mapper'
+        if property == :write_only
+          next
+        end
+      end
+      data[:config][key] = [resource[property.to_sym]]
     end
 
     t = Tempfile.new('keycloak_component')
@@ -100,7 +96,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
     Puppet.debug(IO.read(t.path))
     begin
       kcadm('create', 'components', resource[:realm], t.path)
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm create component failed\nError message: #{e.message}"
     end
     @property_hash[:ensure] = :present
@@ -109,7 +105,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
   def destroy
     begin
       kcadm('delete', "components/#{id}", resource[:realm])
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
 
@@ -132,32 +128,31 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
   end
 
   def flush
-    if not @property_flush.empty?
+    unless @property_flush.empty?
       data = {}
       data[:providerId] = resource[:type]
       data[:providerType] = 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'
       data[:config] = {}
       type_properties.each do |property|
-        if @property_flush[property.to_sym]
-          if property == :ldap_attribute and resource[:type] == 'full-name-ldap-mapper'
-            key = 'ldap.full.name.attribute'
-          else
-            key = property.to_s.gsub('_', '.')
+        next unless @property_flush[property.to_sym]
+        key = if property == :ldap_attribute && resource[:type] == 'full-name-ldap-mapper'
+                'ldap.full.name.attribute'
+              else
+                property.to_s.tr('_', '.')
+              end
+        # is.mandatory.in.ldap and user.model.attribute only belong to user-attribute-ldap-mapper
+        if resource[:type] != 'user-attribute-ldap-mapper'
+          if [:is_mandatory_in_ldap, :user_model_attribute, :always_read_value_from_ldap].include?(property)
+            next
           end
-          # is.mandatory.in.ldap and user.model.attribute only belong to user-attribute-ldap-mapper
-          if resource[:type] != 'user-attribute-ldap-mapper'
-            if property == :is_mandatory_in_ldap || property == :user_model_attribute || property == :always_read_value_from_ldap
-              next
-            end
-          end
-          # write.only only belongs to full-name-ldap-mapper
-          if resource[:type] != 'full-name-ldap-mapper'
-            if property == :write_only
-              next
-            end
-          end
-          data[:config][key] = [resource[property.to_sym]]
         end
+        # write.only only belongs to full-name-ldap-mapper
+        if resource[:type] != 'full-name-ldap-mapper'
+          if property == :write_only
+            next
+          end
+        end
+        data[:config][key] = [resource[property.to_sym]]
       end
 
       t = Tempfile.new('keycloak_component')
@@ -166,7 +161,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
       Puppet.debug(IO.read(t.path))
       begin
         kcadm('update', "components/#{id}", resource[:realm], t.path)
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update component failed\nError message: #{e.message}"
       end
     end
@@ -174,5 +169,4 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, :parent => Puppet::Prov
     # resource` will show the correct values after changes have been made).
     @property_hash = resource.to_hash
   end
-
 end

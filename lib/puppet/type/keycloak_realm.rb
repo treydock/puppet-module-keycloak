@@ -18,7 +18,7 @@ Manage Keycloak realms
 
   ensurable
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'The realm name'
   end
 
@@ -57,33 +57,33 @@ Manage Keycloak realms
     defaultto 'keycloak'
   end
 
-  newproperty(:enabled, :boolean => true) do
+  newproperty(:enabled, boolean: true) do
     desc 'enabled'
     newvalues(:true, :false)
     defaultto :true
   end
 
-  newproperty(:remember_me, :boolean => true) do
+  newproperty(:remember_me, boolean: true) do
     desc 'rememberMe'
     newvalues(:true, :false)
     defaultto :false
   end
 
-  newproperty(:login_with_email_allowed, :boolean => true) do
+  newproperty(:login_with_email_allowed, boolean: true) do
     desc 'loginWithEmailAllowed'
     newvalues(:true, :false)
     defaultto :true
   end
 
-  newproperty(:default_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+  newproperty(:default_client_scopes, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'Default Client Scopes'
   end
 
-  newproperty(:optional_client_scopes, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+  newproperty(:optional_client_scopes, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'Optional Client Scopes'
   end
 
-  newproperty(:events_enabled, :boolean => true) do
+  newproperty(:events_enabled, boolean: true) do
     desc 'eventsEnabled'
     newvalues(:true, :false)
     defaultto :false
@@ -93,18 +93,18 @@ Manage Keycloak realms
     desc 'eventsExpiration'
   end
 
-  newproperty(:events_listeners, :array_matching => :all, :parent => PuppetX::Keycloak::ArrayProperty) do
+  newproperty(:events_listeners, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'eventsListeners'
     defaultto ['jboss-logging']
   end
 
-  newproperty(:admin_events_enabled, :boolean => true) do
+  newproperty(:admin_events_enabled, boolean: true) do
     desc 'adminEventsEnabled'
     newvalues(:true, :false)
     defaultto :false
   end
 
-  newproperty(:admin_events_details_enabled, :boolean => true) do
+  newproperty(:admin_events_details_enabled, boolean: true) do
     desc 'adminEventsDetailsEnabled'
     newvalues(:true, :false)
     defaultto :false

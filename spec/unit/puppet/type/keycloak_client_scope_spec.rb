@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Puppet::Type.type(:keycloak_client_scope) do
   let(:default_config) do
     {
-      :name => 'foo',
-      :realm => 'test',
+      name: 'foo',
+      realm: 'test',
     }
   end
   let(:config) do
@@ -14,95 +14,94 @@ describe Puppet::Type.type(:keycloak_client_scope) do
     described_class.new(config)
   end
 
-  it 'should add to catalog without raising an error' do
+  it 'adds to catalog without raising an error' do
     catalog = Puppet::Resource::Catalog.new
     expect {
       catalog.add_resource resource
-    }.to_not raise_error
+    }.not_to raise_error
   end
 
-  it 'should have a name' do
+  it 'has a name' do
     expect(resource[:name]).to eq('foo')
   end
 
-  it 'should have resource_name default to name' do
+  it 'has resource_name default to name' do
     expect(resource[:resource_name]).to eq('foo')
   end
 
-  it 'should have id default to name' do
+  it 'has id default to name' do
     expect(resource[:id]).to eq('foo')
   end
 
-  it 'should have realm' do
+  it 'has realm' do
     expect(resource[:realm]).to eq('test')
   end
 
-  it 'should handle componsite name' do
-    component = described_class.new(:name => 'foo on test')
+  it 'handles componsite name' do
+    component = described_class.new(name: 'foo on test')
     expect(component[:name]).to eq('foo on test')
     expect(component[:resource_name]).to eq('foo')
     expect(component[:realm]).to eq('test')
   end
 
-  it 'should default to protocol=openid-connect' do
+  it 'defaults to protocol=openid-connect' do
     expect(resource[:protocol]).to eq('openid-connect')
   end
 
-  it 'should not allow invalid protocol' do
+  it 'does not allow invalid protocol' do
     config[:protocol] = 'foo'
     expect {
       resource
-    }.to raise_error(/foo/)
+    }.to raise_error(%r{foo})
   end
 
-  it 'should have default for consent_screen_text' do
+  it 'has default for consent_screen_text' do
     expect(resource[:consent_screen_text]).to eq('${fooScopeConsentText}')
   end
 
-  it 'should allow values for consent_screen_text' do
+  it 'allows values for consent_screen_text' do
     config[:consent_screen_text] = '${foo}'
     expect(resource[:consent_screen_text]).to eq('${foo}')
   end
 
   defaults = {
-    :full_scope_allowed => :true
+    full_scope_allowed: :true,
   }
 
   # Test boolean properties
   [
     :display_on_consent_screen,
   ].each do |p|
-    it "should accept true for #{p.to_s}" do
+    it "should accept true for #{p}" do
       config[p] = true
       expect(resource[p]).to eq(:true)
     end
-    it "should accept true for #{p.to_s} string" do
+    it "should accept true for #{p} string" do
       config[p] = 'true'
       expect(resource[p]).to eq(:true)
     end
-    it "should accept false for #{p.to_s}" do
+    it "should accept false for #{p}" do
       config[p] = false
       expect(resource[p]).to eq(:false)
     end
-    it "should accept false for #{p.to_s} string" do
+    it "should accept false for #{p} string" do
       config[p] = 'false'
       expect(resource[p]).to eq(:false)
     end
-    it "should not accept strings for #{p.to_s}" do
+    it "should not accept strings for #{p}" do
       config[p] = 'foo'
       expect {
         resource
-      }.to raise_error(/foo/)
+      }.to raise_error(%r{foo})
     end
-    if defaults[p]
-      it "should have default for #{p}" do
-        expect(resource[p]).to eq(defaults[p])
-      end
+    next unless defaults[p]
+    it "should have default for #{p}" do
+      expect(resource[p]).to eq(defaults[p])
     end
   end
 
-  it 'should autorequire keycloak_conn_validator' do
-    keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(:name => 'keycloak')
+  it 'autorequires keycloak_conn_validator' do
+    keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(name: 'keycloak')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_conn_validator
@@ -111,8 +110,8 @@ describe Puppet::Type.type(:keycloak_client_scope) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire kcadm-wrapper.sh' do
-    file = Puppet::Type.type(:file).new(:name => 'kcadm-wrapper.sh', :path => '/opt/keycloak/bin/kcadm-wrapper.sh')
+  it 'autorequires kcadm-wrapper.sh' do
+    file = Puppet::Type.type(:file).new(name: 'kcadm-wrapper.sh', path: '/opt/keycloak/bin/kcadm-wrapper.sh')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource file
@@ -121,8 +120,8 @@ describe Puppet::Type.type(:keycloak_client_scope) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire keycloak_realm' do
-    keycloak_realm = Puppet::Type.type(:keycloak_realm).new(:name => 'test')
+  it 'autorequires keycloak_realm' do
+    keycloak_realm = Puppet::Type.type(:keycloak_realm).new(name: 'test')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_realm
@@ -130,5 +129,4 @@ describe Puppet::Type.type(:keycloak_client_scope) do
     expect(rel.source.ref).to eq(keycloak_realm.ref)
     expect(rel.target.ref).to eq(resource.ref)
   end
-
 end
