@@ -67,7 +67,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     config[:type] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should have is_mandatory_in_ldap be nil for full-name-ldap-mapper' do
@@ -150,7 +150,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
       config[p] = 'foo'
       expect {
         resource
-      }.to raise_error
+      }.to raise_error(/foo/)
     end
     if defaults[p]
       it "should have default for #{p}" do

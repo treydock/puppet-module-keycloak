@@ -56,7 +56,7 @@ describe Puppet::Type.type(:keycloak_client) do
     config[:protocol] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   defaults = {
@@ -112,7 +112,7 @@ describe Puppet::Type.type(:keycloak_client) do
       config[p] = 'foo'
       expect {
         resource
-      }.to raise_error
+      }.to raise_error(/foo/)
     end
     if defaults[p]
       it "should have default for #{p}" do

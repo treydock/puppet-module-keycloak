@@ -91,7 +91,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       config[p] = 'foo'
       expect {
         resource
-      }.to raise_error
+      }.to raise_error(/foo/)
     end
     if defaults[p]
       it "should have default for #{p}" do

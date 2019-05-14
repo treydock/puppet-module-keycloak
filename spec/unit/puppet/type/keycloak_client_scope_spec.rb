@@ -52,7 +52,7 @@ describe Puppet::Type.type(:keycloak_client_scope) do
     config[:protocol] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should have default for consent_screen_text' do
@@ -92,7 +92,7 @@ describe Puppet::Type.type(:keycloak_client_scope) do
       config[p] = 'foo'
       expect {
         resource
-      }.to raise_error
+      }.to raise_error(/foo/)
     end
     if defaults[p]
       it "should have default for #{p}" do

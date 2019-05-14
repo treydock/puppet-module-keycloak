@@ -52,7 +52,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     config[:auth_type] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should default to edit_mode=READ_ONLY' do
@@ -63,7 +63,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     config[:edit_mode] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should default to vendor=other' do
@@ -74,7 +74,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     config[:vendor] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should default to use_truststore_spi=ldapsOnly' do
@@ -85,7 +85,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     config[:use_truststore_spi] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should allow bind_dn' do
@@ -111,7 +111,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     config[:use_kerberos_for_password_authentication] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should allow string one for search_scope' do
@@ -151,7 +151,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
 
   it 'should not allow invalid search_scope' do
     config[:search_scope] = 'foo'
-    expect { resource }.to raise_error
+    expect { resource }.to raise_error(/foo/)
   end
 
   it 'should default custom_user_search_filter' do
@@ -221,7 +221,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
       config[p] = 'foo'
       expect {
         resource
-      }.to raise_error
+      }.to raise_error(/foo/)
     end
     if defaults[p]
       it "should have default for #{p}" do

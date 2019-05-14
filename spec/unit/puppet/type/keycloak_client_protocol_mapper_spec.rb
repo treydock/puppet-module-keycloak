@@ -62,7 +62,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     config[:protocol] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should default to type=oidc-usermodel-property-mapper' do
@@ -84,7 +84,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     config[:type] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should have user_attribute be nil for full-name-ldap-mapper' do
@@ -180,7 +180,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     config[:id_token_claim] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should default for access_token_claim' do
@@ -210,7 +210,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     config[:access_token_claim] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should default for userinfo_token_claim' do
@@ -246,7 +246,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     config[:userinfo_token_claim] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   defaults = {}
@@ -289,7 +289,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
       config[p] = 'foo'
       expect {
         resource
-      }.to raise_error
+      }.to raise_error(/foo/)
     end
     if defaults[p]
       it "should have default for #{p}" do
@@ -315,7 +315,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     config[:attribute_nameformat] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should accept value for single' do
@@ -348,7 +348,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     config[:single] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   it 'should autorequire keycloak_conn_validator' do

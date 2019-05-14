@@ -49,10 +49,10 @@ describe Puppet::Type.type(:keycloak_sssd_user_provider) do
   end
 
   it 'should not allow invalid cache_policy' do
-    config[:edit_mode] = 'foo'
+    config[:cache_policy] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(/foo/)
   end
 
   defaults = {
@@ -95,7 +95,7 @@ describe Puppet::Type.type(:keycloak_sssd_user_provider) do
       config[p] = 'foo'
       expect {
         resource
-      }.to raise_error
+      }.to raise_error(/foo/)
     end
     if defaults[p]
       it "should have default for #{p}" do
