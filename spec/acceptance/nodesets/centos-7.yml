@@ -9,7 +9,7 @@ HOSTS:
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
-      - 'yum install -y wget which cronie'
+      - 'yum install -y wget which cronie iproute'
     docker_container_name: 'keycloak-el7'
 CONFIG:
   log_level: debug

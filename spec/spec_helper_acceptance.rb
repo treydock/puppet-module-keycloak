@@ -16,4 +16,5 @@ RSpec.configure do |c|
   c.formatter = :documentation
 end
 
+require 'spec_helper_acceptance_setup' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_acceptance_setup.rb'))
 # 'spec_overrides' from sync.yml will appear below this line
