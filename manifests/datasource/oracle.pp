@@ -1,4 +1,7 @@
-# Private class.
+# @summary Manage Oracle datasource
+#
+# @api private
+#
 class keycloak::datasource::oracle (
   $jar_file      = $keycloak::oracle_jar_file,
   $jar_source    = $keycloak::oracle_jar_source,
