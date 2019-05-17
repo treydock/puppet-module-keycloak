@@ -1,5 +1,47 @@
 # treydock-keycloak changelog
 
+## [3.6.1](https://github.com/treydock/puppet-module-keycloak/tree/3.6.1) (2019-05-13)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.6.0...3.6.1)
+
+**Fixed bugs:**
+
+- Fix handling of events config during updates [\#56](https://github.com/treydock/puppet-module-keycloak/pull/56) ([treydock](https://github.com/treydock))
+
+## [3.6.0](https://github.com/treydock/puppet-module-keycloak/tree/3.6.0) (2019-05-06)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.5.0...3.6.0)
+
+**Implemented enhancements:**
+
+- Support managing realm's events config [\#55](https://github.com/treydock/puppet-module-keycloak/pull/55) ([treydock](https://github.com/treydock))
+
+**Closed issues:**
+
+- Upgrading Keycloak does not execute migration scripts [\#52](https://github.com/treydock/puppet-module-keycloak/issues/52)
+
+**Merged pull requests:**
+
+- Test against Keycloak 6 [\#54](https://github.com/treydock/puppet-module-keycloak/pull/54) ([treydock](https://github.com/treydock))
+
+## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.4.0...3.5.0)
+
+**Implemented enhancements:**
+
+- manage user support [\#53](https://github.com/treydock/puppet-module-keycloak/pull/53) ([cborisa](https://github.com/cborisa))
+
+## [3.4.0](https://github.com/treydock/puppet-module-keycloak/tree/3.4.0) (2019-02-25)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.3.0...3.4.0)
+
+**Implemented enhancements:**
+
+- JAVA\_OPTS via systemd unit Environment variable [\#51](https://github.com/treydock/puppet-module-keycloak/pull/51) ([danifr](https://github.com/danifr))
+- Add option for service environment file [\#50](https://github.com/treydock/puppet-module-keycloak/pull/50) ([asieraguado](https://github.com/asieraguado))
+
+**Closed issues:**
+
+- `service\_java\_opts` parameter not actually being used [\#49](https://github.com/treydock/puppet-module-keycloak/issues/49)
+- Dependency error while installing Keycloak from scratch [\#48](https://github.com/treydock/puppet-module-keycloak/issues/48)
+
 ## [3.3.0](https://github.com/treydock/puppet-module-keycloak/tree/3.3.0) (2019-01-28)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.2.0...3.3.0)
 

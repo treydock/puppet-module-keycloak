@@ -128,6 +128,22 @@ Default is `true`.
 
 Default value: $keycloak::params::service_hasrestart
 
+##### `service_java_opts`
+
+Data type: `Optional[Variant[String, Array]]`
+
+Sets additional options to Java virtual machine environment variable.
+
+Default value: `undef`
+
+##### `manage_user`
+
+Data type: `Boolean`
+
+Defines if the module should manage the Linux user for Keycloak installation
+
+Default value: `true`
+
 ##### `user`
 
 Data type: `String`
@@ -448,11 +464,11 @@ Boolean that determines if SSSD should be restarted
 
 Default value: `true`
 
-##### `service_java_opts`
+##### `service_environment_file`
 
-Sets additional options to Java virtual machine environment variable.
+Data type: `Optional[Stdlib::Absolutepath]`
 
-Data type: `Variant[String, Array]`
+Path to the file with environment variables for the systemd service
 
 Default value: `undef`
 
@@ -1503,6 +1519,40 @@ Default Client Scopes
 ##### `optional_client_scopes`
 
 Optional Client Scopes
+
+##### `events_enabled`
+
+Valid values: `true`, `false`
+
+eventsEnabled
+
+Default value: false
+
+##### `events_expiration`
+
+eventsExpiration
+
+##### `events_listeners`
+
+eventsListeners
+
+Default value: ['jboss-logging']
+
+##### `admin_events_enabled`
+
+Valid values: `true`, `false`
+
+adminEventsEnabled
+
+Default value: false
+
+##### `admin_events_details_enabled`
+
+Valid values: `true`, `false`
+
+adminEventsDetailsEnabled
+
+Default value: false
 
 #### Parameters
 

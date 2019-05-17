@@ -20,6 +20,19 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
     self.class.get_client_scopes(*args)
   end
 
+  def self.get_events_config(realm)
+    output = kcadm('get', 'events/config', realm)
+    Puppet.debug("#{realm} events/config: #{output}")
+    begin
+      data = JSON.parse(output)
+    rescue JSON::ParserError => e
+      Puppet.debug('Unable to parse output from kcadm get events/config')
+      data = {}
+    end
+    data.delete('enabledEventTypes')
+    data
+  end
+
   def self.instances
     realms = []
 
@@ -36,9 +49,14 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
       realm[:ensure] = :present
       realm[:id] = d['id']
       realm[:name] = d['realm']
+      events_config = get_events_config(d['realm'])
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes].include?(property)
-        value = d[camelize(property)]
+        if property.to_s =~ /events/
+          value = events_config[camelize(property)]
+        else
+          value = d[camelize(property)]
+        end
         if !!value == value
           value = value.to_s.to_sym
         end
@@ -63,11 +81,14 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
 
   def create
     data = {}
+    events_config = {}
     data[:id] = resource[:id]
     data[:realm] = resource[:name]
     type_properties.each do |property|
       next if [:default_client_scopes, :optional_client_scopes].include?(property)
-      if resource[property.to_sym]
+      if property.to_s =~ /events/
+        events_config[camelize(property)] = convert_property_value(resource[property.to_sym])
+      else resource[property.to_sym]
         data[camelize(property)] = convert_property_value(resource[property.to_sym])
       end
     end
@@ -130,6 +151,17 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
         raise Puppet::Error, "kcadm update realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}: #{e.message}"
       end
     end
+    if ! events_config.empty?
+      events_config_t = Tempfile.new('keycloak_events_config')
+      events_config_t.write(JSON.pretty_generate(events_config))
+      events_config_t.close
+      Puppet.debug(IO.read(events_config_t.path))
+      begin
+        kcadm('update', 'events/config', resource[:name], events_config_t.path)
+      rescue Exception => e
+        raise Puppet::Error, "kcadm update events config failed\nError message: #{e.message}"
+      end
+    end
     @property_hash[:ensure] = :present
   end
 
@@ -161,10 +193,14 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
   def flush
     if not @property_flush.empty?
       data = {}
+      events_config = {}
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes].include?(property)
         if @property_flush[property.to_sym] # || resource[property.to_sym]
           data[camelize(property)] = convert_property_value(resource[property.to_sym])
+        end
+        if property.to_s =~ /events/
+          events_config[camelize(property)] = convert_property_value(resource[property.to_sym])
         end
       end
 
@@ -226,6 +262,17 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
           end
         rescue Exception => e
           raise Puppet::Error, "kcadm update realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}: #{e.message}"
+        end
+      end
+      if ! events_config.empty?
+        events_config_t = Tempfile.new('keycloak_events_config')
+        events_config_t.write(JSON.pretty_generate(events_config))
+        events_config_t.close
+        Puppet.debug(IO.read(events_config_t.path))
+        begin
+          kcadm('update', 'events/config', resource[:name], events_config_t.path)
+        rescue Exception => e
+          raise Puppet::Error, "kcadm update events config failed\nError message: #{e.message}"
         end
       end
     end

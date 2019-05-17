@@ -21,6 +21,7 @@ services = ifp
       EOS
       create_remote_file(hosts, '/etc/sssd/sssd.conf', sssd_conf)
       on hosts, 'chmod 0600 /etc/sssd/sssd.conf'
+      on hosts, 'systemctl restart dbus'
       on hosts, 'systemctl restart sssd'
     end
   end
