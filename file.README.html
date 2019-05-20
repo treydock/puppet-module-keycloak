@@ -157,6 +157,22 @@ class { &#39;keycloak&#39;:
 }
 </code></pre>
 
+<p>The following example can be used to configure keycloak with a local
+PostgreSQL server. Note that the PostgreSQL driver has to passed through.</p>
+
+<pre class="code ruby"><code class="ruby">include postgresql::server
+class { &#39;keycloak&#39;:
+    datasource_driver     =&gt; &#39;postgresql&#39;,
+    datasource_host       =&gt; &#39;localhost&#39;,
+    datasource_port       =&gt; 5432,
+    datasource_dbname     =&gt; &#39;keycloak&#39;,
+    datasource_username   =&gt; &#39;keycloak&#39;,
+    datasource_password   =&gt; &#39;foobar&#39;,
+    postgresql_jar_file   =&gt; &#39;postgresql-42.2.5.jar&#39;,
+    postgresql_jar_source =&gt; &#39;puppet:///modules/custom_module/drivers/postgresql-42.2.5.jar&#39;
+}
+</code></pre>
+
 <p>Configure a SSL certificate truststore and add a LDAP server&#39;s
 certificate to the truststore.</p>
 

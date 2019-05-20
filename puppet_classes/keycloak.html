@@ -415,7 +415,7 @@ is <code>true</code>.</p>
         <span class='name'>datasource_driver</span>
       
       
-        <span class='type'>(<tt>Enum['h2', 'mysql','oracle']</tt>)</span>
+        <span class='type'>(<tt>Enum['h2', 'mysql', 'oracle', 'postgresql']</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>&#39;h2&#39;</tt>)</em>
@@ -424,7 +424,8 @@ is <code>true</code>.</p>
         &mdash;
         <div class='inline'>
 <p>Datasource driver to use for Keycloak. Valid values are <code>h2</code>,
-<code>mysql</code> and &#39;oracle&#39; Default is <code>h2</code>.</p>
+<code>mysql</code>, &#39;oracle&#39; and &#39;postgresql&#39; Default is
+<code>h2</code>.</p>
 </div>
       
     </li>
@@ -442,8 +443,9 @@ is <code>true</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource host. Only used when datasource_driver is <code>mysql</code> or
-&#39;oracle&#39; Default is <code>localhost</code> for MySQL.</p>
+<p>Datasource host. Only used when datasource_driver is <code>mysql</code>,
+&#39;oracle&#39; or &#39;postgresql&#39; Default is <code>localhost</code>
+for MySQL.</p>
 </div>
       
     </li>
@@ -461,8 +463,9 @@ is <code>true</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource port. Only used when datasource_driver is <code>mysql</code> or
-&#39;oracle&#39; Default is <code>3306</code> for MySQL.</p>
+<p>Datasource port. Only used when datasource_driver is <code>mysql</code>,
+&#39;oracle&#39; or &#39;postgresql&#39; Default is <code>3306</code> for
+MySQL.</p>
 </div>
       
     </li>
@@ -786,6 +789,45 @@ node. Only use if $datasource_driver is set to oracle Default is not set</p>
   
     <li>
       
+        <span class='name'>postgresql_jar_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>PostgresQL JDBC driver to use. Only use if $datasource_driver is set to
+postgresql Default is not defined</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>postgresql_jar_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Source for PostgresQL JDBC driver - could be puppet link or local file on
+the node. Only use if $datasource_driver is set to postgresql Default is
+not set</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>with_sssd_support</span>
       
       
@@ -975,12 +1017,6 @@ by this module</p>
         <pre class="lines">
 
 
-141
-142
-143
-144
-145
-146
 147
 148
 149
@@ -1083,10 +1119,26 @@ by this module</p>
 246
 247
 248
-249</pre>
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 141</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 147</span>
 
 class keycloak (
   String $version               = &#39;4.2.1.Final&#39;,
@@ -1108,7 +1160,7 @@ class keycloak (
   String $admin_user            = &#39;admin&#39;,
   String $admin_user_password   = &#39;changeme&#39;,
   Boolean $manage_datasource = true,
-  Enum[&#39;h2&#39;, &#39;mysql&#39;,&#39;oracle&#39;] $datasource_driver = &#39;h2&#39;,
+  Enum[&#39;h2&#39;, &#39;mysql&#39;, &#39;oracle&#39;, &#39;postgresql&#39;] $datasource_driver = &#39;h2&#39;,
   Optional[String] $datasource_host = undef,
   Optional[Integer] $datasource_port = undef,
   Optional[String] $datasource_url = undef,
@@ -1128,6 +1180,8 @@ class keycloak (
   Hash $client_templates = {},
   Optional[String] $oracle_jar_file = undef,
   Optional[String] $oracle_jar_source = undef,
+  Optional[String] $postgresql_jar_file = undef,
+  Optional[String] $postgresql_jar_source = undef,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
     $libunix_dbus_java_source = $keycloak::params::libunix_dbus_java_source,
@@ -1156,11 +1210,19 @@ class keycloak (
       $db_port = pick($datasource_port, 1521)
       $datasource_connection_url = pick($datasource_url, &quot;jdbc:oracle:thin:@${db_host}:${db_port}:${datasource_dbname}&quot;)
       }
+    &#39;postgresql&#39;: {
+      $db_host = pick($datasource_host, &#39;localhost&#39;)
+      $db_port = pick($datasource_port, 5432)
+      $datasource_connection_url = pick($datasource_url, &quot;jdbc:postgresql://${db_host}:${db_port}/${datasource_dbname}&quot;)
+      }
     default: {}
   }
 
   if ($datasource_driver == &#39;oracle&#39;) and (($oracle_jar_file == undef) or ($oracle_jar_source == undef)) {
     fail(&#39;Using Oracle RDBMS requires definition of jar_file and jar_source for Oracle JDBC driver. Refer to module documentation&#39;)
+  }
+  if ($datasource_driver == &#39;postgresql&#39;) and (($postgresql_jar_file == undef) or ($postgresql_jar_source == undef)) {
+    fail(&#39;Using PostgresQL RDBMS requires definition of jar_file and jar_source for PostgresQL JDBC driver. Refer to module documentation&#39;)
   }
 
   $install_base = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;
