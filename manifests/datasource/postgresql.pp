@@ -1,4 +1,6 @@
-# Private class.
+# @summary Manage postgresql datasource
+#
+# @api private
 class keycloak::datasource::postgresql (
   $jar_file      = $keycloak::postgresql_jar_file,
   $jar_source    = $keycloak::postgresql_jar_source,
