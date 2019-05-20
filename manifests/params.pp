@@ -18,6 +18,7 @@ class keycloak::params {
       ]
       $libunix_dbus_java_libdir = '/usr/lib'
       $jna_package_name = 'libjna-java'
+      $default_postgresql_jar_source = '/usr/share/java/postgresql.jar'
     }
     'RedHat': {
       $service_name       = 'keycloak'
@@ -34,6 +35,7 @@ class keycloak::params {
       ]
       $libunix_dbus_java_libdir = '/usr/lib64'
       $jna_package_name = 'jna'
+      $default_postgresql_jar_source = '/usr/share/java/postgresql-jdbc.jar'
     }
 
     default: {
