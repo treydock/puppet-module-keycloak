@@ -36,6 +36,14 @@ end-if
 if (outcome != success) of /subsystem=datasources/jdbc-driver=oracle:read-resource
 /subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=org.oracle,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
 end-if
+<%- elsif scope['keycloak::datasource_driver'] == 'postgresql' -%>
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation, value=true)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1")
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
+/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
+if (outcome != success) of /subsystem=datasources/jdbc-driver=postgresql:read-resource
+/subsystem=datasources/jdbc-driver=postgresql:add(driver-module-name=org.postgresql,driver-name=postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+end-if
 <%- end -%>
 <%- if scope['keycloak::truststore'] -%>
 if (outcome != success) of /subsystem=keycloak-server/spi=truststore:read-resource

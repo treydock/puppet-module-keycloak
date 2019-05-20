@@ -71,6 +71,20 @@ Install keycloak and use a local MySQL server for database storage
       datasource_username => 'keycloak',
       datasource_password => 'foobar',
     }
+    
+The following example can be used to configure keycloak with a local PostgreSQL server. Note that the PostgreSQL driver has to passed through.
+
+    include postgresql::server
+    class { 'keycloak':
+        datasource_driver     => 'postgresql',
+        datasource_host       => 'localhost',
+        datasource_port       => 5432,
+        datasource_dbname     => 'keycloak',
+        datasource_username   => 'keycloak',
+        datasource_password   => 'foobar',
+        postgresql_jar_file   => 'postgresql-42.2.5.jar',
+        postgresql_jar_source => 'puppet:///modules/custom_module/drivers/postgresql-42.2.5.jar'
+    }
 
 Configure a SSL certificate truststore and add a LDAP server's certificate to the truststore.
 
