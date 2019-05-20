@@ -1,5 +1,12 @@
 # treydock-keycloak changelog
 
+## [3.7.0](https://github.com/treydock/puppet-module-keycloak/tree/3.7.0) (2019-05-20)
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.6.1...3.7.0)
+
+**Implemented enhancements:**
+
+- Postgresql support [\#59](https://github.com/treydock/puppet-module-keycloak/pull/59) ([verrydtj](https://github.com/verrydtj))
+
 ## [3.6.1](https://github.com/treydock/puppet-module-keycloak/tree/3.6.1) (2019-05-13)
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.6.0...3.6.1)
 

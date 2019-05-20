@@ -11,6 +11,7 @@ _Public Classes_
 * [`keycloak::config`](#keycloakconfig): Private class.
 * [`keycloak::datasource::h2`](#keycloakdatasourceh2): Private class.
 * [`keycloak::datasource::oracle`](#keycloakdatasourceoracle): Private class.
+* [`keycloak::datasource::postgresql`](#keycloakdatasourcepostgresql): Private class.
 * [`keycloak::install`](#keycloakinstall): Private class.
 * [`keycloak::params`](#keycloakparams): Private class.
 * [`keycloak::service`](#keycloakservice): Private class.
@@ -210,10 +211,10 @@ Default value: `true`
 
 ##### `datasource_driver`
 
-Data type: `Enum['h2', 'mysql','oracle']`
+Data type: `Enum['h2', 'mysql', 'oracle', 'postgresql']`
 
 Datasource driver to use for Keycloak.
-Valid values are `h2`, `mysql` and 'oracle'
+Valid values are `h2`, `mysql`, 'oracle' and 'postgresql'
 Default is `h2`.
 
 Default value: 'h2'
@@ -223,7 +224,7 @@ Default value: 'h2'
 Data type: `Optional[String]`
 
 Datasource host.
-Only used when datasource_driver is `mysql` or 'oracle'
+Only used when datasource_driver is `mysql`, 'oracle' or 'postgresql'
 Default is `localhost` for MySQL.
 
 Default value: `undef`
@@ -233,7 +234,7 @@ Default value: `undef`
 Data type: `Optional[Integer]`
 
 Datasource port.
-Only used when datasource_driver is `mysql` or 'oracle'
+Only used when datasource_driver is `mysql`, 'oracle' or 'postgresql'
 Default is `3306` for MySQL.
 
 Default value: `undef`
@@ -392,6 +393,24 @@ Default is not set
 
 Default value: `undef`
 
+##### `postgresql_jar_file`
+
+Data type: `Optional[String]`
+
+PostgresQL JDBC driver to use. Only use if $datasource_driver is set to postgresql
+Default is not defined
+
+Default value: `undef`
+
+##### `postgresql_jar_source`
+
+Data type: `Optional[String]`
+
+Source for PostgresQL JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to postgresql
+Default is not set
+
+Default value: `undef`
+
 ##### `with_sssd_support`
 
 Data type: `Boolean`
@@ -511,6 +530,38 @@ Data type: `Any`
 
 
 Default value: 'puppet:///modules/keycloak/database/oracle/module.xml'
+
+### keycloak::datasource::postgresql
+
+Private class.
+
+#### Parameters
+
+The following parameters are available in the `keycloak::datasource::postgresql` class.
+
+##### `jar_file`
+
+Data type: `Any`
+
+
+
+Default value: $keycloak::postgresql_jar_file
+
+##### `jar_source`
+
+Data type: `Any`
+
+
+
+Default value: $keycloak::postgresql_jar_source
+
+##### `module_source`
+
+Data type: `Any`
+
+
+
+Default value: 'keycloak/database/postgresql/module.xml.erb'
 
 ### keycloak::install
 
