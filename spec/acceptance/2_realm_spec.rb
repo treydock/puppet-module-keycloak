@@ -2,8 +2,8 @@ require 'spec_helper_acceptance'
 
 describe 'keycloak_realm:' do
   context 'creates realm' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -11,18 +11,18 @@ describe 'keycloak_realm:' do
       keycloak_realm { 'test': ensure => 'present' }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have created a realm' do
+    it 'has created a realm' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
         data = JSON.parse(stdout)
         expect(data['id']).to eq('test')
       end
     end
 
-    it 'should have left default-client-scopes' do
+    it 'has left default-client-scopes' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do
         data = JSON.parse(stdout)
         names = data.map { |d| d['name'] }.sort
@@ -32,7 +32,7 @@ describe 'keycloak_realm:' do
       end
     end
 
-    it 'should have left optional-client-scopes' do
+    it 'has left optional-client-scopes' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-optional-client-scopes' do
         data = JSON.parse(stdout)
         names = data.map { |d| d['name'] }.sort
@@ -42,12 +42,12 @@ describe 'keycloak_realm:' do
       end
     end
 
-    it 'should have default events config' do
+    it 'has default events config' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get events/config -r test' do
         data = JSON.parse(stdout)
         expect(data['eventsEnabled']).to eq(false)
         expect(data['eventsExpiration']).to be_nil
-        expect(data['eventsListeners']).to eq([ "jboss-logging" ])
+        expect(data['eventsListeners']).to eq(['jboss-logging'])
         expect(data['adminEventsEnabled']).to eq(false)
         expect(data['adminEventsDetailsEnabled']).to eq(false)
       end
@@ -55,8 +55,8 @@ describe 'keycloak_realm:' do
   end
 
   context 'updates realm' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -72,18 +72,18 @@ describe 'keycloak_realm:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have updated the realm' do
+    it 'has updated the realm' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
         data = JSON.parse(stdout)
         expect(data['rememberMe']).to eq(true)
       end
     end
 
-    it 'should have updated the realm default-client-scopes' do
+    it 'has updated the realm default-client-scopes' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do
         data = JSON.parse(stdout)
         names = data.map { |d| d['name'] }
@@ -91,12 +91,12 @@ describe 'keycloak_realm:' do
       end
     end
 
-    it 'should have updated events config' do
+    it 'has updated events config' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get events/config -r test' do
         data = JSON.parse(stdout)
         expect(data['eventsEnabled']).to eq(true)
-        expect(data['eventsExpiration']).to eq(2678400)
-        expect(data['eventsListeners']).to eq([ "jboss-logging" ])
+        expect(data['eventsExpiration']).to eq(2_678_400)
+        expect(data['eventsListeners']).to eq(['jboss-logging'])
         expect(data['adminEventsEnabled']).to eq(true)
         expect(data['adminEventsDetailsEnabled']).to eq(true)
       end

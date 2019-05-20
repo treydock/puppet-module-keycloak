@@ -1,12 +1,12 @@
 require 'puppet'
 require 'json'
 
-class Puppet::Provider::Keycloak_API < Puppet::Provider
-
+# Shared provider class
+class Puppet::Provider::KeycloakAPI < Puppet::Provider
   initvars
 
   # Unused but defined anyways
-  commands :kcadm_wrapper => '/opt/keycloak/bin/kcadm-wrapper.sh'
+  commands kcadm_wrapper: '/opt/keycloak/bin/kcadm-wrapper.sh'
 
   @install_base = nil
   @server = nil
@@ -27,14 +27,16 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
   def self.type_properties
     resource_type.validproperties.reject { |p| p.to_sym == :ensure }
   end
+
   def type_properties
     self.class.type_properties
   end
 
   def self.camelize(value)
-    str = value.to_s.split('_').collect(&:capitalize).join
+    str = value.to_s.split('_').map(&:capitalize).join
     str[0].downcase + str[1..-1]
   end
+
   def camelize(*args)
     self.class.camelize(*args)
   end
@@ -53,8 +55,8 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
   def self.kcadm(action, resource, realm = nil, file = nil, fields = nil)
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
 
-    arguments = [ action, resource ]
-    if ['create','update'].include?(action)
+    arguments = [action, resource]
+    if ['create', 'update'].include?(action)
       arguments << '-o'
     end
     if realm
@@ -69,30 +71,31 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
       arguments << '--fields'
       arguments << fields.join(',')
     end
-    if self.use_wrapper == false || self.use_wrapper == :false
+    if use_wrapper == false || use_wrapper == :false
       auth_arguments = [
         '--no-config',
-        '--server', self.server,
+        '--server', server,
         '--realm', self.realm,
-        '--user', self.user,
-        '--password', self.password,
+        '--user', user,
+        '--password', password
       ]
-      cmd = [File.join(self.install_base, 'bin/kcadm.sh')] + arguments + auth_arguments
+      cmd = [File.join(install_base, 'bin/kcadm.sh')] + arguments + auth_arguments
     else
       cmd = [kcadm_wrapper] + arguments
     end
 
-    execute(cmd, :combine => false, :failonfail => true)
+    execute(cmd, combine: false, failonfail: true)
   end
+
   def kcadm(*args)
     self.class.kcadm(*args)
   end
 
-  def self.get_realms()
+  def self.realms
     output = kcadm('get', 'realms', nil, nil, ['realm'])
     data = JSON.parse(output)
     realms = data.map { |r| r['realm'] }
-    return realms
+    realms
   end
 
   def self.name_uuid(name)
@@ -104,22 +107,21 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
     #  6ba7b810-9dad-11d1-80b4-00c04fd430c8
     #
     uuid_name_space_dns = [0x6b,
-      0xa7,
-      0xb8,
-      0x10,
-      0x9d,
-      0xad,
-      0x11,
-      0xd1,
-      0x80,
-      0xb4,
-      0x00,
-      0xc0,
-      0x4f,
-      0xd4,
-      0x30,
-      0xc8
-    ].map {|b| b.chr}.join
+                           0xa7,
+                           0xb8,
+                           0x10,
+                           0x9d,
+                           0xad,
+                           0x11,
+                           0xd1,
+                           0x80,
+                           0xb4,
+                           0x00,
+                           0xc0,
+                           0x4f,
+                           0xd4,
+                           0x30,
+                           0xc8].map { |b| b.chr }.join
 
     sha1 = Digest::SHA1.new
     sha1.update(uuid_name_space_dns)
@@ -136,14 +138,14 @@ class Puppet::Provider::Keycloak_API < Puppet::Provider
     bytes[8] &= 0x3f
     bytes[8] |= 0x80
 
-    bytes = [4, 2, 2, 2, 6].collect do |i|
+    bytes = [4, 2, 2, 2, 6].map do |i|
       bytes.slice!(0, i).pack('C*').unpack('H*')
     end
 
     bytes.join('-')
   end
+
   def name_uuid(*args)
     self.class.name_uuid(*args)
   end
-
 end

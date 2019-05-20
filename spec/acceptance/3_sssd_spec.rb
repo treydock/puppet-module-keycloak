@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 describe 'keycloak_sssd_user_provider:' do
   context 'bootstrap sssd' do
-    it 'should be successful' do
+    it 'is successful' do
       on hosts, 'puppet resource package sssd-dbus ensure=installed'
       on hosts, 'puppet resource package sssd-ldap ensure=installed'
       sssd_conf = <<-EOS
@@ -26,8 +26,8 @@ services = ifp
     end
   end
   context 'creates sssd' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       service { 'sssd': ensure => 'running' }
       include mysql::server
       class { 'keycloak':
@@ -41,11 +41,11 @@ services = ifp
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have created a SSSD user provider' do
+    it 'has created a SSSD user provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/SSSD-test -r test' do
         data = JSON.parse(stdout)
         expect(data['config']['priority']).to eq(['0'])
@@ -56,8 +56,8 @@ services = ifp
   end
 
   context 'updates sssd' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       service { 'sssd': ensure => 'running' }
       include mysql::server
       class { 'keycloak':
@@ -72,11 +72,11 @@ services = ifp
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have updated a SSSD user provider' do
+    it 'has updated a SSSD user provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/SSSD-test -r test' do
         data = JSON.parse(stdout)
         expect(data['config']['priority']).to eq(['1'])
@@ -87,8 +87,8 @@ services = ifp
   end
 
   context 'deletes sssd' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       service { 'sssd': ensure => 'running' }
       include mysql::server
       class { 'keycloak':
@@ -102,12 +102,12 @@ services = ifp
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have deleted a SSSD user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/SSSD-test -r test', :acceptable_exit_codes => [0,1] do
+    it 'has deleted a SSSD user provider' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/SSSD-test -r test', acceptable_exit_codes: [0, 1] do
         expect(exit_code).to eq(1)
       end
     end

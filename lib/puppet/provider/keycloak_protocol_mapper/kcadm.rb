@@ -1,15 +1,15 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
-Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::Provider::Keycloak_API) do
-  desc ""
+Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
+  desc ''
 
   mk_resource_methods
 
   def self.attribute_nameformat_map
     {
-      :uri => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
-      :basic => 'Basic',
-      :unspecified => 'Unspecified',
+      uri: 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+      basic: 'Basic',
+      unspecified: 'Unspecified',
     }
   end
 
@@ -23,9 +23,6 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
 
   def self.instances
     protocol_mappers = []
-
-    realms = get_realms()
-
     realms.each do |realm|
       client_scopes_output = kcadm('get', 'client-scopes', realm, nil, ['id'])
       client_scope_data = JSON.parse(client_scopes_output)
@@ -35,8 +32,8 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
         Puppet.debug("#{realm} #{client_scope} protocl-mappers: #{output}")
         begin
           data = JSON.parse(output)
-        rescue JSON::ParserError => e
-          Puppet.debug("Unable to parse output from kcadm get protocl-mappers")
+        rescue JSON::ParserError
+          Puppet.debug('Unable to parse output from kcadm get protocl-mappers')
           data = []
         end
         data.each do |d|
@@ -49,7 +46,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
           protocol_mapper[:protocol] = d['protocol']
           protocol_mapper[:name] = "#{protocol_mapper[:resource_name]} for #{protocol_mapper[:client_scope]} on #{protocol_mapper[:realm]}"
           protocol_mapper[:type] = d['protocolMapper']
-          if protocol_mapper[:type] == 'oidc-usermodel-property-mapper' or protocol_mapper[:type] == 'saml-user-property-mapper'
+          if protocol_mapper[:type] == 'oidc-usermodel-property-mapper' || protocol_mapper[:type] == 'saml-user-property-mapper'
             protocol_mapper[:user_attribute] = d['config']['user.attribute']
           end
           if protocol_mapper[:type] == 'oidc-usermodel-property-mapper'
@@ -81,19 +78,19 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
   def self.prefetch(resources)
     protocol_mappers = instances
     resources.keys.each do |name|
-      if provider = protocol_mappers.find { |c|
+      provider = protocol_mappers.find do |c|
         c.resource_name == resources[name][:resource_name] &&
-        c.realm == resources[name][:realm] &&
-        c.client_scope == resources[name][:client_scope]
-      }
-        resources[name].provider = provider
+          c.realm == resources[name][:realm] &&
+          c.client_scope == resources[name][:client_scope]
       end
+      next unless provider
+      resources[name].provider = provider
     end
   end
 
   def create
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
-    fail("Client scope is mandatory for #{resource.type} #{resource.name}") if resource[:client_scope].nil?
+    raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    raise(Puppet::Error, "Client scope is mandatory for #{resource.type} #{resource.name}") if resource[:client_scope].nil?
 
     data = {}
     data[:id] = resource[:id] || name_uuid(resource[:name])
@@ -101,7 +98,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
     data[:protocol] = resource[:protocol]
     data[:protocolMapper] = resource[:type]
     data[:config] = {}
-    if resource[:type] == 'oidc-usermodel-property-mapper' or resource[:type] == 'saml-user-property-mapper'
+    if resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper'
       data[:config][:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
     end
     if resource[:type] == 'oidc-usermodel-property-mapper'
@@ -130,18 +127,18 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
     Puppet.debug(IO.read(t.path))
     begin
       kcadm('create', "client-scopes/#{resource[:client_scope]}/protocol-mappers/models", resource[:realm], t.path)
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm create protocol-mapper failed\nError message: #{e.message}"
     end
     @property_hash[:ensure] = :present
   end
 
   def destroy
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
-    fail("Client scope is mandatory for #{resource.type} #{resource.name}") if resource[:client_scope].nil?
+    raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    raise(Puppet::Error, "Client scope is mandatory for #{resource.type} #{resource.name}") if resource[:client_scope].nil?
     begin
       kcadm('delete', "client-scopes/#{resource[:client_scope]}/protocol-mappers/models/#{id}", resource[:realm])
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
 
@@ -164,9 +161,9 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
   end
 
   def flush
-    if not @property_flush.empty?
-      fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
-      fail("Client scope is mandatory for #{resource.type} #{resource.name}") if resource[:client_scope].nil?
+    unless @property_flush.empty?
+      raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+      raise(Puppet::Error, "Client scope is mandatory for #{resource.type} #{resource.name}") if resource[:client_scope].nil?
 
       data = {}
       data[:id] = @property_hash[:id]
@@ -174,7 +171,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
       config = {}
-      if resource[:type] == 'oidc-usermodel-property-mapper' or resource[:type] == 'saml-user-property-mapper'
+      if resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper'
         config[:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
       end
       if resource[:type] == 'oidc-usermodel-property-mapper'
@@ -204,7 +201,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
       Puppet.debug(IO.read(t.path))
       begin
         kcadm('update', "client-scopes/#{resource[:client_scope]}/protocol-mappers/models/#{id}", resource[:realm], t.path)
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update component failed\nError message: #{e.message}"
       end
     end
@@ -212,5 +209,4 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, :parent => Puppet::
     # resource` will show the correct values after changes have been made).
     @property_hash = resource.to_hash
   end
-
 end

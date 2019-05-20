@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Puppet::Type.type(:keycloak_client) do
   let(:default_config) do
     {
-      :name => 'foo',
-      :realm => 'test',
+      name: 'foo',
+      realm: 'test',
     }
   end
   let(:config) do
@@ -14,133 +14,136 @@ describe Puppet::Type.type(:keycloak_client) do
     described_class.new(config)
   end
 
-  it 'should add to catalog without raising an error' do
+  it 'adds to catalog without raising an error' do
     catalog = Puppet::Resource::Catalog.new
     expect {
       catalog.add_resource resource
-    }.to_not raise_error
+    }.not_to raise_error
   end
 
-  it 'should have a name' do
+  it 'has a name' do
     expect(resource[:name]).to eq('foo')
   end
 
-  it 'should have client_id default to name' do
+  it 'has client_id default to name' do
     expect(resource[:client_id]).to eq('foo')
   end
 
-  it 'should have id default to name' do
+  it 'has id default to name' do
     expect(resource[:id]).to eq('foo')
   end
 
-  it 'should have realm' do
+  it 'has realm' do
     expect(resource[:realm]).to eq('test')
   end
 
-  it 'should handle componsite name' do
-    component = described_class.new(:name => 'foo on test')
+  it 'handles componsite name' do
+    component = described_class.new(name: 'foo on test')
     expect(component[:name]).to eq('foo on test')
     expect(component[:client_id]).to eq('foo')
     expect(component[:realm]).to eq('test')
   end
 
-  it 'should default to client_authenticator_type=client-secret' do
+  it 'defaults to client_authenticator_type=client-secret' do
     expect(resource[:client_authenticator_type]).to eq('client-secret')
   end
 
-  it 'should default to protocol=openid-connect' do
+  it 'defaults to protocol=openid-connect' do
     expect(resource[:protocol]).to eq('openid-connect')
   end
 
-  it 'should not allow invalid protocol' do
+  it 'does not allow invalid protocol' do
     config[:protocol] = 'foo'
     expect {
       resource
-    }.to raise_error
+    }.to raise_error(%r{foo})
   end
 
   defaults = {
-    :enabled => :true,
-    :direct_access_grants_enabled => :true,
-    :public_client => :false,
-    :full_scope_allowed => :true,
-    :default_client_scopes => [],
-    :optional_client_scopes => [],
-    :redirect_uris => [],
-    :web_origins => [],
+    enabled: :true,
+    direct_access_grants_enabled: :true,
+    public_client: :false,
+    full_scope_allowed: :true,
+    default_client_scopes: [],
+    optional_client_scopes: [],
+    redirect_uris: [],
+    web_origins: [],
   }
 
-  # Test basic properties
-  [
-    :secret,
-  ].each do |p|
-    it "should accept a #{p.to_s}" do
-      config[p] = 'foo'
-      expect(resource[p]).to eq('foo')
-    end
-    if defaults[p]
+  describe 'basic properties' do
+    # Test basic properties
+    [
+      :secret,
+    ].each do |p|
+      it "should accept a #{p}" do
+        config[p] = 'foo'
+        expect(resource[p]).to eq('foo')
+      end
+      next unless defaults[p]
       it "should have default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
   end
 
-  # Test boolean properties
-  [
-    :enabled,
-    :direct_access_grants_enabled,
-    :public_client,
-    :full_scope_allowed,
-  ].each do |p|
-    it "should accept true for #{p.to_s}" do
-      config[p] = true
-      expect(resource[p]).to eq(:true)
-    end
-    it "should accept true for #{p.to_s} string" do
-      config[p] = 'true'
-      expect(resource[p]).to eq(:true)
-    end
-    it "should accept false for #{p.to_s}" do
-      config[p] = false
-      expect(resource[p]).to eq(:false)
-    end
-    it "should accept false for #{p.to_s} string" do
-      config[p] = 'false'
-      expect(resource[p]).to eq(:false)
-    end
-    it "should not accept strings for #{p.to_s}" do
-      config[p] = 'foo'
-      expect {
-        resource
-      }.to raise_error
-    end
-    if defaults[p]
+  describe 'boolean properties' do
+    # Test boolean properties
+    [
+      :enabled,
+      :direct_access_grants_enabled,
+      :public_client,
+      :full_scope_allowed,
+    ].each do |p|
+      it "should accept true for #{p}" do
+        config[p] = true
+        expect(resource[p]).to eq(:true)
+      end
+      it "should accept true for #{p} string" do
+        config[p] = 'true'
+        expect(resource[p]).to eq(:true)
+      end
+      it "should accept false for #{p}" do
+        config[p] = false
+        expect(resource[p]).to eq(:false)
+      end
+      it "should accept false for #{p} string" do
+        config[p] = 'false'
+        expect(resource[p]).to eq(:false)
+      end
+      it "should not accept strings for #{p}" do
+        config[p] = 'foo'
+        expect {
+          resource
+        }.to raise_error(%r{foo})
+      end
+      next unless defaults[p]
       it "should have default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
   end
 
-  # Array properties
-  [
-    :default_client_scopes,
-    :optional_client_scopes,
-    :redirect_uris,
-    :web_origins,
-  ].each do |p|
-    it "should accept array for #{p}" do
-      config[p] = ['foo','bar']
-      expect(resource[p]).to eq(['foo','bar'])
-    end
-    if defaults[p]
+  describe 'array properties' do
+    # Array properties
+    [
+      :default_client_scopes,
+      :optional_client_scopes,
+      :redirect_uris,
+      :web_origins,
+    ].each do |p|
+      it "should accept array for #{p}" do
+        config[p] = ['foo', 'bar']
+        expect(resource[p]).to eq(['foo', 'bar'])
+      end
+      next unless defaults[p]
       it "should have default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
   end
 
-  it 'should autorequire keycloak_conn_validator' do
-    keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(:name => 'keycloak')
+  it 'autorequires keycloak_conn_validator' do
+    keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(name: 'keycloak')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_conn_validator
@@ -149,8 +152,8 @@ describe Puppet::Type.type(:keycloak_client) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire kcadm-wrapper.sh' do
-    file = Puppet::Type.type(:file).new(:name => 'kcadm-wrapper.sh', :path => '/opt/keycloak/bin/kcadm-wrapper.sh')
+  it 'autorequires kcadm-wrapper.sh' do
+    file = Puppet::Type.type(:file).new(name: 'kcadm-wrapper.sh', path: '/opt/keycloak/bin/kcadm-wrapper.sh')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource file
@@ -159,8 +162,8 @@ describe Puppet::Type.type(:keycloak_client) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire keycloak_realm' do
-    keycloak_realm = Puppet::Type.type(:keycloak_realm).new(:name => 'test')
+  it 'autorequires keycloak_realm' do
+    keycloak_realm = Puppet::Type.type(:keycloak_realm).new(name: 'test')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_realm
@@ -169,9 +172,9 @@ describe Puppet::Type.type(:keycloak_client) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire keycloak_client_scope' do
+  it 'autorequires keycloak_client_scope' do
     config[:default_client_scopes] = ['foo']
-    keycloak_client_scope = Puppet::Type.type(:keycloak_client_scope).new(:name => 'foo', :realm => 'test')
+    keycloak_client_scope = Puppet::Type.type(:keycloak_client_scope).new(name: 'foo', realm: 'test')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_client_scope
@@ -180,9 +183,9 @@ describe Puppet::Type.type(:keycloak_client) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'should autorequire client_scope protocol mappers' do
+  it 'autorequires client_scope protocol mappers' do
     config[:default_client_scopes] = ['foo']
-    keycloak_protocol_mapper = Puppet::Type.type(:keycloak_protocol_mapper).new(:name => 'bar', :realm => 'test', :client_scope => 'foo')
+    keycloak_protocol_mapper = Puppet::Type.type(:keycloak_protocol_mapper).new(name: 'bar', realm: 'test', client_scope: 'foo')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_protocol_mapper
@@ -190,5 +193,4 @@ describe Puppet::Type.type(:keycloak_client) do
     expect(rel.source.ref).to eq(keycloak_protocol_mapper.ref)
     expect(rel.target.ref).to eq(resource.ref)
   end
-
 end

@@ -1,21 +1,18 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
-Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, :parent => Puppet::Provider::Keycloak_API) do
-  desc ""
+Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
+  desc ''
 
   mk_resource_methods
 
   def self.instances
     client_scopes = []
-
-    realms = get_realms()
-
     realms.each do |realm|
       output = kcadm('get', 'client-scopes', realm)
       Puppet.debug("#{realm} client-scopes: #{output}")
       begin
         data = JSON.parse(output)
-      rescue JSON::ParserError => e
+      rescue JSON::ParserError
         Puppet.debug('Unable to parse output from kcadm get client-scopes')
         data = []
       end
@@ -40,14 +37,15 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, :parent => Puppet::Pro
   def self.prefetch(resources)
     client_scopes = instances
     resources.keys.each do |name|
-      if provider = client_scopes.find { |c| c.resource_name == resources[name][:resource_name] && c.realm == resources[name][:realm] }
+      provider = client_scopes.find { |c| c.resource_name == resources[name][:resource_name] && c.realm == resources[name][:realm] }
+      if provider
         resources[name].provider = provider
       end
     end
   end
 
   def create
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
     data = {}
     data[:id] = resource[:id]
@@ -64,17 +62,17 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, :parent => Puppet::Pro
     Puppet.debug(IO.read(t.path))
     begin
       kcadm('create', 'client-scopes', resource[:realm], t.path)
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm create client-scope failed\nError message: #{e.message}"
     end
     @property_hash[:ensure] = :present
   end
 
   def destroy
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
       kcadm('delete', "client-scopes/#{id}", resource[:realm])
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
 
@@ -97,8 +95,8 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, :parent => Puppet::Pro
   end
 
   def flush
-    if not @property_flush.empty?
-      fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    unless @property_flush.empty?
+      raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
       data = {}
       data[:name] = resource[:resource_name]
@@ -114,7 +112,7 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, :parent => Puppet::Pro
       Puppet.debug(IO.read(t.path))
       begin
         kcadm('update', "client-scopes/#{id}", resource[:realm], t.path)
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update client-scope failed\nError message: #{e.message}"
       end
     end
@@ -122,5 +120,4 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, :parent => Puppet::Pro
     # resource` will show the correct values after changes have been made).
     @property_hash = resource.to_hash
   end
-
 end

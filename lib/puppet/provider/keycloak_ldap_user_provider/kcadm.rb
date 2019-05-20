@@ -1,21 +1,18 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
-Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppet::Provider::Keycloak_API) do
-  desc ""
+Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
+  desc ''
 
   mk_resource_methods
 
   def self.instances
     components = []
-
-    realms = get_realms()
-
     realms.each do |realm|
       output = kcadm('get', 'components', realm)
       Puppet.debug("#{realm} components: #{output}")
       begin
         data = JSON.parse(output)
-      rescue JSON::ParserError => e
+      rescue JSON::ParserError
         Puppet.debug('Unable to parse output from kcadm get components')
         data = []
       end
@@ -30,12 +27,12 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
         component[:realm] = d['parentId']
         component[:name] = "#{component[:resource_name]} on #{component[:realm]}"
         type_properties.each do |property|
-          next unless d['config'].key?(camelize(property).gsub(/ldap/i, 'LDAP'))
-          value = d['config'][camelize(property).gsub(/ldap/i, 'LDAP')][0]
+          next unless d['config'].key?(camelize(property).gsub(%r{ldap}i, 'LDAP'))
+          value = d['config'][camelize(property).gsub(%r{ldap}i, 'LDAP')][0]
           if property == :user_object_classes
             value = value.split(',')
           end
-          if !!value == value
+          if !!value == value # rubocop:disable Style/DoubleNegation
             value = value.to_s.to_sym
           end
           component[property.to_sym] = value
@@ -49,14 +46,15 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
   def self.prefetch(resources)
     components = instances
     resources.keys.each do |name|
-      if provider = components.find { |c| c.resource_name == resources[name][:resource_name] && c.realm == resources[name][:realm] }
+      provider = components.find { |c| c.resource_name == resources[name][:resource_name] && c.realm == resources[name][:realm] }
+      if provider
         resources[name].provider = provider
       end
     end
   end
 
   def create
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
     data = {}
     data[:id] = resource[:id]
@@ -66,15 +64,14 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
     data[:providerType] = 'org.keycloak.storage.UserStorageProvider'
     data[:config] = {}
     type_properties.each do |property|
-      if resource[property.to_sym]
-        if property == :user_object_classes
-          value = resource[property.to_sym].join(',')
-        else
-          value = resource[property.to_sym]
-        end
-        next if value == :absent
-        data[:config][camelize(property).gsub(/ldap/i, 'LDAP')] = [value]
-      end
+      next unless resource[property.to_sym]
+      value = if property == :user_object_classes
+                resource[property.to_sym].join(',')
+              else
+                resource[property.to_sym]
+              end
+      next if value == :absent
+      data[:config][camelize(property).gsub(%r{ldap}i, 'LDAP')] = [value]
     end
 
     t = Tempfile.new('keycloak_component')
@@ -83,17 +80,17 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
     Puppet.debug(IO.read(t.path))
     begin
       kcadm('create', 'components', resource[:realm], t.path)
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm create component failed\nError message: #{e.message}"
     end
     @property_hash[:ensure] = :present
   end
 
   def destroy
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
       kcadm('delete', "components/#{id}", resource[:realm])
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
 
@@ -116,25 +113,24 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
   end
 
   def flush
-    if not @property_flush.empty?
-      fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    unless @property_flush.empty?
+      raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
       data = {}
       data[:providerId] = 'ldap'
       data[:providerType] = 'org.keycloak.storage.UserStorageProvider'
       data[:config] = {}
       type_properties.each do |property|
-        if @property_flush[property.to_sym]
-          if property == :user_object_classes
-            value = resource[property.to_sym].join(',')
-          else
-            value = resource[property.to_sym]
-          end
-          if value == :absent
-            value = ''
-          end
-          data[:config][camelize(property).gsub(/ldap/i, 'LDAP')] = [value]
+        next unless @property_flush[property.to_sym]
+        value = if property == :user_object_classes
+                  resource[property.to_sym].join(',')
+                else
+                  resource[property.to_sym]
+                end
+        if value == :absent
+          value = ''
         end
+        data[:config][camelize(property).gsub(%r{ldap}i, 'LDAP')] = [value]
       end
 
       t = Tempfile.new('keycloak_component')
@@ -143,7 +139,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
       Puppet.debug(IO.read(t.path))
       begin
         kcadm('update', "components/#{id}", resource[:realm], t.path)
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update component failed\nError message: #{e.message}"
       end
     end
@@ -151,5 +147,4 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, :parent => Puppe
     # resource` will show the correct values after changes have been made).
     @property_hash = resource.to_hash
   end
-
 end

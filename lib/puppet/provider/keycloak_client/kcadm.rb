@@ -1,21 +1,18 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
-Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider::Keycloak_API) do
-  desc ""
+Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
+  desc ''
 
   mk_resource_methods
 
   def self.instances
     clients = []
-
-    realms = get_realms()
-
     realms.each do |realm|
       output = kcadm('get', 'clients', realm)
       Puppet.debug("#{realm} clients: #{output}")
       begin
         data = JSON.parse(output)
-      rescue JSON::ParserError => e
+      rescue JSON::ParserError
         Puppet.debug('Unable to parse output from kcadm get clients')
         data = []
       end
@@ -24,12 +21,12 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         # avoid built-in clients
         if d.key?('clientAuthenticatorType') &&
            d['clientAuthenticatorType'] == 'client-secret' &&
-           ! d.key?('name')
+           !d.key?('name')
           begin
             secret_output = kcadm('get', "clients/#{d['id']}/client-secret", realm)
           rescue
             Puppet.debug("Unable to get clients/#{d['id']}/client-secret")
-            secret_output = "{}"
+            secret_output = '{}'
           end
           secret_data = JSON.parse(secret_output)
           secret = secret_data['value']
@@ -48,7 +45,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
           if property == :secret
             value = secret
           end
-          if !!value == value
+          if !!value == value # rubocop:disable Style/DoubleNegation
             value = value.to_s.to_sym
           end
           client[property.to_sym] = value
@@ -62,29 +59,31 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
   def self.prefetch(resources)
     clients = instances
     resources.keys.each do |name|
-      if provider = clients.find { |c| c.client_id == resources[name][:client_id] && c.realm == resources[name][:realm] }
+      provider = clients.find { |c| c.client_id == resources[name][:client_id] && c.realm == resources[name][:realm] }
+      if provider
         resources[name].provider = provider
       end
     end
   end
 
-  def get_scope_map
-    scope_map = {}
-    output = kcadm('get', 'client-scopes', resource[:realm], nil, ['id','name'])
+  def scope_map
+    return @scope_map if @scope_map
+    output = kcadm('get', 'client-scopes', resource[:realm], nil, ['id', 'name'])
     begin
       data = JSON.parse(output)
-    rescue JSON::ParserError => e
+    rescue JSON::ParserError
       Puppet.debug('Unable to parse output from kcadm get client-scopes')
       return {}
     end
+    @scope_map = {}
     data.each do |d|
-      scope_map[d['name']] = d['id']
+      @scope_map[d['name']] = d['id']
     end
-    scope_map
+    @scope_map
   end
 
   def create
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
     data = {}
     data[:id] = resource[:id]
@@ -104,12 +103,11 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
     begin
       output = kcadm('create', 'clients', resource[:realm], t.path)
       Puppet.debug("create client output: #{output}")
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm create client failed\nError message: #{e.message}"
     end
-    if resource[:default_client_scopes] or resource[:optional_client_scopes]
+    if resource[:default_client_scopes] || resource[:optional_client_scopes]
       client = JSON.parse(output)
-      scope_map = get_scope_map
       scope_id = nil
     end
     if resource[:default_client_scopes]
@@ -117,9 +115,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
       begin
         remove_default_scopes.each do |s|
           scope_id = scope_map[s]
-          output = kcadm('delete', "clients/#{resource[:id]}/default-client-scopes/#{scope_id}", resource[:realm])
+          kcadm('delete', "clients/#{resource[:id]}/default-client-scopes/#{scope_id}", resource[:realm])
         end
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm delete clients/#{resource[:id]}/default-client-scopes/#{scope_id}: #{e.message}"
       end
     end
@@ -128,9 +126,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
       begin
         remove_optional_scopes.each do |s|
           scope_id = scope_map[s]
-          output = kcadm('delete', "clients/#{resource[:id]}/optional-client-scopes/#{scope_id}", resource[:realm])
+          kcadm('delete', "clients/#{resource[:id]}/optional-client-scopes/#{scope_id}", resource[:realm])
         end
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm delete clients/#{resource[:id]}/optional-client-scopes/#{scope_id}: #{e.message}"
       end
     end
@@ -139,9 +137,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
       begin
         add_default_scopes.each do |s|
           scope_id = scope_map[s]
-          output = kcadm('update', "clients/#{resource[:id]}/default-client-scopes/#{scope_id}", resource[:realm])
+          kcadm('update', "clients/#{resource[:id]}/default-client-scopes/#{scope_id}", resource[:realm])
         end
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update clients/#{resource[:id]}/default-client-scopes/#{scope_id}: #{e.message}"
       end
     end
@@ -150,9 +148,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
       begin
         add_optional_scopes.each do |s|
           scope_id = scope_map[s]
-          output = kcadm('update', "clients/#{resource[:id]}/optional-client-scopes/#{scope_id}", resource[:realm])
+          kcadm('update', "clients/#{resource[:id]}/optional-client-scopes/#{scope_id}", resource[:realm])
         end
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update clients/#{resource[:id]}/optional-client-scopes/#{scope_id}: #{e.message}"
       end
     end
@@ -160,10 +158,10 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
   end
 
   def destroy
-    fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     begin
       kcadm('delete', "clients/#{id}", resource[:realm])
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
 
@@ -186,8 +184,8 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
   end
 
   def flush
-    if not @property_flush.empty?
-      fail("Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+    unless @property_flush.empty?
+      raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
       data = {}
       data[:clientId] = resource[:client_id]
@@ -199,19 +197,18 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
       end
 
       # Only update if more than clientId set
-      if data.keys().size > 1
+      if data.keys.size > 1
         t = Tempfile.new('keycloak_client')
         t.write(JSON.pretty_generate(data))
         t.close
         Puppet.debug(IO.read(t.path))
         begin
           kcadm('update', "clients/#{id}", resource[:realm], t.path)
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update client failed\nError message: #{e.message}"
         end
       end
-      if @property_flush[:default_client_scopes] or @property_flush[:optional_client_scopes]
-        scope_map = get_scope_map
+      if @property_flush[:default_client_scopes] || @property_flush[:optional_client_scopes]
         scope_id = nil
       end
       if @property_flush[:default_client_scopes]
@@ -219,9 +216,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         begin
           remove_default_scopes.each do |s|
             scope_id = scope_map[s]
-            output = kcadm('delete', "clients/#{id}/default-client-scopes/#{scope_id}", resource[:realm])
+            kcadm('delete', "clients/#{id}/default-client-scopes/#{scope_id}", resource[:realm])
           end
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm delete clients/#{id}/default-client-scopes/#{scope_id}: #{e.message}"
         end
       end
@@ -230,9 +227,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         begin
           remove_optional_scopes.each do |s|
             scope_id = scope_map[s]
-            output = kcadm('delete', "clients/#{id}/optional-client-scopes/#{scope_id}", resource[:realm])
+            kcadm('delete', "clients/#{id}/optional-client-scopes/#{scope_id}", resource[:realm])
           end
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm delete clients/#{id}/optional-client-scopes/#{scope_id}: #{e.message}"
         end
       end
@@ -241,9 +238,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         begin
           add_default_scopes.each do |s|
             scope_id = scope_map[s]
-            output = kcadm('update', "clients/#{id}/default-client-scopes/#{scope_id}", resource[:realm])
+            kcadm('update', "clients/#{id}/default-client-scopes/#{scope_id}", resource[:realm])
           end
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update clients/#{id}/default-client-scopes/#{scope_id}: #{e.message}"
         end
       end
@@ -252,9 +249,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
         begin
           add_optional_scopes.each do |s|
             scope_id = scope_map[s]
-            output = kcadm('update', "clients/#{id}/optional-client-scopes/#{scope_id}", resource[:realm])
+            kcadm('update', "clients/#{id}/optional-client-scopes/#{scope_id}", resource[:realm])
           end
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update clients/#{id}/optional-client-scopes/#{scope_id}: #{e.message}"
         end
       end
@@ -263,5 +260,4 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, :parent => Puppet::Provider:
     # resource` will show the correct values after changes have been made).
     @property_hash = resource.to_hash
   end
-
 end

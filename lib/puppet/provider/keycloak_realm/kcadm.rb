@@ -1,7 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
-Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::Keycloak_API) do
-  desc ""
+Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
+  desc ''
 
   mk_resource_methods
 
@@ -16,6 +16,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
     Puppet.debug("Returned scopes: #{scopes}")
     scopes
   end
+
   def get_client_scopes(*args)
     self.class.get_client_scopes(*args)
   end
@@ -25,7 +26,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
     Puppet.debug("#{realm} events/config: #{output}")
     begin
       data = JSON.parse(output)
-    rescue JSON::ParserError => e
+    rescue JSON::ParserError
       Puppet.debug('Unable to parse output from kcadm get events/config')
       data = {}
     end
@@ -34,17 +35,15 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
   end
 
   def self.instances
-    realms = []
-
     output = kcadm('get', 'realms')
     Puppet.debug("Realms: #{output}")
     begin
       data = JSON.parse(output)
-    rescue JSON::ParserError => e
+    rescue JSON::ParserError
       Puppet.debug('Unable to parse output from kcadm get realms')
       data = []
     end
-    data.collect do |d|
+    data.map do |d|
       realm = {}
       realm[:ensure] = :present
       realm[:id] = d['id']
@@ -52,20 +51,20 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
       events_config = get_events_config(d['realm'])
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes].include?(property)
-        if property.to_s =~ /events/
-          value = events_config[camelize(property)]
-        else
-          value = d[camelize(property)]
-        end
-        if !!value == value
+        value = if property.to_s =~ %r{events}
+                  events_config[camelize(property)]
+                else
+                  d[camelize(property)]
+                end
+        if !!value == value # rubocop:disable Style/DoubleNegation
           value = value.to_s.to_sym
         end
         realm[property.to_sym] = value
       end
       default_scopes = get_client_scopes(realm[:name], 'default')
-      realm[:default_client_scopes] = default_scopes.keys().map { |k| k.to_s }
+      realm[:default_client_scopes] = default_scopes.keys.map { |k| k.to_s }
       optional_scopes = get_client_scopes(realm[:name], 'optional')
-      realm[:optional_client_scopes] = optional_scopes.keys().map { |k| k.to_s }
+      realm[:optional_client_scopes] = optional_scopes.keys.map { |k| k.to_s }
       new(realm)
     end
   end
@@ -73,7 +72,8 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
   def self.prefetch(resources)
     realms = instances
     resources.keys.each do |name|
-      if provider = realms.find { |realm| realm.name == name }
+      provider = realms.find { |realm| realm.name == name }
+      if provider
         resources[name].provider = provider
       end
     end
@@ -86,9 +86,9 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
     data[:realm] = resource[:name]
     type_properties.each do |property|
       next if [:default_client_scopes, :optional_client_scopes].include?(property)
-      if property.to_s =~ /events/
+      if property.to_s =~ %r{events}
         events_config[camelize(property)] = convert_property_value(resource[property.to_sym])
-      else resource[property.to_sym]
+      elsif resource[property.to_sym]
         data[camelize(property)] = convert_property_value(resource[property.to_sym])
       end
     end
@@ -99,66 +99,66 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
     Puppet.debug(IO.read(t.path))
     begin
       kcadm('create', 'realms', nil, t.path)
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm create realm failed\nError message: #{e.message}"
     end
     scope_id = nil
     if resource[:default_client_scopes]
       default_scopes = default_scopes ||= get_client_scopes(resource[:name], 'default')
-      remove_default_scopes = default_scopes.keys() - resource[:default_client_scopes]
+      remove_default_scopes = default_scopes.keys - resource[:default_client_scopes]
       begin
         remove_default_scopes.each do |s|
           scope_id = default_scopes[s]
-          output = kcadm('delete', "realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}")
+          kcadm('delete', "realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}")
         end
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm delete realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}: #{e.message}"
       end
     end
     if resource[:optional_client_scopes]
       optional_scopes = optional_scopes ||= get_client_scopes(resource[:name], 'optional')
-      remove_optional_scopes = optional_scopes.keys() - resource[:optional_client_scopes]
+      remove_optional_scopes = optional_scopes.keys - resource[:optional_client_scopes]
       begin
         remove_optional_scopes.each do |s|
           scope_id = optional_scopes[s]
-          output = kcadm('delete', "realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}")
+          kcadm('delete', "realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}")
         end
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm delete realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}: #{e.message}"
       end
     end
     if resource[:default_client_scopes]
       default_scopes = default_scopes ||= get_client_scopes(resource[:name], 'default')
-      add_default_scopes = resource[:default_client_scopes] - default_scopes.keys()
+      add_default_scopes = resource[:default_client_scopes] - default_scopes.keys
       begin
         add_default_scopes.each do |s|
           scope_id = default_scopes[s]
-          output = kcadm('update', "realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}")
+          kcadm('update', "realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}")
         end
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}: #{e.message}"
       end
     end
     if resource[:optional_client_scopes]
       optional_scopes = optional_scopes ||= get_client_scopes(resource[:name], 'optional')
-      add_optional_scopes = resource[:optional_client_scopes] - optional_scopes.keys()
+      add_optional_scopes = resource[:optional_client_scopes] - optional_scopes.keys
       begin
         add_optional_scopes.each do |s|
           scope_id = optional_scopes[s]
-          output = kcadm('update', "realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}")
+          kcadm('update', "realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}")
         end
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}: #{e.message}"
       end
     end
-    if ! events_config.empty?
+    unless events_config.empty?
       events_config_t = Tempfile.new('keycloak_events_config')
       events_config_t.write(JSON.pretty_generate(events_config))
       events_config_t.close
       Puppet.debug(IO.read(events_config_t.path))
       begin
         kcadm('update', 'events/config', resource[:name], events_config_t.path)
-      rescue Exception => e
+      rescue Puppet::ExecutionFailure => e
         raise Puppet::Error, "kcadm update events config failed\nError message: #{e.message}"
       end
     end
@@ -168,7 +168,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
   def destroy
     begin
       kcadm('delete', "realms/#{resource[:name]}")
-    rescue Exception => e
+    rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm delete realm failed\nError message: #{e.message}"
     end
 
@@ -191,7 +191,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
   end
 
   def flush
-    if not @property_flush.empty?
+    unless @property_flush.empty?
       data = {}
       events_config = {}
       type_properties.each do |property|
@@ -199,79 +199,79 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
         if @property_flush[property.to_sym] # || resource[property.to_sym]
           data[camelize(property)] = convert_property_value(resource[property.to_sym])
         end
-        if property.to_s =~ /events/
+        if property.to_s =~ %r{events}
           events_config[camelize(property)] = convert_property_value(resource[property.to_sym])
         end
       end
 
-      if ! data.empty?
+      unless data.empty?
         t = Tempfile.new('keycloak_realm')
         t.write(JSON.pretty_generate(data))
         t.close
         Puppet.debug(IO.read(t.path))
         begin
           kcadm('update', "realms/#{resource[:name]}", nil, t.path)
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update realm failed\nError message: #{e.message}"
         end
       end
       scope_id = nil
       if @property_flush[:default_client_scopes]
         default_scopes = default_scopes ||= get_client_scopes(resource[:name], 'default')
-        remove_default_scopes = default_scopes.keys() - @property_flush[:default_client_scopes]
+        remove_default_scopes = default_scopes.keys - @property_flush[:default_client_scopes]
         begin
           remove_default_scopes.each do |s|
             scope_id = default_scopes[s]
-            output = kcadm('delete', "realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}")
+            kcadm('delete', "realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}")
           end
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm delete realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}: #{e.message}"
         end
       end
       if @property_flush[:optional_client_scopes]
         optional_scopes = optional_scopes ||= get_client_scopes(resource[:name], 'optional')
-        remove_optional_scopes = optional_scopes.keys() - @property_flush[:optional_client_scopes]
+        remove_optional_scopes = optional_scopes.keys - @property_flush[:optional_client_scopes]
         begin
           remove_optional_scopes.each do |s|
             scope_id = optional_scopes[s]
-            output = kcadm('delete', "realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}")
+            kcadm('delete', "realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}")
           end
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm delete realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}: #{e.message}"
         end
       end
       if @property_flush[:default_client_scopes]
         default_scopes = default_scopes ||= get_client_scopes(resource[:name], 'default')
-        add_default_scopes = @property_flush[:default_client_scopes] - default_scopes.keys()
+        add_default_scopes = @property_flush[:default_client_scopes] - default_scopes.keys
         begin
           add_default_scopes.each do |s|
             scope_id = default_scopes[s]
-            output = kcadm('update', "realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}")
+            kcadm('update', "realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}")
           end
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update realms/#{resource[:name]}/default-default-client-scopes/#{scope_id}: #{e.message}"
         end
       end
       if @property_flush[:optional_client_scopes]
         optional_scopes = optional_scopes ||= get_client_scopes(resource[:name], 'optional')
-        add_optional_scopes = @property_flush[:optional_client_scopes] - optional_scopes.keys()
+        add_optional_scopes = @property_flush[:optional_client_scopes] - optional_scopes.keys
         begin
           add_optional_scopes.each do |s|
             scope_id = optional_scopes[s]
-            output = kcadm('update', "realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}")
+            kcadm('update', "realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}")
           end
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}: #{e.message}"
         end
       end
-      if ! events_config.empty?
+      unless events_config.empty?
         events_config_t = Tempfile.new('keycloak_events_config')
         events_config_t.write(JSON.pretty_generate(events_config))
         events_config_t.close
         Puppet.debug(IO.read(events_config_t.path))
         begin
           kcadm('update', 'events/config', resource[:name], events_config_t.path)
-        rescue Exception => e
+        rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update events config failed\nError message: #{e.message}"
         end
       end
@@ -280,5 +280,4 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, :parent => Puppet::Provider::
     # resource` will show the correct values after changes have been made).
     @property_hash = resource.to_hash
   end
-
 end

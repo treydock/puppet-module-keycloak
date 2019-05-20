@@ -2,8 +2,8 @@ require 'spec_helper_acceptance'
 
 describe 'keycloak::client-template define:' do
   context 'creates client-template' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -14,11 +14,11 @@ describe 'keycloak::client-template define:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have created a client template' do
+    it 'has created a client template' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients -r test' do
         data = JSON.parse(stdout)
         expect(data['name']).to eq('openid-connect-clients')
@@ -26,7 +26,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper email' do
+    it 'has created protocol mapper email' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'email' }[0]
@@ -35,7 +35,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper username' do
+    it 'has created protocol mapper username' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
@@ -44,7 +44,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper full name' do
+    it 'has created protocol mapper full name' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'full name' }[0]
@@ -53,7 +53,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper family name' do
+    it 'has created protocol mapper family name' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'family name' }[0]
@@ -62,7 +62,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper given name' do
+    it 'has created protocol mapper given name' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'given name' }[0]
@@ -73,8 +73,8 @@ describe 'keycloak::client-template define:' do
   end
 
   context 'creates saml client-template' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
@@ -86,11 +86,11 @@ describe 'keycloak::client-template define:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
-    it 'should have created a client template' do
+    it 'has created a client template' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients -r test' do
         data = JSON.parse(stdout)
         expect(data['name']).to eq('saml-clients')
@@ -98,7 +98,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper username' do
+    it 'has created protocol mapper username' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
@@ -110,7 +110,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper X500 email' do
+    it 'has created protocol mapper X500 email' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'X500 email' }[0]
@@ -122,7 +122,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper X500 givenName' do
+    it 'has created protocol mapper X500 givenName' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'X500 givenName' }[0]
@@ -134,7 +134,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper X500 surname' do
+    it 'has created protocol mapper X500 surname' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'X500 surname' }[0]
@@ -146,7 +146,7 @@ describe 'keycloak::client-template define:' do
       end
     end
 
-    it 'should have created protocol mapper role list' do
+    it 'has created protocol mapper role list' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'role list' }[0]

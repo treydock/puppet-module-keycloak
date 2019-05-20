@@ -14,11 +14,11 @@ Manage Keycloak LDAP attribute mappers
   DESC
 
   extend PuppetX::Keycloak::Type
-  add_autorequires()
+  add_autorequires
 
   ensurable
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'The LDAP mapper name'
   end
 
@@ -40,11 +40,11 @@ Manage Keycloak LDAP attribute mappers
     munge { |v| v }
   end
 
-  newparam(:realm, :namevar => true) do
+  newparam(:realm, namevar: true) do
     desc 'realm'
   end
 
-  newparam(:ldap, :namevar => true) do
+  newparam(:ldap, namevar: true) do
     desc 'parentId'
   end
 
@@ -67,7 +67,7 @@ Manage Keycloak LDAP attribute mappers
     end
   end
 
-  newproperty(:always_read_value_from_ldap, :boolean => true) do
+  newproperty(:always_read_value_from_ldap, boolean: true) do
     desc 'always.read.value.from.ldap. Defaults to `true` if `type` is `user-attribute-ldap-mapper`.'
     newvalues(:true, :false)
     defaultto do
@@ -79,14 +79,14 @@ Manage Keycloak LDAP attribute mappers
     end
   end
 
-  newproperty(:read_only, :boolean => true) do
-    desc "read.only"
+  newproperty(:read_only, boolean: true) do
+    desc 'read.only'
     newvalues(:true, :false)
     defaultto :true
   end
 
-  newproperty(:write_only, :boolean => true) do
-    desc "write.only.  Defaults to `false` if `type` is `full-name-ldap-mapper`."
+  newproperty(:write_only, boolean: true) do
+    desc 'write.only.  Defaults to `false` if `type` is `full-name-ldap-mapper`.'
     newvalues(:true, :false)
     defaultto do
       if @resource[:type] == 'full-name-ldap-mapper'
@@ -100,10 +100,9 @@ Manage Keycloak LDAP attribute mappers
   autorequire(:keycloak_ldap_user_provider) do
     requires = []
     catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Keycloak_ldap_user_provider'
-        if "#{resource[:resource_name]}-#{resource[:realm]}" == self[:ldap]
-          requires << resource.name
-        end
+      next unless resource.class.to_s == 'Puppet::Type::Keycloak_ldap_user_provider'
+      if self[:ldap] == "#{resource[:resource_name]}-#{resource[:realm]}"
+        requires << resource.name
       end
     end
     requires
@@ -112,7 +111,7 @@ Manage Keycloak LDAP attribute mappers
   def self.title_patterns
     [
       [
-        /^((.+) for (\S+) on (\S+))$/,
+        %r{^((.+) for (\S+) on (\S+))$},
         [
           [:name],
           [:resource_name],
@@ -121,7 +120,7 @@ Manage Keycloak LDAP attribute mappers
         ],
       ],
       [
-        /(.*)/,
+        %r{(.*)},
         [
           [:name],
         ],
@@ -136,7 +135,7 @@ Manage Keycloak LDAP attribute mappers
     ]
     required_properties.each do |property|
       if self[property].nil?
-        fail "You must provide a value for #{property}"
+        raise Puppet::Error, "You must provide a value for #{property}"
       end
     end
   end

@@ -11,11 +11,11 @@ Manage Keycloak SSSD user providers
   DESC
 
   extend PuppetX::Keycloak::Type
-  add_autorequires()
+  add_autorequires
 
   ensurable
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'The SSSD user provider name'
   end
 
@@ -33,11 +33,11 @@ Manage Keycloak SSSD user providers
     end
   end
 
-  newparam(:realm, :namevar => true) do
+  newparam(:realm, namevar: true) do
     desc 'parentId'
   end
 
-  newproperty(:enabled, :boolean => true) do
+  newproperty(:enabled, boolean: true) do
     desc 'enabled'
     newvalues(:true, :false)
     defaultto :true
@@ -73,7 +73,7 @@ Manage Keycloak SSSD user providers
   def self.title_patterns
     [
       [
-        /^((\S+) on (\S+))$/,
+        %r{^((\S+) on (\S+))$},
         [
           [:name],
           [:resource_name],
@@ -81,7 +81,7 @@ Manage Keycloak SSSD user providers
         ],
       ],
       [
-        /(.*)/,
+        %r{(.*)},
         [
           [:name],
         ],
@@ -90,29 +90,29 @@ Manage Keycloak SSSD user providers
   end
 
   validate do
-    if ['EVICT_DAILY','EVICT_WEEKLY'].include?(self[:cache_policy].to_s) && self[:eviction_hour].nil?
-      self.fail "cache_policy EVICT_DAILY and EVICT_WEEKLY require eviction_hour"
+    if ['EVICT_DAILY', 'EVICT_WEEKLY'].include?(self[:cache_policy].to_s) && self[:eviction_hour].nil?
+      raise Puppet::Error, 'cache_policy EVICT_DAILY and EVICT_WEEKLY require eviction_hour'
     end
-    if ['EVICT_DAILY','EVICT_WEEKLY'].include?(self[:cache_policy].to_s) && self[:eviction_minute].nil?
-      self.fail "cache_policy EVICT_DAILY and EVICT_WEEKLY require eviction_minute"
+    if ['EVICT_DAILY', 'EVICT_WEEKLY'].include?(self[:cache_policy].to_s) && self[:eviction_minute].nil?
+      raise Puppet::Error, 'cache_policy EVICT_DAILY and EVICT_WEEKLY require eviction_minute'
     end
-    if ! ['EVICT_DAILY','EVICT_WEEKLY'].include?(self[:cache_policy].to_s) && ! self[:eviction_hour].nil?
-      self.fail "eviction_hour is only valid for cache_policy EVICT_DAILY and EVICT_WEEKLY"
+    if !['EVICT_DAILY', 'EVICT_WEEKLY'].include?(self[:cache_policy].to_s) && !self[:eviction_hour].nil?
+      raise Puppet::Error, 'eviction_hour is only valid for cache_policy EVICT_DAILY and EVICT_WEEKLY'
     end
-    if ! ['EVICT_DAILY','EVICT_WEEKLY'].include?(self[:cache_policy].to_s) && ! self[:eviction_minute].nil?
-      self.fail "eviction_minute is only valid for cache_policy EVICT_DAILY and EVICT_WEEKLY"
+    if !['EVICT_DAILY', 'EVICT_WEEKLY'].include?(self[:cache_policy].to_s) && !self[:eviction_minute].nil?
+      raise Puppet::Error, 'eviction_minute is only valid for cache_policy EVICT_DAILY and EVICT_WEEKLY'
     end
     if self[:cache_policy].to_s == 'EVICT_WEEKLY' && self[:eviction_day].nil?
-      self.fail "cache_policy EVICT_WEEKLY requires eviction_hour"
+      raise Puppet::Error, 'cache_policy EVICT_WEEKLY requires eviction_hour'
     end
-    if self[:cache_policy].to_s != 'EVICT_WEEKLY' && ! self[:eviction_day].nil?
-      self.fail "eviction_day is only valid with cache_policy EVICT_WEEKLY"
+    if self[:cache_policy].to_s != 'EVICT_WEEKLY' && !self[:eviction_day].nil?
+      raise Puppet::Error, 'eviction_day is only valid with cache_policy EVICT_WEEKLY'
     end
     if self[:cache_policy].to_s == 'MAX_LIFESPAN' && self[:max_lifespan].nil?
-      self.fail "cache_policy MAX_LIFESPAN requires max_lifespan"
+      raise Puppet::Error, 'cache_policy MAX_LIFESPAN requires max_lifespan'
     end
-    if self[:cache_policy].to_s != 'MAX_LIFESPAN' && ! self[:max_lifespan].nil?
-      self.fail "max_lifespan is only valid with cache_policy MAX_LIFESPAN"
+    if self[:cache_policy].to_s != 'MAX_LIFESPAN' && !self[:max_lifespan].nil?
+      raise Puppet::Error, 'max_lifespan is only valid with cache_policy MAX_LIFESPAN'
     end
   end
 end

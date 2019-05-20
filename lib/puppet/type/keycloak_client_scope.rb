@@ -11,15 +11,15 @@ Manage Keycloak client scopes
   DESC
 
   extend PuppetX::Keycloak::Type
-  add_autorequires()
+  add_autorequires
 
   ensurable
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'The client scope name'
   end
 
-  newparam(:resource_name, :namevar => true) do
+  newparam(:resource_name, namevar: true) do
     desc 'The client scope name. Defaults to `name`.'
     defaultto do
       @resource[:name]
@@ -33,7 +33,7 @@ Manage Keycloak client scopes
     end
   end
 
-  newparam(:realm, :namevar => true) do
+  newparam(:realm, namevar: true) do
     desc 'realm'
   end
 
@@ -45,14 +45,14 @@ Manage Keycloak client scopes
   end
 
   newproperty(:consent_screen_text) do
-    desc "consent.screen.text"
+    desc 'consent.screen.text'
     defaultto do
       "${#{@resource[:resource_name]}ScopeConsentText}"
     end
   end
 
-  newproperty(:display_on_consent_screen, :boolean => true) do
-    desc "display.on.consent.screen"
+  newproperty(:display_on_consent_screen, boolean: true) do
+    desc 'display.on.consent.screen'
     newvalues(:true, :false)
     defaultto :true
   end
@@ -60,7 +60,7 @@ Manage Keycloak client scopes
   def self.title_patterns
     [
       [
-        /^((\S+) on (\S+))$/,
+        %r{^((\S+) on (\S+))$},
         [
           [:name],
           [:resource_name],
@@ -68,7 +68,7 @@ Manage Keycloak client scopes
         ],
       ],
       [
-        /(.*)/,
+        %r{(.*)},
         [
           [:name],
         ],
