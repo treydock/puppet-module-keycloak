@@ -5,7 +5,6 @@
 #
 # @param version
 #   Version of Keycloak to install and manage.
-#   Default is `4.2.1.Final`.
 # @param package_url
 #   URL of the Keycloak download.
 #   Default is based on version.
@@ -145,7 +144,7 @@
 #   Path to the file with environment variables for the systemd service
 #
 class keycloak (
-  String $version               = '4.2.1.Final',
+  String $version               = '6.0.1',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Stdlib::Absolutepath $install_dir = '/opt',
