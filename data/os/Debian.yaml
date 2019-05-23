@@ -8,4 +8,3 @@ keycloak::libunix_dbus_java_build_dependencies:
   - 'make'
 keycloak::libunix_dbus_java_libdir: '/usr/lib'
 keycloak::jna_package_name: 'libjna-java'
-keycloak::postgresql_jar_source: '/usr/share/java/postgresql.jar'

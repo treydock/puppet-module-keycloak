@@ -1,11 +1,11 @@
 # @summary Manage postgresql datasource
 #
 # @api private
-class keycloak::datasource::postgresql (
-  $module_source = 'keycloak/database/postgresql/module.xml.erb',
-) {
+class keycloak::datasource::postgresql {
   assert_private()
 
+  $jar_source = pick($keycloak::datasource_jar_source, $keycloak::postgresql_jar_source)
+  $module_source = pick($keycloak::datasource_module_source, 'puppet:///modules/keycloak/database/postgresql/module.xml')
   $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/postgresql/main"
 
   include ::postgresql::lib::java
@@ -25,7 +25,7 @@ class keycloak::datasource::postgresql (
 
   file { "${module_dir}/postgresql-jdbc.jar":
     ensure  => 'file',
-    source  => $keycloak::postgresql_jar_source,
+    source  => $jar_source,
     owner   => $keycloak::user,
     group   => $keycloak::group,
     mode    => '0644',
@@ -34,7 +34,7 @@ class keycloak::datasource::postgresql (
 
   file { "${$module_dir}/module.xml":
     ensure => 'file',
-    source => 'puppet:///modules/keycloak/database/postgresql/module.xml',
+    source => $module_source,
     owner  => $keycloak::user,
     group  => $keycloak::group,
     mode   => '0644',

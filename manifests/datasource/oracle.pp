@@ -2,13 +2,10 @@
 #
 # @api private
 #
-class keycloak::datasource::oracle (
-  $jar_file      = $keycloak::oracle_jar_file,
-  $jar_source    = $keycloak::oracle_jar_source,
-  $module_source = 'puppet:///modules/keycloak/database/oracle/module.xml',
-) {
+class keycloak::datasource::oracle {
   assert_private()
 
+  $module_source = pick($keycloak::datasource_module_source, 'puppet:///modules/keycloak/database/oracle/module.xml')
   $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/oracle/main"
 
   exec { "mkdir -p ${module_dir}":
@@ -24,9 +21,9 @@ class keycloak::datasource::oracle (
     mode   => '0755',
   }
 
-  file { "${module_dir}/${jar_file}":
+  file { "${module_dir}/oracle.jar":
     ensure => 'file',
-    source => $jar_source,
+    source => $keycloak::datasource_jar_source,
     owner  => $keycloak::user,
     group  => $keycloak::group,
     mode   => '0644',

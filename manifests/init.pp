@@ -78,6 +78,12 @@
 # @param datasource_password
 #   Datasource user password.
 #   Default is `sa`.
+# @param datasource_jar_source
+#   Source for datasource JDBC driver - could be puppet link or local file on the node.
+#   Default is dependent on value for `datasource_driver`.
+#   This parameter is required if `datasource_driver` is `oracle`.
+# @param datasource_module_source
+#   Source for datasource module.xml. Default depends on `datasource_driver`.
 # @param proxy_https
 #   Boolean that sets if HTTPS proxy should be enabled.
 #   Set to `true` if proxying traffic through Apache.
@@ -112,18 +118,6 @@
 # @param client_templates
 #   Hash that is used to define keycloak::client_template resources.
 #   Default is `{}`.
-# @param oracle_jar_file
-#   Oracle JDBC driver to use. Only use if $datasource_driver is set to oracle
-#   Default is not defined
-# @param oracle_jar_source
-#   Source for Oracle JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to oracle
-#   Default is not set
-# @param postgresql_jar_file
-#   PostgresQL JDBC driver to use. Only use if $datasource_driver is set to postgresql
-#   Default is not defined
-# @param postgresql_jar_source
-#   Source for PostgresQL JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to postgresql
-#   Default is not set
 # @param with_sssd_support
 #   Boolean that determines if SSSD user provider support should be available
 # @param libunix_dbus_java_source
@@ -173,6 +167,8 @@ class keycloak (
   String $datasource_dbname = 'keycloak',
   String $datasource_username = 'sa',
   String $datasource_password = 'sa',
+  Optional[String] $datasource_jar_source = undef,
+  Optional[String] $datasource_module_source = undef,
   Boolean $proxy_https = false,
   Boolean $truststore = false,
   Hash $truststore_hosts = {},
@@ -184,10 +180,6 @@ class keycloak (
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
   Hash $client_templates = {},
-  Optional[String] $oracle_jar_file = undef,
-  Optional[String] $oracle_jar_source = undef,
-  Optional[String] $postgresql_jar_file = undef,
-  Optional[String] $postgresql_jar_source = undef,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
     $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz',
@@ -228,8 +220,22 @@ class keycloak (
     default: {}
   }
 
-  if ($datasource_driver == 'oracle') and (($oracle_jar_file == undef) or ($oracle_jar_source == undef)) {
-    fail('Using Oracle RDBMS requires definition of jar_file and jar_source for Oracle JDBC driver. Refer to module documentation')
+  if ($datasource_driver == 'oracle') and ($datasource_jar_source == undef) {
+    fail('Using Oracle RDBMS requires definition datasource_jar_source for Oracle JDBC driver. Refer to module documentation')
+  }
+
+  case $facts['os']['family'] {
+    'RedHat': {
+      $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
+      $postgresql_jar_source = '/usr/share/java/postgresql-jdbc.jar'
+    }
+    'Debian': {
+      $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
+      $postgresql_jar_source = '/usr/share/java/postgresql.jar'
+    }
+    default: {
+      # do nothing
+    }
   }
 
   $install_base = "${keycloak::install_dir}/keycloak-${keycloak::version}"

@@ -5,11 +5,11 @@
 # @param jar_source
 #   Path to MySQL connector jar file.
 #
-class keycloak::datasource::mysql (
-  $jar_source = '/usr/share/java/mysql-connector-java.jar',
-) {
+class keycloak::datasource::mysql {
   assert_private()
 
+  $jar_source = pick($keycloak::datasource_jar_source, $keycloak::mysql_jar_source)
+  $module_source = pick($keycloak::datasource_module_source, 'puppet:///modules/keycloak/database/mysql/module.xml')
   $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/com/mysql/jdbc/main"
 
   include ::mysql::bindings
@@ -37,7 +37,7 @@ class keycloak::datasource::mysql (
   }
   file { "${$module_dir}/module.xml":
     ensure => 'file',
-    source => 'puppet:///modules/keycloak/database/mysql/module.xml',
+    source => $module_source,
     owner  => $keycloak::user,
     group  => $keycloak::group,
     mode   => '0644',
