@@ -6,10 +6,6 @@ class keycloak::datasource::postgresql (
 ) {
   assert_private()
 
-  $jar_source = pick($keycloak::postgresql_jar_source, $keycloak::params::default_postgresql_jar_source)
-  $_default_jar_file = split($jar_source, '/')[-1]
-  $jar_file = pick($keycloak::postgresql_jar_file, $_default_jar_file)
-
   $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/postgresql/main"
 
   include ::postgresql::lib::java
@@ -29,7 +25,7 @@ class keycloak::datasource::postgresql (
 
   file { "${module_dir}/postgresql-jdbc.jar":
     ensure  => 'file',
-    source  => $jar_source,
+    source  => $keycloak::postgresql_jar_source,
     owner   => $keycloak::user,
     group   => $keycloak::group,
     mode    => '0644',
