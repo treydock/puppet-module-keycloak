@@ -158,7 +158,7 @@ class { &#39;keycloak&#39;:
 </code></pre>
 
 <p>The following example can be used to configure keycloak with a local
-PostgreSQL server. Note that the PostgreSQL driver has to passed through.</p>
+PostgreSQL server.</p>
 
 <pre class="code ruby"><code class="ruby">include postgresql::server
 class { &#39;keycloak&#39;:
@@ -168,8 +168,6 @@ class { &#39;keycloak&#39;:
     datasource_dbname     =&gt; &#39;keycloak&#39;,
     datasource_username   =&gt; &#39;keycloak&#39;,
     datasource_password   =&gt; &#39;foobar&#39;,
-    postgresql_jar_file   =&gt; &#39;postgresql-42.2.5.jar&#39;,
-    postgresql_jar_source =&gt; &#39;puppet:///modules/custom_module/drivers/postgresql-42.2.5.jar&#39;
 }
 </code></pre>
 

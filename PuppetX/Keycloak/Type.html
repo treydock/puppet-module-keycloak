@@ -83,7 +83,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Module for shared type configs</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -144,7 +155,6 @@
       <pre class="lines">
 
 
-4
 5
 6
 7
@@ -164,10 +174,11 @@
 21
 22
 23
-24</pre>
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppet_x/keycloak/type.rb', line 4</span>
+      <pre class="code"><span class="info file"># File 'lib/puppet_x/keycloak/type.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_autorequires'>add_autorequires</span><span class='lparen'>(</span><span class='id identifier rubyid_realm'>realm</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_autorequire'>autorequire</span><span class='lparen'>(</span><span class='symbol'>:keycloak_conn_validator</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -181,12 +192,12 @@
   <span class='kw'>end</span>
 
   <span class='id identifier rubyid_autorequire'>autorequire</span><span class='lparen'>(</span><span class='symbol'>:file</span><span class='rparen'>)</span> <span class='kw'>do</span>
-    <span class='lbracket'>[</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>kcadm-wrapper.sh</span><span class='tstring_end'>&#39;</span></span> <span class='rbracket'>]</span>
+    <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>kcadm-wrapper.sh</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
   <span class='kw'>end</span>
 
-  <span class='kw'>if</span> <span class='id identifier rubyid_realm'>realm</span>
-    <span class='id identifier rubyid_autorequire'>autorequire</span><span class='lparen'>(</span><span class='symbol'>:keycloak_realm</span><span class='rparen'>)</span> <span class='kw'>do</span>
-      <span class='lbracket'>[</span> <span class='kw'>self</span><span class='lbracket'>[</span><span class='symbol'>:realm</span><span class='rbracket'>]</span> <span class='rbracket'>]</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_realm'>realm</span> <span class='comment'># rubocop:disable Style/GuardClause
+</span>    <span class='id identifier rubyid_autorequire'>autorequire</span><span class='lparen'>(</span><span class='symbol'>:keycloak_realm</span><span class='rparen'>)</span> <span class='kw'>do</span>
+      <span class='lbracket'>[</span><span class='kw'>self</span><span class='lbracket'>[</span><span class='symbol'>:realm</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>

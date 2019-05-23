@@ -37,7 +37,7 @@
         <div id="menu">
   
     <a href="../../_index.html">Index (K)</a> &raquo;
-    <span class='title'><span class='object_link'><a href="../../Puppet.html" title="Puppet (module)">Puppet</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Util.html" title="Puppet::Util (module)">Util</a></span></span>
+    <span class='title'>Puppet</span> &raquo; <span class='title'>Util</span>
      &raquo; 
     <span class="title">KeycloakValidator</span>
   
@@ -274,7 +274,7 @@ server.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(keycloak_server, keycloak_port, use_ssl = false, test_path = &quot;/auth/admin/serverinfo&quot;)  &#x21d2; KeycloakValidator </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(keycloak_server, keycloak_port, use_ssl = false, test_path = &#39;/auth/admin/serverinfo&#39;)  &#x21d2; KeycloakValidator </a>
     
 
     
@@ -306,7 +306,7 @@ server.</p>
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(keycloak_server, keycloak_port, use_ssl = false, test_path = &quot;/auth/admin/serverinfo&quot;)  &#x21d2; <tt><span class='object_link'><a href="" title="Puppet::Util::KeycloakValidator (class)">KeycloakValidator</a></span></tt> 
+    #<strong>initialize</strong>(keycloak_server, keycloak_port, use_ssl = false, test_path = &#39;/auth/admin/serverinfo&#39;)  &#x21d2; <tt><span class='object_link'><a href="" title="Puppet::Util::KeycloakValidator (class)">KeycloakValidator</a></span></tt> 
   
 
   
@@ -329,17 +329,17 @@ server.</p>
       <pre class="lines">
 
 
+10
+11
 12
 13
 14
-15
-16
-17</pre>
+15</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 10</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='comma'>,</span> <span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='comma'>,</span> <span class='id identifier rubyid_use_ssl'>use_ssl</span><span class='op'>=</span><span class='kw'>false</span><span class='comma'>,</span> <span class='id identifier rubyid_test_path'>test_path</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/auth/admin/serverinfo</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='comma'>,</span> <span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='comma'>,</span> <span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>=</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='id identifier rubyid_test_path'>test_path</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/auth/admin/serverinfo</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='ivar'>@keycloak_server</span> <span class='op'>=</span> <span class='id identifier rubyid_keycloak_server'>keycloak_server</span>
   <span class='ivar'>@keycloak_port</span>   <span class='op'>=</span> <span class='id identifier rubyid_keycloak_port'>keycloak_port</span>
   <span class='ivar'>@use_ssl</span>         <span class='op'>=</span> <span class='id identifier rubyid_use_ssl'>use_ssl</span>
@@ -383,12 +383,12 @@ server.</p>
       <pre class="lines">
 
 
-8
-9
-10</pre>
+6
+7
+8</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 6</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_keycloak_port'>keycloak_port</span>
   <span class='ivar'>@keycloak_port</span>
@@ -426,12 +426,12 @@ server.</p>
       <pre class="lines">
 
 
-7
-8
-9</pre>
+5
+6
+7</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 5</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_keycloak_server'>keycloak_server</span>
   <span class='ivar'>@keycloak_server</span>
@@ -469,12 +469,12 @@ server.</p>
       <pre class="lines">
 
 
-10
-11
-12</pre>
+8
+9
+10</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_test_path'>test_path</span>
   <span class='ivar'>@test_path</span>
@@ -512,12 +512,12 @@ server.</p>
       <pre class="lines">
 
 
-9
-10
-11</pre>
+7
+8
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_use_ssl'>use_ssl</span>
   <span class='ivar'>@use_ssl</span>
@@ -580,6 +580,8 @@ multiple times for retry attempts.</p>
       <pre class="lines">
 
 
+22
+23
 24
 25
 26
@@ -597,12 +599,10 @@ multiple times for retry attempts.</p>
 38
 39
 40
-41
-42
-43</pre>
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 24</span>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_attempt_connection'>attempt_connection</span>
   <span class='comment'># All that we care about is that we are able to connect successfully via
@@ -612,16 +612,16 @@ multiple times for retry attempts.</p>
   <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>=</span> <span class='ivar'>@use_ssl</span>
   <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_verify_mode'>verify_mode</span> <span class='op'>=</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>SSL</span><span class='op'>::</span><span class='const'>VERIFY_NONE</span>
   <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='op'>::</span><span class='const'>Get</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@test_path</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_add_field'>add_field</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_add_field'>add_field</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
 
-  <span class='kw'>unless</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPSuccess</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPUnauthorized</span><span class='rparen'>)</span>
-    <span class='const'><span class='object_link'><a href="../../Puppet.html" title="Puppet (module)">Puppet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_notice'>notice</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to connect to keycloak server (http</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>s</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='embexpr_end'>}</span><span class='tstring_content'>): [</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='embexpr_end'>}</span><span class='tstring_content'>] </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_msg'>msg</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPSuccess</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPUnauthorized</span><span class='rparen'>)</span>
+    <span class='const'>Puppet</span><span class='period'>.</span><span class='id identifier rubyid_notice'>notice</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to connect to keycloak server (http</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>s</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='embexpr_end'>}</span><span class='tstring_content'>): [</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='embexpr_end'>}</span><span class='tstring_content'>] </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_msg'>msg</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
     <span class='kw'>return</span> <span class='kw'>false</span>
   <span class='kw'>end</span>
   <span class='kw'>return</span> <span class='kw'>true</span>
-<span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
-  <span class='const'><span class='object_link'><a href="../../Puppet.html" title="Puppet (module)">Puppet</a></span></span><span class='period'>.</span><span class='id identifier rubyid_notice'>notice</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to connect to keycloak server (http</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>s</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='embexpr_end'>}</span><span class='tstring_content'>): </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span> <span class='comment'># rubocop:disable Lint/RescueException
+</span>  <span class='const'>Puppet</span><span class='period'>.</span><span class='id identifier rubyid_notice'>notice</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to connect to keycloak server (http</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>s</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='embexpr_end'>}</span><span class='tstring_content'>): </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
   <span class='kw'>return</span> <span class='kw'>false</span>
 <span class='kw'>end</span></pre>
     </td>

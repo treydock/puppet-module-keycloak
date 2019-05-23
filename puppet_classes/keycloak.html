@@ -1132,10 +1132,7 @@ by this module</p>
 259
 260
 261
-262
-263
-264
-265</pre>
+262</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 147</span>
@@ -1220,9 +1217,6 @@ class keycloak (
 
   if ($datasource_driver == &#39;oracle&#39;) and (($oracle_jar_file == undef) or ($oracle_jar_source == undef)) {
     fail(&#39;Using Oracle RDBMS requires definition of jar_file and jar_source for Oracle JDBC driver. Refer to module documentation&#39;)
-  }
-  if ($datasource_driver == &#39;postgresql&#39;) and (($postgresql_jar_file == undef) or ($postgresql_jar_source == undef)) {
-    fail(&#39;Using PostgresQL RDBMS requires definition of jar_file and jar_source for PostgresQL JDBC driver. Refer to module documentation&#39;)
   }
 
   $install_base = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;
