@@ -34,6 +34,8 @@
 # @param user
 #   Keycloak user name.
 #   Default is `keycloak`.
+# @param user_shell
+#   Keycloak user shell.
 # @param group
 #   Keycloak user group name.
 #   Default is `keycloak`.
@@ -149,15 +151,16 @@ class keycloak (
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Stdlib::Absolutepath $install_dir = '/opt',
-  String $service_name          = $keycloak::params::service_name,
+  String $service_name          = 'keycloak',
   String $service_ensure        = 'running',
   Boolean $service_enable       = true,
-  Boolean $service_hasstatus    = $keycloak::params::service_hasstatus,
-  Boolean $service_hasrestart   = $keycloak::params::service_hasrestart,
+  Boolean $service_hasstatus    = true,
+  Boolean $service_hasrestart   = true,
   Optional[Variant[String, Array]]
     $service_java_opts = undef,
   Boolean $manage_user = true,
   String $user                  = 'keycloak',
+  Stdlib::Absolutepath $user_shell = '/sbin/nologin',
   String $group                 = 'keycloak',
   Optional[Integer] $user_uid   = undef,
   Optional[Integer] $group_gid  = undef,
@@ -188,16 +191,20 @@ class keycloak (
   Optional[String] $postgresql_jar_source = undef,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
-    $libunix_dbus_java_source = $keycloak::params::libunix_dbus_java_source,
+    $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz',
   Boolean $install_libunix_dbus_java_build_dependencies = true,
-  Array $libunix_dbus_java_build_dependencies = $keycloak::params::libunix_dbus_java_build_dependencies,
-  Stdlib::Absolutepath $libunix_dbus_java_libdir = $keycloak::params::libunix_dbus_java_libdir,
-  String $jna_package_name = $keycloak::params::jna_package_name,
+  Array $libunix_dbus_java_build_dependencies = [],
+  Stdlib::Absolutepath $libunix_dbus_java_libdir = '/usr/lib64',
+  String $jna_package_name = 'jna',
   Boolean $manage_sssd_config = true,
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
-) inherits keycloak::params {
+) {
+
+  if ! $facts['os']['family'] in ['RedHat','Debian'] {
+    fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
+  }
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
   case $datasource_driver {

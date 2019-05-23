@@ -1,0 +1,12 @@
+---
+keycloak::user_shell: '/sbin/nologin'
+keycloak::libunix_dbus_java_build_dependencies:
+  - 'which'
+  - 'zlib-devel'
+  - 'libtool'
+  - 'automake'
+  - 'autoconf'
+  - 'make'
+keycloak::libunix_dbus_java_libdir: '/usr/lib64'
+keycloak::jna_package_name: 'jna'
+keycloak::postgresql_jar_source: '/usr/share/java/postgresql-jdbc.jar'

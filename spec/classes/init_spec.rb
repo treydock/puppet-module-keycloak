@@ -17,7 +17,6 @@ describe 'keycloak' do
       it { is_expected.to compile.with_all_deps }
 
       it { is_expected.to create_class('keycloak') }
-      it { is_expected.to contain_class('keycloak::params') }
 
       it { is_expected.to contain_class('keycloak::install').that_comes_before('Class[keycloak::config]') }
       it { is_expected.to contain_class('keycloak::config').that_comes_before('Class[keycloak::service]') }
