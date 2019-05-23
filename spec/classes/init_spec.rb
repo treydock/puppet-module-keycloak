@@ -55,6 +55,24 @@ describe 'keycloak' do
         end
       end
 
+      context 'keycloak::datasource::postgresql' do
+        let(:params) { { datasource_driver: 'postgresql' } }
+
+        it { is_expected.to contain_class('keycloak::install').that_comes_before('Class[keycloak::datasource::postgresql]') }
+        it { is_expected.to contain_class('keycloak::datasource::postgresql').that_comes_before('Class[keycloak::config]') }
+
+        it do
+          is_expected.to contain_postgresql__server__db('keycloak').with(user: 'sa',
+                                                                         password: %r{.*})
+        end
+
+        context 'manage_datasource => false' do
+          let(:params) { { datasource_driver: 'postgresql', manage_datasource: false } }
+
+          it { is_expected.not_to contain_postgresql__server__db('keycloak') }
+        end
+      end
+
       context 'keycloak::config' do
         it do
           is_expected.to contain_file('kcadm-wrapper.sh').only_with(

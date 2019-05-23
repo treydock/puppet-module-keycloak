@@ -16,6 +16,7 @@ EOS
 common_yaml = <<-EOS
 ---
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
+postgresql::globals::service_status: 'service postgresql status'
 EOS
 
 create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)

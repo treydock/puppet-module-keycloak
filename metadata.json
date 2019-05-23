@@ -17,6 +17,10 @@
       "version_requirement": ">= 3.0.0 <8.0.0"
     },
     {
+      "name": "puppetlabs/postgresql",
+      "version_requirement": ">= 5.0.0 <7.0.0"
+    },
+    {
       "name": "puppetlabs/java",
       "version_requirement": ">= 2.2.0 <4.0.0"
     },
@@ -67,5 +71,5 @@
   ],
   "pdk-version": "1.10.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g6a0555c"
+  "template-ref": "heads/master-0-g89da8b1"
 }

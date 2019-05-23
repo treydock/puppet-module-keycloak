@@ -2,13 +2,17 @@
 #
 # @api private
 class keycloak::datasource::postgresql (
-  $jar_file      = $keycloak::postgresql_jar_file,
-  $jar_source    = $keycloak::postgresql_jar_source,
   $module_source = 'keycloak/database/postgresql/module.xml.erb',
 ) {
   assert_private()
 
+  $jar_source = pick($keycloak::postgresql_jar_source, $keycloak::params::default_postgresql_jar_source)
+  $_default_jar_file = split($jar_source, '/')[-1]
+  $jar_file = pick($keycloak::postgresql_jar_file, $_default_jar_file)
+
   $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/postgresql/main"
+
+  include ::postgresql::lib::java
 
   exec { "mkdir -p ${module_dir}":
     path    => '/usr/bin:/bin',
@@ -23,19 +27,28 @@ class keycloak::datasource::postgresql (
     mode   => '0755',
   }
 
-  file { "${module_dir}/${jar_file}":
+  file { "${module_dir}/postgresql-jdbc.jar":
+    ensure  => 'file',
+    source  => $jar_source,
+    owner   => $keycloak::user,
+    group   => $keycloak::group,
+    mode    => '0644',
+    require => Class['postgresql::lib::java'],
+  }
+
+  file { "${$module_dir}/module.xml":
     ensure => 'file',
-    source => $jar_source,
+    source => 'puppet:///modules/keycloak/database/postgresql/module.xml',
     owner  => $keycloak::user,
     group  => $keycloak::group,
     mode   => '0644',
   }
 
-  file { "${$module_dir}/module.xml":
-    ensure  => 'file',
-    content => template($module_source),
-    owner   => $keycloak::user,
-    group   => $keycloak::group,
-    mode    => '0644',
+  if $keycloak::manage_datasource {
+    include ::postgresql::server
+    postgresql::server::db { $keycloak::datasource_dbname:
+      user     => $keycloak::datasource_username,
+      password => postgresql_password($keycloak::datasource_username, $keycloak::datasource_password),
+    }
   }
 }

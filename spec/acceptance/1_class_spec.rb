@@ -48,6 +48,33 @@ describe 'keycloak class:' do
     end
   end
 
+  context 'default with postgresql datasource' do
+    it 'runs successfully' do
+      pp = <<-EOS
+      include postgresql::server
+      class { 'keycloak':
+        datasource_driver => 'postgresql',
+      }
+      EOS
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    describe service('keycloak') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
+    describe port(8080) do
+      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
+    end
+
+    describe port(9990) do
+      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+    end
+  end
+
   context 'default with proxy_https' do
     it 'runs successfully' do
       pp = <<-EOS
