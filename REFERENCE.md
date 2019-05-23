@@ -10,8 +10,6 @@ _Public Classes_
 * [`keycloak`](#keycloak): Manage Keycloak
 * [`keycloak::config`](#keycloakconfig): Private class.
 * [`keycloak::datasource::h2`](#keycloakdatasourceh2): Private class.
-* [`keycloak::datasource::oracle`](#keycloakdatasourceoracle): Private class.
-* [`keycloak::datasource::postgresql`](#keycloakdatasourcepostgresql): Private class.
 * [`keycloak::install`](#keycloakinstall): Private class.
 * [`keycloak::params`](#keycloakparams): Private class.
 * [`keycloak::service`](#keycloakservice): Private class.
@@ -20,6 +18,8 @@ _Public Classes_
 _Private Classes_
 
 * `keycloak::datasource::mysql`: Manage MySQL datasource
+* `keycloak::datasource::oracle`: Manage Oracle datasource
+* `keycloak::datasource::postgresql`: Manage postgresql datasource
 
 **Defined types**
 
@@ -499,70 +499,6 @@ Private class.
 
 Private class.
 
-### keycloak::datasource::oracle
-
-Private class.
-
-#### Parameters
-
-The following parameters are available in the `keycloak::datasource::oracle` class.
-
-##### `jar_file`
-
-Data type: `Any`
-
-
-
-Default value: $keycloak::oracle_jar_file
-
-##### `jar_source`
-
-Data type: `Any`
-
-
-
-Default value: $keycloak::oracle_jar_source
-
-##### `module_source`
-
-Data type: `Any`
-
-
-
-Default value: 'puppet:///modules/keycloak/database/oracle/module.xml'
-
-### keycloak::datasource::postgresql
-
-Private class.
-
-#### Parameters
-
-The following parameters are available in the `keycloak::datasource::postgresql` class.
-
-##### `jar_file`
-
-Data type: `Any`
-
-
-
-Default value: $keycloak::postgresql_jar_file
-
-##### `jar_source`
-
-Data type: `Any`
-
-
-
-Default value: $keycloak::postgresql_jar_source
-
-##### `module_source`
-
-Data type: `Any`
-
-
-
-Default value: 'keycloak/database/postgresql/module.xml.erb'
-
 ### keycloak::install
 
 Private class.
@@ -959,7 +895,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper
 
 protocolMapper.
 
@@ -1332,7 +1268,7 @@ searchScope
 
 ##### `custom_user_search_filter`
 
-Valid values: /.*/, absent
+Valid values: %r{.*}, absent
 
 customUserSearchFilter
 
@@ -1471,7 +1407,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper
 
 protocolMapper.
 
