@@ -1,6 +1,6 @@
 RSpec.configure do |c|
   c.add_setting :keycloak_version
-  c.keycloak_version = (ENV['BEAKER_keycloak_version'] || '4.2.1.Final')
+  c.keycloak_version = (ENV['BEAKER_keycloak_version'] || '6.0.1')
 end
 
 hiera_yaml = <<-EOS
