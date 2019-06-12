@@ -62,11 +62,6 @@
       <div id="content"><h1>Puppet Class: keycloak</h1>
 <div class="box_info">
   
-  <dl>
-    <dt>Inherits:</dt>
-    <dd><span class='object_link'><a href="keycloak_3A_3Aparams.html" title="puppet_classes::keycloak::params (puppet_class)">keycloak::params</a></span></dd>
-  </dl>
-  
   
   <dl>
     <dt>Defined in:</dt>
@@ -107,13 +102,12 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;4.2.1.Final&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;6.0.1&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Version of Keycloak to install and manage. Default is
-<code>4.2.1.Final</code>.</p>
+<p>Version of Keycloak to install and manage.</p>
 </div>
       
     </li>
@@ -163,7 +157,7 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$keycloak::params::service_name</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
       
       
         &mdash;
@@ -217,7 +211,7 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$keycloak::params::service_hasstatus</tt>)</em>
+        <em class="default">(defaults to: <tt>true</tt>)</em>
       
       
         &mdash;
@@ -235,7 +229,7 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$keycloak::params::service_hasrestart</tt>)</em>
+        <em class="default">(defaults to: <tt>true</tt>)</em>
       
       
         &mdash;
@@ -296,6 +290,24 @@ installation</p>
         &mdash;
         <div class='inline'>
 <p>Keycloak user name. Default is <code>keycloak</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_shell</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/sbin/nologin&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak user shell.</p>
 </div>
       
     </li>
@@ -544,6 +556,46 @@ MySQL.</p>
   
     <li>
       
+        <span class='name'>datasource_jar_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Source for datasource JDBC driver - could be puppet link or local file on
+the node. Default is dependent on value for <code>datasource_driver</code>.
+This parameter is required if <code>datasource_driver</code> is
+<code>oracle</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>datasource_module_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Source for datasource module.xml. Default depends on
+<code>datasource_driver</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>proxy_https</span>
       
       
@@ -751,83 +803,6 @@ resources. Default is <code>{}</code>.</p>
   
     <li>
       
-        <span class='name'>oracle_jar_file</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Oracle JDBC driver to use. Only use if $datasource_driver is set to oracle
-Default is not defined</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>oracle_jar_source</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Source for Oracle JDBC driver - could be puppet link or local file on the
-node. Only use if $datasource_driver is set to oracle Default is not set</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>postgresql_jar_file</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>PostgresQL JDBC driver to use. Only use if $datasource_driver is set to
-postgresql Default is not defined</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>postgresql_jar_source</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Source for PostgresQL JDBC driver - could be puppet link or local file on
-the node. Only use if $datasource_driver is set to postgresql Default is
-not set</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>with_sssd_support</span>
       
       
@@ -852,7 +827,7 @@ not set</p>
         <span class='type'>(<tt>Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$keycloak::params::libunix_dbus_java_source</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz&#39;</tt>)</em>
       
       
         &mdash;
@@ -889,7 +864,7 @@ by this module</p>
         <span class='type'>(<tt>Array</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$keycloak::params::libunix_dbus_java_build_dependencies</tt>)</em>
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
       
       
         &mdash;
@@ -907,7 +882,7 @@ by this module</p>
         <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$keycloak::params::libunix_dbus_java_libdir</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;/usr/lib64&#39;</tt>)</em>
       
       
         &mdash;
@@ -925,7 +900,7 @@ by this module</p>
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$keycloak::params::jna_package_name</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;jna&#39;</tt>)</em>
       
       
         &mdash;
@@ -1017,6 +992,11 @@ by this module</p>
         <pre class="lines">
 
 
+142
+143
+144
+145
+146
 147
 148
 149
@@ -1132,25 +1112,38 @@ by this module</p>
 259
 260
 261
-262</pre>
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 147</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 142</span>
 
 class keycloak (
-  String $version               = &#39;4.2.1.Final&#39;,
+  String $version               = &#39;6.0.1&#39;,
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Stdlib::Absolutepath $install_dir = &#39;/opt&#39;,
-  String $service_name          = $keycloak::params::service_name,
+  String $service_name          = &#39;keycloak&#39;,
   String $service_ensure        = &#39;running&#39;,
   Boolean $service_enable       = true,
-  Boolean $service_hasstatus    = $keycloak::params::service_hasstatus,
-  Boolean $service_hasrestart   = $keycloak::params::service_hasrestart,
+  Boolean $service_hasstatus    = true,
+  Boolean $service_hasrestart   = true,
   Optional[Variant[String, Array]]
     $service_java_opts = undef,
   Boolean $manage_user = true,
   String $user                  = &#39;keycloak&#39;,
+  Stdlib::Absolutepath $user_shell = &#39;/sbin/nologin&#39;,
   String $group                 = &#39;keycloak&#39;,
   Optional[Integer] $user_uid   = undef,
   Optional[Integer] $group_gid  = undef,
@@ -1164,6 +1157,8 @@ class keycloak (
   String $datasource_dbname = &#39;keycloak&#39;,
   String $datasource_username = &#39;sa&#39;,
   String $datasource_password = &#39;sa&#39;,
+  Optional[String] $datasource_jar_source = undef,
+  Optional[String] $datasource_module_source = undef,
   Boolean $proxy_https = false,
   Boolean $truststore = false,
   Hash $truststore_hosts = {},
@@ -1175,22 +1170,22 @@ class keycloak (
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
   Hash $client_templates = {},
-  Optional[String] $oracle_jar_file = undef,
-  Optional[String] $oracle_jar_source = undef,
-  Optional[String] $postgresql_jar_file = undef,
-  Optional[String] $postgresql_jar_source = undef,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
-    $libunix_dbus_java_source = $keycloak::params::libunix_dbus_java_source,
+    $libunix_dbus_java_source = &#39;https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz&#39;,
   Boolean $install_libunix_dbus_java_build_dependencies = true,
-  Array $libunix_dbus_java_build_dependencies = $keycloak::params::libunix_dbus_java_build_dependencies,
-  Stdlib::Absolutepath $libunix_dbus_java_libdir = $keycloak::params::libunix_dbus_java_libdir,
-  String $jna_package_name = $keycloak::params::jna_package_name,
+  Array $libunix_dbus_java_build_dependencies = [],
+  Stdlib::Absolutepath $libunix_dbus_java_libdir = &#39;/usr/lib64&#39;,
+  String $jna_package_name = &#39;jna&#39;,
   Boolean $manage_sssd_config = true,
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
-) inherits keycloak::params {
+) {
+
+  if ! $facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;] {
+    fail(&quot;Unsupported osfamily: ${facts[&#39;os&#39;][&#39;family&#39;]}, module ${module_name} only support osfamilies Debian and Redhat&quot;)
+  }
 
   $download_url = pick($package_url, &quot;https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz&quot;)
   case $datasource_driver {
@@ -1215,8 +1210,22 @@ class keycloak (
     default: {}
   }
 
-  if ($datasource_driver == &#39;oracle&#39;) and (($oracle_jar_file == undef) or ($oracle_jar_source == undef)) {
-    fail(&#39;Using Oracle RDBMS requires definition of jar_file and jar_source for Oracle JDBC driver. Refer to module documentation&#39;)
+  if ($datasource_driver == &#39;oracle&#39;) and ($datasource_jar_source == undef) {
+    fail(&#39;Using Oracle RDBMS requires definition datasource_jar_source for Oracle JDBC driver. Refer to module documentation&#39;)
+  }
+
+  case $facts[&#39;os&#39;][&#39;family&#39;] {
+    &#39;RedHat&#39;: {
+      $mysql_jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;
+      $postgresql_jar_source = &#39;/usr/share/java/postgresql-jdbc.jar&#39;
+    }
+    &#39;Debian&#39;: {
+      $mysql_jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;
+      $postgresql_jar_source = &#39;/usr/share/java/postgresql.jar&#39;
+    }
+    default: {
+      # do nothing
+    }
   }
 
   $install_base = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;

@@ -83,24 +83,7 @@
 
 
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
   
-    <li>
-      
-        <span class='name'>module_source</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;keycloak/database/postgresql/module.xml.erb&#39;</tt>)</em>
-      
-      
-    </li>
-  
-</ul>
-
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -155,24 +138,16 @@
 47
 48
 49
-50
-51
-52
-53
-54</pre>
+50</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/datasource/postgresql.pp', line 4</span>
 
-class keycloak::datasource::postgresql (
-  $module_source = &#39;keycloak/database/postgresql/module.xml.erb&#39;,
-) {
+class keycloak::datasource::postgresql {
   assert_private()
 
-  $jar_source = pick($keycloak::postgresql_jar_source, $keycloak::params::default_postgresql_jar_source)
-  $_default_jar_file = split($jar_source, &#39;/&#39;)[-1]
-  $jar_file = pick($keycloak::postgresql_jar_file, $_default_jar_file)
-
+  $jar_source = pick($keycloak::datasource_jar_source, $keycloak::postgresql_jar_source)
+  $module_source = pick($keycloak::datasource_module_source, &#39;puppet:///modules/keycloak/database/postgresql/module.xml&#39;)
   $module_dir = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/postgresql/main&quot;
 
   include ::postgresql::lib::java
@@ -201,7 +176,7 @@ class keycloak::datasource::postgresql (
 
   file { &quot;${$module_dir}/module.xml&quot;:
     ensure =&gt; &#39;file&#39;,
-    source =&gt; &#39;puppet:///modules/keycloak/database/postgresql/module.xml&#39;,
+    source =&gt; $module_source,
     owner  =&gt; $keycloak::user,
     group  =&gt; $keycloak::group,
     mode   =&gt; &#39;0644&#39;,

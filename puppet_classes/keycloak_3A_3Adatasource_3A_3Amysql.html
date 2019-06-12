@@ -83,29 +83,7 @@
 
 
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
   
-    <li>
-      
-        <span class='name'>jar_source</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;/usr/share/java/mysql-connector-java.jar&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Path to MySQL connector jar file.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -114,6 +92,10 @@
         <pre class="lines">
 
 
+4
+5
+6
+7
 8
 9
 10
@@ -157,20 +139,16 @@
 48
 49
 50
-51
-52
-53
-54
-55</pre>
+51</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/datasource/mysql.pp', line 8</span>
+        <pre class="code"><span class="info file"># File 'manifests/datasource/mysql.pp', line 4</span>
 
-class keycloak::datasource::mysql (
-  $jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;,
-) {
+class keycloak::datasource::mysql {
   assert_private()
 
+  $jar_source = pick($keycloak::datasource_jar_source, $keycloak::mysql_jar_source)
+  $module_source = pick($keycloak::datasource_module_source, &#39;puppet:///modules/keycloak/database/mysql/module.xml&#39;)
   $module_dir = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/com/mysql/jdbc/main&quot;
 
   include ::mysql::bindings
@@ -198,7 +176,7 @@ class keycloak::datasource::mysql (
   }
   file { &quot;${$module_dir}/module.xml&quot;:
     ensure =&gt; &#39;file&#39;,
-    source =&gt; &#39;puppet:///modules/keycloak/database/mysql/module.xml&#39;,
+    source =&gt; $module_source,
     owner  =&gt; $keycloak::user,
     group  =&gt; $keycloak::group,
     mode   =&gt; &#39;0644&#39;,

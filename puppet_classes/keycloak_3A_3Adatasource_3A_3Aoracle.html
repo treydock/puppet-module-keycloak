@@ -83,50 +83,7 @@
 
 
 <div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
   
-    <li>
-      
-        <span class='name'>jar_file</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$keycloak::oracle_jar_file</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>jar_source</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$keycloak::oracle_jar_source</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>module_source</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;puppet:///modules/keycloak/database/oracle/module.xml&#39;</tt>)</em>
-      
-      
-    </li>
-  
-</ul>
-
 
 </div><div class="method_details_list">
   <table class="source_code">
@@ -169,21 +126,15 @@
 36
 37
 38
-39
-40
-41
-42</pre>
+39</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/datasource/oracle.pp', line 5</span>
 
-class keycloak::datasource::oracle (
-  $jar_file      = $keycloak::oracle_jar_file,
-  $jar_source    = $keycloak::oracle_jar_source,
-  $module_source = &#39;puppet:///modules/keycloak/database/oracle/module.xml&#39;,
-) {
+class keycloak::datasource::oracle {
   assert_private()
 
+  $module_source = pick($keycloak::datasource_module_source, &#39;puppet:///modules/keycloak/database/oracle/module.xml&#39;)
   $module_dir = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/oracle/main&quot;
 
   exec { &quot;mkdir -p ${module_dir}&quot;:
@@ -199,9 +150,9 @@ class keycloak::datasource::oracle (
     mode   =&gt; &#39;0755&#39;,
   }
 
-  file { &quot;${module_dir}/${jar_file}&quot;:
+  file { &quot;${module_dir}/oracle.jar&quot;:
     ensure =&gt; &#39;file&#39;,
-    source =&gt; $jar_source,
+    source =&gt; $keycloak::datasource_jar_source,
     owner  =&gt; $keycloak::user,
     group  =&gt; $keycloak::group,
     mode   =&gt; &#39;0644&#39;,
