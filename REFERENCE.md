@@ -11,7 +11,6 @@ _Public Classes_
 * [`keycloak::config`](#keycloakconfig): Private class.
 * [`keycloak::datasource::h2`](#keycloakdatasourceh2): Private class.
 * [`keycloak::install`](#keycloakinstall): Private class.
-* [`keycloak::params`](#keycloakparams): Private class.
 * [`keycloak::service`](#keycloakservice): Private class.
 * [`keycloak::sssd`](#keycloaksssd): Private class.
 
@@ -62,9 +61,8 @@ The following parameters are available in the `keycloak` class.
 Data type: `String`
 
 Version of Keycloak to install and manage.
-Default is `4.2.1.Final`.
 
-Default value: '4.2.1.Final'
+Default value: '6.0.1'
 
 ##### `package_url`
 
@@ -91,7 +89,7 @@ Data type: `String`
 Keycloak service name.
 Default is `keycloak`.
 
-Default value: $keycloak::params::service_name
+Default value: 'keycloak'
 
 ##### `service_ensure`
 
@@ -118,7 +116,7 @@ Data type: `Boolean`
 Keycloak service hasstatus parameter.
 Default is `true`.
 
-Default value: $keycloak::params::service_hasstatus
+Default value: `true`
 
 ##### `service_hasrestart`
 
@@ -127,7 +125,7 @@ Data type: `Boolean`
 Keycloak service hasrestart parameter.
 Default is `true`.
 
-Default value: $keycloak::params::service_hasrestart
+Default value: `true`
 
 ##### `service_java_opts`
 
@@ -153,6 +151,14 @@ Keycloak user name.
 Default is `keycloak`.
 
 Default value: 'keycloak'
+
+##### `user_shell`
+
+Data type: `Stdlib::Absolutepath`
+
+Keycloak user shell.
+
+Default value: '/sbin/nologin'
 
 ##### `group`
 
@@ -275,6 +281,24 @@ Default is `sa`.
 
 Default value: 'sa'
 
+##### `datasource_jar_source`
+
+Data type: `Optional[String]`
+
+Source for datasource JDBC driver - could be puppet link or local file on the node.
+Default is dependent on value for `datasource_driver`.
+This parameter is required if `datasource_driver` is `oracle`.
+
+Default value: `undef`
+
+##### `datasource_module_source`
+
+Data type: `Optional[String]`
+
+Source for datasource module.xml. Default depends on `datasource_driver`.
+
+Default value: `undef`
+
 ##### `proxy_https`
 
 Data type: `Boolean`
@@ -375,42 +399,6 @@ Default is `{}`.
 
 Default value: {}
 
-##### `oracle_jar_file`
-
-Data type: `Optional[String]`
-
-Oracle JDBC driver to use. Only use if $datasource_driver is set to oracle
-Default is not defined
-
-Default value: `undef`
-
-##### `oracle_jar_source`
-
-Data type: `Optional[String]`
-
-Source for Oracle JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to oracle
-Default is not set
-
-Default value: `undef`
-
-##### `postgresql_jar_file`
-
-Data type: `Optional[String]`
-
-PostgresQL JDBC driver to use. Only use if $datasource_driver is set to postgresql
-Default is not defined
-
-Default value: `undef`
-
-##### `postgresql_jar_source`
-
-Data type: `Optional[String]`
-
-Source for PostgresQL JDBC driver - could be puppet link or local file on the node. Only use if $datasource_driver is set to postgresql
-Default is not set
-
-Default value: `undef`
-
 ##### `with_sssd_support`
 
 Data type: `Boolean`
@@ -425,7 +413,7 @@ Data type: `Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]`
 
 Source URL of libunix-dbus-java
 
-Default value: $keycloak::params::libunix_dbus_java_source
+Default value: 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz'
 
 ##### `install_libunix_dbus_java_build_dependencies`
 
@@ -441,7 +429,7 @@ Data type: `Array`
 
 Packages needed to build libunix-dbus-java
 
-Default value: $keycloak::params::libunix_dbus_java_build_dependencies
+Default value: []
 
 ##### `libunix_dbus_java_libdir`
 
@@ -449,7 +437,7 @@ Data type: `Stdlib::Absolutepath`
 
 Path to directory to install libunix-dbus-java libraries
 
-Default value: $keycloak::params::libunix_dbus_java_libdir
+Default value: '/usr/lib64'
 
 ##### `jna_package_name`
 
@@ -457,7 +445,7 @@ Data type: `String`
 
 Package name for jna
 
-Default value: $keycloak::params::jna_package_name
+Default value: 'jna'
 
 ##### `manage_sssd_config`
 
@@ -500,10 +488,6 @@ Private class.
 Private class.
 
 ### keycloak::install
-
-Private class.
-
-### keycloak::params
 
 Private class.
 

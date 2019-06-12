@@ -1,10 +1,6 @@
 # @summary Manage MySQL datasource
 #
 # @api private
-#
-# @param jar_source
-#   Path to MySQL connector jar file.
-#
 class keycloak::datasource::mysql {
   assert_private()
 
