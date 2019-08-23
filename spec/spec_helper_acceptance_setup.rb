@@ -20,5 +20,5 @@ postgresql::globals::service_status: 'service postgresql status'
 EOS
 
 create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
-on hosts, 'mkdir /etc/puppetlabs/puppet/data'
+on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)

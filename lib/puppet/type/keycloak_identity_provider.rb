@@ -1,0 +1,272 @@
+require_relative '../../puppet_x/keycloak/type'
+require_relative '../../puppet_x/keycloak/array_property'
+
+Puppet::Type.newtype(:keycloak_identity_provider) do
+  desc <<-DESC
+Manage Keycloak identity providers
+@example Add CILogon identity provider to test realm
+  keycloak_identity_provider { 'cilogon on test':
+    ensure                         => 'present',
+    display_name                   => 'CILogon',
+    provider_id                    => 'oidc',
+    first_broker_login_flow_alias  => 'browser',
+    client_id                      => 'cilogon:/client_id/foobar',
+    client_secret                  => 'supersecret',
+    user_info_url                  => 'https://cilogon.org/oauth2/userinfo',
+    token_url                      => 'https://cilogon.org/oauth2/token',
+    authorization_url              => 'https://cilogon.org/authorize',
+  }
+  DESC
+
+  extend PuppetX::Keycloak::Type
+  add_autorequires
+
+  ensurable
+
+  newparam(:name, namevar: true) do
+    desc 'The identity provider name'
+  end
+
+  newparam(:alias, namevar: true) do
+    desc 'The identity provider name. Defaults to `name`.'
+    defaultto do
+      @resource[:name]
+    end
+  end
+
+  newparam(:internal_id) do
+    desc 'internalId. Defaults to "`alias`-`realm`"'
+    defaultto do
+      "#{@resource[:alias]}-#{@resource[:realm]}"
+    end
+  end
+
+  newparam(:realm, namevar: true) do
+    desc 'realm'
+  end
+
+  newproperty(:display_name) do
+    desc 'displayName'
+  end
+
+  newparam(:provider_id) do
+    desc 'providerId'
+    newvalues('oidc')
+    defaultto 'oidc'
+    munge { |v| v }
+  end
+
+  newproperty(:enabled, boolean: true) do
+    desc 'enabled'
+    newvalues(:true, :false)
+    defaultto :true
+  end
+
+  newproperty(:update_profile_first_login_mode) do
+    desc 'updateProfileFirstLoginMode'
+    defaultto 'on'
+    newvalues('on', 'off')
+    munge { |v| v }
+  end
+
+  newproperty(:trust_email, boolean: true) do
+    desc 'trustEmail'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:store_token, boolean: true) do
+    desc 'storeToken'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:add_read_token_role_on_create, boolean: true) do
+    desc 'addReadTokenRoleOnCreate'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:authenticate_by_default, boolean: true) do
+    desc 'authenticateByDefault'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:link_only, boolean: true) do
+    desc 'linkOnly'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:first_broker_login_flow_alias) do
+    desc 'firstBrokerLoginFlowAlias'
+    defaultto 'first broker login'
+    newvalues('direct grant', 'browser', 'registration', 'reset credentials', 'first broker login', 'docker auth')
+    munge { |v| v }
+  end
+
+  newproperty(:post_broker_login_flow_alias) do
+    desc 'postBrokerLoginFlowAlias'
+    newvalues('direct grant', 'browser', 'registration', 'reset credentials', 'first broker login', 'docker auth')
+    munge { |v| v }
+  end
+
+  # BEGIN: oidc
+
+  newproperty(:hide_on_login_page, boolean: true) do
+    desc 'hideOnLoginPage'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:user_info_url) do
+    desc 'userInfoUrl'
+    munge { |v| v }
+  end
+
+  newproperty(:validate_signature, boolean: true) do
+    desc 'validateSignature'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:client_id) do
+    desc 'clientId'
+  end
+
+  newproperty(:client_secret) do
+    desc 'clientSecret'
+
+    def insync?(is)
+      if is =~ %r{^[\*]+$}
+        Puppet.warning("Parameter 'client_secret' is set and Puppet has no way to check current value")
+        true
+      else
+        false
+      end
+    end
+
+    def change_to_s(currentvalue, _newvalue)
+      if currentvalue == :absent
+        'created client_secret'
+      else
+        'changed client_secret'
+      end
+    end
+
+    def is_to_s(_currentvalue) # rubocop:disable Style/PredicateName
+      '[old client_secret redacted]'
+    end
+
+    def should_to_s(_newvalue)
+      '[new client_secret redacted]'
+    end
+  end
+
+  newproperty(:token_url) do
+    desc 'tokenUrl'
+  end
+
+  newproperty(:ui_locales, boolean: true) do
+    desc 'uiLocales'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:backchannel_supported, boolean: true) do
+    desc 'backchannelSupported'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:use_jwks_url, boolean: true) do
+    desc 'useJwksUrl'
+    newvalues(:true, :false)
+    defaultto :true
+  end
+
+  newproperty(:login_hint, boolean: true) do
+    desc 'loginHint'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:authorization_url) do
+    desc 'authorizationUrl'
+  end
+
+  newproperty(:disable_user_info, boolean: true) do
+    desc 'disableUserInfo'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:logout_url) do
+    desc 'logoutUrl'
+  end
+
+  newproperty(:issuer) do
+    desc 'issuer'
+  end
+
+  newproperty(:default_scope) do
+    desc 'default_scope'
+  end
+
+  newproperty(:prompt) do
+    desc 'prompt'
+    newvalues('unspecified', 'none', 'consent', 'login', 'select_account')
+    defaultto 'unspecified'
+    munge { |v| v }
+  end
+
+  newproperty(:allowed_clock_skew) do
+    desc 'allowedClockSkew'
+  end
+
+  newproperty(:forward_parameters) do
+    desc 'forwardParameters'
+  end
+
+  # END: oidc
+
+  def self.title_patterns
+    [
+      [
+        %r{^((\S+) on (\S+))$},
+        [
+          [:name],
+          [:alias],
+          [:realm],
+        ],
+      ],
+      [
+        %r{(.*)},
+        [
+          [:name],
+        ],
+      ],
+    ]
+  end
+
+  validate do
+    if self[:realm].nil?
+      raise Puppet::Error, 'realm is required'
+    end
+    if self[:ensure].to_s == 'present' && self[:provider_id] == 'oidc'
+      if self[:authorization_url].nil?
+        raise Puppet::Error, 'authorization_url is required'
+      end
+      if self[:token_url].nil?
+        raise Puppet::Error, 'token_url is required'
+      end
+      if self[:client_id].nil?
+        raise Puppet::Error, 'client_id is required'
+      end
+      if self[:client_secret].nil?
+        raise Puppet::Error, 'client_secret is required'
+      end
+    end
+  end
+end

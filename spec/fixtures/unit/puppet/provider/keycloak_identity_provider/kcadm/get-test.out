@@ -1,0 +1,28 @@
+[ {
+  "alias" : "cilogon",
+  "displayName" : "CILogon",
+  "internalId" : "13770d46-0ea5-4aff-b8cf-55d3e6cd1867",
+  "providerId" : "oidc",
+  "enabled" : true,
+  "updateProfileFirstLoginMode" : "on",
+  "trustEmail" : false,
+  "storeToken" : false,
+  "addReadTokenRoleOnCreate" : false,
+  "authenticateByDefault" : false,
+  "linkOnly" : false,
+  "firstBrokerLoginFlowAlias" : "browser",
+  "config" : {
+    "hideOnLoginPage" : "",
+    "userInfoUrl" : "https://cilogon.org/oauth2/userinfo",
+    "validateSignature" : "",
+    "clientId" : "cilogon:/client_id/foo",
+    "tokenUrl" : "https://cilogon.org/oauth2/token",
+    "uiLocales" : "",
+    "backchannelSupported" : "",
+    "useJwksUrl" : "true",
+    "loginHint" : "",
+    "authorizationUrl" : "https://cilogon.org/authorize",
+    "disableUserInfo" : "",
+    "clientSecret" : "**********"
+  }
+} ]
