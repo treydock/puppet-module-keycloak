@@ -124,6 +124,8 @@
 #   Hash that is used to define keycloak_client_scope resources.
 # @param protocol_mappers
 #   Hash that is used to define keycloak_protocol_mapper resources.
+# @param clients
+#   Hash that is used to define keycloak_client resources.
 # @param with_sssd_support
 #   Boolean that determines if SSSD user provider support should be available
 # @param libunix_dbus_java_source
@@ -189,6 +191,7 @@ class keycloak (
   Hash $client_scopes = {},
   Hash $protocol_mappers = {},
   Hash $identity_providers = {},
+  Hash $clients = {},
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
     $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz',
@@ -291,6 +294,9 @@ class keycloak (
   }
   $identity_providers.each |$name, $data| {
     keycloak_identity_provider { $name: * => $data }
+  }
+  $clients.each |$name, $data| {
+    keycloak_client { $name: * => $data }
   }
 
 }
