@@ -126,6 +126,13 @@ describe 'keycloak_protocol_mapper type:' do
         friendly_name  => 'firstName',
         attribute_name => 'firstName',
       }
+      keycloak_protocol_mapper { "displayName for saml on test":
+        protocol       => 'saml',
+        type           => 'saml-javascript-mapper',
+        script         => "var foo = 'bar';\\nfoo;",
+        friendly_name  => 'displayName',
+        attribute_name => 'displayName',
+      }
       EOS
 
       apply_manifest(pp, catch_failures: true)
@@ -159,6 +166,18 @@ describe 'keycloak_protocol_mapper type:' do
         expect(mapper['config']['attribute.name']).to eq('firstName')
         expect(mapper['config']['user.attribute']).to eq('firstName')
         expect(mapper['config']['friendly.name']).to eq('firstName')
+      end
+    end
+
+    it 'has created protocol mapper displayName' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'displayName' }[0]
+        expect(mapper['protocolMapper']).to eq('saml-javascript-mapper')
+        expect(mapper['config']['attribute.name']).to eq('displayName')
+        expect(mapper['config']['Script']).to match(%r{^var foo = 'bar';$})
+        expect(mapper['config']['Script']).to match(%r{^foo;$})
+        expect(mapper['config']['friendly.name']).to eq('displayName')
       end
     end
   end
