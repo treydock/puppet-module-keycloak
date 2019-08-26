@@ -102,13 +102,11 @@ Manage Keycloak identity providers
   newproperty(:first_broker_login_flow_alias) do
     desc 'firstBrokerLoginFlowAlias'
     defaultto 'first broker login'
-    newvalues('direct grant', 'browser', 'registration', 'reset credentials', 'first broker login', 'docker auth')
     munge { |v| v }
   end
 
   newproperty(:post_broker_login_flow_alias) do
     desc 'postBrokerLoginFlowAlias'
-    newvalues('direct grant', 'browser', 'registration', 'reset credentials', 'first broker login', 'docker auth')
     munge { |v| v }
   end
 

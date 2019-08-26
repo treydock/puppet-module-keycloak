@@ -70,24 +70,6 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     }.to raise_error(%r{foo})
   end
 
-  it 'defaults to first_broker_login_flow_alias=first broker login' do
-    expect(resource[:first_broker_login_flow_alias]).to eq('first broker login')
-  end
-
-  it 'does not allow invalid first_broker_login_flow_alias' do
-    config[:first_broker_login_flow_alias] = 'foo'
-    expect {
-      resource
-    }.to raise_error(%r{foo})
-  end
-
-  it 'does not allow invalid post_broker_login_flow_alias' do
-    config[:post_broker_login_flow_alias] = 'foo'
-    expect {
-      resource
-    }.to raise_error(%r{foo})
-  end
-
   it 'defaults to prompt=unspecified' do
     expect(resource[:prompt]).to eq('unspecified')
   end
@@ -106,6 +88,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     add_read_token_role_on_create: :false,
     authenticate_by_default: :false,
     link_only: :false,
+    first_broker_login_flow_alias: 'first broker login',
     hide_on_login_page: :false,
     validate_signature: :false,
     ui_locales: :false,
@@ -119,6 +102,8 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     # Test basic properties
     [
       :display_name,
+      :first_broker_login_flow_alias,
+      :post_broker_login_flow_alias,
       :user_info_url,
       :client_id,
       :token_url,
