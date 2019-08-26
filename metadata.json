@@ -10,11 +10,11 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.15.0 <6.0.0"
+      "version_requirement": ">= 4.15.0 <7.0.0"
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">= 3.0.0 <8.0.0"
+      "version_requirement": ">= 3.0.0 <11.0.0"
     },
     {
       "name": "puppetlabs/postgresql",
@@ -22,15 +22,15 @@
     },
     {
       "name": "puppetlabs/java",
-      "version_requirement": ">= 2.2.0 <4.0.0"
+      "version_requirement": ">= 2.2.0 <6.0.0"
     },
     {
       "name": "puppetlabs/java_ks",
-      "version_requirement": ">= 1.0.0 <3.0.0"
+      "version_requirement": ">= 1.0.0 <4.0.0"
     },
     {
       "name": "puppet/archive",
-      "version_requirement": ">= 0.5.1 <4.0.0"
+      "version_requirement": ">= 0.5.1 <5.0.0"
     },
     {
       "name": "camptocamp/systemd",
