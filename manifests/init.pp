@@ -120,6 +120,10 @@
 #   Default is `{}`.
 # @param identity_providers
 #   Hash that is used to define keycloak_identity_provider resources.
+# @param client_scopes
+#   Hash that is used to define keycloak_client_scope resources.
+# @param protocol_mappers
+#   Hash that is used to define keycloak_protocol_mapper resources.
 # @param with_sssd_support
 #   Boolean that determines if SSSD user provider support should be available
 # @param libunix_dbus_java_source
@@ -182,6 +186,8 @@ class keycloak (
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
   Hash $client_templates = {},
+  Hash $client_scopes = {},
+  Hash $protocol_mappers = {},
   Hash $identity_providers = {},
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
@@ -277,7 +283,12 @@ class keycloak (
   $client_templates.each |$name, $template| {
     keycloak::client_template { $name: * => $template }
   }
-
+  $client_scopes.each |$name, $client_scope| {
+    keycloak_client_scope { $name: * => $client_scope }
+  }
+  $protocol_mappers.each |$name, $protocol_mapper| {
+    keycloak_protocol_mapper { $name: * => $protocol_mapper }
+  }
   $identity_providers.each |$name, $data| {
     keycloak_identity_provider { $name: * => $data }
   }
