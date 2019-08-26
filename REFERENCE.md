@@ -32,6 +32,7 @@ _Private Classes_
 * [`keycloak_client_protocol_mapper`](#keycloak_client_protocol_mapper): Manage Keycloak protocol mappers
 * [`keycloak_client_scope`](#keycloak_client_scope): Manage Keycloak client scopes
 * [`keycloak_conn_validator`](#keycloak_conn_validator): Verify that a connection can be successfully established between a node and the keycloak server.  Its primary use is as a precondition to pre
+* [`keycloak_identity_provider`](#keycloak_identity_provider): Manage Keycloak identity providers
 * [`keycloak_ldap_mapper`](#keycloak_ldap_mapper): Manage Keycloak LDAP attribute mappers
 * [`keycloak_ldap_user_provider`](#keycloak_ldap_user_provider): Manage Keycloak LDAP user providers
 * [`keycloak_protocol_mapper`](#keycloak_protocol_mapper): Manage Keycloak protocol mappers
@@ -396,6 +397,38 @@ Data type: `Hash`
 
 Hash that is used to define keycloak::client_template resources.
 Default is `{}`.
+
+Default value: {}
+
+##### `identity_providers`
+
+Data type: `Hash`
+
+Hash that is used to define keycloak_identity_provider resources.
+
+Default value: {}
+
+##### `client_scopes`
+
+Data type: `Hash`
+
+Hash that is used to define keycloak_client_scope resources.
+
+Default value: {}
+
+##### `protocol_mappers`
+
+Data type: `Hash`
+
+Hash that is used to define keycloak_protocol_mapper resources.
+
+Default value: {}
+
+##### `clients`
+
+Data type: `Hash`
+
+Hash that is used to define keycloak_client resources.
 
 Default value: {}
 
@@ -1014,6 +1047,244 @@ The max number of seconds that the validator should wait before giving up and de
 
 Default value: 30
 
+### keycloak_identity_provider
+
+Manage Keycloak identity providers
+
+#### Examples
+
+##### Add CILogon identity provider to test realm
+
+```puppet
+keycloak_identity_provider { 'cilogon on test':
+  ensure                         => 'present',
+  display_name                   => 'CILogon',
+  provider_id                    => 'oidc',
+  first_broker_login_flow_alias  => 'browser',
+  client_id                      => 'cilogon:/client_id/foobar',
+  client_secret                  => 'supersecret',
+  user_info_url                  => 'https://cilogon.org/oauth2/userinfo',
+  token_url                      => 'https://cilogon.org/oauth2/token',
+  authorization_url              => 'https://cilogon.org/authorize',
+}
+```
+
+#### Properties
+
+The following properties are available in the `keycloak_identity_provider` type.
+
+##### `ensure`
+
+Valid values: present, absent
+
+The basic property that the resource should be in.
+
+Default value: present
+
+##### `display_name`
+
+displayName
+
+##### `enabled`
+
+Valid values: `true`, `false`
+
+enabled
+
+Default value: true
+
+##### `update_profile_first_login_mode`
+
+Valid values: on, off
+
+updateProfileFirstLoginMode
+
+Default value: on
+
+##### `trust_email`
+
+Valid values: `true`, `false`
+
+trustEmail
+
+Default value: false
+
+##### `store_token`
+
+Valid values: `true`, `false`
+
+storeToken
+
+Default value: false
+
+##### `add_read_token_role_on_create`
+
+Valid values: `true`, `false`
+
+addReadTokenRoleOnCreate
+
+Default value: false
+
+##### `authenticate_by_default`
+
+Valid values: `true`, `false`
+
+authenticateByDefault
+
+Default value: false
+
+##### `link_only`
+
+Valid values: `true`, `false`
+
+linkOnly
+
+Default value: false
+
+##### `first_broker_login_flow_alias`
+
+firstBrokerLoginFlowAlias
+
+Default value: first broker login
+
+##### `post_broker_login_flow_alias`
+
+postBrokerLoginFlowAlias
+
+##### `hide_on_login_page`
+
+Valid values: `true`, `false`
+
+hideOnLoginPage
+
+Default value: false
+
+##### `user_info_url`
+
+userInfoUrl
+
+##### `validate_signature`
+
+Valid values: `true`, `false`
+
+validateSignature
+
+Default value: false
+
+##### `client_id`
+
+clientId
+
+##### `client_secret`
+
+clientSecret
+
+##### `token_url`
+
+tokenUrl
+
+##### `ui_locales`
+
+Valid values: `true`, `false`
+
+uiLocales
+
+Default value: false
+
+##### `backchannel_supported`
+
+Valid values: `true`, `false`
+
+backchannelSupported
+
+Default value: false
+
+##### `use_jwks_url`
+
+Valid values: `true`, `false`
+
+useJwksUrl
+
+Default value: true
+
+##### `login_hint`
+
+Valid values: `true`, `false`
+
+loginHint
+
+Default value: false
+
+##### `authorization_url`
+
+authorizationUrl
+
+##### `disable_user_info`
+
+Valid values: `true`, `false`
+
+disableUserInfo
+
+Default value: false
+
+##### `logout_url`
+
+logoutUrl
+
+##### `issuer`
+
+issuer
+
+##### `default_scope`
+
+default_scope
+
+##### `prompt`
+
+Valid values: unspecified, none, consent, login, select_account
+
+prompt
+
+Default value: unspecified
+
+##### `allowed_clock_skew`
+
+allowedClockSkew
+
+##### `forward_parameters`
+
+forwardParameters
+
+#### Parameters
+
+The following parameters are available in the `keycloak_identity_provider` type.
+
+##### `name`
+
+namevar
+
+The identity provider name
+
+##### `alias`
+
+The identity provider name. Defaults to `name`.
+
+##### `internal_id`
+
+internalId. Defaults to "`alias`-`realm`"
+
+##### `realm`
+
+realm
+
+##### `provider_id`
+
+Valid values: oidc
+
+providerId
+
+Default value: oidc
+
 ### keycloak_ldap_mapper
 
 Manage Keycloak LDAP attribute mappers
@@ -1361,7 +1632,13 @@ attribute.nameformat
 
 Valid values: `true`, `false`
 
-single. Default to `false` for `type` `saml-role-list-mapper`.
+single. Default to `false` for `type` `saml-role-list-mapper` or `saml-javascript-mapper`.
+
+##### `script`
+
+Script, only valid for `type` of `saml-javascript-mapper`'
+
+Array values will be joined with newlines. Strings will be kept unchanged.
 
 #### Parameters
 
@@ -1391,7 +1668,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 

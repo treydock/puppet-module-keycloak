@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v4.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v4.1.0) (2019-08-26)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.0.0...v4.1.0)
+
+### Added
+
+- Add clients parameter [\#69](https://github.com/treydock/puppet-module-keycloak/pull/69) ([treydock](https://github.com/treydock))
+- Simplify how keycloak\_client\_protocol\_mapper and keycloak\_protcol\_mapper are queried during prefetch [\#68](https://github.com/treydock/puppet-module-keycloak/pull/68) ([treydock](https://github.com/treydock))
+- Support managing protocl mapper saml-javascript-mapper [\#67](https://github.com/treydock/puppet-module-keycloak/pull/67) ([treydock](https://github.com/treydock))
+- Update module dependency version requirements [\#66](https://github.com/treydock/puppet-module-keycloak/pull/66) ([treydock](https://github.com/treydock))
+- Use iteration and added parameters to define resources [\#65](https://github.com/treydock/puppet-module-keycloak/pull/65) ([treydock](https://github.com/treydock))
+- Add keycloak\_identity\_provider type [\#64](https://github.com/treydock/puppet-module-keycloak/pull/64) ([treydock](https://github.com/treydock))
+
 ## [v4.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v4.0.0) (2019-06-12)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v3.8.0...v4.0.0)
