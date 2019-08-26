@@ -32,6 +32,7 @@ There are several key differences between 2.x and 3.x of this module that were r
 | ---------------- | ------------------------------- |
 | 3.x              | 2.x                             |
 | 4.x - 6.x        | 3.x                             |
+| 6.x              | 4.x                             |
 
 
 ## Usage
@@ -220,6 +221,24 @@ Add `email` protocol mapper to `test.example.com` client in realm `test`
       claim_name     => 'email',
       user_attribute => 'email',
     }
+
+### keycloak\_identity\_provider
+
+Add `cilogon` identity provider to `test` realm
+
+```puppet
+keycloak_identity_provider { 'cilogon on test':
+  ensure                        => 'present',
+  display_name                  => 'CILogon',
+  provider_id                   => 'oidc',
+  first_broker_login_flow_alias => 'browser',
+  client_id                     => 'cilogon:/client_id/foobar',
+  client_secret                 => 'supersecret',
+  user_info_url                 => 'https://cilogon.org/oauth2/userinfo',
+  token_url                     => 'https://cilogon.org/oauth2/token',
+  authorization_url             => 'https://cilogon.org/authorize',
+}
+```
 
 ### keycloak\_api
 
