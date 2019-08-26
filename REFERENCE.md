@@ -1241,11 +1241,9 @@ default_scope
 
 ##### `prompt`
 
-Valid values: unspecified, none, consent, login, select_account
+Valid values: none, consent, login, select_account
 
 prompt
-
-Default value: unspecified
 
 ##### `allowed_clock_skew`
 
