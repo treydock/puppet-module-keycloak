@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -111,7 +111,7 @@ but is deprecated.</p>
 <h3 id="label-Supported+Versions+of+Keycloak">Supported Versions of Keycloak</h3>
 
 <p>| Keycloak Version | Keycloak Puppet module versions | | —————- |
-——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x |</p>
+——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x | 4.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
@@ -337,6 +337,23 @@ client in realm <code>test</code></p>
 <pre class="code ruby"><code class="ruby">keycloak_client_protocol_mapper { &quot;email for test.example.com on test&quot;:
   claim_name     =&gt; &#39;email&#39;,
   user_attribute =&gt; &#39;email&#39;,
+}
+</code></pre>
+
+<h3 id="label-keycloak_identity_provider">keycloak_identity_provider</h3>
+
+<p>Add <code>cilogon</code> identity provider to <code>test</code> realm</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_identity_provider { &#39;cilogon on test&#39;:
+  ensure                        =&gt; &#39;present&#39;,
+  display_name                  =&gt; &#39;CILogon&#39;,
+  provider_id                   =&gt; &#39;oidc&#39;,
+  first_broker_login_flow_alias =&gt; &#39;browser&#39;,
+  client_id                     =&gt; &#39;cilogon:/client_id/foobar&#39;,
+  client_secret                 =&gt; &#39;supersecret&#39;,
+  user_info_url                 =&gt; &#39;https://cilogon.org/oauth2/userinfo&#39;,
+  token_url                     =&gt; &#39;https://cilogon.org/oauth2/token&#39;,
+  authorization_url             =&gt; &#39;https://cilogon.org/authorize&#39;,
 }
 </code></pre>
 

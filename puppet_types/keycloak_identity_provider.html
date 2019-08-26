@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Resource Type: keycloak_ldap_user_provider
+  Resource Type: keycloak_identity_provider
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_types::keycloak_ldap_user_provider";
+  pathId = "puppet_types::keycloak_identity_provider";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (k)</a> &raquo;
     <span class='title'><span class='object_link'>Resource Types</span></span>
      &raquo; 
-    <span class="title">keycloak_ldap_user_provider</span>
+    <span class="title">keycloak_identity_provider</span>
   
 </div>
 
@@ -59,12 +59,12 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Resource Type: keycloak_ldap_user_provider</h1>
+      <div id="content"><h1>Resource Type: keycloak_identity_provider</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      lib/puppet/type/keycloak_ldap_user_provider.rb
+      lib/puppet/type/keycloak_identity_provider.rb
     </dd>
   </dl>
   
@@ -72,7 +72,7 @@
     <dt>Providers:</dt>
     <dd>
       
-        <span class='object_link'><a href="../puppet_providers_keycloak_ldap_user_provider/kcadm.html" title="puppet_providers_keycloak_ldap_user_provider::kcadm (puppet_provider)">kcadm</a></span><br/>
+        <span class='object_link'><a href="../puppet_providers_keycloak_identity_provider/kcadm.html" title="puppet_providers_keycloak_identity_provider::kcadm (puppet_provider)">kcadm</a></span><br/>
       
     </dd>
   </dl>
@@ -83,7 +83,7 @@
 <div class="docstring">
   <div class="discussion">
     
-<p>Manage Keycloak LDAP user providers</p>
+<p>Manage Keycloak identity providers</p>
 
   </div>
 </div>
@@ -96,15 +96,19 @@
     
       
         <p class="example_title"><div class='inline'>
-<p>Add LDAP user provider to test realm</p>
+<p>Add CILogon identity provider to test realm</p>
 </div></p>
       
-      <pre class="example code"><code>keycloak_ldap_user_provider { &#39;LDAP on test&#39;:
-  ensure             =&gt; &#39;present&#39;,
-  users_dn           =&gt; &#39;ou=People,dc=example,dc=com&#39;,
-  connection_url     =&gt; &#39;ldaps://ldap1.example.com:636 ldaps://ldap2.example.com:636&#39;,
-  import_enabled     =&gt; false,
-  use_truststore_spi =&gt; &#39;never&#39;,
+      <pre class="example code"><code>keycloak_identity_provider { &#39;cilogon on test&#39;:
+  ensure                         =&gt; &#39;present&#39;,
+  display_name                   =&gt; &#39;CILogon&#39;,
+  provider_id                    =&gt; &#39;oidc&#39;,
+  first_broker_login_flow_alias  =&gt; &#39;browser&#39;,
+  client_id                      =&gt; &#39;cilogon:/client_id/foobar&#39;,
+  client_secret                  =&gt; &#39;supersecret&#39;,
+  user_info_url                  =&gt; &#39;https://cilogon.org/oauth2/userinfo&#39;,
+  token_url                      =&gt; &#39;https://cilogon.org/oauth2/token&#39;,
+  authorization_url              =&gt; &#39;https://cilogon.org/authorize&#39;,
 }</code></pre>
     
   </div>
@@ -116,15 +120,15 @@
   <ul>
     
     <li>
-      <span class="name">auth_type</span>
+      <span class="name">add_read_token_role_on_create</span>
       
-      <span class="default"> (defaults to: <em>none</em>)</span>
+      <span class="default"> (defaults to: <em>false</em>)</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>authType</p>
+<p>addReadTokenRoleOnCreate</p>
 
         </div>
       </div>
@@ -136,12 +140,12 @@
           
           <li>
             
-            none
+            true
           </li>
           
           <li>
             
-            simple
+            false
           </li>
           
         </ul>
@@ -150,15 +154,13 @@
     </li>
     
     <li>
-      <span class="name">batch_size_for_sync</span>
-      
-      <span class="default"> (defaults to: <em>1000</em>)</span>
+      <span class="name">allowed_clock_skew</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>batchSizeForSync</p>
+<p>allowedClockSkew</p>
 
         </div>
       </div>
@@ -167,60 +169,15 @@
     </li>
     
     <li>
-      <span class="name">bind_credential</span>
+      <span class="name">authenticate_by_default</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>bindCredential</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">bind_dn</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>bindDn</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">connection_url</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>connectionUrl</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">custom_user_search_filter</span>
-      
-      <span class="default"> (defaults to: <em>absent</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>customUserSearchFilter</p>
+<p>authenticateByDefault</p>
 
         </div>
       </div>
@@ -232,12 +189,12 @@
           
           <li>
             
-            %r{.*}
+            true
           </li>
           
           <li>
             
-            absent
+            false
           </li>
           
         </ul>
@@ -246,15 +203,30 @@
     </li>
     
     <li>
-      <span class="name">edit_mode</span>
-      
-      <span class="default"> (defaults to: <em>READ_ONLY</em>)</span>
+      <span class="name">authorization_url</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>editMode</p>
+<p>authorizationUrl</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">backchannel_supported</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>backchannelSupported</p>
 
         </div>
       </div>
@@ -266,21 +238,110 @@
           
           <li>
             
-            READ_ONLY
+            true
           </li>
           
           <li>
             
-            WRITABLE
-          </li>
-          
-          <li>
-            
-            UNSYNCED
+            false
           </li>
           
         </ul>
       </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">client_id</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>clientId</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">client_secret</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>clientSecret</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">default_scope</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>default_scope</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">disable_user_info</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>disableUserInfo</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">display_name</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>displayName</p>
+
+        </div>
+      </div>
+      
       
     </li>
     
@@ -353,7 +414,386 @@
     </li>
     
     <li>
-      <span class="name">import_enabled</span>
+      <span class="name">first_broker_login_flow_alias</span>
+      
+      <span class="default"> (defaults to: <em>first broker login</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>firstBrokerLoginFlowAlias</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">forward_parameters</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>forwardParameters</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">hide_on_login_page</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>hideOnLoginPage</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">issuer</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>issuer</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">link_only</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>linkOnly</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">login_hint</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>loginHint</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">logout_url</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>logoutUrl</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">post_broker_login_flow_alias</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>postBrokerLoginFlowAlias</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">prompt</span>
+      
+      <span class="default"> (defaults to: <em>unspecified</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>prompt</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            unspecified
+          </li>
+          
+          <li>
+            
+            none
+          </li>
+          
+          <li>
+            
+            consent
+          </li>
+          
+          <li>
+            
+            login
+          </li>
+          
+          <li>
+            
+            select_account
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">store_token</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>storeToken</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">token_url</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>tokenUrl</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">trust_email</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>trustEmail</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">ui_locales</span>
+      
+      <span class="default"> (defaults to: <em>false</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>uiLocales</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">update_profile_first_login_mode</span>
+      
+      <span class="default"> (defaults to: <em>on</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>updateProfileFirstLoginMode</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            on
+          </li>
+          
+          <li>
+            
+            off
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">use_jwks_url</span>
       
       <span class="default"> (defaults to: <em>true</em>)</span>
       
@@ -361,7 +801,7 @@
       <div class="docstring">
         <div class="discussion">
           
-<p>importEnabled</p>
+<p>useJwksUrl</p>
 
         </div>
       </div>
@@ -387,15 +827,13 @@
     </li>
     
     <li>
-      <span class="name">priority</span>
-      
-      <span class="default"> (defaults to: <em>0</em>)</span>
+      <span class="name">user_info_url</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>priority</p>
+<p>userInfoUrl</p>
 
         </div>
       </div>
@@ -404,87 +842,15 @@
     </li>
     
     <li>
-      <span class="name">rdn_ldap_attribute</span>
+      <span class="name">validate_signature</span>
       
-      <span class="default"> (defaults to: <em>uid</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>rdnLdapAttribute</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">search_scope</span>
+      <span class="default"> (defaults to: <em>false</em>)</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>searchScope</p>
-
-        </div>
-      </div>
-      
-      
-      <div>
-        Supported values:
-        <ul>
-          
-          <li>
-            
-            one
-          </li>
-          
-          <li>
-            
-            one_level
-          </li>
-          
-          <li>
-            
-            subtree
-          </li>
-          
-          <li>
-            
-            1
-          </li>
-          
-          <li>
-            
-            2
-          </li>
-          
-          <li>
-            
-            1
-          </li>
-          
-          <li>
-            
-            2
-          </li>
-          
-        </ul>
-      </div>
-      
-    </li>
-    
-    <li>
-      <span class="name">use_kerberos_for_password_authentication</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>useKerberosForPasswordAuthentication</p>
+<p>validateSignature</p>
 
         </div>
       </div>
@@ -502,160 +868,6 @@
           <li>
             
             false
-          </li>
-          
-        </ul>
-      </div>
-      
-    </li>
-    
-    <li>
-      <span class="name">use_truststore_spi</span>
-      
-      <span class="default"> (defaults to: <em>ldapsOnly</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>useTruststoreSpi</p>
-
-        </div>
-      </div>
-      
-      
-      <div>
-        Supported values:
-        <ul>
-          
-          <li>
-            
-            always
-          </li>
-          
-          <li>
-            
-            ldapsOnly
-          </li>
-          
-          <li>
-            
-            never
-          </li>
-          
-        </ul>
-      </div>
-      
-    </li>
-    
-    <li>
-      <span class="name">user_object_classes</span>
-      
-      <span class="default"> (defaults to: <em>['inetOrgPerson', 'organizationalPerson']</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>userObjectClasses</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">username_ldap_attribute</span>
-      
-      <span class="default"> (defaults to: <em>uid</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>usernameLdapAttribute</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">users_dn</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>usersDn</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">uuid_ldap_attribute</span>
-      
-      <span class="default"> (defaults to: <em>entryUUID</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>uuidLdapAttribute</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">vendor</span>
-      
-      <span class="default"> (defaults to: <em>other</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>vendor</p>
-
-        </div>
-      </div>
-      
-      
-      <div>
-        Supported values:
-        <ul>
-          
-          <li>
-            
-            ad
-          </li>
-          
-          <li>
-            
-            rhds
-          </li>
-          
-          <li>
-            
-            tivoli
-          </li>
-          
-          <li>
-            
-            eDirectory
-          </li>
-          
-          <li>
-            
-            other
           </li>
           
         </ul>
@@ -672,13 +884,28 @@
   <ul>
     
     <li>
-      <span class="name">id</span>
+      <span class="name">alias</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>Id. Defaults to “<code>resource_name</code>-<code>realm</code>”</p>
+<p>The identity provider name. Defaults to <code>name</code>.</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">internal_id</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>internalId. Defaults to “<code>alias</code>-<code>realm</code>”</p>
 
         </div>
       </div>
@@ -693,11 +920,40 @@
       <div class="docstring">
         <div class="discussion">
           
-<p>The LDAP user provider name</p>
+<p>The identity provider name</p>
 
         </div>
       </div>
       
+      
+    </li>
+    
+    <li>
+      <span class="name">provider_id</span>
+      
+      <span class="default"> (defaults to: <em>oidc</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>providerId</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            oidc
+          </li>
+          
+        </ul>
+      </div>
       
     </li>
     
@@ -708,22 +964,7 @@
       <div class="docstring">
         <div class="discussion">
           
-<p>parentId</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">resource_name</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>The LDAP user provider name. Defaults to <code>name</code>.</p>
+<p>realm</p>
 
         </div>
       </div>
