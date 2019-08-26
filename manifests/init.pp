@@ -271,8 +271,12 @@ class keycloak (
     require         => Class['keycloak::service'],
   }
 
-  create_resources('keycloak_realm', $realms)
-  create_resources('keycloak::client_template', $client_templates)
+  $realms.each |$name, $realm| {
+    keycloak_realm { $name: * => $realm }
+  }
+  $client_templates.each |$name, $template| {
+    keycloak::client_template { $name: * => $template }
+  }
 
   $identity_providers.each |$name, $data| {
     keycloak_identity_provider { $name: * => $data }
