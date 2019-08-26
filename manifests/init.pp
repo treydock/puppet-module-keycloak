@@ -118,6 +118,8 @@
 # @param client_templates
 #   Hash that is used to define keycloak::client_template resources.
 #   Default is `{}`.
+# @param identity_providers
+#   Hash that is used to define keycloak_identity_provider resources.
 # @param with_sssd_support
 #   Boolean that determines if SSSD user provider support should be available
 # @param libunix_dbus_java_source
@@ -180,6 +182,7 @@ class keycloak (
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
   Hash $client_templates = {},
+  Hash $identity_providers = {},
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
     $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz',
@@ -270,5 +273,9 @@ class keycloak (
 
   create_resources('keycloak_realm', $realms)
   create_resources('keycloak::client_template', $client_templates)
+
+  $identity_providers.each |$name, $data| {
+    keycloak_identity_provider { $name: * => $data }
+  }
 
 }
