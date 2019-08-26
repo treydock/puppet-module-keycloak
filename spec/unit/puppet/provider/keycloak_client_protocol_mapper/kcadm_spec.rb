@@ -13,19 +13,17 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper).provider(:kcadm) do
   describe 'self.instances' do
     it 'creates instances' do
       allow(described_class).to receive(:realms).and_return(['master', 'test'])
-      allow(described_class).to receive(:kcadm).with('get', 'clients', 'master', nil, ['id']).and_return('[]')
-      allow(described_class).to receive(:kcadm).with('get', 'clients', 'test', nil, ['id']).and_return('[ { "id" : "test.local" } ]')
-      allow(described_class).to receive(:kcadm).with('get', 'clients/test.local/protocol-mappers/models', 'test').and_return(my_fixture_read('get-test.out'))
-      expect(described_class.instances.length).to eq(2)
+      allow(described_class).to receive(:kcadm).with('get', 'clients', 'master').and_return(my_fixture_read('get-master.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'clients', 'test').and_return(my_fixture_read('get-test.out'))
+      expect(described_class.instances.length).to eq(74)
     end
 
-    it 'returns the resource for a fileset' do
+    it 'returns the resource for a protocol mapper' do
       allow(described_class).to receive(:realms).and_return(['master', 'test'])
-      allow(described_class).to receive(:kcadm).with('get', 'clients', 'master', nil, ['id']).and_return('[]')
-      allow(described_class).to receive(:kcadm).with('get', 'clients', 'test', nil, ['id']).and_return('[ { "id" : "test.local" } ]')
-      allow(described_class).to receive(:kcadm).with('get', 'clients/test.local/protocol-mappers/models', 'test').and_return(my_fixture_read('get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'clients', 'master').and_return(my_fixture_read('get-master.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'clients', 'test').and_return(my_fixture_read('get-test.out'))
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
-      expect(property_hash[:name]).to eq('username for test.local on test')
+      expect(property_hash[:name]).to eq('full name for 4fa1df25-5754-45d2-902c-59a5cd50d6b8 on master')
     end
   end
   #   describe 'self.prefetch' do

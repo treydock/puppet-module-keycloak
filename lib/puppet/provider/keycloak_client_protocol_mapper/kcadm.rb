@@ -24,24 +24,17 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
   def self.instances
     protocol_mappers = []
     realms.each do |realm|
-      clients_output = kcadm('get', 'clients', realm, nil, ['id'])
+      clients_output = kcadm('get', 'clients', realm)
       clients_data = JSON.parse(clients_output)
-      clients = clients_data.map { |c| c['id'] }
-      clients.each do |client|
-        output = kcadm('get', "clients/#{client}/protocol-mappers/models", realm)
-        Puppet.debug("#{realm} #{client} protocl-mappers: #{output}")
-        begin
-          data = JSON.parse(output)
-        rescue JSON::ParserError
-          Puppet.debug('Unable to parse output from kcadm get protocl-mappers')
-          data = []
-        end
+      clients_data.each do |client|
+        client_id = client['id']
+        data = client['protocolMappers'] || []
         data.each do |d|
           protocol_mapper = {}
           protocol_mapper[:ensure] = :present
           protocol_mapper[:id] = d['id']
           protocol_mapper[:realm] = realm
-          protocol_mapper[:client] = client
+          protocol_mapper[:client] = client_id
           protocol_mapper[:resource_name] = d['name']
           protocol_mapper[:protocol] = d['protocol']
           protocol_mapper[:name] = "#{protocol_mapper[:resource_name]} for #{protocol_mapper[:client]} on #{protocol_mapper[:realm]}"

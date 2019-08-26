@@ -13,19 +13,17 @@ describe Puppet::Type.type(:keycloak_protocol_mapper).provider(:kcadm) do
   describe 'self.instances' do
     it 'creates instances' do
       allow(described_class).to receive(:realms).and_return(['master', 'test'])
-      allow(described_class).to receive(:kcadm).with('get', 'client-scopes', 'master', nil, ['id']).and_return('[]')
-      allow(described_class).to receive(:kcadm).with('get', 'client-scopes', 'test', nil, ['id']).and_return('[ { "id" : "oidc-clients" } ]')
-      allow(described_class).to receive(:kcadm).with('get', 'client-scopes/oidc-clients/protocol-mappers/models', 'test').and_return(my_fixture_read('get-test.out'))
-      expect(described_class.instances.length).to eq(2)
+      allow(described_class).to receive(:kcadm).with('get', 'client-scopes', 'master').and_return('[]')
+      allow(described_class).to receive(:kcadm).with('get', 'client-scopes', 'test').and_return(my_fixture_read('get-test.out'))
+      expect(described_class.instances.length).to eq(20)
     end
 
     it 'returns the resource for a fileset' do
       allow(described_class).to receive(:realms).and_return(['master', 'test'])
-      allow(described_class).to receive(:kcadm).with('get', 'client-scopes', 'master', nil, ['id']).and_return('[]')
-      allow(described_class).to receive(:kcadm).with('get', 'client-scopes', 'test', nil, ['id']).and_return('[ { "id" : "oidc-clients" } ]')
-      allow(described_class).to receive(:kcadm).with('get', 'client-scopes/oidc-clients/protocol-mappers/models', 'test').and_return(my_fixture_read('get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'client-scopes', 'master').and_return('[]')
+      allow(described_class).to receive(:kcadm).with('get', 'client-scopes', 'test').and_return(my_fixture_read('get-test.out'))
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
-      expect(property_hash[:name]).to eq('email verified for oidc-clients on test')
+      expect(property_hash[:name]).to eq('email verified for 5e47ab44-0930-4470-abbd-9571ee9e2628 on test')
     end
   end
   #   describe 'self.prefetch' do
