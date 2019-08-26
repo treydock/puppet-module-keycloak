@@ -1,0 +1,25 @@
+fixtures:
+  repositories:
+    stdlib:
+      repo: https://github.com/puppetlabs/puppetlabs-stdlib.git
+    mysql:
+      repo: https://github.com/puppetlabs/puppetlabs-mysql.git
+    postgresql:
+      repo: https://github.com/puppetlabs/puppetlabs-postgresql.git
+    java:
+      repo: https://github.com/puppetlabs/puppetlabs-java.git
+    java_ks:
+      repo: https://github.com/puppetlabs/puppetlabs-java_ks.git
+    archive:
+      repo: https://github.com/voxpupuli/puppet-archive.git
+    systemd:
+      repo: https://github.com/camptocamp/puppet-systemd.git
+    yumrepo_core:
+      repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
+      puppet_version: ">= 6.0.0"
+    apt:
+      repo: https://github.com/puppetlabs/puppetlabs-apt.git
+    concat:
+      repo: https://github.com/puppetlabs/puppetlabs-concat.git
+  symlinks:
+    keycloak: "#{source_dir}"

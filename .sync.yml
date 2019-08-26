@@ -1,6 +1,18 @@
 ---
 .travis.yml:
   dist: xenial
+  extras:
+    - env: PUPPET_GEM_VERSION="~> 5" FIXTURES_YML=".fixtures-latest.yml"
+      rvm: 2.4.5
+      stage: spec
+    - env: PUPPET_GEM_VERSION="~> 6" FIXTURES_YML=".fixtures-latest.yml"
+      rvm: 2.5.3
+      stage: spec
+  allow_failures:
+    - env: PUPPET_GEM_VERSION="~> 5" FIXTURES_YML=".fixtures-latest.yml"
+      rvm: 2.4.5
+    - env: PUPPET_GEM_VERSION="~> 6" FIXTURES_YML=".fixtures-latest.yml"
+      rvm: 2.5.3
   docker_defaults:
     dist: xenial
   docker_sets:
@@ -37,6 +49,8 @@ appveyor.yml:
 spec/acceptance/nodesets/centos-6.yml:
   delete: true
 spec/acceptance/nodesets/debian-8.yml:
+  delete: true
+spec/acceptance/nodesets/debian-10.yml:
   delete: true
 spec/acceptance/nodesets/ubuntu-1404.yml:
   delete: true
