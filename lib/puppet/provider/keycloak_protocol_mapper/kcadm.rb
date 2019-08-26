@@ -24,24 +24,17 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
   def self.instances
     protocol_mappers = []
     realms.each do |realm|
-      client_scopes_output = kcadm('get', 'client-scopes', realm, nil, ['id'])
+      client_scopes_output = kcadm('get', 'client-scopes', realm)
       client_scope_data = JSON.parse(client_scopes_output)
-      client_scopes = client_scope_data.map { |c| c['id'] }
-      client_scopes.each do |client_scope|
-        output = kcadm('get', "client-scopes/#{client_scope}/protocol-mappers/models", realm)
-        Puppet.debug("#{realm} #{client_scope} protocl-mappers: #{output}")
-        begin
-          data = JSON.parse(output)
-        rescue JSON::ParserError
-          Puppet.debug('Unable to parse output from kcadm get protocl-mappers')
-          data = []
-        end
+      client_scope_data.each do |client_scope|
+        client_scope_id = client_scope['id']
+        data = client_scope['protocolMappers'] || []
         data.each do |d|
           protocol_mapper = {}
           protocol_mapper[:ensure] = :present
           protocol_mapper[:id] = d['id']
           protocol_mapper[:realm] = realm
-          protocol_mapper[:client_scope] = client_scope
+          protocol_mapper[:client_scope] = client_scope_id
           protocol_mapper[:resource_name] = d['name']
           protocol_mapper[:protocol] = d['protocol']
           protocol_mapper[:name] = "#{protocol_mapper[:resource_name]} for #{protocol_mapper[:client_scope]} on #{protocol_mapper[:realm]}"
