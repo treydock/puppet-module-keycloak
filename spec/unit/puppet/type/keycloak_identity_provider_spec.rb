@@ -70,8 +70,8 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     }.to raise_error(%r{foo})
   end
 
-  it 'defaults to prompt=unspecified' do
-    expect(resource[:prompt]).to eq('unspecified')
+  it 'defaults to prompt undefined' do
+    expect(resource[:prompt]).to be_nil
   end
 
   it 'does not allow invalid prompt' do

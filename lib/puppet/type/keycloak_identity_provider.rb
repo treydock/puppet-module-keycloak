@@ -214,8 +214,7 @@ Manage Keycloak identity providers
 
   newproperty(:prompt) do
     desc 'prompt'
-    newvalues('unspecified', 'none', 'consent', 'login', 'select_account')
-    defaultto 'unspecified'
+    newvalues('none', 'consent', 'login', 'select_account')
     munge { |v| v }
   end
 
