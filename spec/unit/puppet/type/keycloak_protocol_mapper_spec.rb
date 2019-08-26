@@ -320,6 +320,20 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     }.to raise_error(%r{foo})
   end
 
+  it 'accepts value for script' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-javascript-mapper'
+    config[:script] = 'foobar'
+    expect(resource[:script]).to eq('foobar')
+  end
+
+  it 'accepts value with newline for script' do
+    config[:protocol] = 'saml'
+    config[:type] = 'saml-javascript-mapper'
+    config[:script] = 'foobar\nbaz'
+    expect(resource[:script]).to eq('foobar\nbaz')
+  end
+
   it 'autorequires keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(name: 'keycloak')
     catalog = Puppet::Resource::Catalog.new
