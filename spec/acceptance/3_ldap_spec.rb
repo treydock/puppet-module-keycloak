@@ -27,6 +27,16 @@ describe 'keycloak_ldap_user_provider:' do
         user_model_attribute => 'firstName',
         ldap_attribute       => 'givenName',
       }
+      keycloak_ldap_mapper { 'group-role for LDAP-test on test':
+        type              => 'role-ldap-mapper',
+        roles_dn          => 'ou=Groups,dc=example,dc=com',
+        roles_ldap_filter => '(!(cn=P*))',
+      }
+      keycloak_ldap_mapper { 'group for LDAP-test on test':
+        type               => 'group-ldap-mapper',
+        groups_dn          => 'ou=Groups,dc=example,dc=com',
+        groups_ldap_filter => '(cn=P*)',
+      }
       EOS
 
       apply_manifest(pp, catch_failures: true)
@@ -60,6 +70,26 @@ describe 'keycloak_ldap_user_provider:' do
         expect(d['config']['ldap.attribute']).to eq(['givenName'])
       end
     end
+
+    it 'has set group-role LDAP mapper' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
+        data = JSON.parse(stdout)
+        d = data.select { |o| o['name'] == 'group-role' }[0]
+        expect(d['providerId']).to eq('role-ldap-mapper')
+        expect(d['config']['roles.dn']).to eq(['ou=Groups,dc=example,dc=com'])
+        expect(d['config']['roles.ldap.filter']).to eq(['(!(cn=P*))'])
+      end
+    end
+
+    it 'has set group LDAP mapper' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
+        data = JSON.parse(stdout)
+        d = data.select { |o| o['name'] == 'group' }[0]
+        expect(d['providerId']).to eq('group-ldap-mapper')
+        expect(d['config']['groups.dn']).to eq(['ou=Groups,dc=example,dc=com'])
+        expect(d['config']['groups.ldap.filter']).to eq(['(cn=P*)'])
+      end
+    end
   end
 
   context 'updates ldap' do
@@ -81,6 +111,16 @@ describe 'keycloak_ldap_user_provider:' do
         ldap  => 'LDAP-test',
         type => 'full-name-ldap-mapper',
         ldap_attribute => 'bar',
+      }
+      keycloak_ldap_mapper { 'group-role for LDAP-test on test':
+        type              => 'role-ldap-mapper',
+        roles_dn          => 'ou=Groups,dc=example,dc=com',
+        roles_ldap_filter => '(!(cn=P0*))',
+      }
+      keycloak_ldap_mapper { 'group for LDAP-test on test':
+        type               => 'group-ldap-mapper',
+        groups_dn          => 'ou=Groups,dc=example,dc=com',
+        groups_ldap_filter => '(cn=P0*)',
       }
       EOS
 
@@ -104,6 +144,26 @@ describe 'keycloak_ldap_user_provider:' do
         d = data.select { |o| o['name'] == 'full-name' }[0]
         expect(d['providerId']).to eq('full-name-ldap-mapper')
         expect(d['config']['ldap.full.name.attribute']).to eq(['bar'])
+      end
+    end
+
+    it 'has updated group-role LDAP mapper' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
+        data = JSON.parse(stdout)
+        d = data.select { |o| o['name'] == 'group-role' }[0]
+        expect(d['providerId']).to eq('role-ldap-mapper')
+        expect(d['config']['roles.dn']).to eq(['ou=Groups,dc=example,dc=com'])
+        expect(d['config']['roles.ldap.filter']).to eq(['(!(cn=P0*))'])
+      end
+    end
+
+    it 'has updated group LDAP mapper' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
+        data = JSON.parse(stdout)
+        d = data.select { |o| o['name'] == 'group' }[0]
+        expect(d['providerId']).to eq('group-ldap-mapper')
+        expect(d['config']['groups.dn']).to eq(['ou=Groups,dc=example,dc=com'])
+        expect(d['config']['groups.ldap.filter']).to eq(['(cn=P0*)'])
       end
     end
   end

@@ -185,4 +185,46 @@
   "parentId" : "test",
   "subType" : "authenticated",
   "config" : { }
+}, {
+  "id" : "bb107913-1783-42fe-8324-3f8b8e4fc35f",
+  "name" : "group-role",
+  "providerId" : "role-ldap-mapper",
+  "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+  "parentId" : "OSC-LDAP-osc",
+  "config" : {
+    "mode" : [ "READ_ONLY" ],
+    "membership.attribute.type" : [ "DN" ],
+    "user.roles.retrieve.strategy" : [ "LOAD_ROLES_BY_MEMBER_ATTRIBUTE" ],
+    "roles.dn" : [ "ou=Groups,dc=example,dc=com" ],
+    "membership.user.ldap.attribute" : [ "uid" ],
+    "membership.ldap.attribute" : [ "member" ],
+    "role.name.ldap.attribute" : [ "cn" ],
+    "memberof.ldap.attribute" : [ "memberOf" ],
+    "use.realm.roles.mapping" : [ "false" ],
+    "roles.ldap.filter" : [ "(!(cn=P*))" ],
+    "role.object.classes" : [ "groupOfNames" ],
+    "client.id" : [ "client.example.com" ]
+  }
+}, {
+  "id" : "dab73030-4439-42de-acd6-7e12079f4b73",
+  "name" : "groups",
+  "providerId" : "group-ldap-mapper",
+  "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+  "parentId" : "OSC-LDAP-osc",
+  "config" : {
+    "membership.attribute.type" : [ "DN" ],
+    "group.name.ldap.attribute" : [ "cn" ],
+    "preserve.group.inheritance" : [ "true" ],
+    "membership.user.ldap.attribute" : [ "uid" ],
+    "groups.dn" : [ "ou=Groups,dc=example,dc=com" ],
+    "mapped.group.attributes" : [ "ou" ],
+    "mode" : [ "READ_ONLY" ],
+    "user.roles.retrieve.strategy" : [ "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE" ],
+    "groups.ldap.filter" : [ "(!(cn=P*))" ],
+    "ignore.missing.groups" : [ "false" ],
+    "membership.ldap.attribute" : [ "member" ],
+    "group.object.classes" : [ "groupOfMembers" ],
+    "memberof.ldap.attribute" : [ "memberOf" ],
+    "drop.non.existing.groups.during.sync" : [ "false" ]
+  }
 } ]

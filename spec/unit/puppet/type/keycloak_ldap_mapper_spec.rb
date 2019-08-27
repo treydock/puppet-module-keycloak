@@ -104,6 +104,113 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     expect(resource[:write_only]).to be(:false)
   end
 
+  it 'has default mode' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:mode]).to eq('READ_ONLY')
+  end
+
+  it 'has default membership_attribute_type' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:membership_attribute_type]).to eq('DN')
+  end
+
+  it 'has default user_roles_retrieve_strategy' do
+    expect(resource[:user_roles_retrieve_strategy]).to be_nil
+  end
+
+  it 'has default user_roles_retrieve_strategy for group-ldap-mapper' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:user_roles_retrieve_strategy]).to eq('LOAD_GROUPS_BY_MEMBER_ATTRIBUTE')
+  end
+
+  it 'has default user_roles_retrieve_strategy for role-ldap-mapper' do
+    config[:type] = 'role-ldap-mapper'
+    expect(resource[:user_roles_retrieve_strategy]).to eq('LOAD_ROLES_BY_MEMBER_ATTRIBUTE')
+  end
+
+  it 'has default group_name_ldap_attribute' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:group_name_ldap_attribute]).to eq('cn')
+  end
+
+  it 'has default membership_user_ldap_attribute' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:membership_user_ldap_attribute]).to eq('uid')
+  end
+
+  it 'has default membership_ldap_attribute' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:membership_ldap_attribute]).to eq('member')
+  end
+
+  it 'has default groups_dn' do
+    config[:type] = 'group-ldap-mapper'
+    config[:groups_dn] = 'foo'
+    expect(resource[:groups_dn]).to eq('foo')
+  end
+
+  it 'has default memberof_ldap_attribute' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:memberof_ldap_attribute]).to eq('memberOf')
+  end
+
+  it 'has default group_object_classes' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:group_object_classes]).to eq('groupOfNames')
+  end
+
+  it 'has default roles_dn' do
+    config[:type] = 'role-ldap-mapper'
+    config[:roles_dn] = 'foo'
+    expect(resource[:roles_dn]).to eq('foo')
+  end
+
+  it 'has default role_name_ldap_attribute' do
+    config[:type] = 'role-ldap-mapper'
+    expect(resource[:role_name_ldap_attribute]).to eq('cn')
+  end
+
+  it 'has default role_object_classes' do
+    config[:type] = 'role-ldap-mapper'
+    expect(resource[:role_object_classes]).to eq('groupOfNames')
+  end
+
+  it 'has default use_realm_roles_mapping' do
+    config[:type] = 'role-ldap-mapper'
+    expect(resource[:use_realm_roles_mapping]).to eq(:true)
+  end
+
+  it 'supports use_realm_roles_mapping false' do
+    config[:type] = 'role-ldap-mapper'
+    config[:roles_dn] = 'foo'
+    config[:client_id] = 'foo'
+    config[:use_realm_roles_mapping] = false
+    expect(resource[:use_realm_roles_mapping]).to eq(:false)
+  end
+
+  it 'requires client_id for use_realm_roles_mapping=false' do
+    config[:type] = 'role-ldap-mapper'
+    config[:roles_dn] = 'foo'
+    config.delete(:client_id)
+    config[:use_realm_roles_mapping] = false
+    expect { resource }.to raise_error(Puppet::Error, %r{client_id})
+  end
+
+  it 'has default ignore_missing_groups' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:ignore_missing_groups]).to eq(:false)
+  end
+
+  it 'has default preserve_group_inheritance' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:preserve_group_inheritance]).to eq(:true)
+  end
+
+  it 'has default drop_non_existing_groups_during_sync' do
+    config[:type] = 'group-ldap-mapper'
+    expect(resource[:drop_non_existing_groups_during_sync]).to eq(:false)
+  end
+
   defaults = {
     read_only: :true,
   }
@@ -114,6 +221,9 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
       :ldap,
       :ldap_attribute,
       :user_model_attribute,
+      :mapped_group_attributes,
+      :groups_ldap_filter,
+      :roles_ldap_filter,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'
@@ -198,6 +308,20 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     catalog.add_resource keycloak_ldap_user_provider
     rel = resource.autorequire[0]
     expect(rel.source.ref).to eq(keycloak_ldap_user_provider.ref)
+    expect(rel.target.ref).to eq(resource.ref)
+  end
+
+  it 'autorequires keycloak_client' do
+    config[:type] = 'role-ldap-mapper'
+    config[:roles_dn] = 'foo'
+    config[:use_realm_roles_mapping] = false
+    config[:client_id] = 'test.example.com'
+    keycloak_client = Puppet::Type.type(:keycloak_client).new(name: 'test.example.com', realm: 'test')
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource resource
+    catalog.add_resource keycloak_client
+    rel = resource.autorequire[0]
+    expect(rel.source.ref).to eq(keycloak_client.ref)
     expect(rel.target.ref).to eq(resource.ref)
   end
 
