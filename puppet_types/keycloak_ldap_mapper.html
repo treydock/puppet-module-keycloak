@@ -147,6 +147,54 @@
     </li>
     
     <li>
+      <span class="name">client_id</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>client.id, only for <code>type</code> of <code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">drop_non_existing_groups_during_sync</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>drop.non.existing.groups.during.sync, only for <code>type</code> of
+<code>group-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
       <span class="name">ensure</span>
       
       <span class="default"> (defaults to: <em>present</em>)</span>
@@ -173,6 +221,102 @@
           <li>
             
             absent
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">group_name_ldap_attribute</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>group.name.ldap.attribute, only for <code>type</code> of
+<code>group-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">group_object_classes</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>group.object.classes, only for <code>type</code> of
+<code>group-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">groups_dn</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>groups.dn, only for <code>type</code> of <code>group-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">groups_ldap_filter</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>groups.ldap.filter, only for <code>type</code> of
+<code>group-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">ignore_missing_groups</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>ignore.missing.groups, only for <code>type</code> of
+<code>group-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
           </li>
           
         </ul>
@@ -212,15 +356,272 @@
     </li>
     
     <li>
-      <span class="name">read_only</span>
+      <span class="name">mapped_group_attributes</span>
       
-      <span class="default"> (defaults to: <em>true</em>)</span>
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>mapped.group.attributes, only for <code>type</code> of
+<code>group-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">memberof_ldap_attribute</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>memberof.ldap.attribute, only for <code>type</code> of
+<code>group-ldap-mapper</code> and <code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">membership_attribute_type</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>membership.attribute.type, only for <code>type</code> of
+<code>group-ldap-mapper</code> and <code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            DN
+          </li>
+          
+          <li>
+            
+            UID
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">membership_ldap_attribute</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>membership.ldap.attribute, only for <code>type</code> of
+<code>group-ldap-mapper</code> and <code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">membership_user_ldap_attribute</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>membership.user.ldap.attribute, only for <code>type</code> of
+<code>group-ldap-mapper</code> and <code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">mode</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>mode, only for <code>type</code> of <code>group-ldap-mapper</code> and
+<code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            READ_ONLY
+          </li>
+          
+          <li>
+            
+            LDAP_ONLY
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">preserve_group_inheritance</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>preserve.group.inheritance, only for <code>type</code> of
+<code>group-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">read_only</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
 <p>read.only</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            true
+          </li>
+          
+          <li>
+            
+            false
+          </li>
+          
+        </ul>
+      </div>
+      
+    </li>
+    
+    <li>
+      <span class="name">role_name_ldap_attribute</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>role.name.ldap.attribute, only for <code>type</code> of
+<code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">role_object_classes</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>role.object.classes, only for <code>type</code> of
+<code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">roles_dn</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>roles.dn, only for <code>type</code> of <code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">roles_ldap_filter</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>roles.ldap.filter, only for <code>type</code> of
+<code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">use_realm_roles_mapping</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>use.realm.roles.mapping, only for <code>type</code> of
+<code>role-ldap-mapper</code></p>
 
         </div>
       </div>
@@ -257,6 +658,59 @@
         </div>
       </div>
       
+      
+    </li>
+    
+    <li>
+      <span class="name">user_roles_retrieve_strategy</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>user.roles.retrieve.strategy, only for <code>type</code> of
+<code>group-ldap-mapper</code> and <code>role-ldap-mapper</code></p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            LOAD_GROUPS_BY_MEMBER_ATTRIBUTE
+          </li>
+          
+          <li>
+            
+            GET_GROUPS_FROM_USER_MEMBEROF_ATTRIBUTE
+          </li>
+          
+          <li>
+            
+            LOAD_GROUPS_BY_MEMBER_ATTRIBUTE_RECURSIVELY
+          </li>
+          
+          <li>
+            
+            LOAD_ROLES_BY_MEMBER_ATTRIBUTE
+          </li>
+          
+          <li>
+            
+            GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE
+          </li>
+          
+          <li>
+            
+            LOAD_ROLES_BY_MEMBER_ATTRIBUTE_RECURSIVELY
+          </li>
+          
+        </ul>
+      </div>
       
     </li>
     
@@ -403,6 +857,16 @@
           <li>
             
             full-name-ldap-mapper
+          </li>
+          
+          <li>
+            
+            group-ldap-mapper
+          </li>
+          
+          <li>
+            
+            role-ldap-mapper
           </li>
           
         </ul>
