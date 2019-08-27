@@ -115,8 +115,11 @@
 # @param realms
 #   Hash that is used to define keycloak_realm resources.
 #   Default is `{}`.
-# @param client_templates
-#   Hash that is used to define keycloak::client_template resources.
+# @param oidc_client_scopes
+#   Hash that is used to define keycloak::client_scope::oidc resources.
+#   Default is `{}`.
+# @param saml_client_scopes
+#   Hash that is used to define keycloak::client_scope::saml resources.
 #   Default is `{}`.
 # @param identity_providers
 #   Hash that is used to define keycloak_identity_provider resources.
@@ -187,7 +190,8 @@ class keycloak (
   Boolean $theme_cache_themes = true,
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
-  Hash $client_templates = {},
+  Hash $oidc_client_scopes = {},
+  Hash $saml_client_scopes = {},
   Hash $client_scopes = {},
   Hash $protocol_mappers = {},
   Hash $identity_providers = {},
@@ -283,8 +287,11 @@ class keycloak (
   $realms.each |$name, $realm| {
     keycloak_realm { $name: * => $realm }
   }
-  $client_templates.each |$name, $template| {
-    keycloak::client_template { $name: * => $template }
+  $oidc_client_scopes.each |$name, $scope| {
+    keycloak::client_scope::oidc { $name: * => $scope }
+  }
+  $saml_client_scopes.each |$name, $scope| {
+    keycloak::client_scope::saml { $name: * => $scope }
   }
   $client_scopes.each |$name, $client_scope| {
     keycloak_client_scope { $name: * => $client_scope }
