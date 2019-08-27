@@ -884,6 +884,12 @@ Valid values: `true`, `false`
 
 single. Default to `false` for `type` `saml-role-list-mapper`.
 
+##### `script`
+
+Script, only valid for `type` of `saml-javascript-mapper`'
+
+Array values will be joined with newlines. Strings will be kept unchanged.
+
 #### Parameters
 
 The following parameters are available in the `keycloak_client_protocol_mapper` type.
@@ -912,7 +918,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 
@@ -1335,13 +1341,105 @@ Valid values: `true`, `false`
 
 read.only
 
-Default value: true
-
 ##### `write_only`
 
 Valid values: `true`, `false`
 
 write.only.  Defaults to `false` if `type` is `full-name-ldap-mapper`.
+
+##### `mode`
+
+Valid values: READ_ONLY, LDAP_ONLY
+
+mode, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`
+
+##### `membership_attribute_type`
+
+Valid values: DN, UID
+
+membership.attribute.type, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`
+
+##### `user_roles_retrieve_strategy`
+
+Valid values: LOAD_GROUPS_BY_MEMBER_ATTRIBUTE, GET_GROUPS_FROM_USER_MEMBEROF_ATTRIBUTE, LOAD_GROUPS_BY_MEMBER_ATTRIBUTE_RECURSIVELY, LOAD_ROLES_BY_MEMBER_ATTRIBUTE, GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE, LOAD_ROLES_BY_MEMBER_ATTRIBUTE_RECURSIVELY
+
+user.roles.retrieve.strategy, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`
+
+##### `group_name_ldap_attribute`
+
+group.name.ldap.attribute, only for `type` of `group-ldap-mapper`
+
+##### `ignore_missing_groups`
+
+Valid values: `true`, `false`
+
+ignore.missing.groups, only for `type` of `group-ldap-mapper`
+
+##### `membership_user_ldap_attribute`
+
+membership.user.ldap.attribute, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`
+
+##### `membership_ldap_attribute`
+
+membership.ldap.attribute, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`
+
+##### `preserve_group_inheritance`
+
+Valid values: `true`, `false`
+
+preserve.group.inheritance, only for `type` of `group-ldap-mapper`
+
+##### `groups_dn`
+
+groups.dn, only for `type` of `group-ldap-mapper`
+
+##### `mapped_group_attributes`
+
+mapped.group.attributes, only for `type` of `group-ldap-mapper`
+
+##### `groups_ldap_filter`
+
+groups.ldap.filter, only for `type` of `group-ldap-mapper`
+
+##### `memberof_ldap_attribute`
+
+memberof.ldap.attribute, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`
+
+##### `group_object_classes`
+
+group.object.classes, only for `type` of `group-ldap-mapper`
+
+##### `drop_non_existing_groups_during_sync`
+
+Valid values: `true`, `false`
+
+drop.non.existing.groups.during.sync, only for `type` of `group-ldap-mapper`
+
+##### `roles_dn`
+
+roles.dn, only for `type` of `role-ldap-mapper`
+
+##### `role_name_ldap_attribute`
+
+role.name.ldap.attribute, only for `type` of `role-ldap-mapper`
+
+##### `role_object_classes`
+
+role.object.classes, only for `type` of `role-ldap-mapper`
+
+##### `roles_ldap_filter`
+
+roles.ldap.filter, only for `type` of `role-ldap-mapper`
+
+##### `use_realm_roles_mapping`
+
+Valid values: `true`, `false`
+
+use.realm.roles.mapping, only for `type` of `role-ldap-mapper`
+
+##### `client_id`
+
+client.id, only for `type` of `role-ldap-mapper`
 
 #### Parameters
 
@@ -1363,7 +1461,7 @@ The LDAP mapper name. Defaults to `name`
 
 ##### `type`
 
-Valid values: user-attribute-ldap-mapper, full-name-ldap-mapper
+Valid values: user-attribute-ldap-mapper, full-name-ldap-mapper, group-ldap-mapper, role-ldap-mapper
 
 providerId
 
