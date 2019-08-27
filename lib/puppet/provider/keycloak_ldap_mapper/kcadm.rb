@@ -5,6 +5,24 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
 
   mk_resource_methods
 
+  def group_ldap_mapper_properties
+    [
+      :mode, :membership_attribute_type, :user_roles_retrieve_strategy,
+      :group_name_ldap_attribute, :ignore_missing_groups, :membership_user_ldap_attribute,
+      :membership_ldap_attribute, :preserve_group_inheritance, :groups_dn,
+      :mapped_group_attributes, :groups_ldap_filter, :memberof_ldap_attribute,
+      :group_object_classes, :drop_non_existing_groups_during_sync,
+    ]
+  end
+
+  def role_ldap_mapper_properties
+    [
+      :mode, :membership_attribute_type, :user_roles_retrieve_strategy, :membership_user_ldap_attribute,
+      :membership_ldap_attribute, :memberof_ldap_attribute, :roles_dn, :role_name_ldap_attribute,
+      :role_object_classes, :roles_ldap_filter, :use_realm_roles_mapping, :client_id
+    ]
+  end
+
   def self.instances
     components = []
     realms.each do |realm|
@@ -19,7 +37,9 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
 
       data.each do |d|
         next unless d['providerType'] == 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'
-        next unless d['providerId'] == 'user-attribute-ldap-mapper' || d['providerId'] == 'full-name-ldap-mapper'
+        next unless [
+          'user-attribute-ldap-mapper', 'full-name-ldap-mapper', 'group-ldap-mapper', 'role-ldap-mapper'
+        ].include?(d['providerId'])
         component = {}
         component[:ensure] = :present
         component[:id] = d['id']
@@ -87,6 +107,12 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
           next
         end
       end
+      if resource[:type] == 'group-ldap-mapper'
+        next if ! group_ldap_mapper_properties.include?(property.to_sym)
+      end
+      if resource[:type] == 'role-ldap-mapper'
+        next if ! role_ldap_mapper_properties.include?(property.to_sym)
+      end
       data[:config][key] = [resource[property.to_sym]]
     end
 
@@ -151,6 +177,14 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
           if property == :write_only
             next
           end
+        end
+        # Skip for group and role mappers
+        if resource[:type] == 'group-ldap-mapper'
+          next if ! group_ldap_mapper_properties.include?(property.to_sym)
+        elsif resource[:type] == 'role-ldap-mapper'
+          next if ! role_ldap_mapper_properties.include?(property.to_sym)
+        else
+          next if (group_ldap_mapper_properties.include?(property.to_sym) || role_ldap_mapper_properties.include?(property.to_sym))
         end
         data[:config][key] = [resource[property.to_sym]]
       end
