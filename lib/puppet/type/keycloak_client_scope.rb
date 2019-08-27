@@ -46,9 +46,6 @@ Manage Keycloak client scopes
 
   newproperty(:consent_screen_text) do
     desc 'consent.screen.text'
-    defaultto do
-      "${#{@resource[:resource_name]}ScopeConsentText}"
-    end
   end
 
   newproperty(:display_on_consent_screen, boolean: true) do

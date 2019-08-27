@@ -55,8 +55,8 @@ describe Puppet::Type.type(:keycloak_client_scope) do
     }.to raise_error(%r{foo})
   end
 
-  it 'has default for consent_screen_text' do
-    expect(resource[:consent_screen_text]).to eq('${fooScopeConsentText}')
+  it 'has no default for consent_screen_text' do
+    expect(resource[:consent_screen_text]).to be_nil
   end
 
   it 'allows values for consent_screen_text' do
