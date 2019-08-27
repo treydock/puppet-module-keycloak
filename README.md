@@ -186,15 +186,21 @@ Register a client.
       secret          => 'supersecret',
     }
 
-### keycloak::client_template
+### keycloak::client_scope::oidc
 
-Defined type that can be used to define both `keycloak_client_scope` and `keycloak_protocol_mapper` resources. The example below will define a client template and several protocol mappers that are built into keycloak.
+Defined type that can be used to define both `keycloak_client_scope` and `keycloak_protocol_mapper` resources for OpenID Connect. 
 
-    keycloak::client_template { 'oidc-clients':
+    keycloak::client_scope::oidc { 'oidc-clients':
       realm => 'test',
     }
 
-**NOTE**: This define is deprecated as templates were replaced by client scopes in Keycloak 4.x.
+### keycloak::client_scope::saml
+
+Defined type that can be used to define both `keycloak_client_scope` and `keycloak_protocol_mapper` resources for SAML. 
+
+    keycloak::client_scope::saml { 'saml-clients':
+      realm => 'test',
+    }
 
 ### keycloak\_client_scope
 

@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak::client-template define:' do
-  context 'creates client-template' do
+describe 'keycloak client scopes defines:' do
+  context 'creates client scopes' do
     it 'runs successfully' do
       pp = <<-EOS
       include mysql::server
@@ -9,7 +9,7 @@ describe 'keycloak::client-template define:' do
         datasource_driver => 'mysql',
       }
       keycloak_realm { 'test': ensure => 'present' }
-      keycloak::client_template { 'openid-connect-clients':
+      keycloak::client_scope::oidc { 'openid-connect-clients':
         realm => 'test',
       }
       EOS
@@ -18,7 +18,7 @@ describe 'keycloak::client-template define:' do
       apply_manifest(pp, catch_changes: true)
     end
 
-    it 'has created a client template' do
+    it 'has created a client scope' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients -r test' do
         data = JSON.parse(stdout)
         expect(data['name']).to eq('openid-connect-clients')
@@ -72,7 +72,7 @@ describe 'keycloak::client-template define:' do
     end
   end
 
-  context 'creates saml client-template' do
+  context 'creates saml client scope' do
     it 'runs successfully' do
       pp = <<-EOS
       include mysql::server
@@ -80,9 +80,8 @@ describe 'keycloak::client-template define:' do
         datasource_driver => 'mysql',
       }
       keycloak_realm { 'test': ensure => 'present' }
-      keycloak::client_template { 'saml-clients':
-        realm    => 'test',
-        protocol => 'saml',
+      keycloak::client_scope::saml { 'saml-clients':
+        realm => 'test',
       }
       EOS
 
@@ -90,7 +89,7 @@ describe 'keycloak::client-template define:' do
       apply_manifest(pp, catch_changes: true)
     end
 
-    it 'has created a client template' do
+    it 'has created a client scope' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients -r test' do
         data = JSON.parse(stdout)
         expect(data['name']).to eq('saml-clients')
