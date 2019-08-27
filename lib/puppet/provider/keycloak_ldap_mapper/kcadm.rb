@@ -11,7 +11,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
       :group_name_ldap_attribute, :ignore_missing_groups, :membership_user_ldap_attribute,
       :membership_ldap_attribute, :preserve_group_inheritance, :groups_dn,
       :mapped_group_attributes, :groups_ldap_filter, :memberof_ldap_attribute,
-      :group_object_classes, :drop_non_existing_groups_during_sync,
+      :group_object_classes, :drop_non_existing_groups_during_sync
     ]
   end
 
@@ -108,10 +108,10 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
         end
       end
       if resource[:type] == 'group-ldap-mapper'
-        next if ! group_ldap_mapper_properties.include?(property.to_sym)
+        next unless group_ldap_mapper_properties.include?(property.to_sym)
       end
       if resource[:type] == 'role-ldap-mapper'
-        next if ! role_ldap_mapper_properties.include?(property.to_sym)
+        next unless role_ldap_mapper_properties.include?(property.to_sym)
       end
       data[:config][key] = [resource[property.to_sym]]
     end
@@ -180,11 +180,11 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
         end
         # Skip for group and role mappers
         if resource[:type] == 'group-ldap-mapper'
-          next if ! group_ldap_mapper_properties.include?(property.to_sym)
+          next unless group_ldap_mapper_properties.include?(property.to_sym)
         elsif resource[:type] == 'role-ldap-mapper'
-          next if ! role_ldap_mapper_properties.include?(property.to_sym)
-        else
-          next if (group_ldap_mapper_properties.include?(property.to_sym) || role_ldap_mapper_properties.include?(property.to_sym))
+          next unless role_ldap_mapper_properties.include?(property.to_sym)
+        elsif group_ldap_mapper_properties.include?(property.to_sym) || role_ldap_mapper_properties.include?(property.to_sym)
+          next
         end
         data[:config][key] = [resource[property.to_sym]]
       end

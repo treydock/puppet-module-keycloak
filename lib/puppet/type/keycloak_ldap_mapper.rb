@@ -61,7 +61,7 @@ Manage Keycloak LDAP attribute mappers
     defaultto do
       if @resource[:type] == 'full-name-ldap-mapper'
         nil
-      elsif ! ['group-ldap-mapper', 'role-ldap-mapper'].include?(@resource[:type])
+      elsif !['group-ldap-mapper', 'role-ldap-mapper'].include?(@resource[:type])
         :false
       else
         nil
@@ -85,7 +85,7 @@ Manage Keycloak LDAP attribute mappers
     desc 'read.only'
     newvalues(:true, :false)
     defaultto do
-      if ! ['group-ldap-mapper', 'role-ldap-mapper'].include?(@resource[:type])
+      if !['group-ldap-mapper', 'role-ldap-mapper'].include?(@resource[:type])
         :true
       else
         nil
@@ -134,8 +134,7 @@ Manage Keycloak LDAP attribute mappers
   newproperty(:user_roles_retrieve_strategy) do
     desc 'user.roles.retrieve.strategy, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`'
     newvalues('LOAD_GROUPS_BY_MEMBER_ATTRIBUTE', 'GET_GROUPS_FROM_USER_MEMBEROF_ATTRIBUTE', 'LOAD_GROUPS_BY_MEMBER_ATTRIBUTE_RECURSIVELY',
-    'LOAD_ROLES_BY_MEMBER_ATTRIBUTE', 'GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE', 'LOAD_ROLES_BY_MEMBER_ATTRIBUTE_RECURSIVELY'
-    )
+              'LOAD_ROLES_BY_MEMBER_ATTRIBUTE', 'GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE', 'LOAD_ROLES_BY_MEMBER_ATTRIBUTE_RECURSIVELY')
     defaultto do
       if @resource[:type] == 'group-ldap-mapper'
         'LOAD_GROUPS_BY_MEMBER_ATTRIBUTE'
@@ -351,16 +350,16 @@ Manage Keycloak LDAP attribute mappers
     if self[:ensure] == :present
       if self[:type] == 'group-ldap-mapper'
         if self[:groups_dn].nil?
-          raise Puppet::Error, "Must define groups_dn for type group-ldap-mapper"
+          raise Puppet::Error, 'Must define groups_dn for type group-ldap-mapper'
         end
       end
 
       if self[:type] == 'role-ldap-mapper'
         if self[:roles_dn].nil?
-          raise Puppet::Error, "Must define roles_dn for type role-ldap-mapper"
+          raise Puppet::Error, 'Must define roles_dn for type role-ldap-mapper'
         end
         if self[:use_realm_roles_mapping].to_sym == :false && self[:client_id].nil?
-          raise Puppet::Error, "Must define client_id when user_realm_roles_mapping"
+          raise Puppet::Error, 'Must define client_id when user_realm_roles_mapping'
         end
       end
     end

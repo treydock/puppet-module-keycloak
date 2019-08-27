@@ -193,7 +193,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     config[:roles_dn] = 'foo'
     config.delete(:client_id)
     config[:use_realm_roles_mapping] = false
-    expect { resource }.to raise_error(Puppet::Error, /client_id/)
+    expect { resource }.to raise_error(Puppet::Error, %r{client_id})
   end
 
   it 'has default ignore_missing_groups' do
