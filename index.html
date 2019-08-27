@@ -81,37 +81,16 @@ Keycloak</a></p>
 options</a></p>
 </li><li>
 <p><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></p>
-</li><li>
-<p><a href="#label-Development">Development - Guide for contributing to the
-module</a></p>
 </li></ol>
 
 <h2 id="label-Overview">Overview</h2>
 
 <p>The keycloak module allows easy installation and management of Keycloak.</p>
 
-<h3 id="label-Upgrade+to+3.x">Upgrade to 3.x</h3>
-
-<p>There are several key differences between 2.x and 3.x of this module that
-were required to support Keycloak 4.x.</p>
-<ul><li>
-<p>The default version of Keycloak deployed by this module has been bumped to
-4.2.1</p>
-</li><li>
-<p><code>keycloak_client_template</code> type has become
-<code>keycloak_client_scope</code> but with different properties.</p>
-</li><li>
-<p>The protocol mapper types had <code>consent_text</code> and
-<code>consent_required</code> parameters removed.</p>
-</li><li>
-<p>The <code>keycloak::client_template</code> defined type is left as a helper
-but is deprecated.</p>
-</li></ul>
-
 <h3 id="label-Supported+Versions+of+Keycloak">Supported Versions of Keycloak</h3>
 
 <p>| Keycloak Version | Keycloak Puppet module versions | | —————- |
-——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x | 4.x |</p>
+——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x | 4.x - 5.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
@@ -125,7 +104,7 @@ but is deprecated.</p>
 <p>Install a specific version of Keycloak.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  version =&gt; &#39;4.8.1.Final&#39;,
+  version =&gt; &#39;6.0.1&#39;,
 }
 </code></pre>
 
@@ -136,11 +115,11 @@ touching the old version, updating the symlink which defaults to
 <code>/opt/keycloak</code>, applying all changes to new version and then
 restarting the <code>keycloak</code> service.</p>
 
-<p>If the previous <code>version</code> was <code>4.2.1.Final</code> using the
-following will upgrade to <code>4.9.0.Final</code>:</p>
+<p>If the previous <code>version</code> was <code>6.0.1</code> using the
+following will upgrade to <code>7.0.0</code>:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  version =&gt; &#39;4.9.0.Final&#39;,
+  version =&gt; &#39;7.0.0&#39;,
 }
 </code></pre>
 
@@ -291,21 +270,27 @@ service is setup. Also requires <code>keycloak</code> class be called with
 }
 </code></pre>
 
-<h3 id="label-keycloak-3A-3Aclient_template">keycloak::client_template</h3>
+<h3 id="label-keycloak-3A-3Aclient_scope-3A-3Aoidc">keycloak::client_scope::oidc</h3>
 
 <p>Defined type that can be used to define both
 <code>keycloak_client_scope</code> and
-<code>keycloak_protocol_mapper</code> resources. The example below will
-define a client template and several protocol mappers that are built into
-keycloak.</p>
+<code>keycloak_protocol_mapper</code> resources for OpenID Connect.</p>
 
-<pre class="code ruby"><code class="ruby">keycloak::client_template { &#39;oidc-clients&#39;:
+<pre class="code ruby"><code class="ruby">keycloak::client_scope::oidc { &#39;oidc-clients&#39;:
   realm =&gt; &#39;test&#39;,
 }
 </code></pre>
 
-<p><strong>NOTE</strong>: This define is deprecated as templates were replaced
-by client scopes in Keycloak 4.x.</p>
+<h3 id="label-keycloak-3A-3Aclient_scope-3A-3Asaml">keycloak::client_scope::saml</h3>
+
+<p>Defined type that can be used to define both
+<code>keycloak_client_scope</code> and
+<code>keycloak_protocol_mapper</code> resources for SAML.</p>
+
+<pre class="code ruby"><code class="ruby">keycloak::client_scope::saml { &#39;saml-clients&#39;:
+  realm =&gt; &#39;test&#39;,
+}
+</code></pre>
 
 <h3 id="label-keycloak_client_scope">keycloak_client_scope</h3>
 
@@ -391,32 +376,6 @@ href="http://treydock.github.io/puppet-module-keycloak/">treydock.github.io/pupp
 </li><li>
 <p>RedHat 7 x86_64</p>
 </li></ul>
-
-<h2 id="label-Development">Development</h2>
-
-<h3 id="label-Testing">Testing</h3>
-
-<p>Testing requires the following dependencies:</p>
-<ul><li>
-<p>rake</p>
-</li><li>
-<p>bundler</p>
-</li></ul>
-
-<p>Install gem dependencies</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
-</code></pre>
-
-<p>Run unit tests</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_test'>test</span>
-</code></pre>
-
-<p>If you have Vagrant &gt;= 1.2.0 installed you can run system tests</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_beaker'>beaker</span>
-</code></pre>
 </div></div>
 
       <div id="footer">

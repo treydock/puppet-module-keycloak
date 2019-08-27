@@ -784,7 +784,7 @@ resources. Default is <code>{}</code>.</p>
   
     <li>
       
-        <span class='name'>client_templates</span>
+        <span class='name'>oidc_client_scopes</span>
       
       
         <span class='type'>(<tt>Hash</tt>)</span>
@@ -795,8 +795,27 @@ resources. Default is <code>{}</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Hash that is used to define keycloak::client_template resources. Default is
-<code>{}</code>.</p>
+<p>Hash that is used to define keycloak::client_scope::oidc resources. Default
+is <code>{}</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>saml_client_scopes</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash that is used to define keycloak::client_scope::saml resources. Default
+is <code>{}</code>.</p>
 </div>
       
     </li>
@@ -1064,9 +1083,6 @@ by this module</p>
         <pre class="lines">
 
 
-150
-151
-152
 153
 154
 155
@@ -1216,10 +1232,17 @@ by this module</p>
 299
 300
 301
-302</pre>
+302
+303
+304
+305
+306
+307
+308
+309</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 150</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 153</span>
 
 class keycloak (
   String $version               = &#39;6.0.1&#39;,
@@ -1261,7 +1284,8 @@ class keycloak (
   Boolean $theme_cache_themes = true,
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
-  Hash $client_templates = {},
+  Hash $oidc_client_scopes = {},
+  Hash $saml_client_scopes = {},
   Hash $client_scopes = {},
   Hash $protocol_mappers = {},
   Hash $identity_providers = {},
@@ -1357,8 +1381,11 @@ class keycloak (
   $realms.each |$name, $realm| {
     keycloak_realm { $name: * =&gt; $realm }
   }
-  $client_templates.each |$name, $template| {
-    keycloak::client_template { $name: * =&gt; $template }
+  $oidc_client_scopes.each |$name, $scope| {
+    keycloak::client_scope::oidc { $name: * =&gt; $scope }
+  }
+  $saml_client_scopes.each |$name, $scope| {
+    keycloak::client_scope::saml { $name: * =&gt; $scope }
   }
   $client_scopes.each |$name, $client_scope| {
     keycloak_client_scope { $name: * =&gt; $client_scope }
