@@ -11,20 +11,10 @@
 2. [Usage - Configuration options](#usage)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
-5. [Development - Guide for contributing to the module](#development)
 
 ## Overview
 
 The keycloak module allows easy installation and management of Keycloak.
-
-### Upgrade to 3.x
-
-There are several key differences between 2.x and 3.x of this module that were required to support Keycloak 4.x.
-
-* The default version of Keycloak deployed by this module has been bumped to 4.2.1
-* `keycloak_client_template` type has become `keycloak_client_scope` but with different properties.
-* The protocol mapper types had `consent_text` and `consent_required` parameters removed.
-* The `keycloak::client_template` defined type is left as a helper but is deprecated.
 
 ### Supported Versions of Keycloak
 
@@ -32,7 +22,7 @@ There are several key differences between 2.x and 3.x of this module that were r
 | ---------------- | ------------------------------- |
 | 3.x              | 2.x                             |
 | 4.x - 6.x        | 3.x                             |
-| 6.x              | 4.x                             |
+| 6.x              | 4.x - 5.x                       |
 
 
 ## Usage
@@ -47,17 +37,17 @@ Install a specific version of Keycloak.
 
 ```puppet
 class { 'keycloak':
-  version => '4.8.1.Final',
+  version => '6.0.1',
 }
 ```
 
 Upgrading Keycloak version works by changing `version` parameter as long as the `datasource_driver` is not the default of `h2`. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to `/opt/keycloak`, applying all changes to new version and then restarting the `keycloak` service.
 
-If the previous `version` was `4.2.1.Final` using the following will upgrade to `4.9.0.Final`:
+If the previous `version` was `6.0.1` using the following will upgrade to `7.0.0`:
 
 ```puppet
 class { 'keycloak':
-  version => '4.9.0.Final',
+  version => '7.0.0',
 }
 ```
 
@@ -271,24 +261,3 @@ This module has been tested on:
 * CentOS 7 x86_64
 * Debian 9 x86_64
 * RedHat 7 x86_64
-
-## Development
-
-### Testing
-
-Testing requires the following dependencies:
-
-* rake
-* bundler
-
-Install gem dependencies
-
-    bundle install
-
-Run unit tests
-
-    bundle exec rake test
-
-If you have Vagrant >= 1.2.0 installed you can run system tests
-
-    bundle exec rake beaker

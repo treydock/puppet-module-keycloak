@@ -22,7 +22,8 @@ _Private Classes_
 
 **Defined types**
 
-* [`keycloak::client_template`](#keycloakclient_template): Manage Keycloak client template
+* [`keycloak::client_scope::oidc`](#keycloakclient_scopeoidc): Manage Keycloak OpenID Connect client scope using built-in mappers
+* [`keycloak::client_scope::saml`](#keycloakclient_scopesaml): Manage Keycloak SAML client scope using built-in mappers
 * [`keycloak::truststore::host`](#keycloaktruststorehost): Add host to Keycloak truststore
 
 **Resource types**
@@ -35,7 +36,7 @@ _Private Classes_
 * [`keycloak_identity_provider`](#keycloak_identity_provider): Manage Keycloak identity providers
 * [`keycloak_ldap_mapper`](#keycloak_ldap_mapper): Manage Keycloak LDAP attribute mappers
 * [`keycloak_ldap_user_provider`](#keycloak_ldap_user_provider): Manage Keycloak LDAP user providers
-* [`keycloak_protocol_mapper`](#keycloak_protocol_mapper): Manage Keycloak protocol mappers
+* [`keycloak_protocol_mapper`](#keycloak_protocol_mapper): Manage Keycloak client scope protocol mappers
 * [`keycloak_realm`](#keycloak_realm): Manage Keycloak realms
 * [`keycloak_sssd_user_provider`](#keycloak_sssd_user_provider): Manage Keycloak SSSD user providers
 
@@ -391,11 +392,20 @@ Default is `{}`.
 
 Default value: {}
 
-##### `client_templates`
+##### `oidc_client_scopes`
 
 Data type: `Hash`
 
-Hash that is used to define keycloak::client_template resources.
+Hash that is used to define keycloak::client_scope::oidc resources.
+Default is `{}`.
+
+Default value: {}
+
+##### `saml_client_scopes`
+
+Data type: `Hash`
+
+Hash that is used to define keycloak::client_scope::saml resources.
 Default is `{}`.
 
 Default value: {}
@@ -534,45 +544,69 @@ Private class.
 
 ## Defined types
 
-### keycloak::client_template
+### keycloak::client_scope::oidc
 
-Manage Keycloak client template
+Manage Keycloak OpenID Connect client scope using built-in mappers
 
 #### Examples
 
 ##### 
 
 ```puppet
-keycloak::client_template { 'oidc-clients':
+keycloak::client_scope::oidc { 'oidc-clients':
   realm => 'test',
 }
 ```
 
 #### Parameters
 
-The following parameters are available in the `keycloak::client_template` defined type.
+The following parameters are available in the `keycloak::client_scope::oidc` defined type.
 
 ##### `realm`
 
 Data type: `String`
 
-Realm of the client template.
+Realm of the client scope.
 
 ##### `resource_name`
 
 Data type: `String`
 
-Name of the client template resource
+Name of the client scope resource
 
 Default value: $name
 
-##### `protocol`
+### keycloak::client_scope::saml
 
-Data type: `Enum['openid-connect', 'saml']`
+Manage Keycloak SAML client scope using built-in mappers
 
-The protocol of the client template.
+#### Examples
 
-Default value: 'openid-connect'
+##### 
+
+```puppet
+keycloak::client_scope::saml { 'saml-clients':
+  realm => 'test',
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `keycloak::client_scope::saml` defined type.
+
+##### `realm`
+
+Data type: `String`
+
+Realm of the client scope.
+
+##### `resource_name`
+
+Data type: `String`
+
+Name of the client scope resource
+
+Default value: $name
 
 ### keycloak::truststore::host
 
@@ -1649,7 +1683,7 @@ parentId
 
 ### keycloak_protocol_mapper
 
-Manage Keycloak protocol mappers
+Manage Keycloak client scope protocol mappers
 
 #### Examples
 

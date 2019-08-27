@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.0.0) (2019-08-27)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.2.0...v5.0.0)
+
+### Changed
+
+- Remove keycloak::client\_template [\#71](https://github.com/treydock/puppet-module-keycloak/pull/71) ([treydock](https://github.com/treydock))
+
 ## [v4.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v4.2.0) (2019-08-27)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.1.1...v4.2.0)
@@ -192,6 +200,10 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.3.0...2.3.1)
 
+### Added
+
+- Support SAML role list protocol mapper [\#16](https://github.com/treydock/puppet-module-keycloak/pull/16) ([treydock](https://github.com/treydock))
+
 ### Fixed
 
 - Fix title patterns that use procs are not supported [\#21](https://github.com/treydock/puppet-module-keycloak/pull/21) ([alexjfisher](https://github.com/alexjfisher))
@@ -204,7 +216,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - Allow keycloak\_protocol\_mapper attribute\_nameformat to be simpler values [\#18](https://github.com/treydock/puppet-module-keycloak/pull/18) ([treydock](https://github.com/treydock))
 - Add SAML username protocol mapper to keycloak::client\_template [\#17](https://github.com/treydock/puppet-module-keycloak/pull/17) ([treydock](https://github.com/treydock))
-- Support SAML role list protocol mapper [\#16](https://github.com/treydock/puppet-module-keycloak/pull/16) ([treydock](https://github.com/treydock))
 - Add SAML support to keycloak\_protocol\_mapper and keycloak::client\_template [\#15](https://github.com/treydock/puppet-module-keycloak/pull/15) ([treydock](https://github.com/treydock))
 
 ### Fixed
