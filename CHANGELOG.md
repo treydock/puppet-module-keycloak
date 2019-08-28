@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.1.0) (2019-08-28)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.0.1...v5.1.0)
+
+### Added
+
+- Support merging Hiera defined resources [\#75](https://github.com/treydock/puppet-module-keycloak/pull/75) ([treydock](https://github.com/treydock))
+
 ## [v5.0.1](https://github.com/treydock/puppet-module-keycloak/tree/v5.0.1) (2019-08-27)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.0.0...v5.0.1)

@@ -19,6 +19,7 @@ _Private Classes_
 * `keycloak::datasource::mysql`: Manage MySQL datasource
 * `keycloak::datasource::oracle`: Manage Oracle datasource
 * `keycloak::datasource::postgresql`: Manage postgresql datasource
+* `keycloak::resources`: Define Keycloak resources
 
 **Defined types**
 
@@ -392,6 +393,14 @@ Default is `{}`.
 
 Default value: {}
 
+##### `realms_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `realms` should be merged from Hiera.
+
+Default value: `false`
+
 ##### `oidc_client_scopes`
 
 Data type: `Hash`
@@ -400,6 +409,14 @@ Hash that is used to define keycloak::client_scope::oidc resources.
 Default is `{}`.
 
 Default value: {}
+
+##### `oidc_client_scopes_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `oidc_client_scopes` should be merged from Hiera.
+
+Default value: `false`
 
 ##### `saml_client_scopes`
 
@@ -410,6 +427,14 @@ Default is `{}`.
 
 Default value: {}
 
+##### `saml_client_scopes_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `saml_client_scopes` should be merged from Hiera.
+
+Default value: `false`
+
 ##### `identity_providers`
 
 Data type: `Hash`
@@ -417,6 +442,14 @@ Data type: `Hash`
 Hash that is used to define keycloak_identity_provider resources.
 
 Default value: {}
+
+##### `identity_providers_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `identity_providers` should be merged from Hiera.
+
+Default value: `false`
 
 ##### `client_scopes`
 
@@ -426,6 +459,14 @@ Hash that is used to define keycloak_client_scope resources.
 
 Default value: {}
 
+##### `client_scopes_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `client_scopes` should be merged from Hiera.
+
+Default value: `false`
+
 ##### `protocol_mappers`
 
 Data type: `Hash`
@@ -434,6 +475,14 @@ Hash that is used to define keycloak_protocol_mapper resources.
 
 Default value: {}
 
+##### `protocol_mappers_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `protocol_mappers` should be merged from Hiera.
+
+Default value: `false`
+
 ##### `clients`
 
 Data type: `Hash`
@@ -441,6 +490,14 @@ Data type: `Hash`
 Hash that is used to define keycloak_client resources.
 
 Default value: {}
+
+##### `clients_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `clients` should be merged from Hiera.
+
+Default value: `false`
 
 ##### `with_sssd_support`
 
