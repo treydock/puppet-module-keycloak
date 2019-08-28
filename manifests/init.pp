@@ -115,20 +115,34 @@
 # @param realms
 #   Hash that is used to define keycloak_realm resources.
 #   Default is `{}`.
+# @param realms_merge
+#   Boolean that sets if `realms` should be merged from Hiera.
 # @param oidc_client_scopes
 #   Hash that is used to define keycloak::client_scope::oidc resources.
 #   Default is `{}`.
+# @param oidc_client_scopes_merge
+#   Boolean that sets if `oidc_client_scopes` should be merged from Hiera.
 # @param saml_client_scopes
 #   Hash that is used to define keycloak::client_scope::saml resources.
 #   Default is `{}`.
+# @param saml_client_scopes_merge
+#   Boolean that sets if `saml_client_scopes` should be merged from Hiera.
 # @param identity_providers
 #   Hash that is used to define keycloak_identity_provider resources.
+# @param identity_providers_merge
+#   Boolean that sets if `identity_providers` should be merged from Hiera.
 # @param client_scopes
 #   Hash that is used to define keycloak_client_scope resources.
+# @param client_scopes_merge
+#   Boolean that sets if `client_scopes` should be merged from Hiera.
 # @param protocol_mappers
 #   Hash that is used to define keycloak_protocol_mapper resources.
+# @param protocol_mappers_merge
+#   Boolean that sets if `protocol_mappers` should be merged from Hiera.
 # @param clients
 #   Hash that is used to define keycloak_client resources.
+# @param clients_merge
+#   Boolean that sets if `clients` should be merged from Hiera.
 # @param with_sssd_support
 #   Boolean that determines if SSSD user provider support should be available
 # @param libunix_dbus_java_source
@@ -190,12 +204,19 @@ class keycloak (
   Boolean $theme_cache_themes = true,
   Boolean $theme_cache_templates = true,
   Hash $realms = {},
+  Boolean $realms_merge = false,
   Hash $oidc_client_scopes = {},
+  Boolean $oidc_client_scopes_merge = false,
   Hash $saml_client_scopes = {},
+  Boolean $saml_client_scopes_merge = false,
   Hash $client_scopes = {},
+  Boolean $client_scopes_merge = false,
   Hash $protocol_mappers = {},
+  Boolean $protocol_mappers_merge = false,
   Hash $identity_providers = {},
+  Boolean $identity_providers_merge = false,
   Hash $clients = {},
+  Boolean $clients_merge = false,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
     $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz',
@@ -284,26 +305,6 @@ class keycloak (
     require         => Class['keycloak::service'],
   }
 
-  $realms.each |$name, $realm| {
-    keycloak_realm { $name: * => $realm }
-  }
-  $oidc_client_scopes.each |$name, $scope| {
-    keycloak::client_scope::oidc { $name: * => $scope }
-  }
-  $saml_client_scopes.each |$name, $scope| {
-    keycloak::client_scope::saml { $name: * => $scope }
-  }
-  $client_scopes.each |$name, $client_scope| {
-    keycloak_client_scope { $name: * => $client_scope }
-  }
-  $protocol_mappers.each |$name, $protocol_mapper| {
-    keycloak_protocol_mapper { $name: * => $protocol_mapper }
-  }
-  $identity_providers.each |$name, $data| {
-    keycloak_identity_provider { $name: * => $data }
-  }
-  $clients.each |$name, $data| {
-    keycloak_client { $name: * => $data }
-  }
+  include keycloak::resources
 
 }
