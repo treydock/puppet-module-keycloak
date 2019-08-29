@@ -69,8 +69,6 @@ src="https://travis-ci.org/treydock/puppet-module-keycloak.png"></a></p>
 <ol><li>
 <p><a href="#label-Overview">Overview</a></p>
 <ul><li>
-<p><a href="#label-Upgrade+to+3x">Upgrade to 3.x</a></p>
-</li><li>
 <p><a href="#label-Supported+versions+of+keycloak">Supported Versions of
 Keycloak</a></p>
 </li></ul>
@@ -90,13 +88,13 @@ options</a></p>
 <h3 id="label-Supported+Versions+of+Keycloak">Supported Versions of Keycloak</h3>
 
 <p>| Keycloak Version | Keycloak Puppet module versions | | —————- |
-——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x | 4.x - 5.x |</p>
+——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x - 7.x | 4.x - 5.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
 <h3 id="label-keycloak">keycloak</h3>
 
-<p>Install Keycloak using default database storage.</p>
+<p>Install Keycloak using default <code>h2</code> database storage.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;: }
 </code></pre>
@@ -104,7 +102,8 @@ options</a></p>
 <p>Install a specific version of Keycloak.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  version =&gt; &#39;6.0.1&#39;,
+  version           =&gt; &#39;6.0.1&#39;,
+  datasource_driver =&gt; &#39;mysql&#39;,
 }
 </code></pre>
 
@@ -119,7 +118,8 @@ restarting the <code>keycloak</code> service.</p>
 following will upgrade to <code>7.0.0</code>:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  version =&gt; &#39;7.0.0&#39;,
+  version           =&gt; &#39;7.0.0&#39;,
+  datasource_driver =&gt; &#39;mysql&#39;,
 }
 </code></pre>
 
@@ -217,14 +217,12 @@ LDAP. The example below uses two LDAP servers, disables importing of users
 and assumes the SSL certificates are trusted and do not require being in
 the truststore.</p>
 
-<pre class="code ruby"><code class="ruby">keycloak_ldap_user_provider { &#39;LDAP on test&#39;:
-  ensure             =&gt; &#39;present&#39;,
-  users_dn           =&gt; &#39;ou=People,dc=example,dc=com&#39;,
-  connection_url     =&gt; &#39;ldaps://ldap1.example.com:636 ldaps://ldap2.example.com:636&#39;,
-  import_enabled     =&gt; false,
-  use_truststore_spi =&gt; &#39;never&#39;,
-}
-</code></pre>
+<p><code>puppet keycloak_ldap_user_provider { &#39;LDAP on test&#39;:   ensure
+=&gt; &#39;present&#39;,   users_dn           =&gt;
+&#39;ou=People,dc=example,dc=com&#39;,   connection_url     =&gt;
+&#39;ldaps://ldap1.example.com:636 ldaps://ldap2.example.com:636&#39;,  
+import_enabled     =&gt; false,   use_truststore_spi =&gt; &#39;never&#39;,
+} </code></p>
 
 <p><strong>NOTE</strong> The <code>Id</code> for the above resource would be
 <code>LDAP-test</code> where the format is
@@ -348,14 +346,11 @@ client in realm <code>test</code></p>
 access the Keycloak API if this module is only used for the types/providers
 and the module&#39;s <code>kcadm-wrapper.sh</code> is not installed.</p>
 
-<pre class="code ruby"><code class="ruby">keycloak_api { &#39;keycloak&#39;
-  install_base =&gt; &#39;/opt/keycloak&#39;,
-  server       =&gt; &#39;http://localhost:8080/auth&#39;,
-  realm        =&gt; &#39;master&#39;,
-  user         =&gt; &#39;admin&#39;,
-  password     =&gt; &#39;changeme&#39;,
-}
-</code></pre>
+<p><code>puppet keycloak_api { &#39;keycloak&#39;   install_base =&gt;
+&#39;/opt/keycloak&#39;,   server       =&gt;
+&#39;http://localhost:8080/auth&#39;,   realm        =&gt;
+&#39;master&#39;,   user         =&gt; &#39;admin&#39;,   password    
+=&gt; &#39;changeme&#39;, } </code></p>
 
 <p>The path for <code>install_base</code> will be joined with
 <code>bin/kcadm.sh</code> to produce the full path to
