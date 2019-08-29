@@ -32,9 +32,9 @@ Manage Keycloak LDAP user providers
   end
 
   newparam(:id) do
-    desc 'Id. Defaults to "`resource_name`-`realm`"'
+    desc 'Id'
     defaultto do
-      "#{@resource[:resource_name]}-#{@resource[:realm]}"
+      @resource.provider.name_uuid(@resource[:name])
     end
   end
 

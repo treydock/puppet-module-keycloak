@@ -46,7 +46,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
   def self.prefetch(resources)
     components = instances
     resources.keys.each do |name|
-      provider = components.find { |c| c.resource_name == resources[name][:resource_name] && c.realm == resources[name][:realm] }
+      provider = components.find { |c| c.id == resources[name][:id] }
       if provider
         resources[name].provider = provider
       end
@@ -57,7 +57,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
     data = {}
-    data[:id] = resource[:id]
+    data[:id] = resource[:id] || name_uuid(resource[:name])
     data[:name] = resource[:resource_name]
     data[:parentId] = resource[:realm]
     data[:providerId] = 'ldap'

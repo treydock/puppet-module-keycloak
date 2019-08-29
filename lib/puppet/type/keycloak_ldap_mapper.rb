@@ -45,6 +45,10 @@ Manage Keycloak LDAP attribute mappers
   end
 
   newparam(:ldap, namevar: true) do
+    desc 'Name of parent `keycloak_ldap_user_provider` resource'
+  end
+
+  newparam(:parent_id) do
     desc 'parentId'
   end
 

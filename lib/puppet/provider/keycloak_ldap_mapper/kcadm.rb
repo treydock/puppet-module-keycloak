@@ -32,6 +32,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
   def self.instances
     components = []
     realms.each do |realm|
+      component_ids = {}
       output = kcadm('get', 'components', realm)
       Puppet.debug("#{realm} components: #{output}")
       begin
@@ -40,6 +41,12 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
         Puppet.debug('Unable to parse output from kcadm get components')
         data = []
       end
+
+      data.each do |d|
+        next unless d['providerType'] == 'org.keycloak.storage.UserStorageProvider'
+        component_ids[d['id']] = d['name']
+      end
+      Puppet.debug("Realm #{realm} component_ids: #{component_ids}")
 
       data.each do |d|
         next unless d['providerType'] == 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'
@@ -51,7 +58,8 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
         component[:id] = d['id']
         component[:realm] = realm
         component[:resource_name] = d['name']
-        component[:ldap] = d['parentId']
+        component[:parent_id] = d['parentId']
+        component[:ldap] = component_ids[component[:parent_id]]
         component[:type] = d['providerId']
         component[:name] = "#{component[:resource_name]} for #{component[:ldap]} on #{component[:realm]}"
         type_properties.each do |property|
@@ -86,11 +94,30 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
     end
   end
 
+  def get_parent_id(ldap, realm)
+    parent_id = nil
+    output = kcadm('get', 'components', realm, nil, ['name', 'realm', 'id', 'providerType'])
+    Puppet.debug("#{realm} components: #{output}")
+    begin
+      data = JSON.parse(output)
+    rescue JSON::ParserError
+      Puppet.debug('Unable to parse output from kcadm get components')
+      data = []
+    end
+    data.each do |d|
+      next unless d['providerType'] == 'org.keycloak.storage.UserStorageProvider'
+      if d['name'] == ldap
+        parent_id = d['id']
+      end
+    end
+    parent_id
+  end
+
   def create
     data = {}
     data[:id] = resource[:id] || name_uuid(resource[:name])
     data[:name] = resource[:resource_name]
-    data[:parentId] = resource[:ldap]
+    data[:parentId] = resource[:parent_id] || get_parent_id(resource[:ldap], resource[:realm]) || name_uuid(resource[:ldap])
     data[:providerId] = resource[:type]
     data[:providerType] = 'org.keycloak.storage.ldap.mappers.LDAPStorageMapper'
     data[:config] = {}

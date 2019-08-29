@@ -7,6 +7,7 @@
 
 1. [Overview](#overview)
     * [Upgrade to 8.x](#upgrade-to-8x)
+        * [Changes to LDAP user provider IDs](#changes-to-ldap-user-provider-ids)
     * [Supported Versions of Keycloak](#supported-versions-of-keycloak)
 2. [Usage - Configuration options](#usage)
     * [Keycloak](#keycloak)
@@ -96,6 +97,67 @@ There is no longer a need to define cluster or domain modes in the Quarkus deplo
 Some basic configuration options are exposed using parameters but most configuration options for Keycloak will need to be passed into the `configs` parameter.
 
 Drop Debian 9 support due to OS repos not having Java 11.
+
+#### Changes to LDAP user provider IDs
+
+If you had `keycloak_ldap_user_provider` resources defined the mechanism for defining the ID has changed and requires some migration. Also the `ldap` property for any `keycloak_ldap_mapper` resources will have to be adjusted.
+
+**WARNING** The LDAP user provider ID is used to create user IDs for LDAP users. These will change if the ID is changed. This is to prevent messages such as this: `The given key is not a valid key per specification, future migration might fail: f:OSC-LDAP-osc:tdockendorf`. If you wish to keep the old style IDs you must provide the `id` parameter as `$ldap-$realm` to maintain old IDs.
+
+It's advised to either [Migrate to new IDs](#migrate-to-new-ids) or [Keep old IDs](#keep-old-ids)
+
+##### Migrate to new IDs
+
+**Changes**
+
+* Define old `keycloak_ldap_user_provider` resource as absent with new name and setting `id` and `resource_name`.
+* Define same `keycloak_ldap_user_provider` resource to get created with new ID
+* Update `keycloak_ldap_mapper` resources to point to just name of `keycloak_ldap_user_provider`.
+
+**Before:**
+
+```puppet
+keycloak_ldap_user_provider { 'LDAP on test':
+  users_dn                  => 'ou=People,dc=test',
+  connection_url            => 'ldap://localhost:389',
+  custom_user_search_filter => '(objectClass=posixAccount)',
+}
+keycloak_ldap_mapper { "first name for LDAP-test on test":
+  ensure               => 'present',
+  type                 => 'user-attribute-ldap-mapper',
+  user_model_attribute => 'firstName',
+  ldap_attribute       => 'givenName',
+}
+```
+
+**After:**
+
+```
+keycloak_ldap_user_provider { 'LDAP-remove on test':
+  ensure        => 'absent',
+  resource_name => 'LDAP',
+  id            => 'LDAP-test',
+}
+keycloak_ldap_user_provider { 'LDAP on test':
+  users_dn                  => 'ou=People,dc=test',
+  connection_url            => 'ldap://localhost:389',
+  custom_user_search_filter => '(objectClass=posixAccount)',
+}
+keycloak_ldap_mapper { "first name for LDAP on test":
+  ensure               => 'present',
+  type                 => 'user-attribute-ldap-mapper',
+  user_model_attribute => 'firstName',
+  ldap_attribute       => 'givenName',
+}
+```
+
+##### Keep old IDs
+
+If you wish to avoid re-creating `keycloak_ldap_user_provider` and `keycloak_ldap_mapper` resources then the ID parameters must be defined.
+
+For `keycloak_ldap_user_provider` ensure the `id` property is set to match the old pattern. If name was `LDAP` and realm `test` or name was componsite `LDAP on test` then set `id` to `LDAP-test`.
+
+For `keycloak_ldap_mapper` ensure the `parent_id` property is set to point to old ID for associated `keycloak_ldap_user_provider`. If the `ldap` value is `LDAP` and `realm` is `test` or composite name is `first name for LDAP on test` then ensure `parent_id` is set to `LDAP-test`.
 
 ### Supported Versions of Keycloak
 
@@ -285,8 +347,6 @@ keycloak_ldap_user_provider { 'LDAP on test':
   use_truststore_spi => 'never',
 }
 ```
-
-**NOTE** The `Id` for the above resource would be `LDAP-test` where the format is `${resource_name}-${realm}`.
 
 If you're using FreeIPA you can use a defined resource that wraps keycloak\_ldap\_user\_provider:
 
@@ -539,3 +599,13 @@ This module has been tested on:
 * Debian 11 x86_64
 * Ubuntu 18.04 x86_64
 * Ubuntu 20.04 x86_64
+
+## UUID Generation
+
+```
+bundle exec irb
+2.5.1 :001 > require File.expand_path(File.join(File.dirname(__FILE__), 'lib/puppet/provider/keycloak_api'))
+ => true 
+2.5.1 :002 > Puppet::Provider::KeycloakAPI.name_uuid('LDAP')
+ => "bc7bc27f-39b8-5152-91c3-915d710fba35" 
+```

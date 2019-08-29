@@ -15,19 +15,17 @@
 # @param roles_dn
 #   Roles DN
 # @param parent_id
-#   Identifier (parentId) for the LDAP provider to add this mapper to.
-#   Will be passed to the $ldap parameter in keycloak_ldap_mapper.
+#   Used to identify the parent LDAP user provider, name used with keycloak::freeipa_user_provider
 #
 define keycloak::freeipa_ldap_mappers
 (
   String           $realm,
   String           $groups_dn,
   String           $roles_dn,
-  Optional[String] $parent_id = undef,
+  String           $parent_id = $title,
 )
 {
-  $_parent_id = pick($parent_id, "${title}-${realm}")
-  $title_suffix = "for ${_parent_id}"
+  $title_suffix = "for ${title}"
 
   # This translates to parentId in JSON and must be correct or hard-to-debug
   # issues will ensue.
@@ -36,7 +34,7 @@ define keycloak::freeipa_ldap_mappers
     default:
       ensure                      => 'present',
       realm                       => $realm,
-      ldap                        => $_parent_id,
+      ldap                        => $parent_id,
       always_read_value_from_ldap => true,
       read_only                   => true,
       is_mandatory_in_ldap        => true,
@@ -81,7 +79,7 @@ define keycloak::freeipa_ldap_mappers
     ensure                         => 'present',
     realm                          => $realm,
     type                           => 'role-ldap-mapper',
-    ldap                           => $_parent_id,
+    ldap                           => $parent_id,
     is_mandatory_in_ldap           => false,
     mode                           => 'READ_ONLY',
     memberof_ldap_attribute        => 'memberOf',
@@ -99,7 +97,7 @@ define keycloak::freeipa_ldap_mappers
     ensure                               => 'present',
     realm                                => $realm,
     type                                 => 'group-ldap-mapper',
-    ldap                                 => $_parent_id,
+    ldap                                 => $parent_id,
     is_mandatory_in_ldap                 => false,
     mode                                 => 'READ_ONLY',
     memberof_ldap_attribute              => 'memberOf',

@@ -23,7 +23,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper).provider(:kcadm) do
       allow(described_class).to receive(:kcadm).with('get', 'components', 'master').and_return(my_fixture_read('get-master.out'))
       allow(described_class).to receive(:kcadm).with('get', 'components', 'test').and_return(my_fixture_read('get-test.out'))
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
-      expect(property_hash[:name]).to eq('full name for LDAP-test on test')
+      expect(property_hash[:name]).to eq('full name for LDAP on test')
     end
   end
   #   describe 'self.prefetch' do
@@ -49,6 +49,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper).provider(:kcadm) do
   #   end
   describe 'create' do
     it 'creates a realm' do
+      resource[:parent_id] = 'foo-test'
       temp = Tempfile.new('keycloak_component')
       allow(Tempfile).to receive(:new).with('keycloak_component').and_return(temp)
       expect(resource.provider).to receive(:kcadm).with('create', 'components', 'test', temp.path)
