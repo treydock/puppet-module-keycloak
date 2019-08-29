@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.2.0) (2019-08-29)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.1.0...v5.2.0)
+
+### Added
+
+- Test against Keycloak 7.0.0 [\#77](https://github.com/treydock/puppet-module-keycloak/pull/77) ([treydock](https://github.com/treydock))
+
 ## [v5.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.1.0) (2019-08-28)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.0.1...v5.1.0)
@@ -265,14 +273,11 @@ All notable changes to this project will be documented in this file. The format 
 ### Fixed
 
 - Fix ownership of install dir [\#10](https://github.com/treydock/puppet-module-keycloak/pull/10) ([NITEMAN](https://github.com/NITEMAN))
+- Fix configuration order when proxy\_https is true [\#7](https://github.com/treydock/puppet-module-keycloak/pull/7) ([treydock](https://github.com/treydock))
 
 ## [2.0.1](https://github.com/treydock/puppet-module-keycloak/tree/2.0.1) (2017-12-18)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.0.0...2.0.1)
-
-### Fixed
-
-- Fix configuration order when proxy\_https is true [\#7](https://github.com/treydock/puppet-module-keycloak/pull/7) ([treydock](https://github.com/treydock))
 
 ## [2.0.0](https://github.com/treydock/puppet-module-keycloak/tree/2.0.0) (2017-12-11)
 
