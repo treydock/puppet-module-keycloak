@@ -1,4 +1,8 @@
+<% if scope['keycloak::operating_mode'] == 'standalone'-%>
 embed-server
+<% elsif scope['keycloak::operating_mode'] == 'clustered'-%>
+embed-server --server-config=standalone-ha.xml
+<% end -%>
 <%- if scope['keycloak::proxy_https'] -%>
 if (result.proxy-address-forwarding != true) of /subsystem=undertow/server=default-server/http-listener=default:read-resource
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
