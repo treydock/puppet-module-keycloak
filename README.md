@@ -130,6 +130,14 @@ class { 'keycloak':
 }
 ```
 
+Run Keycloak using standalone clustered mode:
+
+```puppet
+class { 'keycloak':
+  operating_mode => 'clustered',
+}
+```
+
 ### keycloak_realm
 
 Define a Keycloak realm that uses username and not email for login and to use a local branded theme.

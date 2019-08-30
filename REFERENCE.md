@@ -579,6 +579,14 @@ Path to the file with environment variables for the systemd service
 
 Default value: `undef`
 
+##### `operating_mode`
+
+Data type: `Enum['standalone', 'clustered']`
+
+Keycloak operating mode deployment
+
+Default value: 'standalone'
+
 ### keycloak::config
 
 Private class.
