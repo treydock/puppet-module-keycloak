@@ -163,6 +163,8 @@
 #   Boolean that determines if SSSD should be restarted
 # @param service_environment_file
 #   Path to the file with environment variables for the systemd service
+# @param operating_mode
+#   Keycloak operating mode deployment
 #
 class keycloak (
   String $version               = '6.0.1',
@@ -228,6 +230,7 @@ class keycloak (
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
+  Enum['standalone', 'clustered'] $operating_mode = 'standalone',
 ) {
 
   if ! $facts['os']['family'] in ['RedHat','Debian'] {

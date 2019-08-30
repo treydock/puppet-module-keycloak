@@ -21,6 +21,24 @@ describe 'keycloak class:' do
     end
   end
 
+  context 'default with clustered mode enable' do
+    it 'runs successfully' do
+      pp = <<-EOS
+      class { 'keycloak':
+        operating_mode => 'clustered',
+      }
+      EOS
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    describe service('keycloak') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+  end
+
   context 'default with mysql datasource' do
     it 'runs successfully' do
       pp = <<-EOS
