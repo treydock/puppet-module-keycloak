@@ -102,7 +102,7 @@ describe 'keycloak client scopes defines:' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
-        expect(mapper['config']['attribute.nameformat']).to eq('urn:oasis:names:tc:SAML:2.0:attrname-format:uri')
+        expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
         expect(mapper['config']['attribute.name']).to eq('urn:oid:0.9.2342.19200300.100.1.1')
         expect(mapper['config']['user.attribute']).to eq('username')
         expect(mapper['config']['friendly.name']).to eq('userid')
@@ -114,7 +114,7 @@ describe 'keycloak client scopes defines:' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'X500 email' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
-        expect(mapper['config']['attribute.nameformat']).to eq('urn:oasis:names:tc:SAML:2.0:attrname-format:uri')
+        expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
         expect(mapper['config']['attribute.name']).to eq('urn:oid:1.2.840.113549.1.9.1')
         expect(mapper['config']['user.attribute']).to eq('email')
         expect(mapper['config']['friendly.name']).to eq('email')
@@ -126,7 +126,7 @@ describe 'keycloak client scopes defines:' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'X500 givenName' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
-        expect(mapper['config']['attribute.nameformat']).to eq('urn:oasis:names:tc:SAML:2.0:attrname-format:uri')
+        expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
         expect(mapper['config']['attribute.name']).to eq('urn:oid:2.5.4.42')
         expect(mapper['config']['user.attribute']).to eq('firstName')
         expect(mapper['config']['friendly.name']).to eq('givenName')
@@ -138,7 +138,7 @@ describe 'keycloak client scopes defines:' do
         data = JSON.parse(stdout)
         mapper = data.select { |d| d['name'] == 'X500 surname' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
-        expect(mapper['config']['attribute.nameformat']).to eq('urn:oasis:names:tc:SAML:2.0:attrname-format:uri')
+        expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
         expect(mapper['config']['attribute.name']).to eq('urn:oid:2.5.4.4')
         expect(mapper['config']['user.attribute']).to eq('lastName')
         expect(mapper['config']['friendly.name']).to eq('surname')
