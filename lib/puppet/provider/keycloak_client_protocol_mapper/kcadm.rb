@@ -7,7 +7,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
 
   def self.attribute_nameformat_map
     {
-      uri: 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+      uri: 'URI Reference',
       basic: 'Basic',
       unspecified: 'Unspecified',
     }
