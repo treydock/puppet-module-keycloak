@@ -40,6 +40,18 @@
       collection: puppet6
       extra_envs:
         - BEAKER_keycloak_version: 7.0.0
+    - set: ubuntu-1804
+      collection: puppet5
+    - set: ubuntu-1804
+      collection: puppet5
+      extra_envs:
+        - BEAKER_keycloak_version: 7.0.0
+    - set: ubuntu-1804
+      collection: puppet6
+    - set: ubuntu-1804
+      collection: puppet6
+      extra_envs:
+        - BEAKER_keycloak_version: 7.0.0
   user: treydock
   secure: "u4N3WOhiO4X0mmEF7I+ARGpcw4Wrmt1xA8cmG2Qlnvr+r3c7RgWfc6GoabLicGKoN/OqVPD1b6lXJ+Xrg8VAJb9NmFjXYkowbTYgyyPsx6fSIshaquThkrEUsaF1C5hWx1rADXCz8hkpvX537xye/uKQlvDjwHyHaJWu3rpCfsDApYwYZhIkKtsSk2hOlcX9jfI1LE/H6YYo44uRBxg2lyUusScJQcDe023mBYOOSet3C4w4UpPBqR0mu9XvjJHk0KJzBE2Jk6g7W+02/ZkVW9qDXh70mCE562uQN/CE8rjcM5V1M6L69YzG5rv0LSuV4rnrjNtkNz6GZPDKIpuwOLEkA0M+jBr+F2d4tPHyMVDGLQHIIl5/TxXU2A9+gDe9yZFeZ7KEOSkkYfEgKgHcPHMZQJhs7Xkj2ab+F3AFjrSbjWngX892NQXp9XK4EXBZzogdsEp+wHULc9ybb9BKUNS0FIbCOjJoqBuwe7Is8vfVQ+OXAxVnP1POEoAgmgD3gQVHtedBAYrT7Ge+uxILua+KaPYkxBh/Cg9TYYSJeO/y0LH8pV3zSOQ3oU3MGZRbZrLbNkFAq9sYu3Klw52NEgfgXNRaE5AIpC0Tjf/BHZuaGGPyZML4A14tctwzFCFmG8SXkN2fFtpS5LAfLzbizi2KecPMyEjSpHJATJ/6HuQ="
 .gitlab-ci.yml:
@@ -57,4 +69,5 @@ spec/acceptance/nodesets/ubuntu-1404.yml:
 spec/acceptance/nodesets/ubuntu-1604.yml:
   delete: true
 spec/acceptance/nodesets/ubuntu-1804.yml:
-  delete: true
+  packages:
+    - iproute2
