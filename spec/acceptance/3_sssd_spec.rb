@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak_sssd_user_provider:' do
+describe 'keycloak_sssd_user_provider:', if: RSpec.configuration.keycloak_full do
   context 'bootstrap sssd' do
     it 'is successful' do
       on hosts, 'puppet resource package sssd-dbus ensure=installed'

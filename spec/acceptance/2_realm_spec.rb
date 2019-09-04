@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak_realm:' do
+describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
   context 'creates realm' do
     it 'runs successfully' do
       pp = <<-EOS

@@ -18,16 +18,22 @@
   docker_sets:
     - set: centos-7
       collection: puppet5
+      extra_envs:
+        - BEAKER_keycloak_full: yes
     - set: centos-7
       collection: puppet5
       extra_envs:
         - BEAKER_keycloak_version: 7.0.0
+        - BEAKER_keycloak_full: yes
     - set: centos-7
       collection: puppet6
+      extra_envs:
+        - BEAKER_keycloak_full: yes
     - set: centos-7
       collection: puppet6
       extra_envs:
         - BEAKER_keycloak_version: 7.0.0
+        - BEAKER_keycloak_full: yes
     - set: debian-9
       collection: puppet5
     - set: debian-9

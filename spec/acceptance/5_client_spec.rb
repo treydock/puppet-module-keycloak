@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak_client define:' do
+describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
   context 'creates client' do
     it 'runs successfully' do
       pp = <<-EOS

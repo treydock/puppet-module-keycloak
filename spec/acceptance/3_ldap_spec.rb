@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak_ldap_user_provider:' do
+describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full do
   context 'creates ldap' do
     it 'runs successfully' do
       pp = <<-EOS
