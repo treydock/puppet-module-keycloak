@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak_identity_provider type:' do
+describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_full do
   context 'creates identity provider' do
     it 'runs successfully' do
       pp = <<-EOS

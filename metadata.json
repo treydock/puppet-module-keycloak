@@ -18,11 +18,11 @@
     },
     {
       "name": "puppetlabs/postgresql",
-      "version_requirement": ">= 5.0.0 <7.0.0"
+      "version_requirement": ">= 5.7.0 <7.0.0"
     },
     {
       "name": "puppetlabs/java",
-      "version_requirement": ">= 2.2.0 <6.0.0"
+      "version_requirement": ">= 3.0.0 <6.0.0"
     },
     {
       "name": "puppetlabs/java_ks",
@@ -60,6 +60,12 @@
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "9"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "18.04"
       ]
     }
   ],

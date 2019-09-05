@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak_api:' do
+describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
   context 'bootstraps' do
     it 'runs successfully' do
       pp = <<-EOS

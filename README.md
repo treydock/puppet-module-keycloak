@@ -302,5 +302,6 @@ The path for `install_base` will be joined with `bin/kcadm.sh` to produce the fu
 This module has been tested on:
 
 * CentOS 7 x86_64
-* Debian 9 x86_64
 * RedHat 7 x86_64
+* Debian 9 x86_64
+* Ubuntu 18.04 x86_64

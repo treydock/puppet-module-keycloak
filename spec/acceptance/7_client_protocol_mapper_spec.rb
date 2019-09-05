@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak_client_protocol_mapper type:' do
+describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keycloak_full do
   context 'creates protocol_mapper' do
     it 'runs successfully' do
       pp = <<-EOS

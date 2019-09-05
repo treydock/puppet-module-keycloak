@@ -18,16 +18,22 @@
   docker_sets:
     - set: centos-7
       collection: puppet5
+      extra_envs:
+        - BEAKER_keycloak_full: yes
     - set: centos-7
       collection: puppet5
       extra_envs:
         - BEAKER_keycloak_version: 7.0.0
+        - BEAKER_keycloak_full: yes
     - set: centos-7
       collection: puppet6
+      extra_envs:
+        - BEAKER_keycloak_full: yes
     - set: centos-7
       collection: puppet6
       extra_envs:
         - BEAKER_keycloak_version: 7.0.0
+        - BEAKER_keycloak_full: yes
     - set: debian-9
       collection: puppet5
     - set: debian-9
@@ -37,6 +43,18 @@
     - set: debian-9
       collection: puppet6
     - set: debian-9
+      collection: puppet6
+      extra_envs:
+        - BEAKER_keycloak_version: 7.0.0
+    - set: ubuntu-1804
+      collection: puppet5
+    - set: ubuntu-1804
+      collection: puppet5
+      extra_envs:
+        - BEAKER_keycloak_version: 7.0.0
+    - set: ubuntu-1804
+      collection: puppet6
+    - set: ubuntu-1804
       collection: puppet6
       extra_envs:
         - BEAKER_keycloak_version: 7.0.0
@@ -57,4 +75,5 @@ spec/acceptance/nodesets/ubuntu-1404.yml:
 spec/acceptance/nodesets/ubuntu-1604.yml:
   delete: true
 spec/acceptance/nodesets/ubuntu-1804.yml:
-  delete: true
+  packages:
+    - iproute2
