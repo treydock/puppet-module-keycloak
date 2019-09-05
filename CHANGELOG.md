@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.4.0) (2019-09-05)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.3.2...v5.4.0)
+
+### Added
+
+- Support Ubuntu 18.04 [\#84](https://github.com/treydock/puppet-module-keycloak/pull/84) ([treydock](https://github.com/treydock))
+- Vagrant: add Ubuntu 1804 box [\#83](https://github.com/treydock/puppet-module-keycloak/pull/83) ([mattock](https://github.com/mattock))
+
 ## [v5.3.2](https://github.com/treydock/puppet-module-keycloak/tree/v5.3.2) (2019-09-03)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.3.1...v5.3.2)
@@ -109,7 +118,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - Expand postgresql support to behave more like mysql support, simplified a bit [\#60](https://github.com/treydock/puppet-module-keycloak/pull/60) ([treydock](https://github.com/treydock))
 - Use PDK [\#58](https://github.com/treydock/puppet-module-keycloak/pull/58) ([treydock](https://github.com/treydock))
-- Better ID handling [\#47](https://github.com/treydock/puppet-module-keycloak/pull/47) ([treydock](https://github.com/treydock))
 
 ## [3.7.0](https://github.com/treydock/puppet-module-keycloak/tree/3.7.0) (2019-05-20)
 
@@ -159,6 +167,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Better ID handling [\#47](https://github.com/treydock/puppet-module-keycloak/pull/47) ([treydock](https://github.com/treydock))
 - Test against Keycloak 4.8.1.Final and document version handling and upgrade [\#43](https://github.com/treydock/puppet-module-keycloak/pull/43) ([treydock](https://github.com/treydock))
 
 ### Fixed
