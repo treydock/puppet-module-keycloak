@@ -26,6 +26,9 @@
 # @param service_hasrestart
 #   Keycloak service hasrestart parameter.
 #   Default is `true`.
+# @param service_bind_address
+#   Bind address for Keycloak service.
+#   Default is '0.0.0.0'.
 # @param service_java_opts
 #   Sets additional options to Java virtual machine environment variable.
 # @param service_extra_opts
@@ -178,6 +181,7 @@ class keycloak (
   Boolean $service_enable       = true,
   Boolean $service_hasstatus    = true,
   Boolean $service_hasrestart   = true,
+  Stdlib::IP::Address $service_bind_address = '0.0.0.0',
   Optional[Variant[String, Array]]
     $service_java_opts = undef,
   Optional[String] $service_extra_opts = undef,
