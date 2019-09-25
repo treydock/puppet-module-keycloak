@@ -28,6 +28,8 @@
 #   Default is `true`.
 # @param service_java_opts
 #   Sets additional options to Java virtual machine environment variable.
+# @param service_extra_opts
+#   Additional options added to the end of the service command-line.
 # @param manage_user
 #   Defines if the module should manage the Linux user for Keycloak installation
 # @param user
@@ -178,6 +180,7 @@ class keycloak (
   Boolean $service_hasrestart   = true,
   Optional[Variant[String, Array]]
     $service_java_opts = undef,
+  Optional[String] $service_extra_opts = undef,
   Boolean $manage_user = true,
   String $user                  = 'keycloak',
   Stdlib::Absolutepath $user_shell = '/sbin/nologin',
