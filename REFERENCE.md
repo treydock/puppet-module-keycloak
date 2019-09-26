@@ -59,6 +59,17 @@ include ::keycloak
 
 The following parameters are available in the `keycloak` class.
 
+##### `manage_install`
+
+Data type: `Boolean`
+
+Install Keycloak from upstream Keycloak tarball.
+Set to false to manage installation of Keycloak outside
+this module and set $install_dir and $version to match.
+Defaults to true.
+
+Default value: `true`
+
 ##### `version`
 
 Data type: `String`
@@ -130,11 +141,28 @@ Default is `true`.
 
 Default value: `true`
 
+##### `service_bind_address`
+
+Data type: `Stdlib::IP::Address`
+
+Bind address for Keycloak service.
+Default is '0.0.0.0'.
+
+Default value: '0.0.0.0'
+
 ##### `service_java_opts`
 
 Data type: `Optional[Variant[String, Array]]`
 
 Sets additional options to Java virtual machine environment variable.
+
+Default value: `undef`
+
+##### `service_extra_opts`
+
+Data type: `Optional[String]`
+
+Additional options added to the end of the service command-line.
 
 Default value: `undef`
 
