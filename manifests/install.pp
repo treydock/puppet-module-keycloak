@@ -20,22 +20,34 @@ class keycloak::install {
       gid        => $keycloak::group_gid,
     }
   }
-  file { "${keycloak::install_dir}/keycloak-${keycloak::version}":
-    ensure => 'directory',
-    owner  => $keycloak::user,
-    group  => $keycloak::group,
-    mode   => '0755',
-  }
-  -> archive { "keycloak-${keycloak::version}.tar.gz":
-    ensure          => 'present',
-    extract         => true,
-    path            => "/tmp/keycloak-${keycloak::version}.tar.gz",
-    extract_path    => "${keycloak::install_dir}/keycloak-${keycloak::version}",
-    extract_command => 'tar xfz %s --strip-components=1',
-    source          => $keycloak::download_url,
-    creates         => "${keycloak::install_dir}/keycloak-${keycloak::version}/bin",
-    cleanup         => true,
-    user            => $keycloak::user,
-    group           => $keycloak::group,
+
+  $install_base = "${keycloak::install_dir}/keycloak-${keycloak::version}"
+
+  if $::keycloak::manage_install {
+    file { $install_base:
+      ensure => 'directory',
+      owner  => $keycloak::user,
+      group  => $keycloak::group,
+      mode   => '0755',
+    }
+    -> archive { "keycloak-${keycloak::version}.tar.gz":
+      ensure          => 'present',
+      extract         => true,
+      path            => "/tmp/keycloak-${keycloak::version}.tar.gz",
+      extract_path    => $install_base,
+      extract_command => 'tar xfz %s --strip-components=1',
+      source          => $keycloak::download_url,
+      creates         => "${install_base}/bin",
+      cleanup         => true,
+      user            => $keycloak::user,
+      group           => $keycloak::group,
+    }
+  } else {
+    # Set permissions properly when using a package
+    exec { 'ensure-keycloak-dir-owner':
+      command => "chown -R ${::keycloak::user}:${::keycloak::group} ${install_base}",
+      unless  => "test `stat -c %U ${install_base}` = ${::keycloak::user}",
+      path    => ['/bin','/usr/bin'],
+    }
   }
 }

@@ -3,6 +3,11 @@
 # @example
 #   include ::keycloak
 #
+# @param manage_install
+#   Install Keycloak from upstream Keycloak tarball.
+#   Set to false to manage installation of Keycloak outside
+#   this module and set $install_dir and $version to match.
+#   Defaults to true.
 # @param version
 #   Version of Keycloak to install and manage.
 # @param package_url
@@ -169,6 +174,7 @@
 #   Keycloak operating mode deployment
 #
 class keycloak (
+  Boolean $manage_install       = true,
   String $version               = '6.0.1',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
