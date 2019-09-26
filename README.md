@@ -283,15 +283,15 @@ The keycloak_api type can be used to define how this module's types access the K
 
  ```puppet
 keycloak_api { 'keycloak'
-  install_base => '/opt/keycloak',
-  server       => 'http://localhost:8080/auth',
-  realm        => 'master',
-  user         => 'admin',
-  password     => 'changeme',
+  install_dir => '/opt/keycloak',
+  server     => 'http://localhost:8080/auth',
+  realm      => 'master',
+  user       => 'admin',
+  password   => 'changeme',
 }
 ```
 
-The path for `install_base` will be joined with `bin/kcadm.sh` to produce the full path to `kcadm.sh`.
+The path for `install_dir` will be joined with `bin/kcadm.sh` to produce the full path to `kcadm.sh`.
 
 ## Reference
 

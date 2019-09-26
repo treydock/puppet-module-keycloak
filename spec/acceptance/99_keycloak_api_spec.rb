@@ -18,7 +18,7 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
     it 'runs successfully' do
       pp = <<-EOS
       keycloak_api { 'keycloak':
-        install_base => '/opt/keycloak',
+        install_dir => '/opt/keycloak',
       }
       keycloak_realm { 'test2': ensure => 'present' }
       EOS
@@ -40,7 +40,7 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
     it 'runs successfully' do
       pp = <<-EOS
       keycloak_api { 'keycloak':
-        install_base => '/opt/keycloak',
+        install_dir => '/opt/keycloak',
       }
       keycloak_realm { 'test2':
         ensure => 'present',

@@ -4,7 +4,7 @@ class keycloak::config {
 
   file { '/opt/keycloak':
     ensure => 'link',
-    target => $keycloak::install_base
+    target => $keycloak::install_base,
   }
 
   # Template uses:

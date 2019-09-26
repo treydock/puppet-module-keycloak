@@ -6,7 +6,7 @@ class keycloak::datasource::postgresql {
 
   $jar_source = pick($keycloak::datasource_jar_source, $keycloak::postgresql_jar_source)
   $module_source = pick($keycloak::datasource_module_source, 'puppet:///modules/keycloak/database/postgresql/module.xml')
-  $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/postgresql/main"
+  $module_dir = "${keycloak::install_base}/modules/system/layers/keycloak/org/postgresql/main"
 
   include ::postgresql::lib::java
 

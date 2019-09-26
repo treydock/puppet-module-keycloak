@@ -6,7 +6,7 @@ class keycloak::datasource::oracle {
   assert_private()
 
   $module_source = pick($keycloak::datasource_module_source, 'puppet:///modules/keycloak/database/oracle/module.xml')
-  $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/org/oracle/main"
+  $module_dir = "${keycloak::install_base}/modules/system/layers/keycloak/org/oracle/main"
 
   exec { "mkdir -p ${module_dir}":
     path    => '/usr/bin:/bin',
