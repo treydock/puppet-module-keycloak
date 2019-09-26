@@ -96,6 +96,26 @@
   
     <li>
       
+        <span class='name'>manage_install</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Install Keycloak from upstream Keycloak tarball. Set to false to manage
+installation of Keycloak outside this module and set $install_dir and
+$version to match. Defaults to true.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>version</span>
       
       
@@ -241,6 +261,24 @@
   
     <li>
       
+        <span class='name'>service_bind_address</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;0.0.0.0&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Bind address for Keycloak service. Default is &#39;0.0.0.0&#39;.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>service_java_opts</span>
       
       
@@ -253,6 +291,24 @@
         &mdash;
         <div class='inline'>
 <p>Sets additional options to Java virtual machine environment variable.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_extra_opts</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Additional options added to the end of the service command-line.</p>
 </div>
       
     </li>
@@ -1232,16 +1288,6 @@ by this module</p>
         <pre class="lines">
 
 
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
 179
 180
 181
@@ -1376,12 +1422,26 @@ by this module</p>
 310
 311
 312
-313</pre>
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 169</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 179</span>
 
 class keycloak (
+  Boolean $manage_install       = true,
   String $version               = &#39;6.0.1&#39;,
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
@@ -1391,8 +1451,10 @@ class keycloak (
   Boolean $service_enable       = true,
   Boolean $service_hasstatus    = true,
   Boolean $service_hasrestart   = true,
+  Stdlib::IP::Address $service_bind_address = &#39;0.0.0.0&#39;,
   Optional[Variant[String, Array]]
     $service_java_opts = undef,
+  Optional[String] $service_extra_opts = undef,
   Boolean $manage_user = true,
   String $user                  = &#39;keycloak&#39;,
   Stdlib::Absolutepath $user_shell = &#39;/sbin/nologin&#39;,

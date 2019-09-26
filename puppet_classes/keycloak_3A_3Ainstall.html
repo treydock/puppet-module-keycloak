@@ -130,7 +130,19 @@
 38
 39
 40
-41</pre>
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/install.pp', line 2</span>
@@ -156,23 +168,35 @@ class keycloak::install {
       gid        =&gt; $keycloak::group_gid,
     }
   }
-  file { &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;:
-    ensure =&gt; &#39;directory&#39;,
-    owner  =&gt; $keycloak::user,
-    group  =&gt; $keycloak::group,
-    mode   =&gt; &#39;0755&#39;,
-  }
-  -&gt; archive { &quot;keycloak-${keycloak::version}.tar.gz&quot;:
-    ensure          =&gt; &#39;present&#39;,
-    extract         =&gt; true,
-    path            =&gt; &quot;/tmp/keycloak-${keycloak::version}.tar.gz&quot;,
-    extract_path    =&gt; &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;,
-    extract_command =&gt; &#39;tar xfz %s --strip-components=1&#39;,
-    source          =&gt; $keycloak::download_url,
-    creates         =&gt; &quot;${keycloak::install_dir}/keycloak-${keycloak::version}/bin&quot;,
-    cleanup         =&gt; true,
-    user            =&gt; $keycloak::user,
-    group           =&gt; $keycloak::group,
+
+  $install_base = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;
+
+  if $::keycloak::manage_install {
+    file { $install_base:
+      ensure =&gt; &#39;directory&#39;,
+      owner  =&gt; $keycloak::user,
+      group  =&gt; $keycloak::group,
+      mode   =&gt; &#39;0755&#39;,
+    }
+    -&gt; archive { &quot;keycloak-${keycloak::version}.tar.gz&quot;:
+      ensure          =&gt; &#39;present&#39;,
+      extract         =&gt; true,
+      path            =&gt; &quot;/tmp/keycloak-${keycloak::version}.tar.gz&quot;,
+      extract_path    =&gt; $install_base,
+      extract_command =&gt; &#39;tar xfz %s --strip-components=1&#39;,
+      source          =&gt; $keycloak::download_url,
+      creates         =&gt; &quot;${install_base}/bin&quot;,
+      cleanup         =&gt; true,
+      user            =&gt; $keycloak::user,
+      group           =&gt; $keycloak::group,
+    }
+  } else {
+    # Set permissions properly when using a package
+    exec { &#39;ensure-keycloak-dir-owner&#39;:
+      command =&gt; &quot;chown -R ${::keycloak::user}:${::keycloak::group} ${install_base}&quot;,
+      unless  =&gt; &quot;test `stat -c %U ${install_base}` = ${::keycloak::user}&quot;,
+      path    =&gt; [&#39;/bin&#39;,&#39;/usr/bin&#39;],
+    }
   }
 }</pre>
       </td>
