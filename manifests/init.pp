@@ -294,6 +294,7 @@ class keycloak (
     }
     'Debian': {
       $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
+      $mysql_datasource_class = 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource'
       $postgresql_jar_source = '/usr/share/java/postgresql.jar'
     }
     default: {
