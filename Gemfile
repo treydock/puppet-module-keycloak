@@ -17,18 +17,45 @@ ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
-  gem "fast_gettext", '1.1.0',                         require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')
-  gem "fast_gettext",                                  require: false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')
-  gem "json_pure", '<= 2.0.1',                         require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')
-  gem "json", '= 1.8.1',                               require: false if Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')
-  gem "json", '= 2.0.4',                               require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
-  gem "json", '= 2.1.0',                               require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
-  gem "puppet-module-posix-default-r#{minor_version}", require: false, platforms: [:ruby]
-  gem "puppet-module-posix-dev-r#{minor_version}",     require: false, platforms: [:ruby]
-  gem "puppet-module-win-default-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "puppet-module-win-dev-r#{minor_version}",       require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "puppet-lint-param-docs",                        require: false
-  gem "github_changelog_generator",                    require: false, git: 'https://github.com/skywinder/github-changelog-generator', ref: '20ee04ba1234e9e83eb2ffb5056e23d641c7a018' if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')
+  gem "fast_gettext", '1.1.0',                                   require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')
+  gem "fast_gettext",                                            require: false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')
+  gem "json_pure", '<= 2.0.1',                                   require: false if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')
+  gem "json", '= 1.8.1',                                         require: false if Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')
+  gem "json", '= 2.0.4',                                         require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "json", '= 2.1.0',                                         require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  gem "rb-readline", '= 0.5.5',                                  require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-posix-default-r#{minor_version}", '~> 0.3', require: false, platforms: [:ruby]
+  gem "activesupport", '~> 5.0',                                 require: false
+  gem "codecov", '~> 0.1.10',                                    require: false
+  gem "dependency_checker", '~> 0.2',                            require: false
+  gem "facterdb", '~> 0.8.1',                                    require: false
+  gem "gettext-setup", '~> 0.26',                                require: false
+  gem "metadata-json-lint", '~> 2.0',                            require: false
+  gem "mocha", '~> 1.0',                                         require: false
+  gem "parallel_tests", '~> 2.14.1',                             require: false
+  gem "parser", '~> 2.5.1.2',                                    require: false
+  gem "pry", '~> 0.10.4',                                        require: false
+  gem "puppet-debugger", '~> 0.14',                              require: false
+  gem "puppet-lint", '~> 2.3',                                   require: false
+  gem "puppet_pot_generator", '~> 1.0',                          require: false
+  gem "puppet-strings", '~> 2.0',                                require: false
+  gem "puppet-resource_api", '~> 1.6',                           require: false
+  gem "puppet-syntax", '~> 2.4',                                 require: false
+  gem "puppetlabs_spec_helper", '~> 2.9',                        require: false
+  gem "rainbow", '~> 2.0',                                       require: false
+  gem "rspec-puppet", '~> 2.3',                                  require: false
+  gem "rspec-puppet-facts", '~> 1.9.5',                          require: false
+  gem "rubocop", '~> 0.49.0',                                    require: false
+  gem "rubocop-i18n", '~> 1.2.0',                                require: false
+  gem "rubocop-rspec", '~> 1.16.0',                              require: false
+  gem "rspec_junit_formatter", '~> 0.2',                         require: false
+  gem "serverspec", '~> 2.41',                                   require: false
+  gem "simplecov-console", '~> 0.4.2',                           require: false
+  gem "specinfra", '2.82.2',                                     require: false
+  gem "puppet-module-win-default-r#{minor_version}", '~> 0.3',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-win-dev-r#{minor_version}", '~> 0.3',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-lint-param-docs",                                  require: false
+  gem "github_changelog_generator",                              require: false, git: 'https://github.com/skywinder/github-changelog-generator', ref: '20ee04ba1234e9e83eb2ffb5056e23d641c7a018' if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.2.2')
 end
 group :system_tests do
   gem "puppet-module-posix-system-r#{minor_version}",                            require: false, platforms: [:ruby]
@@ -38,7 +65,7 @@ group :system_tests do
   gem "beaker-pe",                                                               require: false
   gem "beaker-hostgenerator"
   gem "beaker-rspec"
-  gem "beaker-docker"
+  gem "beaker-docker",               git: 'https://github.com/treydock/beaker-docker', ref: 'c6d1d3dc5f1e8b7770109793d15cfc9927eb1961'
   gem "beaker-puppet"
 end
 
