@@ -35,6 +35,7 @@ describe 'keycloak' do
       end
 
       context 'keycloak::datasource::mysql' do
+        let(:pre_condition) { 'include ::mysql::server' }
         let(:params) { { datasource_driver: 'mysql' } }
 
         it { is_expected.to contain_class('keycloak::install').that_comes_before('Class[keycloak::datasource::mysql]') }
