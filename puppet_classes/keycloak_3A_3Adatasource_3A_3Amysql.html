@@ -139,7 +139,13 @@
 48
 49
 50
-51</pre>
+51
+52
+53
+54
+55
+56
+57</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/datasource/mysql.pp', line 4</span>
@@ -151,8 +157,14 @@ class keycloak::datasource::mysql {
   $module_source = pick($keycloak::datasource_module_source, &#39;puppet:///modules/keycloak/database/mysql/module.xml&#39;)
   $module_dir = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/com/mysql/jdbc/main&quot;
 
-  include ::mysql::bindings
-  include ::mysql::bindings::java
+  if $keycloak::datasource_package {
+    ensure_packages([$keycloak::datasource_package])
+    $jar_require = Package[$keycloak::datasource_package]
+  } else {
+    include ::mysql::bindings
+    include ::mysql::bindings::java
+    $jar_require = Class[&#39;::mysql::bindings::java&#39;]
+  }
 
   exec { &quot;mkdir -p ${module_dir}&quot;:
     path    =&gt; &#39;/usr/bin:/bin&#39;,
@@ -172,7 +184,7 @@ class keycloak::datasource::mysql {
     owner   =&gt; $keycloak::user,
     group   =&gt; $keycloak::group,
     mode    =&gt; &#39;0644&#39;,
-    require =&gt; Class[&#39;::mysql::bindings::java&#39;],
+    require =&gt; $jar_require,
   }
   file { &quot;${$module_dir}/module.xml&quot;:
     ensure =&gt; &#39;file&#39;,
