@@ -52,6 +52,8 @@ group :development do
   gem "serverspec", '~> 2.41',                                   require: false
   gem "simplecov-console", '~> 0.4.2',                           require: false
   gem "specinfra", '2.82.2',                                     require: false
+  gem "simplecov", '~> 0.14.1',                                  require: false
+  gem "puppet-blacksmith", '>= 3.4.0',                           require: false
   gem "puppet-module-win-default-r#{minor_version}", '~> 0.3',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-module-win-dev-r#{minor_version}", '~> 0.3',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-lint-param-docs",                                  require: false
