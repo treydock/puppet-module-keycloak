@@ -312,6 +312,14 @@ Default is `sa`.
 
 Default value: 'sa'
 
+##### `datasource_package`
+
+Data type: `Optional[String]`
+
+Package to add specified datasource support
+
+Default value: `undef`
+
 ##### `datasource_jar_source`
 
 Data type: `Optional[String]`

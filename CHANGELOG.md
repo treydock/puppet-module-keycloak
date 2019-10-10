@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.6.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.6.0) (2019-10-10)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.5.0...v5.6.0)
+
+### Added
+
+- Support EL8 [\#91](https://github.com/treydock/puppet-module-keycloak/pull/91) ([treydock](https://github.com/treydock))
+
 ## [v5.5.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.5.0) (2019-09-26)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.4.0...v5.5.0)
@@ -254,7 +262,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Support setting auth\_type=simple related properties for keycloak\_ldap\_user\_provider type [\#24](https://github.com/treydock/puppet-module-keycloak/pull/24) ([treydock](https://github.com/treydock))
-- Allow keycloak\_protocol\_mapper attribute\_nameformat to be simpler values [\#18](https://github.com/treydock/puppet-module-keycloak/pull/18) ([treydock](https://github.com/treydock))
 
 ## [2.4.0](https://github.com/treydock/puppet-module-keycloak/tree/2.4.0) (2018-06-04)
 
@@ -278,6 +285,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Allow keycloak\_protocol\_mapper attribute\_nameformat to be simpler values [\#18](https://github.com/treydock/puppet-module-keycloak/pull/18) ([treydock](https://github.com/treydock))
 - Add SAML username protocol mapper to keycloak::client\_template [\#17](https://github.com/treydock/puppet-module-keycloak/pull/17) ([treydock](https://github.com/treydock))
 - Support SAML role list protocol mapper [\#16](https://github.com/treydock/puppet-module-keycloak/pull/16) ([treydock](https://github.com/treydock))
 - Add SAML support to keycloak\_protocol\_mapper and keycloak::client\_template [\#15](https://github.com/treydock/puppet-module-keycloak/pull/15) ([treydock](https://github.com/treydock))
@@ -313,16 +321,13 @@ All notable changes to this project will be documented in this file. The format 
 - Add support for http port configuration [\#9](https://github.com/treydock/puppet-module-keycloak/pull/9) ([NITEMAN](https://github.com/NITEMAN))
 - Add Debian 9 support [\#8](https://github.com/treydock/puppet-module-keycloak/pull/8) ([NITEMAN](https://github.com/NITEMAN))
 
-### Fixed
-
-- Fix ownership of install dir [\#10](https://github.com/treydock/puppet-module-keycloak/pull/10) ([NITEMAN](https://github.com/NITEMAN))
-
 ## [2.0.1](https://github.com/treydock/puppet-module-keycloak/tree/2.0.1) (2017-12-18)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.0.0...2.0.1)
 
 ### Fixed
 
+- Fix ownership of install dir [\#10](https://github.com/treydock/puppet-module-keycloak/pull/10) ([NITEMAN](https://github.com/NITEMAN))
 - Fix configuration order when proxy\_https is true [\#7](https://github.com/treydock/puppet-module-keycloak/pull/7) ([treydock](https://github.com/treydock))
 
 ## [2.0.0](https://github.com/treydock/puppet-module-keycloak/tree/2.0.0) (2017-12-11)
