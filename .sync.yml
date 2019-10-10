@@ -34,6 +34,18 @@
       extra_envs:
         - BEAKER_keycloak_version: 7.0.0
         - BEAKER_keycloak_full: yes
+    - set: centos-8
+      collection: puppet5
+    - set: centos-8
+      collection: puppet5
+      extra_envs:
+        - BEAKER_keycloak_version: 7.0.0
+    - set: centos-8
+      collection: puppet6
+    - set: centos-8
+      collection: puppet6
+      extra_envs:
+        - BEAKER_keycloak_version: 7.0.0
     - set: debian-9
       collection: puppet5
     - set: debian-9

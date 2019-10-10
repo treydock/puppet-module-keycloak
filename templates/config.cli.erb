@@ -25,7 +25,7 @@ end-if
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
 if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource
-/subsystem=datasources/jdbc-driver=mysql:add(driver-module-name=com.mysql.jdbc,driver-name=mysql,driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)
+/subsystem=datasources/jdbc-driver=mysql:add(driver-module-name=com.mysql.jdbc,driver-name=mysql,driver-xa-datasource-class-name=<%= scope['keycloak::mysql_datasource_class'] %>)
 end-if
 <%- elsif scope['keycloak::datasource_driver'] == 'h2' -%>
 /subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=background-validation)

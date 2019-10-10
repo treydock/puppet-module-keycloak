@@ -8,8 +8,14 @@ class keycloak::datasource::mysql {
   $module_source = pick($keycloak::datasource_module_source, 'puppet:///modules/keycloak/database/mysql/module.xml')
   $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/com/mysql/jdbc/main"
 
-  include ::mysql::bindings
-  include ::mysql::bindings::java
+  if $keycloak::datasource_package {
+    ensure_packages([$keycloak::datasource_package])
+    $jar_require = Package[$keycloak::datasource_package]
+  } else {
+    include ::mysql::bindings
+    include ::mysql::bindings::java
+    $jar_require = Class['::mysql::bindings::java']
+  }
 
   exec { "mkdir -p ${module_dir}":
     path    => '/usr/bin:/bin',
@@ -29,7 +35,7 @@ class keycloak::datasource::mysql {
     owner   => $keycloak::user,
     group   => $keycloak::group,
     mode    => '0644',
-    require => Class['::mysql::bindings::java'],
+    require => $jar_require,
   }
   file { "${$module_dir}/module.xml":
     ensure => 'file',

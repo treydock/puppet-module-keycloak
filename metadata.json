@@ -14,11 +14,11 @@
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">= 3.0.0 <11.0.0"
+      "version_requirement": ">= 9.0.0 <11.0.0"
     },
     {
       "name": "puppetlabs/postgresql",
-      "version_requirement": ">= 5.7.0 <7.0.0"
+      "version_requirement": ">= 6.1.0 <7.0.0"
     },
     {
       "name": "puppetlabs/java",
@@ -41,19 +41,22 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "Scientific",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
@@ -77,5 +80,5 @@
   ],
   "pdk-version": "1.13.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g92d8565"
+  "template-ref": "heads/master-0-g854a33f"
 }

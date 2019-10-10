@@ -88,6 +88,8 @@
 # @param datasource_password
 #   Datasource user password.
 #   Default is `sa`.
+# @param datasource_package
+#   Package to add specified datasource support
 # @param datasource_jar_source
 #   Source for datasource JDBC driver - could be puppet link or local file on the node.
 #   Default is dependent on value for `datasource_driver`.
@@ -207,6 +209,7 @@ class keycloak (
   String $datasource_dbname = 'keycloak',
   String $datasource_username = 'sa',
   String $datasource_password = 'sa',
+  Optional[String] $datasource_package = undef,
   Optional[String] $datasource_jar_source = undef,
   Optional[String] $datasource_module_source = undef,
   Boolean $proxy_https = false,
@@ -279,11 +282,19 @@ class keycloak (
 
   case $facts['os']['family'] {
     'RedHat': {
-      $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
-      $postgresql_jar_source = '/usr/share/java/postgresql-jdbc.jar'
+      if versioncmp($facts['os']['release']['major'], '8') >= 0 {
+        $mysql_jar_source = '/usr/lib/java/mariadb-java-client.jar'
+        $mysql_datasource_class = 'org.mariadb.jdbc.MariaDbDataSource'
+        $postgresql_jar_source = '/usr/share/java/postgresql-jdbc/postgresql.jar'
+      } else {
+        $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
+        $mysql_datasource_class = 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource'
+        $postgresql_jar_source = '/usr/share/java/postgresql-jdbc.jar'
+      }
     }
     'Debian': {
       $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
+      $mysql_datasource_class = 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource'
       $postgresql_jar_source = '/usr/share/java/postgresql.jar'
     }
     default: {
