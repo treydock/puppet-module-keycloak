@@ -96,6 +96,8 @@
 #   This parameter is required if `datasource_driver` is `oracle`.
 # @param datasource_module_source
 #   Source for datasource module.xml. Default depends on `datasource_driver`.
+# @param datasource_xa_class
+#   MySQL Connector/J JDBC driver xa-datasource class name
 # @param proxy_https
 #   Boolean that sets if HTTPS proxy should be enabled.
 #   Set to `true` if proxying traffic through Apache.
@@ -206,6 +208,7 @@ class keycloak (
   Optional[String] $datasource_host = undef,
   Optional[Integer] $datasource_port = undef,
   Optional[String] $datasource_url = undef,
+  Optional[String] $datasource_xa_class = undef,
   String $datasource_dbname = 'keycloak',
   String $datasource_username = 'sa',
   String $datasource_password = 'sa',
@@ -283,18 +286,18 @@ class keycloak (
   case $facts['os']['family'] {
     'RedHat': {
       if versioncmp($facts['os']['release']['major'], '8') >= 0 {
+        $mysql_datasource_class = pick($datasource_xa_class, 'org.mariadb.jdbc.MariaDbDataSource')
         $mysql_jar_source = '/usr/lib/java/mariadb-java-client.jar'
-        $mysql_datasource_class = 'org.mariadb.jdbc.MariaDbDataSource'
         $postgresql_jar_source = '/usr/share/java/postgresql-jdbc/postgresql.jar'
       } else {
+        $mysql_datasource_class = pick($datasource_xa_class, 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource')
         $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
-        $mysql_datasource_class = 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource'
         $postgresql_jar_source = '/usr/share/java/postgresql-jdbc.jar'
       }
     }
     'Debian': {
+      $mysql_datasource_class = pick($datasource_xa_class, 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource')
       $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
-      $mysql_datasource_class = 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource'
       $postgresql_jar_source = '/usr/share/java/postgresql.jar'
     }
     default: {
