@@ -670,6 +670,24 @@ This parameter is required if <code>datasource_driver</code> is
   
     <li>
       
+        <span class='name'>datasource_xa_class</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>MySQL Connector/J JDBC driver xa-datasource class name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>proxy_https</span>
       
       
@@ -1306,8 +1324,6 @@ by this module</p>
         <pre class="lines">
 
 
-181
-182
 183
 184
 185
@@ -1462,10 +1478,13 @@ by this module</p>
 334
 335
 336
-337</pre>
+337
+338
+339
+340</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 181</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 183</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1495,6 +1514,7 @@ class keycloak (
   Optional[String] $datasource_host = undef,
   Optional[Integer] $datasource_port = undef,
   Optional[String] $datasource_url = undef,
+  Optional[String] $datasource_xa_class = undef,
   String $datasource_dbname = &#39;keycloak&#39;,
   String $datasource_username = &#39;sa&#39;,
   String $datasource_password = &#39;sa&#39;,
@@ -1572,18 +1592,18 @@ class keycloak (
   case $facts[&#39;os&#39;][&#39;family&#39;] {
     &#39;RedHat&#39;: {
       if versioncmp($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;], &#39;8&#39;) &gt;= 0 {
+        $mysql_datasource_class = pick($datasource_xa_class, &#39;org.mariadb.jdbc.MariaDbDataSource&#39;)
         $mysql_jar_source = &#39;/usr/lib/java/mariadb-java-client.jar&#39;
-        $mysql_datasource_class = &#39;org.mariadb.jdbc.MariaDbDataSource&#39;
         $postgresql_jar_source = &#39;/usr/share/java/postgresql-jdbc/postgresql.jar&#39;
       } else {
+        $mysql_datasource_class = pick($datasource_xa_class, &#39;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&#39;)
         $mysql_jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;
-        $mysql_datasource_class = &#39;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&#39;
         $postgresql_jar_source = &#39;/usr/share/java/postgresql-jdbc.jar&#39;
       }
     }
     &#39;Debian&#39;: {
+      $mysql_datasource_class = pick($datasource_xa_class, &#39;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&#39;)
       $mysql_jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;
-      $mysql_datasource_class = &#39;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&#39;
       $postgresql_jar_source = &#39;/usr/share/java/postgresql.jar&#39;
     }
     default: {
