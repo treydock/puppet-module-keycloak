@@ -338,6 +338,14 @@ Source for datasource module.xml. Default depends on `datasource_driver`.
 
 Default value: `undef`
 
+##### `datasource_xa_class`
+
+Data type: `Optional[String]`
+
+MySQL Connector/J JDBC driver xa-datasource class name
+
+Default value: `undef`
+
 ##### `proxy_https`
 
 Data type: `Boolean`
