@@ -37,6 +37,17 @@ class keycloak::config {
     mode   => '0750',
   }
 
+  if $keycloak::tech_preview_features {
+    file { "${keycloak::install_base}/standalone/configuration/profile.properties":
+      ensure  => 'file',
+      owner   => $keycloak::user,
+      group   => $keycloak::group,
+      content => template('keycloak/profile.properties.erb'),
+      mode    => '0750',
+      require => File["${keycloak::install_base}/standalone/configuration"],
+    }
+  }
+
   file { "${keycloak::install_base}/config.cli":
     ensure    => 'file',
     owner     => $keycloak::user,

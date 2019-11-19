@@ -179,6 +179,8 @@
 #   Path to the file with environment variables for the systemd service
 # @param operating_mode
 #   Keycloak operating mode deployment
+# @param tech_preview_features
+#  List of technology Preview features to enable
 #
 class keycloak (
   Boolean $manage_install       = true,
@@ -250,6 +252,7 @@ class keycloak (
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum['standalone', 'clustered'] $operating_mode = 'standalone',
+  Optional[Array] $tech_preview_features = undef,
 ) {
 
   if ! $facts['os']['family'] in ['RedHat','Debian'] {

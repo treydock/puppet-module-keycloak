@@ -1,0 +1,3 @@
+<%- scope['keycloak::tech_preview_features'].each do |feature_name| -%>
+feature.<%= feature_name %>=enabled
+<%- end -%>
