@@ -259,6 +259,12 @@ class keycloak (
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
   }
 
+  $profile_properties_ensure = $tech_preview_features ? {
+    undef   => 'absent',
+    []      => 'absent',
+    default => 'file',
+  }
+
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
   case $datasource_driver {
     'h2': {
