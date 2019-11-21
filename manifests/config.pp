@@ -25,9 +25,10 @@ class keycloak::config {
   $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
   $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}"
   exec { 'create-keycloak-admin':
-    command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
-    creates => $_add_user_keycloak_state,
-    notify  => Class['keycloak::service'],
+    command     => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
+    creates     => $_add_user_keycloak_state,
+    environment => ['JAVA_OPTS=--add-modules java.se'],
+    notify      => Class['keycloak::service'],
   }
 
   file { "${keycloak::install_base}/standalone/configuration":
