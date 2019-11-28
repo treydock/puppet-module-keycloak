@@ -61,7 +61,10 @@ describe Puppet::Type.type(:keycloak_client) do
 
   defaults = {
     enabled: :true,
+    standard_flow_enabled: :true,
+    implicit_flow_enabled: :false,
     direct_access_grants_enabled: :true,
+    service_accounts_enabled: :false,
     public_client: :false,
     full_scope_allowed: :true,
     default_client_scopes: [],
@@ -90,7 +93,10 @@ describe Puppet::Type.type(:keycloak_client) do
     # Test boolean properties
     [
       :enabled,
+      :standard_flow_enabled,
+      :implicit_flow_enabled,
       :direct_access_grants_enabled,
+      :service_accounts_enabled,
       :public_client,
       :full_scope_allowed,
     ].each do |p|
