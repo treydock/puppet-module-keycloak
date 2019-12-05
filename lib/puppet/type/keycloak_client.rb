@@ -98,10 +98,28 @@ Manage Keycloak clients
     defaultto :true
   end
 
+  newproperty(:standard_flow_enabled, boolean: true) do
+    desc 'standardFlowEnabled'
+    newvalues(:true, :false)
+    defaultto :true
+  end
+
+  newproperty(:implicit_flow_enabled, boolean: true) do
+    desc 'implicitFlowEnabled'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:direct_access_grants_enabled, boolean: true) do
     desc 'enabled'
     newvalues(:true, :false)
     defaultto :true
+  end
+
+  newproperty(:service_accounts_enabled, boolean: true) do
+    desc 'serviceAccountsEnabled'
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:public_client, boolean: true) do
