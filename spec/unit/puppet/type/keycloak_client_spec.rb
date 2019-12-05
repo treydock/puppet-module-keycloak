@@ -142,6 +142,22 @@ describe Puppet::Type.type(:keycloak_client) do
     end
   end
 
+  describe 'hash properties' do
+    # Hash properties
+    [
+      :attributes,
+    ].each do |p|
+      it "should accept hash for #{p}" do
+        config[p] = { foo: 'bar' }
+        expect(resource[p]).to eq(foo: 'bar')
+      end
+      next unless defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
+    end
+  end
+
   it 'autorequires keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(name: 'keycloak')
     catalog = Puppet::Resource::Catalog.new

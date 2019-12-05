@@ -120,6 +120,13 @@ Manage Keycloak clients
     defaultto []
   end
 
+  newproperty(:attributes) do
+    desc 'attributes'
+    validate do |attributes|
+      raise('Property attributes must be a hash') unless attributes.is_a?(Hash)
+    end
+  end
+
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
