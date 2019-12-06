@@ -79,7 +79,7 @@
       "version_requirement": ">= 5.0.0 < 7.0.0"
     }
   ],
-  "pdk-version": "1.13.0",
+  "pdk-version": "1.14.1",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-gdf6e1ae"
+  "template-ref": "heads/master-0-gf5c98be"
 }
