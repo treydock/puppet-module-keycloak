@@ -5,6 +5,12 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
 
   mk_resource_methods
 
+  def attributes_properties
+    [
+      :login_theme,
+    ]
+  end
+
   def self.instances
     clients = []
     realms.each do |realm|
@@ -40,16 +46,26 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
         client[:realm] = realm
         client[:name] = "#{client[:client_id]} on #{client[:realm]}"
         type_properties.each do |property|
-          next unless d.key?(camelize(property))
-          value = d[camelize(property)]
+          camel_key = camelize(property)
+          dot_key = property.to_s.tr('_', '.')
+          key = property.to_s
+          attributes = d['attributes'] || {}
           if property == :secret
             value = secret
+          elsif d.key?(camel_key)
+            value = d[camel_key]
+          elsif attributes.key?(dot_key)
+            value = attributes[dot_key]
+          elsif attributes.key?(key)
+            value = attributes[key]
           end
           if !!value == value # rubocop:disable Style/DoubleNegation
             value = value.to_s.to_sym
           end
           client[property.to_sym] = value
         end
+        # The absence of a value should be 'absent'
+        client[:login_theme] = 'absent' if client[:login_theme].nil?
         clients << new(client)
       end
     end
@@ -91,8 +107,16 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
     data[:secret] = resource[:secret] if resource[:secret]
     type_properties.each do |property|
       next if [:default_client_scopes, :optional_client_scopes].include?(property)
-      if resource[property.to_sym]
-        data[camelize(property)] = convert_property_value(resource[property.to_sym])
+      next unless resource[property.to_sym]
+      value = convert_property_value(resource[property.to_sym])
+      next if value == 'absent' || value == :absent || value.nil?
+      if attributes_properties.include?(property)
+        unless data.key?(:attributes)
+          data[:attributes] = {}
+        end
+        data[:attributes][property] = value
+      else
+        data[camelize(property)] = value
       end
     end
 
@@ -191,8 +215,16 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       data[:clientId] = resource[:client_id]
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes].include?(property)
-        if @property_flush[property.to_sym]
-          data[camelize(property)] = convert_property_value(resource[property.to_sym])
+        next unless @property_flush[property.to_sym]
+        value = convert_property_value(@property_flush[property.to_sym])
+        value = nil if value.to_s == 'absent'
+        if attributes_properties.include?(property)
+          unless data.key?(:attributes)
+            data[:attributes] = {}
+          end
+          data[:attributes][property] = value
+        else
+          data[camelize(property)] = value
         end
       end
 

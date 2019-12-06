@@ -120,6 +120,11 @@ Manage Keycloak clients
     defaultto []
   end
 
+  newproperty(:login_theme) do
+    desc 'login_theme'
+    defaultto 'absent'
+  end
+
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
