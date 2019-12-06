@@ -71,12 +71,14 @@ describe Puppet::Type.type(:keycloak_client) do
     optional_client_scopes: [],
     redirect_uris: [],
     web_origins: [],
+    login_theme: 'absent',
   }
 
   describe 'basic properties' do
     # Test basic properties
     [
       :secret,
+      :login_theme,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'
