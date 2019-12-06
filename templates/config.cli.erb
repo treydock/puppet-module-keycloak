@@ -24,9 +24,12 @@ end-if
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1")
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
-if (outcome != success) of /subsystem=datasources/jdbc-driver=mysql:read-resource
+try
 /subsystem=datasources/jdbc-driver=mysql:add(driver-module-name=com.mysql.jdbc,driver-name=mysql,driver-xa-datasource-class-name=<%= scope['keycloak::mysql_datasource_class'] %>)
-end-if
+catch
+/subsystem=datasources/jdbc-driver=mysql:remove
+/subsystem=datasources/jdbc-driver=mysql:add(driver-module-name=com.mysql.jdbc,driver-name=mysql,driver-xa-datasource-class-name=<%= scope['keycloak::mysql_datasource_class'] %>)
+end-try
 <%- elsif scope['keycloak::datasource_driver'] == 'h2' -%>
 /subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=background-validation)
 /subsystem=datasources/data-source=KeycloakDS:undefine-attribute(name=check-valid-connection-sql)
@@ -37,17 +40,23 @@ end-if
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1 FROM DUAL")
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
-if (outcome != success) of /subsystem=datasources/jdbc-driver=oracle:read-resource
+try
 /subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=org.oracle,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
-end-if
+catch
+/subsystem=datasources/jdbc-driver=oracle:remove
+/subsystem=datasources/jdbc-driver=oracle:add(driver-module-name=org.oracle,driver-name=oracle,driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)
+end-try
 <%- elsif scope['keycloak::datasource_driver'] == 'postgresql' -%>
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation, value=true)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1")
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
 /subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
-if (outcome != success) of /subsystem=datasources/jdbc-driver=postgresql:read-resource
+try
 /subsystem=datasources/jdbc-driver=postgresql:add(driver-module-name=org.postgresql,driver-name=postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
-end-if
+catch
+/subsystem=datasources/jdbc-driver=postgresql:remove
+/subsystem=datasources/jdbc-driver=postgresql:add(driver-module-name=org.postgresql,driver-name=postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+end-try
 <%- end -%>
 <%- if scope['keycloak::truststore'] -%>
 if (outcome != success) of /subsystem=keycloak-server/spi=truststore:read-resource
