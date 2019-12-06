@@ -631,6 +631,14 @@ Keycloak operating mode deployment
 
 Default value: 'standalone'
 
+##### `tech_preview_features`
+
+Data type: `Array`
+
+List of technology Preview features to enable
+
+Default value: []
+
 ### keycloak::config
 
 Private class.
@@ -890,6 +898,22 @@ enabled
 
 Default value: true
 
+##### `standard_flow_enabled`
+
+Valid values: `true`, `false`
+
+standardFlowEnabled
+
+Default value: true
+
+##### `implicit_flow_enabled`
+
+Valid values: `true`, `false`
+
+implicitFlowEnabled
+
+Default value: false
+
 ##### `direct_access_grants_enabled`
 
 Valid values: `true`, `false`
@@ -897,6 +921,14 @@ Valid values: `true`, `false`
 enabled
 
 Default value: true
+
+##### `service_accounts_enabled`
+
+Valid values: `true`, `false`
+
+serviceAccountsEnabled
+
+Default value: false
 
 ##### `public_client`
 
@@ -917,6 +949,12 @@ Default value: []
 webOrigins
 
 Default value: []
+
+##### `login_theme`
+
+login_theme
+
+Default value: absent
 
 #### Parameters
 

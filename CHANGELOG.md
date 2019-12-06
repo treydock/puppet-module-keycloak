@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.8.0) (2019-12-06)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.7.0...v5.8.0)
+
+### Added
+
+- Test against Keycloak 8.0.1 [\#100](https://github.com/treydock/puppet-module-keycloak/pull/100) ([treydock](https://github.com/treydock))
+- Add option to enable tech preview features [\#99](https://github.com/treydock/puppet-module-keycloak/pull/99) ([treydock](https://github.com/treydock))
+- Add login\_theme property to keycloak\_client [\#98](https://github.com/treydock/puppet-module-keycloak/pull/98) ([treydock](https://github.com/treydock))
+- Add support for more client switches [\#96](https://github.com/treydock/puppet-module-keycloak/pull/96) ([mattock](https://github.com/mattock))
+- Add option to enable tech preview features [\#95](https://github.com/treydock/puppet-module-keycloak/pull/95) ([danifr](https://github.com/danifr))
+
+### Fixed
+
+- Fix config.cli to be able to change datasource values [\#101](https://github.com/treydock/puppet-module-keycloak/pull/101) ([treydock](https://github.com/treydock))
+
 ## [v5.7.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.7.0) (2019-10-29)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.6.0...v5.7.0)
@@ -306,6 +322,10 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.2.0...2.2.1)
 
+### Fixed
+
+- Do not show diff of files that may contain passwords [\#14](https://github.com/treydock/puppet-module-keycloak/pull/14) ([treydock](https://github.com/treydock))
+
 ## [2.2.0](https://github.com/treydock/puppet-module-keycloak/tree/2.2.0) (2018-02-26)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.1.0...2.2.0)
@@ -327,7 +347,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- Do not show diff of files that may contain passwords [\#14](https://github.com/treydock/puppet-module-keycloak/pull/14) ([treydock](https://github.com/treydock))
 - Fix ownership of install dir [\#10](https://github.com/treydock/puppet-module-keycloak/pull/10) ([NITEMAN](https://github.com/NITEMAN))
 
 ## [2.0.1](https://github.com/treydock/puppet-module-keycloak/tree/2.0.1) (2017-12-18)
