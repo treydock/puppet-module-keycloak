@@ -14,15 +14,15 @@
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">= 9.0.0 <11.0.0"
+      "version_requirement": ">= 10.2.0 <11.0.0"
     },
     {
       "name": "puppetlabs/postgresql",
-      "version_requirement": ">= 6.1.0 <7.0.0"
+      "version_requirement": ">= 6.2.0 <7.0.0"
     },
     {
       "name": "puppetlabs/java",
-      "version_requirement": ">= 3.0.0 <6.0.0"
+      "version_requirement": ">= 5.0.0 <7.0.0"
     },
     {
       "name": "puppetlabs/java_ks",
@@ -62,7 +62,8 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "9"
+        "9",
+        "10"
       ]
     },
     {

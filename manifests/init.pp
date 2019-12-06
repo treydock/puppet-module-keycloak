@@ -252,7 +252,7 @@ class keycloak (
   Enum['standalone', 'clustered'] $operating_mode = 'standalone',
 ) {
 
-  if ! $facts['os']['family'] in ['RedHat','Debian'] {
+  if ! ($facts['os']['family'] in ['RedHat','Debian']) {
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
   }
 
@@ -296,8 +296,13 @@ class keycloak (
       }
     }
     'Debian': {
-      $mysql_datasource_class = pick($datasource_xa_class, 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource')
-      $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
+      if versioncmp($facts['os']['release']['major'], '10') >= 0 {
+        $mysql_datasource_class = pick($datasource_xa_class, 'org.mariadb.jdbc.MariaDbDataSource')
+        $mysql_jar_source = '/usr/share/java/mariadb-java-client.jar'
+      } else {
+        $mysql_datasource_class = pick($datasource_xa_class, 'com.mysql.jdbc.jdbc2.optional.MysqlXADataSource')
+        $mysql_jar_source = '/usr/share/java/mysql-connector-java.jar'
+      }
       $postgresql_jar_source = '/usr/share/java/postgresql.jar'
     }
     default: {

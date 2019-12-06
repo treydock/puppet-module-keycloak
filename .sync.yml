@@ -58,6 +58,18 @@
       collection: puppet6
       extra_envs:
         - BEAKER_keycloak_version: 7.0.0
+    - set: debian-10
+      collection: puppet5
+    - set: debian-10
+      collection: puppet5
+      extra_envs:
+        - BEAKER_keycloak_version: 7.0.0
+    - set: debian-10
+      collection: puppet6
+    - set: debian-10
+      collection: puppet6
+      extra_envs:
+        - BEAKER_keycloak_version: 7.0.0
     - set: ubuntu-1804
       collection: puppet5
     - set: ubuntu-1804
@@ -81,7 +93,8 @@ spec/acceptance/nodesets/centos-6.yml:
 spec/acceptance/nodesets/debian-8.yml:
   delete: true
 spec/acceptance/nodesets/debian-10.yml:
-  delete: true
+  packages:
+    - iproute2
 spec/acceptance/nodesets/ubuntu-1404.yml:
   delete: true
 spec/acceptance/nodesets/ubuntu-1604.yml:
