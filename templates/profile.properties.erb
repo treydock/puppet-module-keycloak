@@ -1,5 +1,4 @@
-<% if scope['keycloak::tech_preview_features'] -%>
+# File managed by Puppet - DO NOT EDIT
 <%- scope['keycloak::tech_preview_features'].each do |feature_name| -%>
 feature.<%= feature_name %>=enabled
-<%- end -%>
 <%- end -%>

@@ -38,12 +38,11 @@ class keycloak::config {
   }
 
   file { "${keycloak::install_base}/standalone/configuration/profile.properties":
-    ensure  => $keycloak::profile_properties_ensure,
+    ensure  => 'file',
     owner   => $keycloak::user,
     group   => $keycloak::group,
     content => template('keycloak/profile.properties.erb'),
-    mode    => '0750',
-    require => File["${keycloak::install_base}/standalone/configuration"],
+    mode    => '0644',
     notify  => Class['keycloak::service'],
   }
 

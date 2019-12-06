@@ -252,17 +252,11 @@ class keycloak (
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum['standalone', 'clustered'] $operating_mode = 'standalone',
-  Optional[Array] $tech_preview_features = undef,
+  Array $tech_preview_features = [],
 ) {
 
   if ! $facts['os']['family'] in ['RedHat','Debian'] {
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
-  }
-
-  $profile_properties_ensure = $tech_preview_features ? {
-    undef   => 'absent',
-    []      => 'absent',
-    default => 'file',
   }
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
