@@ -94,6 +94,30 @@ describe 'keycloak' do
         end
 
         it do
+          is_expected.to contain_file('/opt/keycloak-6.0.1/standalone/configuration').only_with(
+            ensure: 'directory',
+            owner: 'keycloak',
+            group: 'keycloak',
+            mode: '0750',
+          )
+        end
+
+        it do
+          is_expected.to contain_file('/opt/keycloak-6.0.1/standalone/configuration/profile.properties').only_with(
+            ensure: 'file',
+            owner: 'keycloak',
+            group: 'keycloak',
+            mode: '0644',
+            content: %r{.*},
+            notify: 'Class[Keycloak::Service]',
+          )
+        end
+
+        it do
+          verify_exact_file_contents(catalogue, '/opt/keycloak-6.0.1/standalone/configuration/profile.properties', [])
+        end
+
+        it do
           is_expected.to contain_file('/opt/keycloak-6.0.1/config.cli').only_with(
             ensure: 'file',
             owner: 'keycloak',
@@ -103,6 +127,14 @@ describe 'keycloak' do
             notify: 'Exec[jboss-cli.sh --file=config.cli]',
             show_diff: 'false',
           )
+        end
+
+        context 'when tech_preview_features defined' do
+          let(:params) { { tech_preview_features: ['account_api'] } }
+
+          it do
+            verify_exact_file_contents(catalogue, '/opt/keycloak-6.0.1/standalone/configuration/profile.properties', ['feature.account_api=enabled'])
+          end
         end
       end
 
