@@ -1314,6 +1314,24 @@ by this module</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>tech_preview_features</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>List of technology Preview features to enable</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -1324,8 +1342,6 @@ by this module</p>
         <pre class="lines">
 
 
-183
-184
 185
 186
 187
@@ -1481,10 +1497,13 @@ by this module</p>
 337
 338
 339
-340</pre>
+340
+341
+342
+343</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 183</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 185</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1556,6 +1575,7 @@ class keycloak (
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum[&#39;standalone&#39;, &#39;clustered&#39;] $operating_mode = &#39;standalone&#39;,
+  Array $tech_preview_features = [],
 ) {
 
   if ! $facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;] {
