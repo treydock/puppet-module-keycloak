@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.9.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.9.0) (2019-12-09)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.8.0...v5.9.0)
+
+### Added
+
+- Support Debian 10 [\#102](https://github.com/treydock/puppet-module-keycloak/pull/102) ([treydock](https://github.com/treydock))
+
 ## [v5.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.8.0) (2019-12-06)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.7.0...v5.8.0)
