@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v5.10.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.10.0) (2019-12-10)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.9.0...v5.10.0)
+
+### Added
+
+- Allow defining supported locales for the realm [\#103](https://github.com/treydock/puppet-module-keycloak/pull/103) ([mattock](https://github.com/mattock))
+
 ## [v5.9.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.9.0) (2019-12-09)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.8.0...v5.9.0)

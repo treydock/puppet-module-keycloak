@@ -2045,6 +2045,10 @@ Default Client Scopes
 
 Optional Client Scopes
 
+##### `supported_locales`
+
+Supported Locales
+
 ##### `events_enabled`
 
 Valid values: `true`, `false`
