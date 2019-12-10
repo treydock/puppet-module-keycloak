@@ -83,6 +83,10 @@ Manage Keycloak realms
     desc 'Optional Client Scopes'
   end
 
+  newproperty(:supported_locales, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'Supported Locales'
+  end
+
   newproperty(:events_enabled, boolean: true) do
     desc 'eventsEnabled'
     newvalues(:true, :false)

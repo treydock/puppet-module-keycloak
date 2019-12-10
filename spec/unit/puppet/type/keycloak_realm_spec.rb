@@ -108,6 +108,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       :default_client_scopes,
       :optional_client_scopes,
       :events_listeners,
+      :supported_locales,
     ].each do |p|
       it "should accept array for #{p}" do
         config[p] = ['foo', 'bar']
