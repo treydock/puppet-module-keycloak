@@ -93,13 +93,14 @@ describe 'keycloak class:' do
     end
   end
 
-  context 'default with proxy_https' do
+  context 'changes to defaults' do
     it 'runs successfully' do
       pp = <<-EOS
       include mysql::server
       class { 'keycloak':
         datasource_driver => 'mysql',
         proxy_https       => true,
+        service_java_opts => '-Xmx512m -Xms512m',
       }
       EOS
 
