@@ -100,7 +100,7 @@ describe 'keycloak class:' do
       class { 'keycloak':
         datasource_driver => 'mysql',
         proxy_https       => true,
-        service_java_opts => '-Xmx512m -Xms512m',
+        service_java_opts => '-Xmx512m -Xms64m',
       }
       EOS
 
