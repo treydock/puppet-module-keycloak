@@ -9,9 +9,9 @@ EnvironmentFile=<%= scope['keycloak::service_environment_file'] %>
 <% end -%>
 <% if scope['keycloak::service_java_opts'] -%>
 <% if scope['keycloak::server_java_opts'].is_a?(Array) -%>
-Environment="JAVA_OPTS=$JAVA_OPTS <%= scope['keycloak::service_java_opts'].join(' ') %>"
+Environment="JAVA_OPTS=<%= scope['keycloak::service_java_opts'].join(' ') %>"
 <% else %>
-Environment="JAVA_OPTS=$JAVA_OPTS <%= scope['keycloak::service_java_opts'] %>"
+Environment="JAVA_OPTS=<%= scope['keycloak::service_java_opts'] %>"
 <% end -%>
 <% end -%>
 User=<%= scope['keycloak::user'] %>
