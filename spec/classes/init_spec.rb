@@ -6,6 +6,7 @@ describe 'keycloak' do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
+      let(:version) { '8.0.1' }
 
       case facts[:osfamily]
       when %r{RedHat}
@@ -77,7 +78,7 @@ describe 'keycloak' do
         it do
           is_expected.to contain_file('kcadm-wrapper.sh').only_with(
             ensure: 'file',
-            path: '/opt/keycloak-6.0.1/bin/kcadm-wrapper.sh',
+            path: "/opt/keycloak-#{version}/bin/kcadm-wrapper.sh",
             owner: 'keycloak',
             group: 'keycloak',
             mode: '0750',
@@ -88,13 +89,13 @@ describe 'keycloak' do
 
         it do
           is_expected.to contain_exec('create-keycloak-admin')
-            .with(command: '/opt/keycloak-6.0.1/bin/add-user-keycloak.sh --user admin --password changeme --realm master && touch /opt/keycloak-6.0.1/.create-keycloak-admin-h2',
-                  creates: '/opt/keycloak-6.0.1/.create-keycloak-admin-h2',
+            .with(command: "/opt/keycloak-#{version}/bin/add-user-keycloak.sh --user admin --password changeme --realm master && touch /opt/keycloak-#{version}/.create-keycloak-admin-h2",
+                  creates: "/opt/keycloak-#{version}/.create-keycloak-admin-h2",
                   notify: 'Class[Keycloak::Service]')
         end
 
         it do
-          is_expected.to contain_file('/opt/keycloak-6.0.1/standalone/configuration').only_with(
+          is_expected.to contain_file("/opt/keycloak-#{version}/standalone/configuration").only_with(
             ensure: 'directory',
             owner: 'keycloak',
             group: 'keycloak',
@@ -103,7 +104,7 @@ describe 'keycloak' do
         end
 
         it do
-          is_expected.to contain_file('/opt/keycloak-6.0.1/standalone/configuration/profile.properties').only_with(
+          is_expected.to contain_file("/opt/keycloak-#{version}/standalone/configuration/profile.properties").only_with(
             ensure: 'file',
             owner: 'keycloak',
             group: 'keycloak',
@@ -114,11 +115,11 @@ describe 'keycloak' do
         end
 
         it do
-          verify_exact_file_contents(catalogue, '/opt/keycloak-6.0.1/standalone/configuration/profile.properties', [])
+          verify_exact_file_contents(catalogue, "/opt/keycloak-#{version}/standalone/configuration/profile.properties", [])
         end
 
         it do
-          is_expected.to contain_file('/opt/keycloak-6.0.1/config.cli').only_with(
+          is_expected.to contain_file("/opt/keycloak-#{version}/config.cli").only_with(
             ensure: 'file',
             owner: 'keycloak',
             group: 'keycloak',
@@ -132,7 +133,7 @@ describe 'keycloak' do
         it do
           is_expected.to contain_file_line('standalone.conf-JAVA_OPTS').with(
             ensure: 'absent',
-            path: '/opt/keycloak-6.0.1/bin/standalone.conf',
+            path: "/opt/keycloak-#{version}/bin/standalone.conf",
             line: 'JAVA_OPTS="$JAVA_OPTS "',
             match: '^JAVA_OPTS=',
             notify: 'Class[Keycloak::Service]',
@@ -143,7 +144,7 @@ describe 'keycloak' do
           let(:params) { { tech_preview_features: ['account_api'] } }
 
           it do
-            verify_exact_file_contents(catalogue, '/opt/keycloak-6.0.1/standalone/configuration/profile.properties', ['feature.account_api=enabled'])
+            verify_exact_file_contents(catalogue, "/opt/keycloak-#{version}/standalone/configuration/profile.properties", ['feature.account_api=enabled'])
           end
         end
 
@@ -153,7 +154,7 @@ describe 'keycloak' do
           it do
             is_expected.to contain_file_line('standalone.conf-JAVA_OPTS').with(
               ensure: 'present',
-              path: '/opt/keycloak-6.0.1/bin/standalone.conf',
+              path: "/opt/keycloak-#{version}/bin/standalone.conf",
               line: 'JAVA_OPTS="$JAVA_OPTS -Xmx512m -Xms64m"',
               match: '^JAVA_OPTS=',
               notify: 'Class[Keycloak::Service]',
@@ -166,7 +167,7 @@ describe 'keycloak' do
             it do
               is_expected.to contain_file_line('standalone.conf-JAVA_OPTS').with(
                 ensure: 'present',
-                path: '/opt/keycloak-6.0.1/bin/standalone.conf',
+                path: "/opt/keycloak-#{version}/bin/standalone.conf",
                 line: 'JAVA_OPTS="-Xmx512m -Xms64m"',
                 match: '^JAVA_OPTS=',
                 notify: 'Class[Keycloak::Service]',

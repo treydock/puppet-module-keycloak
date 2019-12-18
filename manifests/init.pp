@@ -186,7 +186,7 @@
 #
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = '6.0.1',
+  String $version               = '8.0.1',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
