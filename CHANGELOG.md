@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.0.0) (2019-12-18)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.10.0...v6.0.0)
+
+### Changed
+
+- Change default Keycloak version to 8.0.1 [\#106](https://github.com/treydock/puppet-module-keycloak/pull/106) ([treydock](https://github.com/treydock))
+- Change JAVA\_OPTS behavior for Keycloak [\#105](https://github.com/treydock/puppet-module-keycloak/pull/105) ([treydock](https://github.com/treydock))
+- Change how install\_dir is defined, default behavior remains the same [\#90](https://github.com/treydock/puppet-module-keycloak/pull/90) ([treydock](https://github.com/treydock))
+
 ## [v5.10.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.10.0) (2019-12-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.9.0...v5.10.0)
@@ -251,6 +261,7 @@ All notable changes to this project will be documented in this file. The format 
 - Bump dependency ranges for stdlib and mysql [\#40](https://github.com/treydock/puppet-module-keycloak/pull/40) ([treydock](https://github.com/treydock))
 - Support Puppet 6 and drop support for Puppet 4 [\#39](https://github.com/treydock/puppet-module-keycloak/pull/39) ([treydock](https://github.com/treydock))
 - Use beaker 4.x [\#37](https://github.com/treydock/puppet-module-keycloak/pull/37) ([treydock](https://github.com/treydock))
+- Oracle support [\#33](https://github.com/treydock/puppet-module-keycloak/pull/33) ([cborisa](https://github.com/cborisa))
 
 ### Fixed
 
@@ -275,10 +286,6 @@ All notable changes to this project will be documented in this file. The format 
 ## [2.7.0](https://github.com/treydock/puppet-module-keycloak/tree/2.7.0) (2018-08-14)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.6.0...2.7.0)
-
-### Added
-
-- Oracle support [\#33](https://github.com/treydock/puppet-module-keycloak/pull/33) ([cborisa](https://github.com/cborisa))
 
 ## [2.6.0](https://github.com/treydock/puppet-module-keycloak/tree/2.6.0) (2018-07-20)
 
@@ -381,7 +388,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - BREAKING: Remove deprecated defined types [\#6](https://github.com/treydock/puppet-module-keycloak/pull/6) ([treydock](https://github.com/treydock))
 - BREAKING: Set default version to 3.4.1.Final [\#4](https://github.com/treydock/puppet-module-keycloak/pull/4) ([treydock](https://github.com/treydock))
-- BREAKING: Drop Puppet 3 support [\#3](https://github.com/treydock/puppet-module-keycloak/pull/3) ([treydock](https://github.com/treydock))
 
 ### Added
 
@@ -390,6 +396,10 @@ All notable changes to this project will be documented in this file. The format 
 ## [1.0.0](https://github.com/treydock/puppet-module-keycloak/tree/1.0.0) (2017-09-05)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/0.0.1...1.0.0)
+
+### Changed
+
+- BREAKING: Drop Puppet 3 support [\#3](https://github.com/treydock/puppet-module-keycloak/pull/3) ([treydock](https://github.com/treydock))
 
 ### Added
 

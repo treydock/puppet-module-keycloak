@@ -65,7 +65,7 @@ Data type: `Boolean`
 
 Install Keycloak from upstream Keycloak tarball.
 Set to false to manage installation of Keycloak outside
-this module and set $install_dir and $version to match.
+this module and set $install_dir to match.
 Defaults to true.
 
 Default value: `true`
@@ -76,7 +76,7 @@ Data type: `String`
 
 Version of Keycloak to install and manage.
 
-Default value: '6.0.1'
+Default value: '8.0.1'
 
 ##### `package_url`
 
@@ -89,12 +89,12 @@ Default value: `undef`
 
 ##### `install_dir`
 
-Data type: `Stdlib::Absolutepath`
+Data type: `Optional[Stdlib::Absolutepath]`
 
-Parent directory of where to install Keycloak.
-Default is `/opt`.
+The directory of where to install Keycloak.
+Default is `/opt/keycloak-${version}`.
 
-Default value: '/opt'
+Default value: `undef`
 
 ##### `service_name`
 
@@ -150,13 +150,21 @@ Default is '0.0.0.0'.
 
 Default value: '0.0.0.0'
 
-##### `service_java_opts`
+##### `java_opts`
 
 Data type: `Optional[Variant[String, Array]]`
 
 Sets additional options to Java virtual machine environment variable.
 
 Default value: `undef`
+
+##### `java_opts_append`
+
+Data type: `Boolean`
+
+Determine if $JAVA_OPTS should be appended to when setting `java_opts` parameter
+
+Default value: `true`
 
 ##### `service_extra_opts`
 
@@ -769,7 +777,7 @@ Type that configures API connection parameters for other keycloak types that use
 
 ```puppet
 keycloak_api { 'keycloak'
-  install_base => '/opt/keycloak',
+  install_dir  => '/opt/keycloak',
   server       => 'http://localhost:8080/auth',
   realm        => 'master',
   user         => 'admin',
@@ -787,7 +795,7 @@ namevar
 
 Keycloak API config
 
-##### `install_base`
+##### `install_dir`
 
 Install location of Keycloak
 
