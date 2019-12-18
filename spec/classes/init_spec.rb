@@ -129,11 +129,49 @@ describe 'keycloak' do
           )
         end
 
+        it do
+          is_expected.to contain_file_line('standalone.conf-JAVA_OPTS').with(
+            ensure: 'absent',
+            path: '/opt/keycloak-6.0.1/bin/standalone.conf',
+            line: 'JAVA_OPTS="$JAVA_OPTS "',
+            match: '^JAVA_OPTS=',
+            notify: 'Class[Keycloak::Service]',
+          )
+        end
+
         context 'when tech_preview_features defined' do
           let(:params) { { tech_preview_features: ['account_api'] } }
 
           it do
             verify_exact_file_contents(catalogue, '/opt/keycloak-6.0.1/standalone/configuration/profile.properties', ['feature.account_api=enabled'])
+          end
+        end
+
+        context 'when java_opts defined' do
+          let(:params) { { java_opts: '-Xmx512m -Xms64m' } }
+
+          it do
+            is_expected.to contain_file_line('standalone.conf-JAVA_OPTS').with(
+              ensure: 'present',
+              path: '/opt/keycloak-6.0.1/bin/standalone.conf',
+              line: 'JAVA_OPTS="$JAVA_OPTS -Xmx512m -Xms64m"',
+              match: '^JAVA_OPTS=',
+              notify: 'Class[Keycloak::Service]',
+            )
+          end
+
+          context 'when java_opts_append is false' do
+            let(:params) { { java_opts: '-Xmx512m -Xms64m', java_opts_append: false } }
+
+            it do
+              is_expected.to contain_file_line('standalone.conf-JAVA_OPTS').with(
+                ensure: 'present',
+                path: '/opt/keycloak-6.0.1/bin/standalone.conf',
+                line: 'JAVA_OPTS="-Xmx512m -Xms64m"',
+                match: '^JAVA_OPTS=',
+                notify: 'Class[Keycloak::Service]',
+              )
+            end
           end
         end
       end

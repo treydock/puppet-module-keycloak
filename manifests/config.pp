@@ -68,4 +68,27 @@ class keycloak::config {
 
   create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
 
+  if $keycloak::java_opts {
+    $java_opts_ensure = 'present'
+  } else {
+    $java_opts_ensure = 'absent'
+  }
+
+  if $keycloak::java_opts =~ Array {
+    $java_opts = join($keycloak::java_opts, ' ')
+  } else {
+    $java_opts = $keycloak::java_opts
+  }
+  if $keycloak::java_opts_append {
+    $_java_opts = "\$JAVA_OPTS ${java_opts}"
+  } else {
+    $_java_opts = $java_opts
+  }
+  file_line { 'standalone.conf-JAVA_OPTS':
+    ensure => $java_opts_ensure,
+    path   => "${keycloak::install_base}/bin/standalone.conf",
+    line   => "JAVA_OPTS=\"${_java_opts}\"",
+    match  => '^JAVA_OPTS=',
+    notify => Class['keycloak::service'],
+  }
 }
