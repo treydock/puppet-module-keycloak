@@ -196,6 +196,7 @@ class keycloak (
   Stdlib::IP::Address $service_bind_address = '0.0.0.0',
   Optional[Variant[String, Array]]
     $service_java_opts = undef,
+  Boolean $service_java_opts_append = true,
   Optional[String] $service_extra_opts = undef,
   Boolean $manage_user = true,
   String $user                  = 'keycloak',

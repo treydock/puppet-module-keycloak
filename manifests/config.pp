@@ -79,10 +79,15 @@ class keycloak::config {
   } else {
     $service_java_opts = $keycloak::service_java_opts
   }
+  if $keycloak::service_java_opts_append {
+    $java_opts = "\$JAVA_OPTS ${service_java_opts}"
+  } else {
+    $java_opts = $service_java_opts
+  }
   file_line { 'standalone.conf-JAVA_OPTS':
     ensure => $java_opts_ensure,
     path   => "${keycloak::install_base}/bin/standalone.conf",
-    line   => "JAVA_OPTS=\"\$JAVA_OPTS ${service_java_opts}\"",
+    line   => "JAVA_OPTS=\"${java_opts}\"",
     match  => '^JAVA_OPTS=',
     notify => Class['keycloak::service'],
   }
