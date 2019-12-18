@@ -8,7 +8,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   # Unused but defined anyways
   commands kcadm_wrapper: '/opt/keycloak/bin/kcadm-wrapper.sh'
 
-  @install_base = nil
+  @install_dir = nil
   @server = nil
   @realm = nil
   @user = nil
@@ -16,7 +16,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   @use_wrapper = true
 
   class << self
-    attr_accessor :install_base
+    attr_accessor :install_dir
     attr_accessor :server
     attr_accessor :realm
     attr_accessor :user
@@ -79,7 +79,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
         '--user', user,
         '--password', password
       ]
-      cmd = [File.join(install_base, 'bin/kcadm.sh')] + arguments + auth_arguments
+      cmd = [File.join(install_dir, 'bin/kcadm.sh')] + arguments + auth_arguments
     else
       cmd = [kcadm_wrapper] + arguments
     end

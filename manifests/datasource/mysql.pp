@@ -6,7 +6,7 @@ class keycloak::datasource::mysql {
 
   $jar_source = pick($keycloak::datasource_jar_source, $keycloak::mysql_jar_source)
   $module_source = pick($keycloak::datasource_module_source, 'puppet:///modules/keycloak/database/mysql/module.xml')
-  $module_dir = "${keycloak::install_dir}/keycloak-${keycloak::version}/modules/system/layers/keycloak/com/mysql/jdbc/main"
+  $module_dir = "${keycloak::install_base}/modules/system/layers/keycloak/com/mysql/jdbc/main"
 
   if $keycloak::datasource_package {
     ensure_packages([$keycloak::datasource_package])

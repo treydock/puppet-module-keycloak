@@ -9,7 +9,7 @@ Puppet::Type.newtype(:keycloak_api) do
   Type that configures API connection parameters for other keycloak types that use the Keycloak API.
   @example Define API access
     keycloak_api { 'keycloak'
-      install_base => '/opt/keycloak',
+      install_dir  => '/opt/keycloak',
       server       => 'http://localhost:8080/auth',
       realm        => 'master',
       user         => 'admin',
@@ -20,7 +20,7 @@ Puppet::Type.newtype(:keycloak_api) do
     desc 'Keycloak API config'
   end
 
-  newparam(:install_base) do
+  newparam(:install_dir) do
     desc 'Install location of Keycloak'
   end
 
@@ -61,7 +61,7 @@ Puppet::Type.newtype(:keycloak_api) do
       :keycloak_realm,
     ].each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:kcadm)
-      provider_class.install_base = self[:install_base]
+      provider_class.install_dir = self[:install_dir]
       provider_class.server = self[:server]
       provider_class.realm = self[:realm]
       provider_class.user = self[:user]

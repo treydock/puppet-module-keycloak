@@ -6,7 +6,7 @@
 # @param manage_install
 #   Install Keycloak from upstream Keycloak tarball.
 #   Set to false to manage installation of Keycloak outside
-#   this module and set $install_dir and $version to match.
+#   this module and set $install_dir to match.
 #   Defaults to true.
 # @param version
 #   Version of Keycloak to install and manage.
@@ -14,8 +14,8 @@
 #   URL of the Keycloak download.
 #   Default is based on version.
 # @param install_dir
-#   Parent directory of where to install Keycloak.
-#   Default is `/opt`.
+#   The directory of where to install Keycloak.
+#   Default is `/opt/keycloak-${version}`.
 # @param service_name
 #   Keycloak service name.
 #   Default is `keycloak`.
@@ -189,7 +189,7 @@ class keycloak (
   String $version               = '6.0.1',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
-  Stdlib::Absolutepath $install_dir = '/opt',
+  Optional[Stdlib::Absolutepath] $install_dir = undef,
   String $service_name          = 'keycloak',
   String $service_ensure        = 'running',
   Boolean $service_enable       = true,
@@ -315,7 +315,7 @@ class keycloak (
     }
   }
 
-  $install_base = "${keycloak::install_dir}/keycloak-${keycloak::version}"
+  $install_base = pick($install_dir, "/opt/keycloak-${keycloak::version}")
 
   include ::java
   contain 'keycloak::install'
