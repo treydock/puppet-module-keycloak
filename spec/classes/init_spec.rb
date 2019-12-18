@@ -147,8 +147,8 @@ describe 'keycloak' do
           end
         end
 
-        context 'when service_java_opts defined' do
-          let(:params) { { service_java_opts: '-Xmx512m -Xms64m' } }
+        context 'when java_opts defined' do
+          let(:params) { { java_opts: '-Xmx512m -Xms64m' } }
 
           it do
             is_expected.to contain_file_line('standalone.conf-JAVA_OPTS').with(
@@ -160,8 +160,8 @@ describe 'keycloak' do
             )
           end
 
-          context 'when service_java_opts_append is false' do
-            let(:params) { { service_java_opts: '-Xmx512m -Xms64m', service_java_opts_append: false } }
+          context 'when java_opts_append is false' do
+            let(:params) { { java_opts: '-Xmx512m -Xms64m', java_opts_append: false } }
 
             it do
               is_expected.to contain_file_line('standalone.conf-JAVA_OPTS').with(

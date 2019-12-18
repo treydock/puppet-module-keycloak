@@ -34,8 +34,10 @@
 # @param service_bind_address
 #   Bind address for Keycloak service.
 #   Default is '0.0.0.0'.
-# @param service_java_opts
+# @param java_opts
 #   Sets additional options to Java virtual machine environment variable.
+# @param java_opts_append
+#   Determine if $JAVA_OPTS should be appended to when setting `java_opts` parameter
 # @param service_extra_opts
 #   Additional options added to the end of the service command-line.
 # @param manage_user
@@ -194,9 +196,8 @@ class keycloak (
   Boolean $service_hasstatus    = true,
   Boolean $service_hasrestart   = true,
   Stdlib::IP::Address $service_bind_address = '0.0.0.0',
-  Optional[Variant[String, Array]]
-    $service_java_opts = undef,
-  Boolean $service_java_opts_append = true,
+  Optional[Variant[String, Array]] $java_opts = undef,
+  Boolean $java_opts_append = true,
   Optional[String] $service_extra_opts = undef,
   Boolean $manage_user = true,
   String $user                  = 'keycloak',
