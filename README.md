@@ -21,7 +21,8 @@ The keycloak module allows easy installation and management of Keycloak.
 | ---------------- | ------------------------------- |
 | 3.x              | 2.x                             |
 | 4.x - 6.x        | 3.x                             |
-| 6.x - 7.x        | 4.x - 5.x                       |
+| 6.x - 8.x        | 4.x - 5.x                       |
+| 8.x              | 6.x                             |
 
 
 ## Usage
