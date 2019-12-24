@@ -33,6 +33,8 @@ describe Puppet::Type.type(:keycloak_realm) do
     account_theme: 'keycloak',
     admin_theme: 'keycloak',
     email_theme: 'keycloak',
+    access_code_lifespan_user_action: nil,
+    access_token_lifespan_for_implicit_flow: nil,
     enabled: :true,
     remember_me: :false,
     login_with_email_allowed: :true,
@@ -56,6 +58,23 @@ describe Puppet::Type.type(:keycloak_realm) do
       it "should accept a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
+      end
+      next unless defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
+    end
+  end
+
+  describe 'integer properties' do
+    # Test integer properties
+    [
+      :access_code_lifespan_user_action,
+      :access_token_lifespan_for_implicit_flow,
+    ].each do |p|
+      it "should accept a #{p}" do
+        config[p] = 100
+        expect(resource[p]).to eq(100)
       end
       next unless defaults[p]
       it "should have default for #{p}" do
