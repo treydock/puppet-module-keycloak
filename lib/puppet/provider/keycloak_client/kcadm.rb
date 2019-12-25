@@ -8,7 +8,22 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
   def attributes_properties
     [
       :login_theme,
+      :access_token_lifespan,
     ]
+  end
+
+  def dot_attributes_properties
+    [
+      :access_token_lifespan,
+    ]
+  end
+
+  def attribute_key(property)
+    if dot_attributes_properties.include?(property)
+      property.to_s.tr('_', '.')
+    else
+      property
+    end
   end
 
   def self.instances
@@ -114,7 +129,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
         unless data.key?(:attributes)
           data[:attributes] = {}
         end
-        data[:attributes][property] = value
+        data[:attributes][attribute_key(property)] = value
       else
         data[camelize(property)] = value
       end
@@ -222,7 +237,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
           unless data.key?(:attributes)
             data[:attributes] = {}
           end
-          data[:attributes][property] = value
+          data[:attributes][attribute_key(property)] = value
         else
           data[camelize(property)] = value
         end

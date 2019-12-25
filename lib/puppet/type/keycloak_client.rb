@@ -143,6 +143,10 @@ Manage Keycloak clients
     defaultto 'absent'
   end
 
+  newproperty(:access_token_lifespan) do
+    desc 'access.token.lifespan'
+  end
+
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
