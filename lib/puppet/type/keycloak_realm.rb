@@ -57,6 +57,20 @@ Manage Keycloak realms
     defaultto 'keycloak'
   end
 
+  newproperty(:access_code_lifespan_user_action) do
+    desc 'accessCodeLifespanUserAction'
+    validate do |property|
+      raise Puppet::Error, 'Property access_code_lifespan_user_action must be an integer' unless property.is_a?(Integer)
+    end
+  end
+
+  newproperty(:access_token_lifespan_for_implicit_flow) do
+    desc 'accessTokenLifespanForImplicitFlow'
+    validate do |property|
+      raise Puppet::Error, 'Property access_token_lifespan_for_implicit_flow must be an integer' unless property.is_a?(Integer)
+    end
+  end
+
   newproperty(:enabled, boolean: true) do
     desc 'enabled'
     newvalues(:true, :false)
