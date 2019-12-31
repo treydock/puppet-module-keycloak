@@ -38,6 +38,12 @@ describe Puppet::Type.type(:keycloak_realm) do
     enabled: :true,
     remember_me: :false,
     login_with_email_allowed: :true,
+    browser_flow: 'browser',
+    registration_flow: 'registration',
+    direct_grant_flow: 'direct grant',
+    reset_credentials_flow: 'reset credentials',
+    client_authentication_flow: 'clients',
+    docker_authentication_flow: 'docker auth',
     events_enabled: :false,
     events_listeners: ['jboss-logging'],
     admin_events_enabled: :false,
@@ -54,6 +60,12 @@ describe Puppet::Type.type(:keycloak_realm) do
       :admin_theme,
       :email_theme,
       :events_expiration,
+      :browser_flow,
+      :registration_flow,
+      :direct_grant_flow,
+      :reset_credentials_flow,
+      :client_authentication_flow,
+      :docker_authentication_flow,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'
