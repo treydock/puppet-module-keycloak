@@ -152,6 +152,8 @@ keycloak_realm { 'test':
 }
 ```
 
+**NOTE:** If the flow properties such as `browser_flow` are changed from their defaults then this value will not be set when a realm is first created. The value will also not be updated if the flow does not exist. For new realms you will have to run Puppet twice in order to create the flows then update the realm setting.
+
 ### keycloak\_ldap\_user_provider
 
 Define a LDAP user provider so that authentication can be performed against LDAP.  The example below uses two LDAP servers, disables importing of users and assumes the SSL certificates are trusted and do not require being in the truststore.

@@ -92,31 +92,37 @@ Manage Keycloak realms
   newproperty(:browser_flow) do
     desc 'browserFlow'
     defaultto('browser')
+    munge { |v| v.to_s }
   end
 
   newproperty(:registration_flow) do
     desc 'registrationFlow'
     defaultto('registration')
+    munge { |v| v.to_s }
   end
 
   newproperty(:direct_grant_flow) do
     desc 'directGrantFlow'
     defaultto('direct grant')
+    munge { |v| v.to_s }
   end
 
   newproperty(:reset_credentials_flow) do
     desc 'resetCredentialsFlow'
     defaultto('reset credentials')
+    munge { |v| v.to_s }
   end
 
   newproperty(:client_authentication_flow) do
     desc 'clientAuthenticationFlow'
     defaultto('clients')
+    munge { |v| v.to_s }
   end
 
   newproperty(:docker_authentication_flow) do
     desc 'dockerAuthenticationFlow'
     defaultto('docker auth')
+    munge { |v| v.to_s }
   end
 
   newproperty(:default_client_scopes, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do

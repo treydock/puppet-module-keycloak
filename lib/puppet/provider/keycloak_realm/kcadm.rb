@@ -5,6 +5,17 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
 
   mk_resource_methods
 
+  def flow_properties
+    [
+      :browser_flow,
+      :registration_flow,
+      :direct_grant_flow,
+      :reset_credentials_flow,
+      :client_authentication_flow,
+      :docker_authentication_flow,
+    ]
+  end
+
   def self.get_client_scopes(realm, type)
     output = kcadm('get', "realms/#{realm}/default-#{type}-client-scopes")
     Puppet.debug("Realms #{realm} #{type} client scopes: #{output}")
@@ -32,6 +43,18 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     end
     data.delete('enabledEventTypes')
     data
+  end
+
+  def available_flows(realm)
+    output = kcadm('get', 'authentication/flows', realm, nil, ['alias'])
+    Puppet.debug("#{realm} authentication/flows: #{output}")
+    begin
+      data = JSON.parse(output)
+    rescue JSON::ParserError
+      Puppet.debug('Unable to parse output from kcadm get authentication/flows')
+      return []
+    end
+    data.map { |f| f['alias'] }
   end
 
   def self.instances
@@ -85,6 +108,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     data[:id] = resource[:id]
     data[:realm] = resource[:name]
     type_properties.each do |property|
+      next if flow_properties.include?(property)
       next if [:default_client_scopes, :optional_client_scopes].include?(property)
       if property.to_s =~ %r{events}
         events_config[camelize(property)] = convert_property_value(resource[property.to_sym])
@@ -196,6 +220,10 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       events_config = {}
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes].include?(property)
+        if flow_properties.include?(property) && !available_flows(resource[:name]).include?(resource[property.to_sym])
+          Puppet.warning("Keycloak_realm[#{resource[:name]}]: #{property} '#{resource[property.to_sym]}' does not exist, skipping")
+          next
+        end
         if @property_flush[property.to_sym] # || resource[property.to_sym]
           data[camelize(property)] = convert_property_value(resource[property.to_sym])
         end
