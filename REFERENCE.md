@@ -964,6 +964,10 @@ login_theme
 
 Default value: absent
 
+##### `access_token_lifespan`
+
+access.token.lifespan
+
 #### Parameters
 
 The following parameters are available in the `keycloak_client` type.
@@ -2020,6 +2024,14 @@ Default value: keycloak
 emailTheme
 
 Default value: keycloak
+
+##### `access_code_lifespan_user_action`
+
+accessCodeLifespanUserAction
+
+##### `access_token_lifespan_for_implicit_flow`
+
+accessTokenLifespanForImplicitFlow
 
 ##### `enabled`
 
