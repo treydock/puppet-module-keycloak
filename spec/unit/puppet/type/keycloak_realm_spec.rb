@@ -44,6 +44,7 @@ describe Puppet::Type.type(:keycloak_realm) do
     reset_credentials_flow: 'reset credentials',
     client_authentication_flow: 'clients',
     docker_authentication_flow: 'docker auth',
+    content_security_policy: "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
     events_enabled: :false,
     events_listeners: ['jboss-logging'],
     admin_events_enabled: :false,
@@ -66,6 +67,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       :reset_credentials_flow,
       :client_authentication_flow,
       :docker_authentication_flow,
+      :content_security_policy,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'

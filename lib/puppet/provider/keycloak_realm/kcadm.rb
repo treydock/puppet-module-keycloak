@@ -16,6 +16,12 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     ]
   end
 
+  def self.browser_security_headers
+    [
+      :content_security_policy,
+    ]
+  end
+
   def self.get_client_scopes(realm, type)
     output = kcadm('get', "realms/#{realm}/default-#{type}-client-scopes")
     Puppet.debug("Realms #{realm} #{type} client scopes: #{output}")
@@ -58,6 +64,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
   end
 
   def self.instances
+    realms = []
     output = kcadm('get', 'realms')
     Puppet.debug("Realms: #{output}")
     begin
@@ -66,7 +73,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       Puppet.debug('Unable to parse output from kcadm get realms')
       data = []
     end
-    data.map do |d|
+    data.each do |d|
       realm = {}
       realm[:ensure] = :present
       realm[:id] = d['id']
@@ -76,6 +83,8 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
         next if [:default_client_scopes, :optional_client_scopes].include?(property)
         value = if property.to_s =~ %r{events}
                   events_config[camelize(property)]
+                elsif browser_security_headers.include?(property)
+                  d['browserSecurityHeaders'][camelize(property)]
                 else
                   d[camelize(property)]
                 end
@@ -88,8 +97,9 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       realm[:default_client_scopes] = default_scopes.keys.map { |k| k.to_s }
       optional_scopes = get_client_scopes(realm[:name], 'optional')
       realm[:optional_client_scopes] = optional_scopes.keys.map { |k| k.to_s }
-      new(realm)
+      realms << new(realm)
     end
+    realms
   end
 
   def self.prefetch(resources)
@@ -110,10 +120,17 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     type_properties.each do |property|
       next if flow_properties.include?(property)
       next if [:default_client_scopes, :optional_client_scopes].include?(property)
+      if self.class.browser_security_headers.include?(property) && !data.key?('browserSecurityHeaders')
+        data['browserSecurityHeaders'] = {}
+      end
       if property.to_s =~ %r{events}
         events_config[camelize(property)] = convert_property_value(resource[property.to_sym])
       elsif resource[property.to_sym]
-        data[camelize(property)] = convert_property_value(resource[property.to_sym])
+        if self.class.browser_security_headers.include?(property)
+          data['browserSecurityHeaders'][camelize(property)] = convert_property_value(resource[property.to_sym])
+        else
+          data[camelize(property)] = convert_property_value(resource[property.to_sym])
+        end
       end
     end
 
@@ -224,8 +241,15 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
           Puppet.warning("Keycloak_realm[#{resource[:name]}]: #{property} '#{resource[property.to_sym]}' does not exist, skipping")
           next
         end
+        if self.class.browser_security_headers.include?(property) && !data.key?('browserSecurityHeaders')
+          data['browserSecurityHeaders'] = {}
+        end
         if @property_flush[property.to_sym] # || resource[property.to_sym]
-          data[camelize(property)] = convert_property_value(resource[property.to_sym])
+          if self.class.browser_security_headers.include?(property)
+            data['browserSecurityHeaders'][camelize(property)] = convert_property_value(resource[property.to_sym])
+          else
+            data[camelize(property)] = convert_property_value(resource[property.to_sym])
+          end
         end
         if property.to_s =~ %r{events}
           events_config[camelize(property)] = convert_property_value(resource[property.to_sym])

@@ -137,6 +137,12 @@ Manage Keycloak realms
     desc 'Supported Locales'
   end
 
+  newproperty(:content_security_policy) do
+    desc 'contentSecurityPolicy'
+    defaultto("frame-src 'self'; frame-ancestors 'self'; object-src 'none';")
+    munge { |v| v.to_s }
+  end
+
   newproperty(:events_enabled, boolean: true) do
     desc 'eventsEnabled'
     newvalues(:true, :false)

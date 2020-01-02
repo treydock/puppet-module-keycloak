@@ -67,6 +67,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         ensure => 'present',
         remember_me => true,
         default_client_scopes => ['profile'],
+        content_security_policy => "frame-src https://*.duosecurity.com/ 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
         events_enabled => true,
         events_expiration => 2678400,
         admin_events_enabled => true,
@@ -82,6 +83,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
         data = JSON.parse(stdout)
         expect(data['rememberMe']).to eq(true)
+        expect(data['browserSecurityHeaders']['contentSecurityPolicy']).to eq("frame-src https://*.duosecurity.com/ 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none';")
       end
     end
 
