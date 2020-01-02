@@ -181,6 +181,8 @@
 #   Path to the file with environment variables for the systemd service
 # @param operating_mode
 #   Keycloak operating mode deployment
+# @param user_cache
+#   Boolean that determines if userCache is enabled
 # @param tech_preview_features
 #  List of technology Preview features to enable
 # @param auto_deploy_exploded
@@ -260,6 +262,7 @@ class keycloak (
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum['standalone', 'clustered'] $operating_mode = 'standalone',
+  Boolean $user_cache = true,
   Array $tech_preview_features = [],
   Boolean $auto_deploy_exploded = false,
   Boolean $auto_deploy_zipped = true,
