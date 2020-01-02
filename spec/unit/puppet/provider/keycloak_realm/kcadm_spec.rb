@@ -85,6 +85,7 @@ describe Puppet::Type.type(:keycloak_realm).provider(:kcadm) do
       etemp = Tempfile.new('keycloak_events_config')
       allow(Tempfile).to receive(:new).with('keycloak_realm').and_return(temp)
       allow(Tempfile).to receive(:new).with('keycloak_events_config').and_return(etemp)
+      allow(resource.provider).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['alias']).and_return('[]')
       expect(resource.provider).to receive(:kcadm).with('update', 'realms/test', nil, temp.path)
       expect(resource.provider).to receive(:kcadm).with('update', 'events/config', 'test', etemp.path)
       resource.provider.login_with_email_allowed = :false

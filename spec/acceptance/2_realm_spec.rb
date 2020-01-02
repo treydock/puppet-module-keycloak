@@ -8,7 +8,9 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
       class { 'keycloak':
         datasource_driver => 'mysql',
       }
-      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_realm { 'test':
+        ensure => 'present',
+      }
       EOS
 
       apply_manifest(pp, catch_failures: true)
@@ -99,6 +101,31 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['eventsListeners']).to eq(['jboss-logging'])
         expect(data['adminEventsEnabled']).to eq(true)
         expect(data['adminEventsDetailsEnabled']).to eq(true)
+      end
+    end
+  end
+
+  context 'creates realm with invalid browser flow' do
+    it 'runs successfully' do
+      pp = <<-EOS
+      include mysql::server
+      class { 'keycloak':
+        datasource_driver => 'mysql',
+      }
+      keycloak_realm { 'test2':
+        ensure       => 'present',
+        browser_flow => 'Copy of browser',
+      }
+      EOS
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, expect_changes: true)
+    end
+
+    it 'has created a realm' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test2' do
+        data = JSON.parse(stdout)
+        expect(data['browserFlow']).to eq('browser')
       end
     end
   end
