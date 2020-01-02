@@ -30,6 +30,13 @@ class keycloak::config {
     notify  => Class['keycloak::service'],
   }
 
+  file { "${keycloak::install_base}/tmp":
+    ensure => 'directory',
+    owner  => $keycloak::user,
+    group  => $keycloak::group,
+    mode   => '0755',
+  }
+
   file { "${keycloak::install_base}/standalone/configuration":
     ensure => 'directory',
     owner  => $keycloak::user,

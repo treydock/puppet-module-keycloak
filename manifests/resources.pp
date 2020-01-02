@@ -60,4 +60,7 @@ class keycloak::resources {
   $clients.each |$name, $data| {
     keycloak_client { $name: * => $data }
   }
+  $keycloak::spi_deployments.each |$name, $deployment| {
+    keycloak::spi_deployment { $name: * => $deployment }
+  }
 }

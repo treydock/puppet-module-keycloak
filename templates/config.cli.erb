@@ -75,3 +75,5 @@ end-if
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=staticMaxAge, value=<%= scope['keycloak::theme_static_max_age'] %>)
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheThemes, value=<%= scope['keycloak::theme_cache_themes'] %>)
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheTemplates, value=<%= scope['keycloak::theme_cache_templates'] %>)
+/subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-exploded",value=<%= scope['keycloak::auto_deploy_exploded'] %>)
+/subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-zipped",value=<%= scope['keycloak::auto_deploy_zipped'] %>)

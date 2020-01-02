@@ -183,6 +183,12 @@
 #   Keycloak operating mode deployment
 # @param tech_preview_features
 #  List of technology Preview features to enable
+# @param auto_deploy_exploded
+#   Set if exploded deployements will be auto deployed
+# @param auto_deploy_zipped
+#   Set if zipped deployments will be auto deployed
+# @param spi_deployments
+#   Hash used to define keycloak::spi_deployment resources
 #
 class keycloak (
   Boolean $manage_install       = true,
@@ -255,6 +261,9 @@ class keycloak (
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum['standalone', 'clustered'] $operating_mode = 'standalone',
   Array $tech_preview_features = [],
+  Boolean $auto_deploy_exploded = false,
+  Boolean $auto_deploy_zipped = true,
+  Hash $spi_deployments = {},
 ) {
 
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {
