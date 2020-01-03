@@ -77,3 +77,9 @@ end-if
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheTemplates, value=<%= scope['keycloak::theme_cache_templates'] %>)
 /subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-exploded",value=<%= scope['keycloak::auto_deploy_exploded'] %>)
 /subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-zipped",value=<%= scope['keycloak::auto_deploy_zipped'] %>)
+try
+/subsystem=keycloak-server/spi=userCache/provider=default/:add(enabled=<%= scope['keycloak::user_cache']%>)
+catch
+/subsystem=keycloak-server/spi=userCache/provider=default/:remove
+/subsystem=keycloak-server/spi=userCache/provider=default/:add(enabled=<%= scope['keycloak::user_cache']%>)
+end-try
