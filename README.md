@@ -8,6 +8,21 @@
 1. [Overview](#overview)
     * [Supported Versions of Keycloak](#supported-versions-of-keycloak)
 2. [Usage - Configuration options](#usage)
+    * [Keycloak](#keycloak)
+    * [Deploy SPI](#deploy-spi)
+    * [keycloak_realm](#keycloak_realm)
+    * [keycloak_ldap_user_provider](#keycloak_ldap_user_provider)
+    * [keycloak_ldap_mapper](#keycloak_ldap_mapper)
+    * [keycloak_sssd_user_provider](#keycloak_sssd_user_provider)
+    * [keycloak_client](#keycloak_client)
+    * [keycloak::client_scope::oidc](#keycloakclient_scopeoidc)
+    * [keycloak::client_scope::saml](#keycloakclient_scopesaml)
+    * [keycloak_client_scope](#keycloak_client_scope)
+    * [keycloak_protocol_mapper](#keycloak_protocol_mapper)
+    * [keycloak_client_protocol_mapper](#keycloak_client_protocol_mapper)
+    * [keycloak_identity_provider](#keycloak_identity_provider)
+    * [Keycloak Flows](#keycloak-flows)
+    * [keycloak_api](#keycloak_api)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
 
@@ -136,6 +151,35 @@ Run Keycloak using standalone clustered mode:
 ```puppet
 class { 'keycloak':
   operating_mode => 'clustered',
+}
+```
+
+### Deploy SPI
+
+A simple example of deploying a custom SPI from a URL:
+
+```puppet
+keycloak::spi_deployment { 'duo-spi':
+  ensure        => 'present',
+  deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
+  source        => 'https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar',
+}
+```
+
+The `source` can be a URL or a file path like `/tmp/foo.jar` or prefixed with `file://` or `puppet://`
+
+The following example will deploy a custom SPI then check the Keycloak API for the resource to exist.
+This is useful to ensure SPI is loaded into Keycloak before attempting to add custom resources.
+
+```puppet
+keycloak::spi_deployment { 'duo-spi':
+  deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
+  source        => 'https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar',
+  test_url      => 'authentication/authenticator-providers',
+  test_key      => 'id',
+  test_value    => 'duo-mfa-authenticator',
+  test_realm    => 'test',
+  before        => Keycloak_flow_execution['duo-mfa-authenticator under form-browser-with-duo on test'],
 }
 ```
 
@@ -277,6 +321,61 @@ keycloak_identity_provider { 'cilogon on test':
   user_info_url                 => 'https://cilogon.org/oauth2/userinfo',
   token_url                     => 'https://cilogon.org/oauth2/token',
   authorization_url             => 'https://cilogon.org/authorize',
+}
+```
+
+### Keycloak Flows
+
+The following is an example of deploying a custom Flow.
+The name for the top level flow is `$alias on $realm`
+The name for an execution is `$provider under $flow on $realm`.
+The name for the flow under a top level flow is `$alias under $flow_alias on $realm`.
+
+```puppet
+keycloak_flow { 'browser-with-duo on test':
+  ensure => 'present',
+}
+keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
+  ensure       => 'present',
+  configurable => false,
+  display_name => 'Cookie',
+  index        => 0,
+  requirement  => 'ALTERNATIVE',
+}
+keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
+  ensure       => 'present',
+  configurable => true,
+  display_name => 'Identity Provider Redirector',
+  index        => 1,
+  requirement  => 'ALTERNATIVE',
+}
+keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
+  ensure      => 'present',
+  index       => 2,
+  requirement => 'ALTERNATIVE',
+  top_level   => false,
+}
+keycloak_flow_execution { 'auth-username-password-form under form-browser-with-duo on test':
+  ensure       => 'present',
+  configurable => false,
+  display_name => 'Username Password Form',
+  index        => 0,
+  requirement  => 'REQUIRED',
+}
+keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on test':
+  ensure       => 'present',
+  configurable => true,
+  display_name => 'Duo MFA',
+  alias        => 'Duo',
+  config       => {
+    "duomfa.akey"    => "foo-akey",
+    "duomfa.apihost" => "api-foo.duosecurity.com",
+    "duomfa.skey"    => "secret",
+    "duomfa.ikey"    => "foo-ikey",
+    "duomfa.groups"  => "duo"
+  },
+  requirement  => 'REQUIRED',
+  index        => 1,
 }
 ```
 
