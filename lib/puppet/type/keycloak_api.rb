@@ -51,15 +51,12 @@ Puppet::Type.newtype(:keycloak_api) do
   end
 
   def generate
-    [
-      :keycloak_client_protocol_mapper,
-      :keycloak_client_scope,
-      :keycloak_client,
-      :keycloak_ldap_mapper,
-      :keycloak_ldap_user_provider,
-      :keycloak_protocol_mapper,
-      :keycloak_realm,
-    ].each do |res_type|
+    kcadm_types = []
+    Dir[File.join(File.dirname(__FILE__), '../provider/keycloak_*/kcadm.rb')].each do |file|
+      type = File.basename(File.dirname(file))
+      kcadm_types << type.to_sym
+    end
+    kcadm_types.each do |res_type|
       provider_class = Puppet::Type.type(res_type).provider(:kcadm)
       provider_class.install_dir = self[:install_dir]
       provider_class.server = self[:server]

@@ -1,0 +1,49 @@
+[ {
+  "id" : "7df18dd4-ab97-4373-9f69-18e002e83935",
+  "requirement" : "ALTERNATIVE",
+  "displayName" : "Cookie",
+  "requirementChoices" : [ "REQUIRED", "ALTERNATIVE", "DISABLED" ],
+  "configurable" : false,
+  "providerId" : "auth-cookie",
+  "level" : 0,
+  "index" : 0
+}, {
+  "id" : "d8c6a9db-bbf9-405f-bb0e-bc15c8f2b933",
+  "requirement" : "ALTERNATIVE",
+  "displayName" : "Identity Provider Redirector",
+  "requirementChoices" : [ "REQUIRED", "ALTERNATIVE", "DISABLED" ],
+  "configurable" : true,
+  "providerId" : "identity-provider-redirector",
+  "level" : 0,
+  "index" : 1
+}, {
+  "id" : "32399b56-b350-4942-b6a9-46a783c3f692",
+  "requirement" : "ALTERNATIVE",
+  "displayName" : "form-browser-with-duo",
+  "requirementChoices" : [ "REQUIRED", "ALTERNATIVE", "DISABLED", "CONDITIONAL" ],
+  "configurable" : false,
+  "authenticationFlow" : true,
+  "flowId" : "53751618-6a49-4682-b4e8-624f170b8507",
+  "level" : 0,
+  "index" : 2
+}, {
+  "id" : "b6332e87-09f5-48c4-ac90-6f280458adf9",
+  "requirement" : "REQUIRED",
+  "displayName" : "Username Password Form",
+  "requirementChoices" : [ "REQUIRED" ],
+  "configurable" : false,
+  "providerId" : "auth-username-password-form",
+  "level" : 1,
+  "index" : 0
+}, {
+  "id" : "e3afaefe-acba-406e-ad5d-3f270c8ab4ce",
+  "requirement" : "REQUIRED",
+  "displayName" : "Duo MFA",
+  "alias" : "Duo",
+  "requirementChoices" : [ "REQUIRED", "DISABLED" ],
+  "configurable" : true,
+  "providerId" : "duo-mfa-authenticator",
+  "authenticationConfig" : "be93a426-077f-4235-9686-677ff0706bf8",
+  "level" : 1,
+  "index" : 1
+} ]

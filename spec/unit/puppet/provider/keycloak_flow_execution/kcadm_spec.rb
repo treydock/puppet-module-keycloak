@@ -1,12 +1,15 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
+describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
   let(:type) do
-    Puppet::Type.type(:keycloak_flow)
+    Puppet::Type.type(:keycloak_flow_execution)
   end
   let(:resource) do
     type.new(name: 'foo',
-             realm: 'test')
+             realm: 'test',
+             flow_alias: 'browser-with-duo',
+             provider_id: 'auth-username-password-form',
+             index: 0)
   end
 
   describe 'self.instances' do
@@ -14,15 +17,17 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       allow(described_class).to receive(:realms).and_return(['test'])
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(my_fixture_read('get-test.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
-      expect(described_class.instances.length).to eq(2)
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/config/be93a426-077f-4235-9686-677ff0706bf8', 'test').and_return('{}')
+      expect(described_class.instances.length).to eq(4)
     end
 
     it 'returns the resource for a flow' do
       allow(described_class).to receive(:realms).and_return(['test'])
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(my_fixture_read('get-test.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/config/be93a426-077f-4235-9686-677ff0706bf8', 'test').and_return('{}')
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
-      expect(property_hash[:name]).to eq('browser-with-duo on test')
+      expect(property_hash[:name]).to eq('auth-cookie under browser-with-duo on test')
     end
   end
   #   describe 'self.prefetch' do
@@ -47,26 +52,35 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
   #     end
   #   end
   describe 'create' do
-    it 'creates a flow' do
-      temp = Tempfile.new('keycloak_flow')
-      allow(Tempfile).to receive(:new).with('keycloak_flow').and_return(temp)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/flows', 'test', temp.path, nil, true)
+    it 'creates a flow execution' do
+      temp = Tempfile.new('keycloak_flow_execution')
+      allow(Tempfile).to receive(:new).with('keycloak_flow_execution').and_return(temp)
+      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/flows/browser-with-duo/executions/execution', 'test', temp.path, nil, true).and_return('uuid')
       resource.provider.create
       property_hash = resource.provider.instance_variable_get('@property_hash')
       expect(property_hash[:ensure]).to eq(:present)
     end
-    it 'creates a flow and updates requirement' do
-      resource[:top_level] = false
+    it 'creates a flow execution and updates requirement' do
       resource[:requirement] = 'ALTERNATIVE'
-      resource[:flow_alias] = 'browser-with-duo'
-      temp = Tempfile.new('keycloak_flow')
-      tempu = Tempfile.new('keycloak_flow_execution')
-      allow(Tempfile).to receive(:new).with('keycloak_flow').and_return(temp)
-      allow(Tempfile).to receive(:new).with('keycloak_flow_execution').and_return(tempu)
-      expect(resource.provider).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/flows/browser-with-duo/executions/flow', 'test', temp.path, nil, true) \
-                                                  .and_return('53751618-6a49-4682-b4e8-624f170b8507')
-      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/flows/browser-with-duo/executions', 'test', tempu.path, nil, true)
+      temp = Tempfile.new('keycloak_flow_execution')
+      tempu = Tempfile.new('keycloak_flow_execution_update')
+      allow(Tempfile).to receive(:new).with('keycloak_flow_execution').and_return(temp)
+      allow(Tempfile).to receive(:new).with('keycloak_flow_execution_update').and_return(tempu)
+      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/flows/browser-with-duo/executions/execution', 'test', temp.path, nil, true).and_return('uuid')
+      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/flows/browser-with-duo/executions', 'test', tempu.path)
+      resource.provider.create
+      property_hash = resource.provider.instance_variable_get('@property_hash')
+      expect(property_hash[:ensure]).to eq(:present)
+    end
+    it 'creates a flow execution and adds a config' do
+      resource[:configurable] = true
+      resource[:config] = { 'foo' => 'bar' }
+      temp = Tempfile.new('keycloak_flow_execution')
+      tempc = Tempfile.new('keycloak_flow_execution_config')
+      allow(Tempfile).to receive(:new).with('keycloak_flow_execution').and_return(temp)
+      allow(Tempfile).to receive(:new).with('keycloak_flow_execution_config').and_return(tempc)
+      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/flows/browser-with-duo/executions/execution', 'test', temp.path, nil, true).and_return('uuid')
+      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/config', 'test', tempc.path)
       resource.provider.create
       property_hash = resource.provider.instance_variable_get('@property_hash')
       expect(property_hash[:ensure]).to eq(:present)
@@ -74,17 +88,8 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
   end
 
   describe 'destroy' do
-    it 'deletes a flow' do
-      hash = resource.to_hash
-      resource.provider.instance_variable_set(:@property_hash, hash)
-      expect(resource.provider).to receive(:kcadm).with('delete', 'authentication/flows/foo-test', 'test')
-      resource.provider.destroy
-      property_hash = resource.provider.instance_variable_get('@property_hash')
-      expect(property_hash).to eq({})
-    end
-    it 'deletes a flow that is not top level' do
+    it 'deletes a realm' do
       allow(resource.provider).to receive(:id).and_return('uuid')
-      resource[:top_level] = false
       expect(resource.provider).to receive(:kcadm).with('delete', 'authentication/executions/uuid', 'test')
       resource.provider.destroy
       property_hash = resource.provider.instance_variable_get('@property_hash')
@@ -93,26 +98,22 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
   end
 
   describe 'flush' do
-    it 'updates a flow' do
-      hash = resource.to_hash
-      resource.provider.instance_variable_set(:@property_hash, hash)
-      temp = Tempfile.new('keycloak_flow')
-      allow(Tempfile).to receive(:new).with('keycloak_flow').and_return(temp)
-      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/flows/foo-test', 'test', temp.path, nil, true)
-      resource.provider.description = 'foobar'
-      resource.provider.flush
-    end
     it 'updates a execution requirement' do
-      resource[:flow_alias] = 'browser-with-duo'
-      resource[:top_level] = false
-      temp = Tempfile.new('keycloak_flow')
-      allow(Tempfile).to receive(:new).with('keycloak_flow').and_return(temp)
+      temp = Tempfile.new('keycloak_flow_execution')
+      allow(Tempfile).to receive(:new).with('keycloak_flow_execution').and_return(temp)
       expect(resource.provider).to receive(:kcadm).with('update', 'authentication/flows/browser-with-duo/executions', 'test', temp.path, nil, true)
       resource.provider.requirement = 'ALTERNATIVE'
       resource.provider.flush
     end
+    it 'updates a config' do
+      allow(resource.provider).to receive(:config_id).and_return('uuid')
+      temp = Tempfile.new('keycloak_flow_execution_config')
+      allow(Tempfile).to receive(:new).with('keycloak_flow_execution_config').and_return(temp)
+      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/config/uuid', 'test', temp.path)
+      resource.provider.config = { 'foo' => 'bar' }
+      resource.provider.flush
+    end
     it 'lowers priority twice' do
-      resource[:top_level] = false
       allow(resource.provider).to receive(:id).and_return('uuid')
       allow(resource.provider).to receive(:current_priority).and_return(0)
       expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/lower-priority', 'test').twice
@@ -120,7 +121,6 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       resource.provider.flush
     end
     it 'lowers priority once' do
-      resource[:top_level] = false
       allow(resource.provider).to receive(:id).and_return('uuid')
       allow(resource.provider).to receive(:current_priority).and_return(0)
       expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/lower-priority', 'test').once
@@ -128,7 +128,6 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       resource.provider.flush
     end
     it 'raise priority twice' do
-      resource[:top_level] = false
       allow(resource.provider).to receive(:id).and_return('uuid')
       allow(resource.provider).to receive(:current_priority).and_return(2)
       expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/raise-priority', 'test').twice
@@ -136,7 +135,6 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       resource.provider.flush
     end
     it 'raise priority once' do
-      resource[:top_level] = false
       allow(resource.provider).to receive(:id).and_return('uuid')
       allow(resource.provider).to receive(:current_priority).and_return(1)
       expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/raise-priority', 'test').once

@@ -1,12 +1,13 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:keycloak_flow) do
+describe Puppet::Type.type(:keycloak_flow_execution) do
   let(:default_config) do
     {
       name: 'foo',
       realm: 'test',
       index: 0,
       flow_alias: 'bar',
+      provider_id: 'auth-username-password-form',
     }
   end
   let(:config) do
@@ -27,33 +28,25 @@ describe Puppet::Type.type(:keycloak_flow) do
     expect(resource[:name]).to eq('foo')
   end
 
-  it 'has alias default to name' do
-    expect(resource[:alias]).to eq('foo')
-  end
-
-  it 'has id default to name-realm' do
-    expect(resource[:id]).to eq('foo-test')
-  end
-
   it 'has realm' do
     expect(resource[:realm]).to eq('test')
   end
 
   it 'handles componsite name' do
-    component = described_class.new(name: 'foo on test')
-    expect(component[:name]).to eq('foo on test')
-    expect(component[:alias]).to eq('foo')
+    component = described_class.new(name: 'foo under bar on test')
+    expect(component[:name]).to eq('foo under bar on test')
+    expect(component[:provider_id]).to eq('foo')
+    expect(component[:flow_alias]).to eq('bar')
     expect(component[:realm]).to eq('test')
   end
 
-  defaults = {
-    top_level: :true,
-  }
+  defaults = {}
 
   describe 'basic properties' do
     # Test basic properties
     [
-      :description,
+      :display_name,
+      :alias,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'
@@ -69,7 +62,7 @@ describe Puppet::Type.type(:keycloak_flow) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :top_level,
+      :configurable,
     ].each do |p|
       it "should accept true for #{p}" do
         config[p] = true
@@ -124,38 +117,9 @@ describe Puppet::Type.type(:keycloak_flow) do
     end
   end
 
-  describe 'provider_id' do
-    it 'defaults to provider_id=basic-flow' do
-      expect(resource[:provider_id]).to eq('basic-flow')
-    end
-
-    it 'does not allow invalid provider_id' do
-      config[:provider_id] = 'foo'
-      expect {
-        resource
-      }.to raise_error(%r{foo})
-    end
-  end
-
-  describe 'type' do
-    it 'defaults to type=nil' do
-      expect(resource[:type]).to be_nil
-    end
-
-    it 'sets default when not top level' do
-      config[:top_level] = false
-      expect(resource[:type]).to eq('registration-page-form')
-    end
-  end
-
   describe 'requirement' do
     it 'defaults to DISABLED for top_level=false' do
-      config[:top_level] = false
       expect(resource[:requirement]).to eq('DISABLED')
-    end
-    it 'has no default for top_level=true' do
-      config[:top_level] = true
-      expect(resource[:requirement]).to be_nil
     end
     [
       'DISABLED', 'ALTERNATIVE', 'REQUIRED', 'CONDITIONAL'
@@ -172,6 +136,17 @@ describe Puppet::Type.type(:keycloak_flow) do
     it 'does not accept invalid value' do
       config[:requirement] = 'foo'
       expect { resource }.to raise_error(%r{foo})
+    end
+  end
+
+  describe 'config' do
+    it 'accepts hash' do
+      config[:config] = { 'foo' => 'bar' }
+      expect(resource[:config]).to eq('foo' => 'bar')
+    end
+    it 'requires hash' do
+      config[:config] = 'foo'
+      expect { resource }.to raise_error(%r{must be a Hash})
     end
   end
 
@@ -206,7 +181,6 @@ describe Puppet::Type.type(:keycloak_flow) do
   end
 
   it 'autorequires keycloak_flow of parent flow' do
-    config[:top_level] = false
     keycloak_flow = Puppet::Type.type(:keycloak_flow).new(name: 'bar on test')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
@@ -217,7 +191,6 @@ describe Puppet::Type.type(:keycloak_flow) do
   end
 
   it 'autorequires keycloak_flow of lower index' do
-    config[:top_level] = false
     config[:index] = 1
     keycloak_flow = Puppet::Type.type(:keycloak_flow).new(name: 'baz under bar on test', index: 0)
     catalog = Puppet::Resource::Catalog.new
@@ -229,7 +202,6 @@ describe Puppet::Type.type(:keycloak_flow) do
   end
 
   it 'autorequires keycloak_flow_execution of lower index' do
-    config[:top_level] = false
     config[:index] = 1
     keycloak_flow_execution = Puppet::Type.type(:keycloak_flow_execution).new(name: 'baz under bar on test', index: 0)
     catalog = Puppet::Resource::Catalog.new
@@ -247,7 +219,6 @@ describe Puppet::Type.type(:keycloak_flow) do
     end
     it 'requires index when present' do
       config.delete(:index)
-      config[:top_level] = false
       config[:ensure] = 'present'
       expect { resource }.to raise_error(%r{index is required})
     end
@@ -256,23 +227,15 @@ describe Puppet::Type.type(:keycloak_flow) do
       config[:ensure] = 'absent'
       expect { resource }.not_to raise_error
     end
-    it 'does not require index for top level' do
-      config.delete(:index)
-      config[:ensure] = 'present'
-      config[:top_level] = true
-      expect { resource }.not_to raise_error
-    end
-    it 'requires flow_alias when top_level is false' do
+    it 'requires flow_alias' do
       config.delete(:flow_alias)
-      config[:top_level] = false
       config[:ensure] = 'present'
       expect { resource }.to raise_error(%r{flow_alias is required})
     end
-    it 'does not require flow_alias when top_level' do
-      config.delete(:flow_alias)
-      config[:top_level] = true
+    it 'requires provider_id' do
+      config.delete(:provider_id)
       config[:ensure] = 'present'
-      expect { resource }.not_to raise_error
+      expect { resource }.to raise_error(%r{provider_id is required})
     end
   end
 end

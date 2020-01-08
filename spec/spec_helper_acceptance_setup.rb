@@ -5,6 +5,9 @@ RSpec.configure do |c|
   c.keycloak_full = (ENV['BEAKER_keycloak_full'] == 'true' || ENV['BEAKER_keycloak_full'] == 'yes')
 end
 
+proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+scp_to(hosts, File.join(proj_root, 'spec/fixtures/keycloak-duo-spi-jar-with-dependencies.jar'), '/tmp/keycloak-duo-spi-jar-with-dependencies.jar')
+
 hiera_yaml = <<-EOS
 ---
 version: 5
