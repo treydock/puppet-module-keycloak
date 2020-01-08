@@ -163,6 +163,10 @@
 #   Hash taht is used to define keycloak_flow resources.
 # @param flows_merge
 #   Boolean that sets if `flows` should be merged from Hiera.
+# @param flow_executions
+#   Hash taht is used to define keycloak_flow resources.
+# @param flow_executions_merge
+#   Boolean that sets if `flows` should be merged from Hiera.
 # @param with_sssd_support
 #   Boolean that determines if SSSD user provider support should be available
 # @param libunix_dbus_java_source
@@ -256,6 +260,8 @@ class keycloak (
   Boolean $clients_merge = false,
   Hash $flows = {},
   Boolean $flows_merge = false,
+  Hash $flow_executions = {},
+  Boolean $flow_executions_merge = false,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
     $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz',

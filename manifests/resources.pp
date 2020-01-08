@@ -43,6 +43,11 @@ class keycloak::resources {
   } else {
     $flows = $keycloak::flows
   }
+  if $keycloak::flow_executions_merge {
+    $flow_executions = lookup('keycloak::flow_executions', Hash, 'deep', {})
+  } else {
+    $flow_executions = $keycloak::flow_executions
+  }
 
   $realms.each |$name, $realm| {
     keycloak_realm { $name: * => $realm }
@@ -66,6 +71,9 @@ class keycloak::resources {
     keycloak_client { $name: * => $data }
   }
   $flows.each |$name, $data| {
+    keycloak_flow { $name: * => $data }
+  }
+  $flow_executions.each |$name, $data| {
     keycloak_flow { $name: * => $data }
   }
   $keycloak::spi_deployments.each |$name, $deployment| {
