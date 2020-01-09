@@ -25,6 +25,7 @@ _Private Classes_
 
 * [`keycloak::client_scope::oidc`](#keycloakclient_scopeoidc): Manage Keycloak OpenID Connect client scope using built-in mappers
 * [`keycloak::client_scope::saml`](#keycloakclient_scopesaml): Manage Keycloak SAML client scope using built-in mappers
+* [`keycloak::spi_deployment`](#keycloakspi_deployment): Manage Keycloak SPI deployment
 * [`keycloak::truststore::host`](#keycloaktruststorehost): Add host to Keycloak truststore
 
 **Resource types**
@@ -34,11 +35,14 @@ _Private Classes_
 * [`keycloak_client_protocol_mapper`](#keycloak_client_protocol_mapper): Manage Keycloak protocol mappers
 * [`keycloak_client_scope`](#keycloak_client_scope): Manage Keycloak client scopes
 * [`keycloak_conn_validator`](#keycloak_conn_validator): Verify that a connection can be successfully established between a node and the keycloak server.  Its primary use is as a precondition to pre
+* [`keycloak_flow`](#keycloak_flow): Manage a Keycloak flow **Autorequires** * `keycloak_realm` defined for `realm` parameter * `keycloak_flow` of `flow_alias` if `top_level=fals
+* [`keycloak_flow_execution`](#keycloak_flow_execution): Manage a Keycloak flow **Autorequires** * `keycloak_realm` defined for `realm` parameter * `keycloak_flow` of value defined for `flow_alias` 
 * [`keycloak_identity_provider`](#keycloak_identity_provider): Manage Keycloak identity providers
 * [`keycloak_ldap_mapper`](#keycloak_ldap_mapper): Manage Keycloak LDAP attribute mappers
 * [`keycloak_ldap_user_provider`](#keycloak_ldap_user_provider): Manage Keycloak LDAP user providers
 * [`keycloak_protocol_mapper`](#keycloak_protocol_mapper): Manage Keycloak client scope protocol mappers
 * [`keycloak_realm`](#keycloak_realm): Manage Keycloak realms
+* [`keycloak_resource_validator`](#keycloak_resource_validator): Verify that a specific Keycloak resource is available
 * [`keycloak_sssd_user_provider`](#keycloak_sssd_user_provider): Manage Keycloak SSSD user providers
 
 ## Classes
@@ -551,6 +555,38 @@ Boolean that sets if `clients` should be merged from Hiera.
 
 Default value: `false`
 
+##### `flows`
+
+Data type: `Hash`
+
+Hash taht is used to define keycloak_flow resources.
+
+Default value: {}
+
+##### `flows_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `flows` should be merged from Hiera.
+
+Default value: `false`
+
+##### `flow_executions`
+
+Data type: `Hash`
+
+Hash taht is used to define keycloak_flow resources.
+
+Default value: {}
+
+##### `flow_executions_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `flows` should be merged from Hiera.
+
+Default value: `false`
+
 ##### `with_sssd_support`
 
 Data type: `Boolean`
@@ -639,6 +675,14 @@ Keycloak operating mode deployment
 
 Default value: 'standalone'
 
+##### `user_cache`
+
+Data type: `Boolean`
+
+Boolean that determines if userCache is enabled
+
+Default value: `true`
+
 ##### `tech_preview_features`
 
 Data type: `Array`
@@ -646,6 +690,30 @@ Data type: `Array`
 List of technology Preview features to enable
 
 Default value: []
+
+##### `auto_deploy_exploded`
+
+Data type: `Boolean`
+
+Set if exploded deployements will be auto deployed
+
+Default value: `false`
+
+##### `auto_deploy_zipped`
+
+Data type: `Boolean`
+
+Set if zipped deployments will be auto deployed
+
+Default value: `true`
+
+##### `spi_deployments`
+
+Data type: `Hash`
+
+Hash used to define keycloak::spi_deployment resources
+
+Default value: {}
 
 ### keycloak::config
 
@@ -732,6 +800,93 @@ Data type: `String`
 Name of the client scope resource
 
 Default value: $name
+
+### keycloak::spi_deployment
+
+}
+
+#### Examples
+
+##### Add Duo SPI
+
+```puppet
+keycloak::spi_deployment { 'duo-spi':
+  ensure        => 'present',
+  deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
+  source        => 'file:///path/to/source/keycloak-duo-spi-jar-with-dependencies.jar',
+}
+```
+
+##### Add Duo SPI and check API for existance of resources before going onto dependenct resources
+
+```puppet
+keycloak::spi_deployment { 'duo-spi':
+  deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
+  source        => 'file:///path/to/source/keycloak-duo-spi-jar-with-dependencies.jar',
+  test_url      => 'authentication/authenticator-providers',
+  test_key      => 'id',
+  test_value    => 'duo-mfa-authenticator',
+  test_realm    => 'test',
+  before        => Keycloak_flow_execution['duo-mfa-authenticator under form-browser-with-duo on test'],
+```
+
+#### Parameters
+
+The following parameters are available in the `keycloak::spi_deployment` defined type.
+
+##### `ensure`
+
+Data type: `Enum['present', 'absent']`
+
+State of the deployment
+
+Default value: 'present'
+
+##### `deployed_name`
+
+Data type: `String[1]`
+
+Name of the file to be deployed. Defaults to `$name`.
+
+Default value: $name
+
+##### `source`
+
+Data type: `Variant[Stdlib::Filesource, Stdlib::HTTPSUrl]`
+
+Source of the deployment, supports 'file://', 'puppet://', 'https://' or 'http://'
+
+##### `test_url`
+
+Data type: `Optional[String]`
+
+URL to test for existance of resources created by this SPI
+
+Default value: `undef`
+
+##### `test_key`
+
+Data type: `Optional[String]`
+
+Key of resource when testing for resource created by this SPI
+
+Default value: `undef`
+
+##### `test_value`
+
+Data type: `Optional[String]`
+
+Value of the `test_key` when testing for resources created by this SPI
+
+Default value: `undef`
+
+##### `test_realm`
+
+Data type: `Optional[String]`
+
+Realm to query when looking for resources created by this SPI
+
+Default value: `undef`
 
 ### keycloak::truststore::host
 
@@ -1245,6 +1400,236 @@ Default value: /auth/admin/serverinfo
 The max number of seconds that the validator should wait before giving up and deciding that keycloak is not running; defaults to 15 seconds.
 
 Default value: 30
+
+### keycloak_flow
+
+Manage a Keycloak flow
+**Autorequires**
+* `keycloak_realm` defined for `realm` parameter
+* `keycloak_flow` of `flow_alias` if `top_level=false`
+* `keycloak_flow` of `flow_alias` if other `index` is lower and if `top_level=false`
+* `keycloak_flow_execution` if `flow_alias` is the same and other `index` is lower and if `top_level=false`
+
+#### Examples
+
+##### Add custom flow
+
+```puppet
+keycloak_flow { 'browser-with-duo':
+  ensure => 'present',
+  realm  => 'test',
+}
+```
+
+##### Add a flow execution to existing browser-with-duo flow
+
+```puppet
+keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
+  ensure      => 'present',
+  index       => 2,
+  requirement => 'ALTERNATIVE',
+  top_level   => false,
+}
+```
+
+#### Properties
+
+The following properties are available in the `keycloak_flow` type.
+
+##### `ensure`
+
+Valid values: present, absent
+
+The basic property that the resource should be in.
+
+Default value: present
+
+##### `index`
+
+execution index, only applied to top_level=false, required for top_level=false
+
+##### `description`
+
+description
+
+##### `requirement`
+
+Valid values: DISABLED, ALTERNATIVE, REQUIRED, CONDITIONAL, disabled, alternative, required, conditional
+
+requirement, only applied to top_level=false and defaults to DISABLED
+
+#### Parameters
+
+The following parameters are available in the `keycloak_flow` type.
+
+##### `name`
+
+namevar
+
+The flow name
+
+##### `id`
+
+Id. Default to `$alias-$realm` when top_level is true. Only applies to top_level=true
+
+##### `alias`
+
+Alias. Default to `name`.
+
+##### `flow_alias`
+
+flowAlias, required for top_level=false
+
+##### `realm`
+
+realm
+
+##### `provider_id`
+
+Valid values: basic-flow, form-flow
+
+providerId
+
+Default value: basic-flow
+
+##### `type`
+
+sub-flow execution provider, default to `registration-page-form` for top_level=false and does not apply to top_level=true
+
+##### `top_level`
+
+Valid values: `true`, `false`
+
+topLevel
+
+Default value: `true`
+
+### keycloak_flow_execution
+
+Manage a Keycloak flow
+**Autorequires**
+* `keycloak_realm` defined for `realm` parameter
+* `keycloak_flow` of value defined for `flow_alias`
+* `keycloak_flow` if they share same `flow_alias` value and the other resource `index` is lower
+* `keycloak_flow_execution` if `flow_alias` is the same and other `index` is lower
+
+#### Examples
+
+##### Add an execution to a flow
+
+```puppet
+keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
+  ensure       => 'present',
+  configurable => false,
+  display_name => 'Cookie',
+  index        => 0,
+  requirement  => 'ALTERNATIVE',
+}
+```
+
+##### Add an execution to a execution flow that is one level deeper than top level
+
+```puppet
+keycloak_flow_execution { 'auth-username-password-form under form-browser-with-duo on test':
+  ensure       => 'present',
+  configurable => false,
+  display_name => 'Username Password Form',
+  index        => 0,
+  requirement  => 'REQUIRED',
+}
+```
+
+##### Add an execution with a configuration
+
+```puppet
+keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on test':
+  ensure       => 'present',
+  configurable => true,
+  display_name => 'Duo MFA',
+  alias        => 'Duo',
+  config       => {
+    "duomfa.akey"    => "foo-akey",
+    "duomfa.apihost" => "api-foo.duosecurity.com",
+    "duomfa.skey"    => "secret",
+    "duomfa.ikey"    => "foo-ikey",
+    "duomfa.groups"  => "duo"
+  },
+  requirement  => 'REQUIRED',
+  index        => 1,
+}
+```
+
+#### Properties
+
+The following properties are available in the `keycloak_flow_execution` type.
+
+##### `ensure`
+
+Valid values: present, absent
+
+The basic property that the resource should be in.
+
+Default value: present
+
+##### `index`
+
+execution index
+
+##### `configurable`
+
+Valid values: `true`, `false`
+
+configurable
+
+##### `requirement`
+
+Valid values: DISABLED, ALTERNATIVE, REQUIRED, CONDITIONAL, disabled, alternative, required, conditional
+
+requirement
+
+Default value: DISABLED
+
+##### `config`
+
+execution config
+
+#### Parameters
+
+The following parameters are available in the `keycloak_flow_execution` type.
+
+##### `name`
+
+namevar
+
+The flow execution name
+
+##### `id`
+
+read-only Id
+
+##### `provider_id`
+
+provider
+
+##### `flow_alias`
+
+flowAlias
+
+##### `realm`
+
+realm
+
+##### `display_name`
+
+displayName
+
+##### `alias`
+
+alias
+
+##### `config_id`
+
+read-only config ID
 
 ### keycloak_identity_provider
 
@@ -2057,6 +2442,42 @@ loginWithEmailAllowed
 
 Default value: true
 
+##### `browser_flow`
+
+browserFlow
+
+Default value: browser
+
+##### `registration_flow`
+
+registrationFlow
+
+Default value: registration
+
+##### `direct_grant_flow`
+
+directGrantFlow
+
+Default value: direct grant
+
+##### `reset_credentials_flow`
+
+resetCredentialsFlow
+
+Default value: reset credentials
+
+##### `client_authentication_flow`
+
+clientAuthenticationFlow
+
+Default value: clients
+
+##### `docker_authentication_flow`
+
+dockerAuthenticationFlow
+
+Default value: docker auth
+
 ##### `default_client_scopes`
 
 Default Client Scopes
@@ -2068,6 +2489,12 @@ Optional Client Scopes
 ##### `supported_locales`
 
 Supported Locales
+
+##### `content_security_policy`
+
+contentSecurityPolicy
+
+Default value: frame-src 'self'; frame-ancestors 'self'; object-src 'none';
 
 ##### `events_enabled`
 
@@ -2116,6 +2543,54 @@ The realm name
 ##### `id`
 
 Id. Default to `name`.
+
+### keycloak_resource_validator
+
+Verify that a specific Keycloak resource is available
+
+#### Properties
+
+The following properties are available in the `keycloak_resource_validator` type.
+
+##### `ensure`
+
+Valid values: present, absent
+
+The basic property that the resource should be in.
+
+Default value: present
+
+#### Parameters
+
+The following parameters are available in the `keycloak_resource_validator` type.
+
+##### `name`
+
+namevar
+
+An arbitrary name used as the identity of the resource.
+
+##### `test_url`
+
+URL to use for testing if the Keycloak database is up
+
+##### `test_key`
+
+Key to lookup
+
+##### `test_value`
+
+Value to lookup
+
+##### `realm`
+
+Realm to query
+
+##### `timeout`
+
+The max number of seconds that the validator should wait before giving up and deciding that keycloak is not running; defaults to 15 seconds.
+
+Default value: 30
 
 ### keycloak_sssd_user_provider
 

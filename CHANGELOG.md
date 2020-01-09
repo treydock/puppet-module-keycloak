@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.2.0) (2020-01-09)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.1.0...v6.2.0)
+
+### Added
+
+- Support managing authentication flows [\#115](https://github.com/treydock/puppet-module-keycloak/pull/115) ([treydock](https://github.com/treydock))
+- Support disabling the user cache [\#114](https://github.com/treydock/puppet-module-keycloak/pull/114) ([treydock](https://github.com/treydock))
+- Support Keycloak SPI deployments [\#113](https://github.com/treydock/puppet-module-keycloak/pull/113) ([treydock](https://github.com/treydock))
+- Add content\_security\_policy to keycloak\_realm [\#112](https://github.com/treydock/puppet-module-keycloak/pull/112) ([treydock](https://github.com/treydock))
+- Improve handling of realm flow assignment to avoid errors [\#111](https://github.com/treydock/puppet-module-keycloak/pull/111) ([treydock](https://github.com/treydock))
+- Support managing realm flow properties [\#110](https://github.com/treydock/puppet-module-keycloak/pull/110) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Fix bug in flow parsing [\#116](https://github.com/treydock/puppet-module-keycloak/pull/116) ([treydock](https://github.com/treydock))
+
 ## [v6.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.1.0) (2019-12-31)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.0.0...v6.1.0)
@@ -181,6 +198,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Changed
 
 - Simplify and consolidate datasource parameters [\#63](https://github.com/treydock/puppet-module-keycloak/pull/63) ([treydock](https://github.com/treydock))
+- Set default Keycloak version to 6.0.1 [\#61](https://github.com/treydock/puppet-module-keycloak/pull/61) ([treydock](https://github.com/treydock))
 
 ### Added
 
@@ -189,10 +207,6 @@ All notable changes to this project will be documented in this file. The format 
 ## [v3.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v3.8.0) (2019-05-23)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.7.0...v3.8.0)
-
-### Changed
-
-- Set default Keycloak version to 6.0.1 [\#61](https://github.com/treydock/puppet-module-keycloak/pull/61) ([treydock](https://github.com/treydock))
 
 ### Added
 
@@ -223,11 +237,14 @@ All notable changes to this project will be documented in this file. The format 
 
 - Support managing realm's events config [\#55](https://github.com/treydock/puppet-module-keycloak/pull/55) ([treydock](https://github.com/treydock))
 - Test against Keycloak 6 [\#54](https://github.com/treydock/puppet-module-keycloak/pull/54) ([treydock](https://github.com/treydock))
-- manage user support [\#53](https://github.com/treydock/puppet-module-keycloak/pull/53) ([cborisa](https://github.com/cborisa))
 
 ## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.4.0...3.5.0)
+
+### Added
+
+- manage user support [\#53](https://github.com/treydock/puppet-module-keycloak/pull/53) ([cborisa](https://github.com/cborisa))
 
 ## [3.4.0](https://github.com/treydock/puppet-module-keycloak/tree/3.4.0) (2019-02-25)
 
@@ -365,13 +382,16 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.1.0...2.2.0)
 
+### Added
+
+- Make management of the MySQL database optional [\#13](https://github.com/treydock/puppet-module-keycloak/pull/13) ([treydock](https://github.com/treydock))
+
 ## [2.1.0](https://github.com/treydock/puppet-module-keycloak/tree/2.1.0) (2018-02-22)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.0.1...2.1.0)
 
 ### Added
 
-- Make management of the MySQL database optional [\#13](https://github.com/treydock/puppet-module-keycloak/pull/13) ([treydock](https://github.com/treydock))
 - Increase minimum java dependency to 2.2.0 to to support Debian 9. Update unit tests to test all supported OSes [\#12](https://github.com/treydock/puppet-module-keycloak/pull/12) ([treydock](https://github.com/treydock))
 - Symlink instead of copy mysql connector. puppetlabs/mysql 5 compatibility [\#11](https://github.com/treydock/puppet-module-keycloak/pull/11) ([NITEMAN](https://github.com/NITEMAN))
 - Add support for http port configuration [\#9](https://github.com/treydock/puppet-module-keycloak/pull/9) ([NITEMAN](https://github.com/NITEMAN))
