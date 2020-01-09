@@ -59,7 +59,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
           flow[:alias] = e['displayName']
           if e['level'] != 0
             parent_level = levels.find { |k, _v| k == (e['level'] - 1) }
-            execution[:flow_alias] = parent_level[1][-1] if parent_level.size > 1
+            flow[:flow_alias] = parent_level[1][-1] if parent_level.size > 1
           end
           flow[:name] = "#{flow[:alias]} under #{flow[:flow_alias]} on #{realm}"
           levels[e['level']] = [] unless levels.key?(e['level'])

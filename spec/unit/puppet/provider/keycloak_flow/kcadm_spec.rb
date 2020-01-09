@@ -14,7 +14,7 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       allow(described_class).to receive(:realms).and_return(['test'])
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(my_fixture_read('get-test.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
-      expect(described_class.instances.length).to eq(2)
+      expect(described_class.instances.length).to eq(3)
     end
 
     it 'returns the resource for a flow' do
@@ -23,6 +23,10 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
       expect(property_hash[:name]).to eq('browser-with-duo on test')
+      property_hash = described_class.instances[1].instance_variable_get('@property_hash')
+      expect(property_hash[:name]).to eq('form-browser-with-duo under browser-with-duo on test')
+      property_hash = described_class.instances[2].instance_variable_get('@property_hash')
+      expect(property_hash[:name]).to eq('check-duo under form-browser-with-duo on test')
     end
   end
   #   describe 'self.prefetch' do
