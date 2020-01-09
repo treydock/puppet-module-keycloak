@@ -46,4 +46,23 @@
   "authenticationConfig" : "be93a426-077f-4235-9686-677ff0706bf8",
   "level" : 1,
   "index" : 1
+}, {
+  "id" : "5d11e430-a522-469b-8548-285fb0593480",
+  "requirement" : "CONDITIONAL",
+  "displayName" : "check-duo",
+  "requirementChoices" : [ "REQUIRED", "ALTERNATIVE", "DISABLED", "CONDITIONAL" ],
+  "configurable" : false,
+  "authenticationFlow" : true,
+  "flowId" : "a1408b3c-5242-421b-b60f-2dbdceb11cbb",
+  "level" : 1,
+  "index" : 2
+}, {
+  "id" : "93ade6f4-ee01-4dfd-840b-8ee9ef96fdd1",
+  "requirement" : "DISABLED",
+  "displayName" : "Condition - user role",
+  "requirementChoices" : [ "REQUIRED", "DISABLED" ],
+  "configurable" : true,
+  "providerId" : "conditional-user-role",
+  "level" : 2,
+  "index" : 0
 } ]
