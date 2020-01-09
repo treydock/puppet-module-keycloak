@@ -74,7 +74,7 @@ class keycloak::resources {
     keycloak_flow { $name: * => $data }
   }
   $flow_executions.each |$name, $data| {
-    keycloak_flow { $name: * => $data }
+    keycloak_flow_execution { $name: * => $data }
   }
   $keycloak::spi_deployments.each |$name, $deployment| {
     keycloak::spi_deployment { $name: * => $deployment }
