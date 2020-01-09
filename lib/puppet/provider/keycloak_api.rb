@@ -52,11 +52,11 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     end
   end
 
-  def self.kcadm(action, resource, realm = nil, file = nil, fields = nil)
+  def self.kcadm(action, resource, realm = nil, file = nil, fields = nil, print_id = false)
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
 
     arguments = [action, resource]
-    if ['create', 'update'].include?(action)
+    if ['create', 'update'].include?(action) && !print_id
       arguments << '-o'
     end
     if realm
@@ -70,6 +70,9 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     if fields
       arguments << '--fields'
       arguments << fields.join(',')
+    end
+    if action == 'create' && print_id
+      arguments << '--id'
     end
     if use_wrapper == false || use_wrapper == :false
       auth_arguments = [
@@ -96,6 +99,10 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     data = JSON.parse(output)
     realms = data.map { |r| r['realm'] }
     realms
+  end
+
+  def realms
+    self.class.realms
   end
 
   def self.name_uuid(name)
