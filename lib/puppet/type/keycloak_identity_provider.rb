@@ -162,6 +162,13 @@ Manage Keycloak identity providers
     end
   end
 
+  newproperty(:client_auth_method) do
+    desc 'clientAuthMethod'
+    newvalues('client_secret_post', 'client_secret_basic', 'client_secret_jwt', 'private_key_jwt')
+    defaultto('client_secret_post')
+    munge { |v| v.to_s }
+  end
+
   newproperty(:token_url) do
     desc 'tokenUrl'
   end
