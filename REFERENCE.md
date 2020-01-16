@@ -1763,6 +1763,14 @@ clientId
 
 clientSecret
 
+##### `client_auth_method`
+
+Valid values: client_secret_post, client_secret_basic, client_secret_jwt, private_key_jwt
+
+clientAuthMethod
+
+Default value: client_secret_post
+
 ##### `token_url`
 
 tokenUrl
