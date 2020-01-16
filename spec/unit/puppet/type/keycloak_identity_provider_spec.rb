@@ -182,6 +182,22 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     end
   end
 
+  describe 'client_auth_method' do
+    [
+      'client_secret_post', 'client_secret_basic', 'client_secret_jwt', 'private_key_jwt'
+    ].each do |v|
+      it "accepts #{v}" do
+        config[:client_auth_method] = v
+        expect(resource[:client_auth_method]).to eq(v)
+      end
+    end
+
+    it 'does not accept invalid values' do
+      config[:client_auth_method] = 'foo'
+      expect { resource }.to raise_error(%r{Invalid})
+    end
+  end
+
   it 'autorequires keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(name: 'keycloak')
     catalog = Puppet::Resource::Catalog.new
