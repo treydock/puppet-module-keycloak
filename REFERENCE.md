@@ -1190,7 +1190,13 @@ user.attribute. Default to `resource_name` for `type` `oidc-usermodel-property-m
 
 ##### `json_type_label`
 
-json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`.
+json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper` and `oidc-group-membership-mapper`.
+
+##### `full_path`
+
+Valid values: `true`, `false`
+
+full.path. Default to `false` for `type` `oidc-group-membership-mapper`.
 
 ##### `friendly_name`
 
@@ -1266,7 +1272,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 
@@ -2274,7 +2280,13 @@ user.attribute. Default to `resource_name` for `type` `oidc-usermodel-property-m
 
 ##### `json_type_label`
 
-json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`.
+json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper` and `oidc-group-membership-mapper`.
+
+##### `full_path`
+
+Valid values: `true`, `false`
+
+full.path. Default to `false` for `type` `oidc-group-membership-mapper`.
 
 ##### `friendly_name`
 
@@ -2350,7 +2362,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 
