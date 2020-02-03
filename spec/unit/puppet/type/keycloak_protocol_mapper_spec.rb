@@ -267,6 +267,16 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     end
   end
 
+  describe 'full_path' do
+    it 'defaults to nil for non groups' do
+      expect(resource[:full_path]).to be_nil
+    end
+    it 'defaults to false for groups' do
+      config[:type] = 'oidc-group-membership-mapper'
+      expect(resource[:full_path]).to eq(:false)
+    end
+  end
+
   it 'accepts Basic for attribute_nameformat' do
     config[:protocol] = 'saml'
     config[:attribute_nameformat] = 'Basic'

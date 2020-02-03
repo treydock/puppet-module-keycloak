@@ -20,6 +20,10 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         type                 => 'oidc-full-name-mapper',
         userinfo_token_claim => false,
       }
+      keycloak_protocol_mapper { "groups for oidc on test":
+        type       => 'oidc-group-membership-mapper',
+        claim_name => 'groups',
+      }
       EOS
 
       apply_manifest(pp, catch_failures: true)
@@ -52,6 +56,19 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         expect(mapper['config']['userinfo.token.claim']).to eq('false')
       end
     end
+
+    it 'has created protocol mapper groups' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'groups' }[0]
+        expect(mapper['protocolMapper']).to eq('oidc-group-membership-mapper')
+        expect(mapper['config']['full.path']).to eq('false')
+        expect(mapper['config']['id.token.claim']).to eq('true')
+        expect(mapper['config']['access.token.claim']).to eq('true')
+        expect(mapper['config']['userinfo.token.claim']).to eq('true')
+        expect(mapper['config']['claim.name']).to eq('groups')
+      end
+    end
   end
 
   context 'updates protocol_mapper' do
@@ -73,6 +90,11 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
       keycloak_protocol_mapper { "full name for oidc on test":
         type                 => 'oidc-full-name-mapper',
         userinfo_token_claim => true,
+      }
+      keycloak_protocol_mapper { "groups for oidc on test":
+        type       => 'oidc-group-membership-mapper',
+        claim_name => 'groups',
+        full_path  => true,
       }
       EOS
 
@@ -96,6 +118,19 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         mapper = data.select { |d| d['name'] == 'full name' }[0]
         expect(mapper['protocolMapper']).to eq('oidc-full-name-mapper')
         expect(mapper['config']['userinfo.token.claim']).to eq('true')
+      end
+    end
+
+    it 'has updated protocol mapper groups' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'groups' }[0]
+        expect(mapper['protocolMapper']).to eq('oidc-group-membership-mapper')
+        expect(mapper['config']['full.path']).to eq('true')
+        expect(mapper['config']['id.token.claim']).to eq('true')
+        expect(mapper['config']['access.token.claim']).to eq('true')
+        expect(mapper['config']['userinfo.token.claim']).to eq('true')
+        expect(mapper['config']['claim.name']).to eq('groups')
       end
     end
   end
