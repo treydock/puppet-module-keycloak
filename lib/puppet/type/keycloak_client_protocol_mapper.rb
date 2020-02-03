@@ -57,6 +57,7 @@ Manage Keycloak protocol mappers
     newvalues(
       'oidc-usermodel-property-mapper',
       'oidc-full-name-mapper',
+      'oidc-group-membership-mapper',
       'saml-user-property-mapper',
       'saml-role-list-mapper',
       'saml-javascript-mapper',
@@ -85,10 +86,22 @@ Manage Keycloak protocol mappers
   end
 
   newproperty(:json_type_label) do
-    desc 'json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`.'
+    desc 'json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper` and `oidc-group-membership-mapper`.'
     defaultto do
-      if @resource[:type] == 'oidc-usermodel-property-mapper'
+      if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(@resource[:type])
         'String'
+      else
+        nil
+      end
+    end
+  end
+
+  newproperty(:full_path, boolean: true) do
+    desc 'full.path. Default to `false` for `type` `oidc-group-membership-mapper`.'
+    newvalues(:true, :false)
+    defaultto do
+      if @resource[:type] == 'oidc-group-membership-mapper'
+        :false
       else
         nil
       end
@@ -221,7 +234,7 @@ Manage Keycloak protocol mappers
   end
 
   validate do
-    if self[:protocol] == 'openid-connect' && !['oidc-usermodel-property-mapper', 'oidc-full-name-mapper'].include?(self[:type])
+    if self[:protocol] == 'openid-connect' && !['oidc-usermodel-property-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper'].include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
     if self[:protocol] == 'saml' && !['saml-user-property-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
