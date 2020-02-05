@@ -102,6 +102,7 @@ describe Puppet::Type.type(:keycloak_realm) do
     [
       :remember_me,
       :login_with_email_allowed,
+      :internationalization_enabled,
       :events_enabled,
       :admin_events_enabled,
       :admin_events_details_enabled,
