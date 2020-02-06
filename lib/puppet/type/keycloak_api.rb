@@ -22,6 +22,7 @@ Puppet::Type.newtype(:keycloak_api) do
 
   newparam(:install_dir) do
     desc 'Install location of Keycloak'
+    defaultto('/opt/keycloak')
   end
 
   newparam(:server) do
