@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.4.1](https://github.com/treydock/puppet-module-keycloak/tree/v6.4.1) (2020-02-06)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.4.0...v6.4.1)
+
+### Fixed
+
+- type/keycloak\_api: Set install\_dir default on /opt/keycloak [\#120](https://github.com/treydock/puppet-module-keycloak/pull/120) ([tcassaert](https://github.com/tcassaert))
+
 ## [v6.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.4.0) (2020-02-03)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.3.0...v6.4.0)
@@ -54,10 +62,6 @@ All notable changes to this project will be documented in this file. The format 
 - Change JAVA\_OPTS behavior for Keycloak [\#105](https://github.com/treydock/puppet-module-keycloak/pull/105) ([treydock](https://github.com/treydock))
 - Change how install\_dir is defined, default behavior remains the same [\#90](https://github.com/treydock/puppet-module-keycloak/pull/90) ([treydock](https://github.com/treydock))
 
-### Added
-
-- Make JDBC xa-datasource-class name configurable [\#93](https://github.com/treydock/puppet-module-keycloak/pull/93) ([danifr](https://github.com/danifr))
-
 ## [v5.10.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.10.0) (2019-12-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.9.0...v5.10.0)
@@ -93,6 +97,10 @@ All notable changes to this project will be documented in this file. The format 
 ## [v5.7.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.7.0) (2019-10-29)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.6.0...v5.7.0)
+
+### Added
+
+- Make JDBC xa-datasource-class name configurable [\#93](https://github.com/treydock/puppet-module-keycloak/pull/93) ([danifr](https://github.com/danifr))
 
 ## [v5.6.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.6.0) (2019-10-10)
 

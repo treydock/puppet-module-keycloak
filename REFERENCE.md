@@ -954,6 +954,8 @@ Keycloak API config
 
 Install location of Keycloak
 
+Default value: /opt/keycloak
+
 ##### `server`
 
 Auth URL for Keycloak server
