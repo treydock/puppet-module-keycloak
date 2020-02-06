@@ -11,6 +11,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
         realm                 => 'test',
+        root_url              => 'https://test.foo.bar',
         redirect_uris         => ['https://test.foo.bar/test1'],
         default_client_scopes => ['address'],
         secret                => 'foobar',
@@ -28,6 +29,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(data['id']).to eq('test.foo.bar')
         expect(data['clientId']).to eq('test.foo.bar')
         expect(data['defaultClientScopes']).to eq(['address'])
+        expect(data['rootUrl']).to eq('https://test.foo.bar')
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test1'])
         expect(data['attributes']['login_theme']).to eq('keycloak')
       end
@@ -51,6 +53,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
         realm                 => 'test',
+        root_url              => 'https://test.foo.bar/test',
         redirect_uris         => ['https://test.foo.bar/test2'],
         default_client_scopes => ['profile', 'email'],
         secret                => 'foobar',
@@ -67,6 +70,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(data['id']).to eq('test.foo.bar')
         expect(data['clientId']).to eq('test.foo.bar')
         expect(data['defaultClientScopes']).to eq(['profile', 'email'])
+        expect(data['rootUrl']).to eq('https://test.foo.bar/test')
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test2'])
         expect(data['attributes']['login_theme']).to be_nil
       end

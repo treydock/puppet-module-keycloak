@@ -128,9 +128,17 @@ Manage Keycloak clients
     defaultto :false
   end
 
+  newproperty(:root_url) do
+    desc 'rootUrl'
+  end
+
   newproperty(:redirect_uris, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'redirectUris'
     defaultto []
+  end
+
+  newproperty(:base_url) do
+    desc 'baseUrl'
   end
 
   newproperty(:web_origins, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
