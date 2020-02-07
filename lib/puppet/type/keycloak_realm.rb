@@ -57,6 +57,12 @@ Manage Keycloak realms
     defaultto 'keycloak'
   end
 
+  newproperty(:internationalization_enabled, boolean: true) do
+    desc 'internationalizationEnabled'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:access_code_lifespan_user_action) do
     desc 'accessCodeLifespanUserAction'
     validate do |property|
