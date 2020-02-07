@@ -1103,11 +1103,19 @@ enabled
 
 Default value: false
 
+##### `root_url`
+
+rootUrl
+
 ##### `redirect_uris`
 
 redirectUris
 
 Default value: []
+
+##### `base_url`
+
+baseUrl
 
 ##### `web_origins`
 
@@ -2431,6 +2439,14 @@ Default value: keycloak
 emailTheme
 
 Default value: keycloak
+
+##### `internationalization_enabled`
+
+Valid values: `true`, `false`
+
+internationalizationEnabled
+
+Default value: false
 
 ##### `access_code_lifespan_user_action`
 

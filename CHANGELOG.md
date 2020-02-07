@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.5.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.5.0) (2020-02-07)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.4.1...v6.5.0)
+
+### Added
+
+- Add root\_url and base\_url properties to keycloak\_client [\#121](https://github.com/treydock/puppet-module-keycloak/pull/121) ([treydock](https://github.com/treydock))
+- Allow enabling/disabling realm internationalization [\#119](https://github.com/treydock/puppet-module-keycloak/pull/119) ([mattock](https://github.com/mattock))
+
 ## [v6.4.1](https://github.com/treydock/puppet-module-keycloak/tree/v6.4.1) (2020-02-06)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.4.0...v6.4.1)
