@@ -79,6 +79,8 @@ describe Puppet::Type.type(:keycloak_client) do
     [
       :secret,
       :login_theme,
+      :root_url,
+      :base_url,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'
