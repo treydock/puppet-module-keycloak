@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Resource Type: keycloak_api
+  Resource Type: keycloak_resource_validator
   
     &mdash; Documentation by YARD 0.9.20
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  pathId = "puppet_types::keycloak_api";
+  pathId = "puppet_types::keycloak_resource_validator";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (k)</a> &raquo;
     <span class='title'><span class='object_link'>Resource Types</span></span>
      &raquo; 
-    <span class="title">keycloak_api</span>
+    <span class="title">keycloak_resource_validator</span>
   
 </div>
 
@@ -59,12 +59,21 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Resource Type: keycloak_api</h1>
+      <div id="content"><h1>Resource Type: keycloak_resource_validator</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      lib/puppet/type/keycloak_api.rb
+      lib/puppet/type/keycloak_resource_validator.rb
+    </dd>
+  </dl>
+  
+  <dl>
+    <dt>Providers:</dt>
+    <dd>
+      
+        <span class='object_link'><a href="../puppet_providers_keycloak_resource_validator/kcadm.html" title="puppet_providers_keycloak_resource_validator::kcadm (puppet_provider)">kcadm</a></span><br/>
+      
     </dd>
   </dl>
   
@@ -74,8 +83,7 @@
 <div class="docstring">
   <div class="discussion">
     
-<p>Type that configures API connection parameters for other keycloak types
-that use the Keycloak API.</p>
+<p>Verify that a specific Keycloak resource is available</p>
 
   </div>
 </div>
@@ -83,124 +91,22 @@ that use the Keycloak API.</p>
 
 <div class="tags">
   
-  <div class="examples">
-    <p class="tag_title">Examples:</p>
-    
-      
-        <p class="example_title"><div class='inline'>
-<p>Define API access</p>
-</div></p>
-      
-      <pre class="example code"><code>keycloak_api { &#39;keycloak&#39;
-  install_dir  =&gt; &#39;/opt/keycloak&#39;,
-  server       =&gt; &#39;http://localhost:8080/auth&#39;,
-  realm        =&gt; &#39;master&#39;,
-  user         =&gt; &#39;admin&#39;,
-  password     =&gt; &#39;changeme&#39;,
-}</code></pre>
-    
-  </div>
-
 
 </div>
-
 <div class="tags">
-  <p class="tag_title">Parameters</p>
+  <p class="tag_title">Properties</p>
   <ul>
     
     <li>
-      <span class="name">install_dir</span>
+      <span class="name">ensure</span>
       
-      <span class="default"> (defaults to: <em>/opt/keycloak</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>Install location of Keycloak</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">name (namevar)</span>
+      <span class="default"> (defaults to: <em>present</em>)</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>Keycloak API config</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">password</span>
-      
-      <span class="default"> (defaults to: <em>changeme</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>Password for authentication</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">realm</span>
-      
-      <span class="default"> (defaults to: <em>master</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>Realm for authentication</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">server</span>
-      
-      <span class="default"> (defaults to: <em>http://localhost:8080/auth</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>Auth URL for Keycloak server</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
-      <span class="name">use_wrapper</span>
-      
-      <span class="default"> (defaults to: <em>false</em>)</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>Boolean that determines if kcadm_wrapper.sh should be used</p>
+<p>The basic property that the resource should be in.</p>
 
         </div>
       </div>
@@ -212,12 +118,12 @@ that use the Keycloak API.</p>
           
           <li>
             
-            true
+            present
           </li>
           
           <li>
             
-            false
+            absent
           </li>
           
         </ul>
@@ -225,16 +131,100 @@ that use the Keycloak API.</p>
       
     </li>
     
+  </ul>
+</div>
+
+
+<div class="tags">
+  <p class="tag_title">Parameters</p>
+  <ul>
+    
     <li>
-      <span class="name">user</span>
-      
-      <span class="default"> (defaults to: <em>admin</em>)</span>
+      <span class="name">name (namevar)</span>
       
       
       <div class="docstring">
         <div class="discussion">
           
-<p>User for authentication</p>
+<p>An arbitrary name used as the identity of the resource.</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">realm</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>Realm to query</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">test_key</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>Key to lookup</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">test_url</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>URL to use for testing if the Keycloak database is up</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">test_value</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>Value to lookup</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
+      <span class="name">timeout</span>
+      
+      <span class="default"> (defaults to: <em>30</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>The max number of seconds that the validator should wait before giving up
+and deciding that keycloak is not running; defaults to 15 seconds.</p>
 
         </div>
       </div>

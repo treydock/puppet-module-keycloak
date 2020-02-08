@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Defined Type: keycloak::spi_deployment
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_defined_types::keycloak::spi_deployment";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_defined_type_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (k)</a> &raquo;
+    <span class='title'><span class='object_link'>Defined Types</span></span>
+     &raquo; 
+    <span class="title">keycloak::spi_deployment</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Defined Type: keycloak::spi_deployment</h1>
+<div class="box_info">
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/spi_deployment.pp
+    </dd>
+  </dl>
+</div>
+
+  <h2>Summary</h2>
+  Manage Keycloak SPI deployment
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+<p>}</p>
+
+  </div>
+</div>
+
+
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Add Duo SPI</p>
+</div></p>
+      
+      <pre class="example code"><code>keycloak::spi_deployment { &#39;duo-spi&#39;:
+  ensure        =&gt; &#39;present&#39;,
+  deployed_name =&gt; &#39;keycloak-duo-spi-jar-with-dependencies.jar&#39;,
+  source        =&gt; &#39;file:///path/to/source/keycloak-duo-spi-jar-with-dependencies.jar&#39;,
+}</code></pre>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>Add Duo SPI and check API for existance of resources before going onto
+dependenct resources</p>
+</div></p>
+      
+      <pre class="example code"><code>keycloak::spi_deployment { &#39;duo-spi&#39;:
+  deployed_name =&gt; &#39;keycloak-duo-spi-jar-with-dependencies.jar&#39;,
+  source        =&gt; &#39;file:///path/to/source/keycloak-duo-spi-jar-with-dependencies.jar&#39;,
+  test_url      =&gt; &#39;authentication/authenticator-providers&#39;,
+  test_key      =&gt; &#39;id&#39;,
+  test_value    =&gt; &#39;duo-mfa-authenticator&#39;,
+  test_realm    =&gt; &#39;test&#39;,
+  before        =&gt; Keycloak_flow_execution[&#39;duo-mfa-authenticator under form-browser-with-duo on test&#39;],</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['present', 'absent']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>State of the deployment</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>deployed_name</span>
+      
+      
+        <span class='type'>(<tt>String[1]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Name of the file to be deployed. Defaults to <code>$name</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>source</span>
+      
+      
+        <span class='type'>(<tt>Variant[Stdlib::Filesource, Stdlib::HTTPSUrl]</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Source of the deployment, supports &#39;file://&#39;, &#39;puppet://&#39;,
+&#39;https://&#39; or &#39;http://&#39;</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>test_url</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>URL to test for existance of resources created by this SPI</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>test_key</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Key of resource when testing for resource created by this SPI</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>test_value</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Value of the <code>test_key</code> when testing for resources created by
+this SPI</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>test_realm</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Realm to query when looking for resources created by this SPI</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/spi_deployment.pp', line 36</span>
+
+define keycloak::spi_deployment (
+  Variant[Stdlib::Filesource, Stdlib::HTTPSUrl] $source,
+  Enum[&#39;present&#39;, &#39;absent&#39;] $ensure = &#39;present&#39;,
+  String[1] $deployed_name = $name,
+  Optional[String] $test_url = undef,
+  Optional[String] $test_key = undef,
+  Optional[String] $test_value = undef,
+  Optional[String] $test_realm = undef,
+) {
+  include keycloak
+
+  $dir = &quot;${keycloak::install_base}/standalone/deployments&quot;
+  $basename = basename($source)
+  $dest = &quot;${dir}/${deployed_name}&quot;
+  $tmp = &quot;${keycloak::install_base}/tmp/${basename}&quot;
+  $dodeploy = &quot;${dest}.dodeploy&quot;
+  $deployed = &quot;${dest}.deployed&quot;
+
+  if $ensure == &#39;present&#39; {
+    if $source =~ Stdlib::HTTPUrl or $source =~ Stdlib::HTTPSUrl {
+      $_source = $tmp
+      archive { $name:
+        ensure  =&gt; &#39;present&#39;,
+        extract =&gt; false,
+        path    =&gt; $tmp,
+        source  =&gt; $source,
+        creates =&gt; $tmp,
+        cleanup =&gt; false,
+        user    =&gt; $keycloak::user,
+        group   =&gt; $keycloak::group,
+        require =&gt; File[&quot;${keycloak::install_base}/tmp&quot;],
+        before  =&gt; File[$dest],
+      }
+    } else {
+      $_source = $source
+    }
+    file { $dest:
+      ensure  =&gt; &#39;file&#39;,
+      source  =&gt; $_source,
+      owner   =&gt; $keycloak::user,
+      group   =&gt; $keycloak::group,
+      mode    =&gt; &#39;0644&#39;,
+      require =&gt; Class[&#39;keycloak::install&#39;],
+      notify  =&gt; Exec[&quot;${name}-dodeploy&quot;],
+    }
+    exec { &quot;${name}-dodeploy&quot;:
+      path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
+      command     =&gt; &quot;touch ${dodeploy}&quot;,
+      refreshonly =&gt; true,
+      user        =&gt; $keycloak::user,
+      group       =&gt; $keycloak::group,
+    }
+
+    if $test_url and $test_key and $test_value {
+      keycloak_resource_validator { $name:
+        test_url   =&gt; $test_url,
+        test_key   =&gt; $test_key,
+        test_value =&gt; $test_value,
+        realm      =&gt; $test_realm,
+        require    =&gt; Exec[&quot;${name}-dodeploy&quot;],
+      }
+    }
+  }
+
+  if $ensure == &#39;absent&#39; {
+    file { $deployed:
+      ensure =&gt; &#39;absent&#39;,
+    }
+  }
+
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

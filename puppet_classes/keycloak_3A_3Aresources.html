@@ -152,7 +152,26 @@
 60
 61
 62
-63</pre>
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/resources.pp', line 3</span>
@@ -195,6 +214,16 @@ class keycloak::resources {
   } else {
     $clients = $keycloak::clients
   }
+  if $keycloak::flows_merge {
+    $flows = lookup(&#39;keycloak::flows&#39;, Hash, &#39;deep&#39;, {})
+  } else {
+    $flows = $keycloak::flows
+  }
+  if $keycloak::flow_executions_merge {
+    $flow_executions = lookup(&#39;keycloak::flow_executions&#39;, Hash, &#39;deep&#39;, {})
+  } else {
+    $flow_executions = $keycloak::flow_executions
+  }
 
   $realms.each |$name, $realm| {
     keycloak_realm { $name: * =&gt; $realm }
@@ -216,6 +245,15 @@ class keycloak::resources {
   }
   $clients.each |$name, $data| {
     keycloak_client { $name: * =&gt; $data }
+  }
+  $flows.each |$name, $data| {
+    keycloak_flow { $name: * =&gt; $data }
+  }
+  $flow_executions.each |$name, $data| {
+    keycloak_flow_execution { $name: * =&gt; $data }
+  }
+  $keycloak::spi_deployments.each |$name, $deployment| {
+    keycloak::spi_deployment { $name: * =&gt; $deployment }
   }
 }</pre>
       </td>

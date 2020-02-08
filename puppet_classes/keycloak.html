@@ -108,8 +108,8 @@
         &mdash;
         <div class='inline'>
 <p>Install Keycloak from upstream Keycloak tarball. Set to false to manage
-installation of Keycloak outside this module and set $install_dir and
-$version to match. Defaults to true.</p>
+installation of Keycloak outside this module and set $install_dir to match.
+Defaults to true.</p>
 </div>
       
     </li>
@@ -122,7 +122,7 @@ $version to match. Defaults to true.</p>
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;6.0.1&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;8.0.1&#39;</tt>)</em>
       
       
         &mdash;
@@ -155,16 +155,16 @@ $version to match. Defaults to true.</p>
         <span class='name'>install_dir</span>
       
       
-        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;/opt&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Parent directory of where to install Keycloak. Default is
-<code>/opt</code>.</p>
+<p>The directory of where to install Keycloak. Default is
+<code>/opt/keycloak-${version}</code>.</p>
 </div>
       
     </li>
@@ -279,7 +279,7 @@ $version to match. Defaults to true.</p>
   
     <li>
       
-        <span class='name'>service_java_opts</span>
+        <span class='name'>java_opts</span>
       
       
         <span class='type'>(<tt>Optional[Variant[String, Array]]</tt>)</span>
@@ -291,6 +291,25 @@ $version to match. Defaults to true.</p>
         &mdash;
         <div class='inline'>
 <p>Sets additional options to Java virtual machine environment variable.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>java_opts_append</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Determine if $JAVA_OPTS should be appended to when setting
+<code>java_opts</code> parameter</p>
 </div>
       
     </li>
@@ -1117,6 +1136,78 @@ Hiera.</p>
   
     <li>
       
+        <span class='name'>flows</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash taht is used to define keycloak_flow resources.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>flows_merge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if <code>flows</code> should be merged from Hiera.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>flow_executions</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash taht is used to define keycloak_flow resources.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>flow_executions_merge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if <code>flows</code> should be merged from Hiera.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>with_sssd_support</span>
       
       
@@ -1316,6 +1407,24 @@ by this module</p>
   
     <li>
       
+        <span class='name'>user_cache</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that determines if userCache is enabled</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>tech_preview_features</span>
       
       
@@ -1332,6 +1441,60 @@ by this module</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>auto_deploy_exploded</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Set if exploded deployements will be auto deployed</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>auto_deploy_zipped</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Set if zipped deployments will be auto deployed</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>spi_deployments</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash used to define keycloak::spi_deployment resources</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -1342,24 +1505,6 @@ by this module</p>
         <pre class="lines">
 
 
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
 203
 204
 205
@@ -1500,25 +1645,56 @@ by this module</p>
 340
 341
 342
-343</pre>
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 185</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 203</span>
 
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = &#39;6.0.1&#39;,
+  String $version               = &#39;8.0.1&#39;,
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
-  Stdlib::Absolutepath $install_dir = &#39;/opt&#39;,
+  Optional[Stdlib::Absolutepath] $install_dir = undef,
   String $service_name          = &#39;keycloak&#39;,
   String $service_ensure        = &#39;running&#39;,
   Boolean $service_enable       = true,
   Boolean $service_hasstatus    = true,
   Boolean $service_hasrestart   = true,
   Stdlib::IP::Address $service_bind_address = &#39;0.0.0.0&#39;,
-  Optional[Variant[String, Array]]
-    $service_java_opts = undef,
+  Optional[Variant[String, Array]] $java_opts = undef,
+  Boolean $java_opts_append = true,
   Optional[String] $service_extra_opts = undef,
   Boolean $manage_user = true,
   String $user                  = &#39;keycloak&#39;,
@@ -1563,6 +1739,10 @@ class keycloak (
   Boolean $identity_providers_merge = false,
   Hash $clients = {},
   Boolean $clients_merge = false,
+  Hash $flows = {},
+  Boolean $flows_merge = false,
+  Hash $flow_executions = {},
+  Boolean $flow_executions_merge = false,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
     $libunix_dbus_java_source = &#39;https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz&#39;,
@@ -1575,10 +1755,14 @@ class keycloak (
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum[&#39;standalone&#39;, &#39;clustered&#39;] $operating_mode = &#39;standalone&#39;,
+  Boolean $user_cache = true,
   Array $tech_preview_features = [],
+  Boolean $auto_deploy_exploded = false,
+  Boolean $auto_deploy_zipped = true,
+  Hash $spi_deployments = {},
 ) {
 
-  if ! $facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;] {
+  if ! ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;]) {
     fail(&quot;Unsupported osfamily: ${facts[&#39;os&#39;][&#39;family&#39;]}, module ${module_name} only support osfamilies Debian and Redhat&quot;)
   }
 
@@ -1622,8 +1806,13 @@ class keycloak (
       }
     }
     &#39;Debian&#39;: {
-      $mysql_datasource_class = pick($datasource_xa_class, &#39;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&#39;)
-      $mysql_jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;
+      if $facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and versioncmp($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;], &#39;10&#39;) &gt;= 0 {
+        $mysql_datasource_class = pick($datasource_xa_class, &#39;org.mariadb.jdbc.MariaDbDataSource&#39;)
+        $mysql_jar_source = &#39;/usr/share/java/mariadb-java-client.jar&#39;
+      } else {
+        $mysql_datasource_class = pick($datasource_xa_class, &#39;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&#39;)
+        $mysql_jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;
+      }
       $postgresql_jar_source = &#39;/usr/share/java/postgresql.jar&#39;
     }
     default: {
@@ -1631,7 +1820,7 @@ class keycloak (
     }
   }
 
-  $install_base = &quot;${keycloak::install_dir}/keycloak-${keycloak::version}&quot;
+  $install_base = pick($install_dir, &quot;/opt/keycloak-${keycloak::version}&quot;)
 
   include ::java
   contain &#39;keycloak::install&#39;
