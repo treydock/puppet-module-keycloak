@@ -344,6 +344,17 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     expect(resource[:script]).to eq('foobar\nbaz')
   end
 
+  it 'accepts value for included_client_audience' do
+    config[:type] = 'oidc-audience-mapper'
+    config[:included_client_audience] = 'foo'
+    expect(resource[:included_client_audience]).to eq('foo')
+  end
+
+  it 'requires included_client_audience for oidc-audience-mapper' do
+    config[:type] = 'oidc-audience-mapper'
+    expect { resource }.to raise_error(%r{included_client_audience})
+  end
+
   it 'autorequires keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(name: 'keycloak')
     catalog = Puppet::Resource::Catalog.new

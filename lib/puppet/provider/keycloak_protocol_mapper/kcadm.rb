@@ -58,7 +58,12 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
           if protocol_mapper[:protocol] == 'openid-connect'
             protocol_mapper[:id_token_claim] = d['config']['id.token.claim']
             protocol_mapper[:access_token_claim] = d['config']['access.token.claim']
+          end
+          unless ['oidc-audience-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:userinfo_token_claim] = d['config']['userinfo.token.claim']
+          end
+          if protocol_mapper[:type] == 'oidc-audience-mapper'
+            protocol_mapper[:included_client_audience] = d['config']['included.client.audience']
           end
           if protocol_mapper[:protocol] == 'saml'
             protocol_mapper[:attribute_name] = d['config']['attribute.name']
@@ -116,7 +121,12 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
     if resource[:protocol] == 'openid-connect'
       data[:config][:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
       data[:config][:'access.token.claim'] = resource[:access_token_claim] if resource[:access_token_claim]
+    end
+    unless ['oidc-audience-mapper'].include?(resource[:type])
       data[:config][:'userinfo.token.claim'] = resource[:userinfo_token_claim] if resource[:userinfo_token_claim]
+    end
+    if resource[:type] == 'oidc-audience-mapper'
+      data[:config][:'included.client.audience'] = resource[:included_client_audience] if resource[:included_client_audience]
     end
     if resource[:protocol] == 'saml'
       data[:config][:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
@@ -195,7 +205,12 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       if resource[:protocol] == 'openid-connect'
         config[:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
         config[:'access.token.claim'] = resource[:access_token_claim] if resource[:access_token_claim]
+      end
+      unless ['oidc-audience-mapper'].include?(resource[:type])
         config[:'userinfo.token.claim'] = resource[:userinfo_token_claim] if resource[:userinfo_token_claim]
+      end
+      if resource[:type] == 'oidc-audience-mapper'
+        config[:'included.client.audience'] = resource[:included_client_audience] if resource[:included_client_audience]
       end
       if resource[:protocol] == 'saml'
         config[:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]

@@ -26,6 +26,10 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
         type       => 'oidc-group-membership-mapper',
         claim_name => 'groups',
       }
+      keycloak_client_protocol_mapper { "foo for test.foo.bar on test":
+        type                     => 'oidc-audience-mapper',
+        included_client_audience => 'foo',
+      }
       EOS
 
       apply_manifest(pp, catch_failures: true)
@@ -63,6 +67,17 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
         expect(mapper['config']['claim.name']).to eq('groups')
       end
     end
+
+    it 'has created protocol mapper audience' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'foo' }[0]
+        expect(mapper['protocolMapper']).to eq('oidc-audience-mapper')
+        expect(mapper['config']['id.token.claim']).to eq('true')
+        expect(mapper['config']['access.token.claim']).to eq('true')
+        expect(mapper['config']['included.client.audience']).to eq('foo')
+      end
+    end
   end
 
   context 'updates protocol_mapper' do
@@ -91,6 +106,11 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
         type       => 'oidc-group-membership-mapper',
         claim_name => 'groups',
         full_path  => true,
+      }
+      keycloak_client_protocol_mapper { "foo for test.foo.bar on test":
+        type                     => 'oidc-audience-mapper',
+        included_client_audience => 'foo',
+        id_token_claim           => false,
       }
       EOS
 
@@ -127,6 +147,17 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
         expect(mapper['config']['access.token.claim']).to eq('true')
         expect(mapper['config']['userinfo.token.claim']).to eq('true')
         expect(mapper['config']['claim.name']).to eq('groups')
+      end
+    end
+
+    it 'has updated protocol mapper audience' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'foo' }[0]
+        expect(mapper['protocolMapper']).to eq('oidc-audience-mapper')
+        expect(mapper['config']['id.token.claim']).to eq('false')
+        expect(mapper['config']['access.token.claim']).to eq('true')
+        expect(mapper['config']['included.client.audience']).to eq('foo')
       end
     end
   end

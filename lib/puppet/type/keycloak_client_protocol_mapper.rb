@@ -58,6 +58,7 @@ Manage Keycloak protocol mappers
       'oidc-usermodel-property-mapper',
       'oidc-full-name-mapper',
       'oidc-group-membership-mapper',
+      'oidc-audience-mapper',
       'saml-user-property-mapper',
       'saml-role-list-mapper',
       'saml-javascript-mapper',
@@ -159,10 +160,10 @@ Manage Keycloak protocol mappers
   end
 
   newproperty(:userinfo_token_claim, boolean: true) do
-    desc 'userinfo.token.claim. Default to `true` for `protocol` `openid-connect`.'
+    desc 'userinfo.token.claim. Default to `true` for `protocol` `openid-connect` except `type` of `oidc-audience-mapper`.'
     newvalues(:true, :false)
     defaultto do
-      if @resource['protocol'] == 'openid-connect'
+      if @resource['protocol'] == 'openid-connect' && @resource['type'] != 'oidc-audience-mapper'
         :true
       else
         nil
@@ -202,6 +203,10 @@ Manage Keycloak protocol mappers
     EOS
   end
 
+  newproperty(:included_client_audience) do
+    desc 'included.client.audience Required for `type` of `oidc-audience-mapper`'
+  end
+
   autorequire(:keycloak_client) do
     requires = []
     catalog.resources.each do |resource|
@@ -234,7 +239,7 @@ Manage Keycloak protocol mappers
   end
 
   validate do
-    if self[:protocol] == 'openid-connect' && !['oidc-usermodel-property-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper'].include?(self[:type])
+    if self[:protocol] == 'openid-connect' && !['oidc-usermodel-property-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper', 'oidc-audience-mapper'].include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
     if self[:protocol] == 'saml' && !['saml-user-property-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
@@ -254,6 +259,9 @@ Manage Keycloak protocol mappers
     end
     if self[:type] == 'saml-javascript-mapper' && self[:script].nil?
       raise Puppet::Error, 'script is required for saml-javascript-mapper'
+    end
+    if self[:type] == 'oidc-audience-mapper' && self[:included_client_audience].nil?
+      raise Puppet::Error, 'included_client_audience is required for oidc-audience-mapper'
     end
   end
 end
