@@ -2464,6 +2464,10 @@ ssoSessionIdleTimeout
 
 ssoSessionMaxLifespan
 
+##### `access_code_lifespan`
+
+accessCodeLifespan
+
 ##### `access_code_lifespan_user_action`
 
 accessCodeLifespanUserAction
