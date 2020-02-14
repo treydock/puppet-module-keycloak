@@ -80,6 +80,10 @@ Manage Keycloak realms
     desc 'accessCodeLifespanUserAction'
   end
 
+  newproperty(:access_token_lifespan, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'accessTokenLifespan'
+  end
+
   newproperty(:access_token_lifespan_for_implicit_flow, parent: PuppetX::Keycloak::IntegerProperty) do
     desc 'accessTokenLifespanForImplicitFlow'
   end
