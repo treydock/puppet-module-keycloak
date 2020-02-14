@@ -1236,7 +1236,7 @@ access.token.claim. Default to `true` for `protocol` `openid-connect`.
 
 Valid values: `true`, `false`
 
-userinfo.token.claim. Default to `true` for `protocol` `openid-connect`.
+userinfo.token.claim. Default to `true` for `protocol` `openid-connect` except `type` of `oidc-audience-mapper`.
 
 ##### `attribute_nameformat`
 
@@ -1253,6 +1253,10 @@ single. Default to `false` for `type` `saml-role-list-mapper`.
 Script, only valid for `type` of `saml-javascript-mapper`'
 
 Array values will be joined with newlines. Strings will be kept unchanged.
+
+##### `included_client_audience`
+
+included.client.audience Required for `type` of `oidc-audience-mapper`
 
 #### Parameters
 
@@ -1282,7 +1286,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, oidc-audience-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 
@@ -2326,7 +2330,7 @@ access.token.claim. Default to `true` for `protocol` `openid-connect`.
 
 Valid values: `true`, `false`
 
-userinfo.token.claim. Default to `true` for `protocol` `openid-connect`.
+userinfo.token.claim. Default to `true` for `protocol` `openid-connect` except `type` of `oidc-audience-mapper`.
 
 ##### `attribute_nameformat`
 
@@ -2343,6 +2347,10 @@ single. Default to `false` for `type` `saml-role-list-mapper` or `saml-javascrip
 Script, only valid for `type` of `saml-javascript-mapper`'
 
 Array values will be joined with newlines. Strings will be kept unchanged.
+
+##### `included_client_audience`
+
+included.client.audience Required for `type` of `oidc-audience-mapper`
 
 #### Parameters
 
@@ -2372,7 +2380,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, oidc-audience-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 
@@ -2447,6 +2455,14 @@ Valid values: `true`, `false`
 internationalizationEnabled
 
 Default value: false
+
+##### `sso_session_idle_timeout`
+
+ssoSessionIdleTimeout
+
+##### `sso_session_max_lifespan`
+
+ssoSessionMaxLifespan
 
 ##### `access_code_lifespan_user_action`
 

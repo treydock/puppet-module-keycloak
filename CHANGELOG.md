@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.7.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.7.0) (2020-02-14)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.6.0...v6.7.0)
+
+### Added
+
+- Add sso\_session\_idle\_timeout and sso\_session\_max\_lifespan to keycloak\_realm [\#124](https://github.com/treydock/puppet-module-keycloak/pull/124) ([treydock](https://github.com/treydock))
+
 ## [v6.6.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.6.0) (2020-02-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.5.0...v6.6.0)
@@ -253,7 +261,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - Expand postgresql support to behave more like mysql support, simplified a bit [\#60](https://github.com/treydock/puppet-module-keycloak/pull/60) ([treydock](https://github.com/treydock))
 - Use PDK [\#58](https://github.com/treydock/puppet-module-keycloak/pull/58) ([treydock](https://github.com/treydock))
-- manage user support [\#53](https://github.com/treydock/puppet-module-keycloak/pull/53) ([cborisa](https://github.com/cborisa))
 
 ## [3.7.0](https://github.com/treydock/puppet-module-keycloak/tree/3.7.0) (2019-05-20)
 
@@ -283,6 +290,10 @@ All notable changes to this project will be documented in this file. The format 
 ## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.4.0...3.5.0)
+
+### Added
+
+- manage user support [\#53](https://github.com/treydock/puppet-module-keycloak/pull/53) ([cborisa](https://github.com/cborisa))
 
 ## [3.4.0](https://github.com/treydock/puppet-module-keycloak/tree/3.4.0) (2019-02-25)
 
