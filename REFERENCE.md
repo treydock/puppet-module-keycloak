@@ -2472,6 +2472,10 @@ accessCodeLifespan
 
 accessCodeLifespanUserAction
 
+##### `access_token_lifespan`
+
+accessTokenLifespan
+
 ##### `access_token_lifespan_for_implicit_flow`
 
 accessTokenLifespanForImplicitFlow

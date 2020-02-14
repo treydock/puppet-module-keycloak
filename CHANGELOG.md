@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.9.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.9.0) (2020-02-14)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.8.0...v6.9.0)
+
+### Added
+
+- Add access\_token\_lifespan to keycloak\_realm [\#126](https://github.com/treydock/puppet-module-keycloak/pull/126) ([treydock](https://github.com/treydock))
+
 ## [v6.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.8.0) (2020-02-14)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.7.0...v6.8.0)
