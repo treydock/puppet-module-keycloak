@@ -66,6 +66,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
       keycloak_realm { 'test':
         ensure => 'present',
         remember_me => true,
+        access_code_lifespan => 3600,
         sso_session_idle_timeout => 3600,
         sso_session_max_lifespan => 72000,
         default_client_scopes => ['profile'],
@@ -85,6 +86,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
         data = JSON.parse(stdout)
         expect(data['rememberMe']).to eq(true)
+        expect(data['accessCodeLifespan']).to eq(3600)
         expect(data['ssoSessionIdleTimeout']).to eq(3600)
         expect(data['ssoSessionMaxLifespan']).to eq(72_000)
         expect(data['browserSecurityHeaders']['contentSecurityPolicy']).to eq("frame-src https://*.duosecurity.com/ 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none';")

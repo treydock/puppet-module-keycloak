@@ -72,6 +72,10 @@ Manage Keycloak realms
     desc 'ssoSessionMaxLifespan'
   end
 
+  newproperty(:access_code_lifespan, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'accessCodeLifespan'
+  end
+
   newproperty(:access_code_lifespan_user_action, parent: PuppetX::Keycloak::IntegerProperty) do
     desc 'accessCodeLifespanUserAction'
   end
