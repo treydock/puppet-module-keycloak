@@ -85,6 +85,7 @@ describe Puppet::Type.type(:keycloak_realm) do
     [
       :sso_session_idle_timeout,
       :sso_session_max_lifespan,
+      :access_code_lifespan,
       :access_code_lifespan_user_action,
       :access_token_lifespan_for_implicit_flow,
     ].each do |p|
