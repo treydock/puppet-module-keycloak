@@ -122,6 +122,11 @@ Manage Keycloak clients
     defaultto :false
   end
 
+  newproperty(:authorization_services_enabled, boolean: true) do
+    desc 'authorizationServicesEnabled'
+    newvalues(:true, :false)
+  end
+
   newproperty(:public_client, boolean: true) do
     desc 'enabled'
     newvalues(:true, :false)
