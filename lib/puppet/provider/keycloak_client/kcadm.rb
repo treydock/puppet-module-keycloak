@@ -243,6 +243,12 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
         end
       end
 
+      # Keycload API requires "serviceAccountsEnabled": true to be present in
+      # the JSON when "authorizationServicesEnabled": true
+      if data['authorizationServicesEnabled'] && data['serviceAccountsEnabled'].nil?
+        data[:serviceAccountsEnabled] = true
+      end
+
       # Only update if more than clientId set
       if data.keys.size > 1
         t = Tempfile.new('keycloak_client')

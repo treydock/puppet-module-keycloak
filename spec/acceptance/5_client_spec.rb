@@ -10,12 +10,14 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
-        realm                 => 'test',
-        root_url              => 'https://test.foo.bar',
-        redirect_uris         => ['https://test.foo.bar/test1'],
-        default_client_scopes => ['address'],
-        secret                => 'foobar',
-        login_theme           => 'keycloak',
+        realm                          => 'test',
+        root_url                       => 'https://test.foo.bar',
+        redirect_uris                  => ['https://test.foo.bar/test1'],
+        default_client_scopes          => ['address'],
+        secret                         => 'foobar',
+        login_theme                    => 'keycloak',
+        authorization_services_enabled => false,
+        service_accounts_enabled       => true,
       }
       EOS
 
@@ -32,6 +34,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(data['rootUrl']).to eq('https://test.foo.bar')
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test1'])
         expect(data['attributes']['login_theme']).to eq('keycloak')
+        expect(data['authorizationServicesEnabled']).to eq(nil)
+        expect(data['serviceAccountsEnabled']).to eq(true)
       end
     end
 
@@ -52,11 +56,13 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
-        realm                 => 'test',
-        root_url              => 'https://test.foo.bar/test',
-        redirect_uris         => ['https://test.foo.bar/test2'],
-        default_client_scopes => ['profile', 'email'],
-        secret                => 'foobar',
+        realm                          => 'test',
+        root_url                       => 'https://test.foo.bar/test',
+        redirect_uris                  => ['https://test.foo.bar/test2'],
+        default_client_scopes          => ['profile', 'email'],
+        secret                         => 'foobar',
+        authorization_services_enabled => true,
+        service_accounts_enabled       => true,
       }
       EOS
 
@@ -73,6 +79,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(data['rootUrl']).to eq('https://test.foo.bar/test')
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test2'])
         expect(data['attributes']['login_theme']).to be_nil
+        expect(data['authorizationServicesEnabled']).to eq(true)
+        expect(data['serviceAccountsEnabled']).to eq(true)
       end
     end
 
