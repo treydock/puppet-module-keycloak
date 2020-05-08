@@ -186,4 +186,68 @@ Manage Keycloak realms
     newvalues(:true, :false)
     defaultto :false
   end
+
+  newproperty(:smtp_server_user) do
+    desc 'smtpServer user'
+  end
+
+  newproperty(:smtp_server_password) do
+    desc 'smtpServer password'
+
+    def insync?(is)
+      if is =~ %r{^[\*]+$}
+        Puppet.warning("Property 'smtp_server_password' is set and Puppet has no way to check current value")
+        true
+      else
+        false
+      end
+    end
+
+    def should_to_s(_newvalue)
+      '[new smtp_server_password redacted]'
+    end
+  end
+
+  newproperty(:smtp_server_host) do
+    desc 'smtpServer host'
+  end
+
+  newproperty(:smtp_server_port, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'smtpServer port'
+  end
+
+  newproperty(:smtp_server_auth, boolean: true) do
+    desc 'smtpServer auth'
+    newvalues(:true, :false)
+  end
+
+  newproperty(:smtp_server_starttls, boolean: true) do
+    desc 'smtpServer starttls'
+    newvalues(:true, :false)
+  end
+
+  newproperty(:smtp_server_ssl, boolean: true) do
+    desc 'smtpServer ssl'
+    newvalues(:true, :false)
+  end
+
+  newproperty(:smtp_server_from) do
+    desc 'smtpServer from'
+  end
+
+  newproperty(:smtp_server_envelope_from) do
+    desc 'smtpServer envelope_from'
+  end
+
+  newproperty(:smtp_server_from_display_name) do
+    desc 'smtpServer fromDisplayName'
+  end
+
+  newproperty(:smtp_server_reply_to) do
+    desc 'smtpServer replyto'
+  end
+
+  newproperty(:smtp_server_reply_to_display_name) do
+    desc 'smtpServer replyToDisplayName'
+  end
 end
