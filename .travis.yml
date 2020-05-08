@@ -38,7 +38,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=centos-7 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0 BEAKER_keycloak_full=true
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=centos-7 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1 BEAKER_keycloak_full=true
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -56,7 +56,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=centos-7 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0 BEAKER_keycloak_full=true
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=centos-7 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1 BEAKER_keycloak_full=true
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -74,7 +74,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=centos-8 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=centos-8 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -92,7 +92,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=centos-8 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=centos-8 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -110,7 +110,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=debian-9 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=debian-9 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -128,7 +128,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=debian-9 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=debian-9 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -146,7 +146,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=debian-10 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=debian-10 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -164,7 +164,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=debian-10 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=debian-10 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -182,7 +182,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=ubuntu-1804 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=ubuntu-1804 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
@@ -200,7 +200,7 @@ matrix:
     -
       bundler_args: --with system_tests
       dist: xenial
-      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=ubuntu-1804 BEAKER_TESTMODE=apply BEAKER_keycloak_version=9.0.0
+      env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=ubuntu-1804 BEAKER_TESTMODE=apply BEAKER_keycloak_version=10.0.1
       rvm: 2.5.7
       script: bundle exec rake beaker
       services: docker
