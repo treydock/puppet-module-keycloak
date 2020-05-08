@@ -68,6 +68,14 @@ describe Puppet::Type.type(:keycloak_realm) do
       :client_authentication_flow,
       :docker_authentication_flow,
       :content_security_policy,
+      :smtp_server_user,
+      :smtp_server_password,
+      :smtp_server_host,
+      :smtp_server_envelope_from,
+      :smtp_server_from,
+      :smtp_server_from_display_name,
+      :smtp_server_reply_to,
+      :smtp_server_reply_to_display_name,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'
@@ -89,6 +97,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       :access_code_lifespan_user_action,
       :access_token_lifespan,
       :access_token_lifespan_for_implicit_flow,
+      :smtp_server_port,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 100
@@ -110,6 +119,9 @@ describe Puppet::Type.type(:keycloak_realm) do
       :events_enabled,
       :admin_events_enabled,
       :admin_events_details_enabled,
+      :smtp_server_auth,
+      :smtp_server_starttls,
+      :smtp_server_ssl,
     ].each do |p|
       it "should accept true for #{p}" do
         config[p] = true

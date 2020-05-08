@@ -9,7 +9,18 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         datasource_driver => 'mysql',
       }
       keycloak_realm { 'test':
-        ensure => 'present',
+        ensure                            => 'present',
+        smtp_server_host                  => 'smtp.example.org',
+        smtp_server_port                  => 587,
+        smtp_server_starttls              => false,
+        smtp_server_auth                  => false,
+        smtp_server_user                  => 'john',
+        smtp_server_password              => 'secret',
+        smtp_server_envelope_from         => 'keycloak@id.example.org',
+        smtp_server_from                  => 'keycloak@id.example.org',
+        smtp_server_from_display_name     => 'Keycloak',
+        smtp_server_reply_to              => 'webmaster@example.org',
+        smtp_server_reply_to_display_name => 'Webmaster',
       }
       EOS
 
@@ -54,6 +65,22 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['adminEventsDetailsEnabled']).to eq(false)
       end
     end
+
+    it 'has correct smtp settings' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
+        data = JSON.parse(stdout)
+        expect(data['smtpServer']['host']).to eq('smtp.example.org')
+        expect(data['smtpServer']['port']).to eq('587')
+        expect(data['smtpServer']['starttls']).to eq('false')
+        expect(data['smtpServer']['auth']).to eq('false')
+        expect(data['smtpServer']['user']).to eq('john')
+        expect(data['smtpServer']['envelopeFrom']).to eq('keycloak@id.example.org')
+        expect(data['smtpServer']['from']).to eq('keycloak@id.example.org')
+        expect(data['smtpServer']['fromDisplayName']).to eq('Keycloak')
+        expect(data['smtpServer']['replyTo']).to eq('webmaster@example.org')
+        expect(data['smtpServer']['replyToDisplayName']).to eq('Webmaster')
+      end
+    end
   end
 
   context 'updates realm' do
@@ -76,6 +103,18 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         events_expiration => 2678400,
         admin_events_enabled => true,
         admin_events_details_enabled => true,
+        smtp_server_host                  => 'smtp.example.org',
+        smtp_server_port                  => 587,
+        smtp_server_starttls              => false,
+        smtp_server_auth                  => true,
+        smtp_server_user                  => 'jane',
+        smtp_server_password              => 'secret',
+        smtp_server_envelope_from         => 'keycloak@id.example.org',
+        smtp_server_from                  => 'keycloak@id.example.org',
+        smtp_server_from_display_name     => 'Keycloak',
+        smtp_server_reply_to              => 'webmaster@example.org',
+        smtp_server_reply_to_display_name => 'Hostmaster',
+
       }
       EOS
 
@@ -92,6 +131,16 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['ssoSessionIdleTimeout']).to eq(3600)
         expect(data['ssoSessionMaxLifespan']).to eq(72_000)
         expect(data['browserSecurityHeaders']['contentSecurityPolicy']).to eq("frame-src https://*.duosecurity.com/ 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none';")
+        expect(data['smtpServer']['host']).to eq('smtp.example.org')
+        expect(data['smtpServer']['port']).to eq('587')
+        expect(data['smtpServer']['starttls']).to eq('false')
+        expect(data['smtpServer']['auth']).to eq('true')
+        expect(data['smtpServer']['user']).to eq('jane')
+        expect(data['smtpServer']['envelopeFrom']).to eq('keycloak@id.example.org')
+        expect(data['smtpServer']['from']).to eq('keycloak@id.example.org')
+        expect(data['smtpServer']['fromDisplayName']).to eq('Keycloak')
+        expect(data['smtpServer']['replyTo']).to eq('webmaster@example.org')
+        expect(data['smtpServer']['replyToDisplayName']).to eq('Hostmaster')
       end
     end
 
