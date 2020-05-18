@@ -25,3 +25,6 @@
 .project
 .envrc
 /inventory.yaml
+/vagrant/modules/
+/vagrant/Puppetfile.lock
+/ubuntu-bionic-18.04-cloudimg-console.log

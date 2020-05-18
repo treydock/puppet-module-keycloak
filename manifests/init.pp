@@ -273,7 +273,8 @@ class keycloak (
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
-  Enum['standalone', 'clustered'] $operating_mode = 'standalone',
+  Enum['standalone', 'clustered', 'domain'] $operating_mode = 'standalone',
+  Optional[Enum['master', 'slave']] $role = undef,
   Boolean $user_cache = true,
   Array $tech_preview_features = [],
   Boolean $auto_deploy_exploded = false,
@@ -285,6 +286,10 @@ class keycloak (
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
   }
 
+  if $operating_mode == 'domain' and ! $role {
+    fail("Role not specified: in domain mode role needs to be specified. This needs to be either 'master' or 'slave'")
+  }
+  
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
   case $datasource_driver {
     'h2': {
