@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+forge "https://forgeapi.puppetlabs.com"
+
+mod 'puppetlabs-stdlib'
+mod 'puppetlabs-mysql'
+mod 'puppetlabs-java'
+mod 'puppetlabs-java_ks'
+mod 'puppet-archive'
+mod 'camptocamp-systemd'
+mod 'puppetlabs-git'
+mod 'puppetlabs-inifile'
+mod 'puppetlabs-postgresql'
+mod 'puppetlabs-haproxy'
+mod 'puppetlabs-concat'
+mod 'puppetlabs-translate'
+mod 'puppetlabs-apt'
+
+

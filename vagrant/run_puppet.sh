@@ -36,7 +36,8 @@ done
 CWD=`pwd`
 
 # Configure with "puppet apply"
-PUPPET_APPLY="/opt/puppetlabs/bin/puppet apply --modulepath=$BASEDIR/modules"
+#PUPPET_APPLY="/opt/puppetlabs/bin/puppet apply --modulepath=$BASEDIR/modules"
+PUPPET_APPLY="/opt/puppetlabs/bin/puppet apply" 
 
 # Pass variables to Puppet manifests via environment variables
 export FACTER_profile='/etc/profile.d/openvpn.sh'
@@ -58,7 +59,7 @@ export FACTER_db_database='keycloak'
 export FACTER_db_connection_limit='300'
 
 for manifest in $MANIFESTS; do
-    $PUPPET_APPLY /install/$manifest
+    $PUPPET_APPLY /vagrant/vagrant/$manifest
 done
 
 cd $CWD

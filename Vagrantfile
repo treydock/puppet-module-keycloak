@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
     box.vm.box = "centos/7"
     box.vm.box_version = "1901.01"
     box.vm.hostname = 'standalone.local'
-    box.vm.synced_folder ".", "/vagrant"
+    box.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     box.hostmanager.manage_guest = true
     box.hostmanager.aliases = %w(standalone)
     box.vm.network "forwarded_port", guest: 8080, host: 8080, auto_correct: true
@@ -57,11 +57,10 @@ Vagrant.configure(2) do |config|
     box.vm.box = "centos/7"
     box.vm.box_version = "1901.01"
     box.vm.hostname = 'db.local'
-    box.vm.synced_folder '.', '/vagrant', disabled: true
-    box.vm.synced_folder "./vagrant", "/vagrant"
+    box.vm.synced_folder './vagrant', '/vagrant', type: "virtualbox"
     box.hostmanager.manage_guest = true
     box.hostmanager.aliases = %w(db)
-    box.vm.network "private_network", ip: "192.168.0.253"
+    box.vm.network "private_network", ip: "192.168.168.254"
     box.vm.provider 'virtualbox' do |vb|
       vb.linked_clone = true
       vb.gui = false
@@ -83,11 +82,10 @@ Vagrant.configure(2) do |config|
     box.vm.box = "centos/7"
     box.vm.box_version = "1901.01"
     box.vm.hostname = 'dc.local'
-    box.vm.synced_folder '.', '/vagrant', disabled: true
-    box.vm.synced_folder "./vagrant", "/vagrant"
+    box.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     box.hostmanager.manage_guest = true
     box.hostmanager.aliases = %w(dc)
-    box.vm.network "private_network", ip: "192.168.0.254"
+    box.vm.network "private_network", ip: "192.168.168.253"
     box.vm.provider 'virtualbox' do |vb|
       vb.linked_clone = true
       vb.gui = false
@@ -112,7 +110,7 @@ Vagrant.configure(2) do |config|
     box.vm.synced_folder "./vagrant", "/vagrant"
     box.hostmanager.manage_guest = true
     box.hostmanager.aliases = %w(hc)
-    box.vm.network "private_network", ip: "192.168.0.252"
+    box.vm.network "private_network", ip: "192.168.168.252"
     box.vm.provider 'virtualbox' do |vb|
       vb.linked_clone = true
       vb.gui = false
@@ -154,7 +152,5 @@ Vagrant.configure(2) do |config|
       s.args = ["-b", "/vagrant", "-m", "prepare.pp lb.pp" ]
     end
   end
-
-
 end
 
