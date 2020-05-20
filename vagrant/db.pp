@@ -30,7 +30,7 @@ postgresql::server::pg_hba_rule { 'Allow Keycloak instances network access to th
   type        => 'host',
   database    => $db_username,
   user        => $db_password,
-  address     => '192.168.0.0/24',
+  address     => '192.168.168.0/24',
   auth_method => 'md5',
   require     => Class['::postgresql::server']
 }

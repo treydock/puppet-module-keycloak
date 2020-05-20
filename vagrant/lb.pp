@@ -22,7 +22,7 @@ haproxy::listen { 'kc':
 haproxy::balancermember { 'dc':
   listening_service => 'kc',
   server_names      => 'dc.local',
-  ipaddresses       => '192.168.0.254',
+  ipaddresses       => '192.168.0.253',
   ports             => '8080',
   options           => 'cookie DC check',
 }

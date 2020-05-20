@@ -4,10 +4,10 @@
 Vagrant.configure(2) do |config|
 
   config.hostmanager.enabled = true
-  config.hostmanager.manage_host = false
+  config.hostmanager.manage_host = true
   config.hostmanager.manage_guest = true
   config.hostmanager.ignore_private_ip = false
-  config.hostmanager.include_offline = true
+  config.hostmanager.include_offline = false
 
   config.vm.define "standalone", primary: true, autostart: true do |box|
     box.vm.box = "centos/7"
@@ -57,7 +57,7 @@ Vagrant.configure(2) do |config|
     box.vm.box = "centos/7"
     box.vm.box_version = "1901.01"
     box.vm.hostname = 'db.local'
-    box.vm.synced_folder './vagrant', '/vagrant', type: "virtualbox"
+    box.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     box.hostmanager.manage_guest = true
     box.hostmanager.aliases = %w(db)
     box.vm.network "private_network", ip: "192.168.168.254"

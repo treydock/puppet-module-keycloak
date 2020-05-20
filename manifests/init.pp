@@ -189,6 +189,8 @@
 #   Path to the file with environment variables for the systemd service
 # @param operating_mode
 #   Keycloak operating mode deployment
+# @param role
+#   Role when operating mode is domain. Either master or slave.
 # @param user_cache
 #   Boolean that determines if userCache is enabled
 # @param tech_preview_features

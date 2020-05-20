@@ -37,22 +37,47 @@ class keycloak::config {
     mode   => '0755',
   }
 
-  file { "${keycloak::install_base}/standalone/configuration":
-    ensure => 'directory',
-    owner  => $keycloak::user,
-    group  => $keycloak::group,
-    mode   => '0750',
-  }
+  if $keycloak::operating_mode == 'domain' {
+    
+    notify { 'domain_mode detected': }
+    
+    notify { 'about to create wilfly user /opt/keycloak/bin/add-user.sh -u cluster -p changeme -e -s': }
 
-  file { "${keycloak::install_base}/standalone/configuration/profile.properties":
-    ensure  => 'file',
-    owner   => $keycloak::user,
-    group   => $keycloak::group,
-    content => template('keycloak/profile.properties.erb'),
-    mode    => '0644',
-    notify  => Class['keycloak::service'],
+    file { "${keycloak::install_base}/domain/configuration":
+      ensure => 'directory',
+      owner  => $keycloak::user,
+      group  => $keycloak::group,
+      mode   => '0750',
+    }
+    
+    file { "${keycloak::install_base}/domain/configuration/profile.properties":
+      ensure  => 'file',
+      owner   => $keycloak::user,
+      group   => $keycloak::group,
+      content => template('keycloak/profile.properties.erb'),
+      mode    => '0644',
+      notify  => Class['keycloak::service'],
+    }
   }
-
+  else {
+    
+    file { "${keycloak::install_base}/standalone/configuration":
+      ensure => 'directory',
+      owner  => $keycloak::user,
+      group  => $keycloak::group,
+      mode   => '0750',
+    }
+    
+    file { "${keycloak::install_base}/standalone/configuration/profile.properties":
+      ensure  => 'file',
+      owner   => $keycloak::user,
+      group   => $keycloak::group,
+      content => template('keycloak/profile.properties.erb'),
+      mode    => '0644',
+      notify  => Class['keycloak::service'],
+    }
+  } 
+    
   file { "${keycloak::install_base}/config.cli":
     ensure    => 'file',
     owner     => $keycloak::user,
@@ -91,11 +116,25 @@ class keycloak::config {
   } else {
     $_java_opts = $java_opts
   }
-  file_line { 'standalone.conf-JAVA_OPTS':
-    ensure => $java_opts_ensure,
-    path   => "${keycloak::install_base}/bin/standalone.conf",
-    line   => "JAVA_OPTS=\"${_java_opts}\"",
-    match  => '^JAVA_OPTS=',
-    notify => Class['keycloak::service'],
+
+  if $keycloak::operating_mode == 'domain' {
+
+    file_line { 'domain.conf-JAVA_OPTS':
+      ensure => $java_opts_ensure,
+      path   => "${keycloak::install_base}/bin/domain.conf",
+      line   => "JAVA_OPTS=\"${_java_opts}\"",
+      match  => '^JAVA_OPTS=',
+      notify => Class['keycloak::service'],
+    }
+  }
+  else {
+
+    file_line { 'standalone.conf-JAVA_OPTS':
+      ensure => $java_opts_ensure,
+      path   => "${keycloak::install_base}/bin/standalone.conf",
+      line   => "JAVA_OPTS=\"${_java_opts}\"",
+      match  => '^JAVA_OPTS=',
+      notify => Class['keycloak::service'],
+    }
   }
 }
