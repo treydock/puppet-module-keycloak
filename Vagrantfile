@@ -107,7 +107,7 @@ Vagrant.configure(2) do |config|
     box.vm.box = "centos/7"
     box.vm.box_version = "1901.01"
     box.vm.hostname = 'hc.local'
-    box.vm.synced_folder "./vagrant", "/vagrant"
+    box.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     box.hostmanager.manage_guest = true
     box.hostmanager.aliases = %w(hc)
     box.vm.network "private_network", ip: "192.168.168.252"
@@ -132,7 +132,7 @@ Vagrant.configure(2) do |config|
     box.vm.box = "centos/7"
     box.vm.box_version = "1901.01"
     box.vm.hostname = 'lb.local'
-    box.vm.synced_folder "./vagrant", "/vagrant"
+    box.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     box.hostmanager.manage_guest = true
     box.hostmanager.aliases = %w(lb)
     box.vm.network "private_network", ip: "192.168.0.251"
@@ -150,6 +150,31 @@ Vagrant.configure(2) do |config|
     box.vm.provision "shell" do |s|
       s.path = "vagrant/run_puppet.sh"
       s.args = ["-b", "/vagrant", "-m", "prepare.pp lb.pp" ]
+    end
+  end
+
+  config.vm.define "sp" do |box|
+    box.vm.box = "centos/7"
+    box.vm.box_version = "1901.01"
+    box.vm.hostname = 'sp.local'
+    box.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    box.hostmanager.manage_guest = true
+    box.hostmanager.aliases = %w(sp)
+    box.vm.network "private_network", ip: "192.168.0.250"
+    box.vm.provider 'virtualbox' do |vb|
+      vb.linked_clone = true
+      vb.gui = false
+      vb.memory = 1024
+      vb.customize ["modifyvm", :id, "--ioapic", "on"]
+      vb.customize ["modifyvm", :id, "--hpet", "on"]
+      vb.customize ["modifyvm", :id, "--audio", "none"]
+    end
+    box.vm.provision "shell" do |s|
+      s.path = "vagrant/install_agent.sh"
+    end
+    box.vm.provision "shell" do |s|
+      s.path = "vagrant/run_puppet.sh"
+      s.args = ["-b", "/vagrant", "-m", "prepare.pp sp.pp" ]
     end
   end
 end

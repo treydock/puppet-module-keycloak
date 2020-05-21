@@ -225,6 +225,8 @@ class keycloak (
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = 'admin',
   String $admin_user_password   = 'changeme',
+  Optional[String] $wildfly_admin_user = undef,
+  Optional[String] $wildfly_admin_user_password = undef,
   Boolean $manage_datasource = true,
   Enum['h2', 'mysql', 'oracle', 'postgresql'] $datasource_driver = 'h2',
   Optional[String] $datasource_host = undef,
@@ -242,7 +244,7 @@ class keycloak (
   Hash $truststore_hosts = {},
   String $truststore_password = 'keycloak',
   Enum['WILDCARD', 'STRICT', 'ANY'] $truststore_hostname_verification_policy = 'WILDCARD',
-  Integer $http_port = 8080,
+  Integer $http_port = 8230,
   Integer $theme_static_max_age = 2592000,
   Boolean $theme_cache_themes = true,
   Boolean $theme_cache_templates = true,
@@ -288,10 +290,20 @@ class keycloak (
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
   }
 
-  if $operating_mode == 'domain' and ! $role {
-    fail("Role not specified: in domain mode role needs to be specified. This needs to be either 'master' or 'slave'")
+  if $operating_mode == 'domain' {
+    unless $role {
+      fail("Role not specified: in domain mode role needs to be specified. This needs to be either 'master' or 'slave'")
+    }
+    unless $wildfly_admin_user {
+      fail('Wildfly user not specified: in domain mode Wildfly user needs to be specified.')
+    }
+    unless $wildfly_admin_user_password {
+      fail('Wildfly user password not specified: in domain mode Wildfly user password needs to be specified.')
+    }
+
+    $wildfly_admin_user_password_base64 = strip(base64('encode', $wildfly_admin_user_password))
   }
-  
+
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
   case $datasource_driver {
     'h2': {

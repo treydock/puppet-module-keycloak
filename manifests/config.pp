@@ -38,10 +38,17 @@ class keycloak::config {
   }
 
   if $keycloak::operating_mode == 'domain' {
-    
+
     notify { 'domain_mode detected': }
-    
-    notify { 'about to create wilfly user /opt/keycloak/bin/add-user.sh -u cluster -p changeme -e -s': }
+
+    $_add_user_wildfly_cmd = "${keycloak::install_base}/bin/add-user.sh"
+    $_add_user_wildfly_args = "--user ${keycloak::wildfly_admin_user} --password ${keycloak::wildfly_admin_user_password} -e -s"
+    $_add_user_wildfly_state = "${keycloak::install_base}/.create-wildfly-user"
+    exec { 'create-wildfly-user':
+      command => "${_add_user_wildfly_cmd} ${_add_user_wildfly_args} && touch ${_add_user_wildfly_state}",
+      creates => $_add_user_wildfly_state,
+      notify  => Class['keycloak::service'],
+    }
 
     file { "${keycloak::install_base}/domain/configuration":
       ensure => 'directory',
@@ -49,7 +56,7 @@ class keycloak::config {
       group  => $keycloak::group,
       mode   => '0750',
     }
-    
+
     file { "${keycloak::install_base}/domain/configuration/profile.properties":
       ensure  => 'file',
       owner   => $keycloak::user,
@@ -58,16 +65,37 @@ class keycloak::config {
       mode    => '0644',
       notify  => Class['keycloak::service'],
     }
-  }
-  else {
-    
+
+    if $keycloak::role == 'master' {
+
+      file { "${keycloak::install_base}/domain/configuration/host-master.xml":
+        ensure  => 'file',
+        owner   => $keycloak::user,
+        group   => $keycloak::group,
+        content => template('keycloak/host-master.xml.erb'),
+        mode    => '0644',
+        notify  => Class['keycloak::service'],
+      }
+    } else {
+
+      file { "${keycloak::install_base}/domain/configuration/host-slave.xml":
+        ensure  => 'file',
+        owner   => $keycloak::user,
+        group   => $keycloak::group,
+        content => template('keycloak/host-slave.xml.erb'),
+        mode    => '0644',
+        notify  => Class['keycloak::service'],
+      }
+    }
+  } else {
+
     file { "${keycloak::install_base}/standalone/configuration":
       ensure => 'directory',
       owner  => $keycloak::user,
       group  => $keycloak::group,
       mode   => '0750',
     }
-    
+
     file { "${keycloak::install_base}/standalone/configuration/profile.properties":
       ensure  => 'file',
       owner   => $keycloak::user,
@@ -76,8 +104,8 @@ class keycloak::config {
       mode    => '0644',
       notify  => Class['keycloak::service'],
     }
-  } 
-    
+  }
+
   file { "${keycloak::install_base}/config.cli":
     ensure    => 'file',
     owner     => $keycloak::user,
