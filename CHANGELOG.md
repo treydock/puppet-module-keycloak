@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.11.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.11.0) (2020-05-22)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.10.0...v6.11.0)
+
+### Added
+
+- PDK update and test Keycloak 10.0.1 [\#133](https://github.com/treydock/puppet-module-keycloak/pull/133) ([treydock](https://github.com/treydock))
+
+### UNCATEGORIZED PRS; GO LABEL THEM
+
+- Add support for defining smtpServer from realms [\#131](https://github.com/treydock/puppet-module-keycloak/pull/131) ([mattock](https://github.com/mattock))
+- Allow enabling/disabling client authorization services [\#127](https://github.com/treydock/puppet-module-keycloak/pull/127) ([mattock](https://github.com/mattock))
+
 ## [v6.10.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.10.0) (2020-03-14)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.9.0...v6.10.0)
@@ -147,10 +160,6 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.6.0...v5.7.0)
 
-### Added
-
-- Make JDBC xa-datasource-class name configurable [\#93](https://github.com/treydock/puppet-module-keycloak/pull/93) ([danifr](https://github.com/danifr))
-
 ## [v5.6.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.6.0) (2019-10-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.5.0...v5.6.0)
@@ -165,6 +174,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Make JDBC xa-datasource-class name configurable [\#93](https://github.com/treydock/puppet-module-keycloak/pull/93) ([danifr](https://github.com/danifr))
 - Allow managing Keycloak installation from outside this module [\#87](https://github.com/treydock/puppet-module-keycloak/pull/87) ([mattock](https://github.com/mattock))
 - Enable passing extra options to Keycloak in the systemd unit file [\#86](https://github.com/treydock/puppet-module-keycloak/pull/86) ([mattock](https://github.com/mattock))
 - Enable defining bind address for the Keycloak systemd service [\#85](https://github.com/treydock/puppet-module-keycloak/pull/85) ([mattock](https://github.com/mattock))
@@ -276,7 +286,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Use hiera v5 module data [\#62](https://github.com/treydock/puppet-module-keycloak/pull/62) ([treydock](https://github.com/treydock))
-- Expand postgresql support to behave more like mysql support, simplified a bit [\#60](https://github.com/treydock/puppet-module-keycloak/pull/60) ([treydock](https://github.com/treydock))
 
 ## [v3.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v3.8.0) (2019-05-23)
 
@@ -284,6 +293,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Expand postgresql support to behave more like mysql support, simplified a bit [\#60](https://github.com/treydock/puppet-module-keycloak/pull/60) ([treydock](https://github.com/treydock))
 - Use PDK [\#58](https://github.com/treydock/puppet-module-keycloak/pull/58) ([treydock](https://github.com/treydock))
 
 ## [3.7.0](https://github.com/treydock/puppet-module-keycloak/tree/3.7.0) (2019-05-20)
@@ -326,6 +336,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - JAVA\_OPTS via systemd unit Environment variable [\#51](https://github.com/treydock/puppet-module-keycloak/pull/51) ([danifr](https://github.com/danifr))
+- Add option for service environment file [\#50](https://github.com/treydock/puppet-module-keycloak/pull/50) ([asieraguado](https://github.com/asieraguado))
 
 ## [3.3.0](https://github.com/treydock/puppet-module-keycloak/tree/3.3.0) (2019-01-28)
 
@@ -333,7 +344,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Add option for service environment file [\#50](https://github.com/treydock/puppet-module-keycloak/pull/50) ([asieraguado](https://github.com/asieraguado))
 - Better ID handling [\#47](https://github.com/treydock/puppet-module-keycloak/pull/47) ([treydock](https://github.com/treydock))
 - Test against Keycloak 4.8.1.Final and document version handling and upgrade [\#43](https://github.com/treydock/puppet-module-keycloak/pull/43) ([treydock](https://github.com/treydock))
 
@@ -376,6 +386,10 @@ All notable changes to this project will be documented in this file. The format 
 ## [2.7.1](https://github.com/treydock/puppet-module-keycloak/tree/2.7.1) (2018-08-14)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.7.0...2.7.1)
+
+### Fixed
+
+- Update reference [\#36](https://github.com/treydock/puppet-module-keycloak/pull/36) ([treydock](https://github.com/treydock))
 
 ## [2.7.0](https://github.com/treydock/puppet-module-keycloak/tree/2.7.0) (2018-08-14)
 

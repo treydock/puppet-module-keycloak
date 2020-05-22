@@ -1095,6 +1095,14 @@ serviceAccountsEnabled
 
 Default value: false
 
+##### `authorization_services_enabled`
+
+Valid values: `true`, `false`
+
+authorizationServicesEnabled
+
+Default value: false
+
 ##### `public_client`
 
 Valid values: `true`, `false`
@@ -2591,6 +2599,60 @@ Valid values: `true`, `false`
 adminEventsDetailsEnabled
 
 Default value: false
+
+##### `smtp_server_user`
+
+smtpServer user
+
+##### `smtp_server_password`
+
+smtpServer password
+
+##### `smtp_server_host`
+
+smtpServer host
+
+##### `smtp_server_port`
+
+smtpServer port
+
+##### `smtp_server_auth`
+
+Valid values: `true`, `false`
+
+smtpServer auth
+
+##### `smtp_server_starttls`
+
+Valid values: `true`, `false`
+
+smtpServer starttls
+
+##### `smtp_server_ssl`
+
+Valid values: `true`, `false`
+
+smtpServer ssl
+
+##### `smtp_server_from`
+
+smtpServer from
+
+##### `smtp_server_envelope_from`
+
+smtpServer envelope_from
+
+##### `smtp_server_from_display_name`
+
+smtpServer fromDisplayName
+
+##### `smtp_server_reply_to`
+
+smtpServer replyto
+
+##### `smtp_server_reply_to_display_name`
+
+smtpServer replyToDisplayName
 
 #### Parameters
 
