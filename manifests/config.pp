@@ -21,15 +21,6 @@ class keycloak::config {
     show_diff => false,
   }
 
-  $_add_user_keycloak_cmd = "${keycloak::install_base}/bin/add-user-keycloak.sh"
-  $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
-  $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}"
-  exec { 'create-keycloak-admin':
-    command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
-    creates => $_add_user_keycloak_state,
-    notify  => Class['keycloak::service'],
-  }
-
   file { "${keycloak::install_base}/tmp":
     ensure => 'directory',
     owner  => $keycloak::user,
@@ -40,15 +31,6 @@ class keycloak::config {
   if $keycloak::operating_mode == 'domain' {
 
     notify { 'domain_mode detected': }
-
-    $_add_user_wildfly_cmd = "${keycloak::install_base}/bin/add-user.sh"
-    $_add_user_wildfly_args = "--user ${keycloak::wildfly_admin_user} --password ${keycloak::wildfly_admin_user_password} -e -s"
-    $_add_user_wildfly_state = "${keycloak::install_base}/.create-wildfly-user"
-    exec { 'create-wildfly-user':
-      command => "${_add_user_wildfly_cmd} ${_add_user_wildfly_args} && touch ${_add_user_wildfly_state}",
-      creates => $_add_user_wildfly_state,
-      notify  => Class['keycloak::service'],
-    }
 
     file { "${keycloak::install_base}/domain/configuration":
       ensure => 'directory',
@@ -63,6 +45,33 @@ class keycloak::config {
       group   => $keycloak::group,
       content => template('keycloak/profile.properties.erb'),
       mode    => '0644',
+      notify  => Class['keycloak::service'],
+    }
+
+    $server_conf_dir = "${keycloak::install_base}/domain/servers/server-one/configuration"
+
+    file { $server_conf_dir:
+      ensure => 'directory',
+      owner  => $keycloak::user,
+      group  => $keycloak::group,
+      mode   => '0755',
+    }
+
+    $_add_user_keycloak_cmd = "${keycloak::install_base}/bin/add-user-keycloak.sh"
+    $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${server_conf_dir}/"
+    $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}"
+    exec { 'create-keycloak-admin':
+      command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
+      creates => $_add_user_keycloak_state,
+      notify  => Class['keycloak::service'],
+    }
+    
+    $_add_user_wildfly_cmd = "${keycloak::install_base}/bin/add-user.sh"
+    $_add_user_wildfly_args = "--user ${keycloak::wildfly_user} --password ${keycloak::wildfly_user_password} -e -s"
+    $_add_user_wildfly_state = "${keycloak::install_base}/.create-wildfly-user"
+    exec { 'create-wildfly-user':
+      command => "${_add_user_wildfly_cmd} ${_add_user_wildfly_args} && touch ${_add_user_wildfly_state}",
+      creates => $_add_user_wildfly_state,
       notify  => Class['keycloak::service'],
     }
 
@@ -89,13 +98,22 @@ class keycloak::config {
     }
   } else {
 
+    $_add_user_keycloak_cmd = "${keycloak::install_base}/bin/add-user-keycloak.sh"
+    $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
+    $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}"
+    exec { 'create-keycloak-admin':
+      command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
+      creates => $_add_user_keycloak_state,
+      notify  => Class['keycloak::service'],
+    }
+    
     file { "${keycloak::install_base}/standalone/configuration":
       ensure => 'directory',
       owner  => $keycloak::user,
       group  => $keycloak::group,
       mode   => '0750',
     }
-
+    
     file { "${keycloak::install_base}/standalone/configuration/profile.properties":
       ensure  => 'file',
       owner   => $keycloak::user,
@@ -105,7 +123,7 @@ class keycloak::config {
       notify  => Class['keycloak::service'],
     }
   }
-
+  
   file { "${keycloak::install_base}/config.cli":
     ensure    => 'file',
     owner     => $keycloak::user,

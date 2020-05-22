@@ -34,6 +34,9 @@
 # @param service_bind_address
 #   Bind address for Keycloak service.
 #   Default is '0.0.0.0'.
+# @param management_bind_address
+#   Bind address for Keycloak management.
+#   Default is '0.0.0.0'.
 # @param java_opts
 #   Sets additional options to Java virtual machine environment variable.
 # @param java_opts_append
@@ -201,6 +204,8 @@
 #   Set if zipped deployments will be auto deployed
 # @param spi_deployments
 #   Hash used to define keycloak::spi_deployment resources
+# @param master_address
+#   IP address of the master in doman mode
 #
 class keycloak (
   Boolean $manage_install       = true,
@@ -214,6 +219,7 @@ class keycloak (
   Boolean $service_hasstatus    = true,
   Boolean $service_hasrestart   = true,
   Stdlib::IP::Address $service_bind_address = '0.0.0.0',
+  Stdlib::IP::Address $management_bind_address = '0.0.0.0',
   Optional[Variant[String, Array]] $java_opts = undef,
   Boolean $java_opts_append = true,
   Optional[String] $service_extra_opts = undef,
@@ -225,8 +231,8 @@ class keycloak (
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = 'admin',
   String $admin_user_password   = 'changeme',
-  Optional[String] $wildfly_admin_user = undef,
-  Optional[String] $wildfly_admin_user_password = undef,
+  Optional[String] $wildfly_user = undef,
+  Optional[String] $wildfly_user_password = undef,
   Boolean $manage_datasource = true,
   Enum['h2', 'mysql', 'oracle', 'postgresql'] $datasource_driver = 'h2',
   Optional[String] $datasource_host = undef,
@@ -244,7 +250,7 @@ class keycloak (
   Hash $truststore_hosts = {},
   String $truststore_password = 'keycloak',
   Enum['WILDCARD', 'STRICT', 'ANY'] $truststore_hostname_verification_policy = 'WILDCARD',
-  Integer $http_port = 8230,
+  Integer $http_port = 8080,
   Integer $theme_static_max_age = 2592000,
   Boolean $theme_cache_themes = true,
   Boolean $theme_cache_templates = true,
@@ -284,6 +290,7 @@ class keycloak (
   Boolean $auto_deploy_exploded = false,
   Boolean $auto_deploy_zipped = true,
   Hash $spi_deployments = {},
+  Optional[Stdlib::IP::Address] $master_address = undef
 ) {
 
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {
@@ -294,14 +301,22 @@ class keycloak (
     unless $role {
       fail("Role not specified: in domain mode role needs to be specified. This needs to be either 'master' or 'slave'")
     }
-    unless $wildfly_admin_user {
+    unless $wildfly_user {
       fail('Wildfly user not specified: in domain mode Wildfly user needs to be specified.')
     }
-    unless $wildfly_admin_user_password {
-      fail('Wildfly user password not specified: in domain mode Wildfly user password needs to be specified.')
+    unless $wildfly_user_password {
+      fail('Wildfly user password not specified: in domain, mode Wildfly user password needs to be specified.')
     }
 
-    $wildfly_admin_user_password_base64 = strip(base64('encode', $wildfly_admin_user_password))
+    if $role == 'slave' and ! $master_address {
+      fail('Master address not specified: in domain mode, master address  needs to be specified for a slave.')
+    }
+
+    if $datasource_driver == 'h2' {
+      fail("Invalid datasource driver for domain mode: $datasource_driver")
+    }
+
+    $wildfly_user_password_base64 = strip(base64('encode', $wildfly_user_password))
   }
 
   $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")

@@ -1,5 +1,21 @@
 embed-host-controller --std-out=echo
 
+if (outcome == success) of /host=master/server-config=load-balancer:read-resource
+/host=master/server-config=load-balancer:remove
+end-if
+
+if (outcome == success) of /server-group=load-balancer-group:read-resource
+/server-group=load-balancer-group:remove
+end-if
+
+if (outcome == success) of /profile=load-balancer:read-resource
+/profile=load-balancer:remove
+end-if
+
+if (outcome == success) of /socket-binding-group=load-balancer-sockets:read-resource
+/socket-binding-group=load-balancer-sockets:remove
+end-if
+
 <%- if scope['keycloak::proxy_https'] -%>
 if (result.proxy-address-forwarding != true) of /profile=auth-server-standalone/subsystem=undertow/server=default-server/http-listener=default:read-resource
 /profile=auth-server-standalone/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
