@@ -122,6 +122,26 @@ Manage Keycloak clients
     defaultto :false
   end
 
+  newproperty(:authorization_services_enabled, boolean: true) do
+    desc 'authorizationServicesEnabled'
+    newvalues(:true, :false)
+    defaultto :false
+
+    # If authorizationServicesEnabled is set to false it will not be present in
+    # "get client/<clientname>" output. Puppet will thus see it as "absent".
+    # This custom insync? implementation prevents Puppet from trying to set
+    # the property to false on every run.
+    def insync?(is)
+      if is == :true && resource[:authorization_services_enabled] == :true
+        true
+      elsif is == :absent && resource[:authorization_services_enabled] == :false
+        true
+      else
+        false
+      end
+    end
+  end
+
   newproperty(:public_client, boolean: true) do
     desc 'enabled'
     newvalues(:true, :false)
@@ -181,6 +201,12 @@ Manage Keycloak clients
       end
     end
     requires
+  end
+
+  validate do
+    if self[:authorization_services_enabled] == :true && self[:service_accounts_enabled] == :false
+      raise "Keycloak_client[#{self[:name]}] must have service_accounts_enabled => true if authorization_services_enabled => true"
+    end
   end
 
   def self.title_patterns
