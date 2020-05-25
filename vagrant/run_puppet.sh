@@ -36,19 +36,20 @@ done
 CWD=`pwd`
 
 # Configure with "puppet apply"
-#PUPPET_APPLY="/opt/puppetlabs/bin/puppet apply --modulepath=$BASEDIR/modules"
-PUPPET_APPLY="/opt/puppetlabs/bin/puppet apply" 
+PUPPET_APPLY="/opt/puppetlabs/bin/puppet apply --verbose" 
 
 # Pass variables to Puppet manifests via environment variables
 export FACTER_profile='/etc/profile.d/openvpn.sh'
 export FACTER_basedir="$BASEDIR"
-export FACTER_keycloak_version='8.0.1'
+export FACTER_keycloak_version='10.0.1'
 export FACTER_keycloak_datasource_host='db.local'
 export FACTER_keycloak_datasource_dbname='keycloak'
 export FACTER_keycloak_datasource_username='keycloak'
 export FACTER_keycloak_datasource_password='keycloak'
 export FACTER_keycloak_admin_user='admin'
 export FACTER_keycloak_admin_user_password='changeme'
+export FACTER_keycloak_wildfly_user='wildfly'
+export FACTER_keycloak_wildfly_user_password='wildfly'
 export FACTER_manage_package_repo='false'
 export FACTER_postgresql_version='9.6'
 export FACTER_postgresql_manage_package_repo='true'
@@ -59,7 +60,7 @@ export FACTER_db_database='keycloak'
 export FACTER_db_connection_limit='300'
 
 for manifest in $MANIFESTS; do
-    $PUPPET_APPLY /vagrant/vagrant/$manifest --verbose
+    $PUPPET_APPLY /vagrant/vagrant/$manifest
 done
 
 cd $CWD

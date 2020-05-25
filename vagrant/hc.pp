@@ -3,8 +3,9 @@ notify { 'Installing Host Controller': }
 class { '::keycloak':
   operating_mode        => 'domain',
   role                  => 'slave',
-  wildfly_user          => 'cluster',
-  wildfly_user_password => 'wildfly',
+  wildfly_user          => $keycloak_wildfly_user,
+  wildfly_user_password => $keycloak_wildfly_user_password,
+  master_address        => '192.168.168.253',
   manage_install        => true,
   manage_datasource     => false,
   version               => $keycloak_version,

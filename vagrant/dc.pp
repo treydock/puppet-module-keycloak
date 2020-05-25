@@ -3,8 +3,8 @@ notify { 'Installing Domain Controller': }
 class { '::keycloak':
   operating_mode        => 'domain',
   role                  => 'master',
-  wildfly_user          => 'cluster',
-  wildfly_user_password => 'wildfly',
+  wildfly_user          => $keycloak_wildfly_user,
+  wildfly_user_password => $keycloak_wildfly_user_password,
   manage_install        => true,
   manage_datasource     => false,
   version               => $keycloak_version,
@@ -29,5 +29,20 @@ keycloak_realm { 'TEST.NET':
   events_enabled               => true,
   admin_events_enabled         => true,
   admin_events_details_enabled => true,
+}
+
+keycloak_client { 'example.com':
+  ensure                   => 'present',
+  realm                    => 'TEST.NET',
+  standard_flow_enabled    => true,
+  protocol                 => 'saml',
+  full_scope_allowed       => true,
+  service_accounts_enabled => false,
+  base_url                 => 'https://example.com/',
+  redirect_uris            => [
+    'https://example.com/',
+    'https://example.com/*',
+  ],
+  require                  => Keycloak_realm['TEST.NET'],
 }
 

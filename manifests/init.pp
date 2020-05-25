@@ -205,7 +205,9 @@
 # @param spi_deployments
 #   Hash used to define keycloak::spi_deployment resources
 # @param master_address
-#   IP address of the master in doman mode
+#   IP address of the master in domain mode
+# @param server_name
+#   Server name in domain mode. Defaults to hostname.
 #
 class keycloak (
   Boolean $manage_install       = true,
@@ -290,7 +292,8 @@ class keycloak (
   Boolean $auto_deploy_exploded = false,
   Boolean $auto_deploy_zipped = true,
   Hash $spi_deployments = {},
-  Optional[Stdlib::IP::Address] $master_address = undef
+  Optional[Stdlib::IP::Address] $master_address = undef,
+  String $server_name = $facts['hostname']
 ) {
 
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {
@@ -299,7 +302,7 @@ class keycloak (
 
   if $operating_mode == 'domain' {
     unless $role {
-      fail("Role not specified: in domain mode role needs to be specified. This needs to be either 'master' or 'slave'")
+      fail("Role not specified: in domain mode role needs to be specified. This needs to be either 'master' or 'slave'.")
     }
     unless $wildfly_user {
       fail('Wildfly user not specified: in domain mode Wildfly user needs to be specified.')
@@ -309,11 +312,11 @@ class keycloak (
     }
 
     if $role == 'slave' and ! $master_address {
-      fail('Master address not specified: in domain mode, master address  needs to be specified for a slave.')
+      fail('Master address not specified: in domain mode, master address needs to be specified for a slave.')
     }
 
     if $datasource_driver == 'h2' {
-      fail("Invalid datasource driver for domain mode: $datasource_driver")
+      fail("Invalid datasource driver for domain mode: ${datasource_driver}")
     }
 
     $wildfly_user_password_base64 = strip(base64('encode', $wildfly_user_password))

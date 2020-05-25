@@ -26,7 +26,7 @@ class { '::postgresql::server':
 }
 
 postgresql::server::pg_hba_rule { 'Allow Keycloak instances network access to the database':
-  description => 'Open up PostgreSQL for access from 192.168.0.0/24',
+  description => 'Open up PostgreSQL for access from 192.168.168.0/24',
   type        => 'host',
   database    => $db_username,
   user        => $db_password,

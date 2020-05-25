@@ -18,7 +18,7 @@ ExecStart=<%= scope['keycloak::install_base'] %>/bin/standalone.sh --server-conf
 ExecStart=<%= scope['keycloak::install_base'] %>/bin/domain.sh --host-config=host-master.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %> -Djboss.bind.address.management=<%= scope['keycloak::management_bind_address'] %><% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
 <% end -%>
 <% if scope['keycloak::role'] == 'slave' -%>
-ExecStart=<%= scope['keycloak::install_base'] %>/bin/domain.sh --host-config=slave-master.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %> -Djboss.domain.master.address=<%= scope['keycloak::master_address'] %><% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end -%>
+ExecStart=<%= scope['keycloak::install_base'] %>/bin/domain.sh --host-config=host-slave.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %> -Djboss.domain.master.address=<%= scope['keycloak::master_address'] %><% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end -%>
 <% end -%>
 
 

@@ -1,0 +1,54 @@
+embed-host-controller --std-out=echo
+
+if (outcome == success) of /host=master/server-config=load-balancer:read-resource
+/host=master/server-config=load-balancer:remove
+end-if
+
+if (outcome == success) of /server-group=load-balancer-group:read-resource
+/server-group=load-balancer-group:remove
+end-if
+
+if (outcome == success) of /profile=load-balancer:read-resource
+/profile=load-balancer:remove
+end-if
+
+if (outcome == success) of /socket-binding-group=load-balancer-sockets:read-resource
+/socket-binding-group=load-balancer-sockets:remove
+end-if
+
+<%- if scope['keycloak::proxy_https'] -%>
+if (result.proxy-address-forwarding != true) of /profile=auth-server-standalone/subsystem=undertow/server=default-server/http-listener=default:read-resource
+/profile=auth-server-standalone/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
+end-if
+
+if (outcome != success) of /profile=auth-server-standalone/socket-binding-group=standard-sockets/socket-binding=proxy-https:read-resource
+/profile=auth-server-standalone/socket-binding-group=standard-sockets/socket-binding=proxy-https:add(port=443)
+end-if
+
+if (result.redirect-socket != proxy-https) of /profile=auth-server-standalone/subsystem=undertow/server=default-server/http-listener=default:read-resource
+/profile=auth-server-standalone/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=redirect-socket,value=proxy-https)
+end-if
+<%- end -%>
+           
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=driver-name, value=<%= scope['keycloak::datasource_driver'] %>)
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=connection-url, value="<%= scope['keycloak::datasource_connection_url'] %>")
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=jndi-name, value=java:jboss/datasources/KeycloakDS)
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=user-name, value=<%= scope['keycloak::datasource_username'] %>)
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=password, value=<%= scope['keycloak::datasource_password'] %>)
+
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation, value=true)
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1")
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
+/profile=auth-server-standalone/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
+
+try
+/profile=auth-server-standalone/subsystem=datasources/jdbc-driver=postgresql:add(driver-module-name=org.postgresql,driver-name=postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+
+catch
+/profile=auth-server-standalone/subsystem=datasources/jdbc-driver=postgresql:remove
+/profile=auth-server-standalone/subsystem=datasources/jdbc-driver=postgresql:add(driver-module-name=org.postgresql,driver-name=postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+
+end-try
+
+/server-group=auth-server-group:write-attribute(name=profile, value=auth-server-standalone)                                                                    
+stop-embedded-host-controller

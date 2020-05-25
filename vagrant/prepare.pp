@@ -1,6 +1,6 @@
 notify { 'Preparing for setup': }
 
-$tools = [ 'emacs-nox', 'tcpdump', 'strace', 'nmap', 'screen', 'net-tools' ]
+$tools = [ 'tcpdump', 'strace', 'nmap', 'screen', 'net-tools' ]
 
 package { $tools:
   ensure  => 'installed',

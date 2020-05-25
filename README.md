@@ -23,8 +23,9 @@
     * [keycloak_identity_provider](#keycloak_identity_provider)
     * [Keycloak Flows](#keycloak-flows)
     * [keycloak_api](#keycloak_api)
-3. [Reference - Parameter and detailed reference to all options](#reference)
-4. [Limitations - OS compatibility, etc.](#limitations)
+3. [A test cluster in Vagrant](#Clustering)
+4. [Reference - Parameter and detailed reference to all options](#reference)
+5. [Limitations - OS compatibility, etc.](#limitations)
 
 ## Overview
 
@@ -32,14 +33,14 @@ The keycloak module allows easy installation and management of Keycloak.
 
 ### Supported Versions of Keycloak
 
-Currently this module supports Keycloak version 8.x to 9.x.
+Currently this module supports Keycloak version 8.x to 10.x.
 
 | Keycloak Version | Keycloak Puppet module versions |
 | ---------------- | ------------------------------- |
 | 3.x              | 2.x                             |
 | 4.x - 6.x        | 3.x                             |
 | 6.x - 8.x        | 4.x - 5.x                       |
-| 8.x - 9.x        | 6.x                             |
+| 8.x - 10.x       | 6.x                             |
 
 ## Usage
 
@@ -136,6 +137,44 @@ apache::vhost { 'idp.example.com':
   ssl_key             => '/etc/pki/tls/private/idp.example.com.key',
 }
 ```
+Setup a domain master. (This needs a shared database, here '1.2.3.4').
+
+```puppet
+class { '::keycloak':
+  operating_mode        => 'domain',
+  role                  => 'master',
+  wildfly_user          => 'wildfly,
+  wildfly_user_password => 'changeme,
+  manage_datasource     => false,
+  datasource_driver     => 'postgresql',
+  datasource_host       => '1.2.3.4,
+  datasource_dbname     => 'keycloak,
+  datasource_username   => 'keycloak,
+  datasource_password   => 'changeme,
+  admin_user            => 'admin,
+  admin_user_password   => 'changeme,
+}
+```
+
+Setup a domain slave. (This needs a shared database, here '1.2.3.4').
+
+```puppet
+class { '::keycloak':
+  operating_mode        => 'domain',
+  role                  => 'slave',
+  wildfly_user          => 'wildfly,
+  wildfly_user_password => 'changeme,
+  manage_datasource     => false,
+  datasource_driver     => 'postgresql',
+  datasource_host       => '1.2.3.4,
+  datasource_dbname     => 'keycloak,
+  datasource_username   => 'keycloak,
+  datasource_password   => 'changeme,
+  admin_user            => 'admin,
+  admin_user_password   => 'changeme,
+}
+```
+**NOTE:** The wilfdly user and password need to match those in domain master. These are required for authentication in a cluster.
 
 Setup a host for theme development so that theme changes don't require a service restart, not recommended for production.
 
@@ -203,7 +242,7 @@ keycloak_realm { 'test':
 
 Define a LDAP user provider so that authentication can be performed against LDAP.  The example below uses two LDAP servers, disables importing of users and assumes the SSL certificates are trusted and do not require being in the truststore.
 
- ```puppet
+```puppet
 keycloak_ldap_user_provider { 'LDAP on test':
   ensure             => 'present',
   users_dn           => 'ou=People,dc=example,dc=com',
@@ -378,13 +417,13 @@ keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on 
   requirement  => 'REQUIRED',
   index        => 1,
 }
-```
+̀̀̀
 
 ### keycloak\_api
 
 The keycloak_api type can be used to define how this module's types access the Keycloak API if this module is only used for the types/providers and the module's `kcadm-wrapper.sh` is not installed.
 
- ```puppet
+```puppet
 keycloak_api { 'keycloak'
   install_dir => '/opt/keycloak',
   server     => 'http://localhost:8080/auth',
@@ -395,6 +434,18 @@ keycloak_api { 'keycloak'
 ```
 
 The path for `install_dir` will be joined with `bin/kcadm.sh` to produce the full path to `kcadm.sh`.
+
+##Clustering
+
+A test cluster can be set up in Vagrant. Vagrant hostmanager plugin is required. This can be installed with:
+
+	$ vagrant plugin install vagrant-hostmanager
+
+Then a cluster can be brought up with:
+
+	$ vagrant up db dc hc lb
+
+and accessed in http://192.168.0.251:8080
 
 ## Reference
 
