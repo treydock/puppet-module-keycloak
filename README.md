@@ -445,7 +445,7 @@ Then a cluster can be brought up with:
 
 	$ vagrant up db dc hc lb
 
-and accessed in http://192.168.0.251:8080
+and accessed in http://192.168.0.251
 
 ## Reference
 
