@@ -215,6 +215,19 @@ keycloak_ldap_user_provider { 'LDAP on test':
 
 **NOTE** The `Id` for the above resource would be `LDAP-test` where the format is `${resource_name}-${realm}`.
 
+If you're using FreeIPA you use a defined resource that wraps keycloak\_ldap\_user\_provider:
+
+```
+keycloak::freeipa_user_provider { 'ipa.example.org':
+  ensure          => 'present',
+  realm           => 'EXAMPLE.ORG',
+  bind_dn         => 'uid=ldapproxy,cn=sysaccounts,cn=etc,dc=example,dc=org',
+  bind_credential => 'secret',
+  users_dn        => 'cn=users,cn=accounts,dc=example,dc=org',
+  priority        => 10,
+}
+```
+
 ### keycloak\_ldap_mapper
 
 Use the LDAP attribute 'gecos' as the full name attribute.

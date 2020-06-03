@@ -272,4 +272,28 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
       end
     end
   end
+
+  context 'creates freeipa user provider' do
+    it 'runs successfully' do
+      pp = <<-EOS
+      include mysql::server
+      class { 'keycloak':
+        datasource_driver => 'mysql',
+      }
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak::freeipa_user_provider { 'ipa.example.org':
+        ensure => 'present',
+        realm => 'test',
+        bind_dn => 'uid=ldapproxy,cn=sysaccounts,cn=etc,dc=example,dc=org',
+        bind_credential => 'secret',
+        users_dn => 'cn=users,cn=accounts,dc=example,dc=org',
+        priority => 10,
+        ldaps => false,
+      }
+      EOS
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+  end
 end
