@@ -45,7 +45,7 @@ class keycloak::sssd {
   -> exec { 'libunix-dbus-java-configure':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
     cwd     => '/usr/local/src/libunix-dbus-java',
-    command => "/usr/local/src/libunix-dbus-java/configure --with-jvm=${jvm_path} --libdir=${keycloak::libunix_dbus_java_libdir} CFLAGS='-std=c99'",
+    command => "/usr/local/src/libunix-dbus-java/configure --with-jvm=${jvm_path} --libdir=${keycloak::libunix_dbus_java_libdir} CFLAGS='-std=c99'", # lint:ignore:140chars
     creates => '/usr/local/src/libunix-dbus-java/Makefile',
   }
   -> exec { 'libunix-dbus-java-make':
