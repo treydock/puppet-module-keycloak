@@ -64,7 +64,6 @@
 #   Default is `changeme`.
 # @param manage_datasource
 #   Boolean that determines if configured datasource will be managed.
-#   Only applies when `datasource_driver` is `mysql`.
 #   Default is `true`.
 # @param datasource_driver
 #   Datasource driver to use for Keycloak.
