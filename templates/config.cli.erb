@@ -83,3 +83,34 @@ catch
 /subsystem=keycloak-server/spi=userCache/provider=default/:remove
 /subsystem=keycloak-server/spi=userCache/provider=default/:add(enabled=<%= scope['keycloak::user_cache']%>)
 end-try
+<%- if scope['keycloak::operating_mode'] == 'clustered' && scope['keycloak::enable_jdbc_ping'] -%>
+if (outcome != success) of /subsystem=jgroups/stack=tcp/protocol=JDBC_PING:read-resource
+<%- if scope['keycloak::datasource_driver'] == 'postgresql' -%>
+/subsystem=jgroups/stack=tcp/protocol=JDBC_PING: add(add-index=0, data-source="KeycloakDS", properties=[initialize_sql="CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"])
+<%- end -%>
+<%- if scope['keycloak::datasource_driver'] == 'mysql' -%>
+/subsystem=jgroups/stack=tcp/protocol=JDBC_PING: add(add-index=0, data-source="KeycloakDS", properties=[initialize_sql="CREATE TABLE IF NOT EXISTS JGROUPSPING (own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, ping_data varbinary(5000) DEFAULT NULL, PRIMARY KEY (own_addr, cluster_name)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin"])
+<%- end -%>
+end-if
+if (outcome == success) of /subsystem=jgroups/stack=tcp/protocol=MPING:read-resource
+/subsystem=jgroups/stack=tcp/protocol=MPING: remove()
+end-if
+if (outcome == success) of /subsystem=jgroups/stack=tcp/protocol=pbcast.GMS:read-resource
+/subsystem=jgroups/stack=tcp/protocol=pbcast.GMS: remove()
+/subsystem=jgroups/stack=tcp/protocol=pbcast.GMS: add(properties=[join_timeout=30000, print_local_addr=true, print_physical_addrs=true])
+end-if
+if (outcome != success) of /subsystem=jgroups/stack=tcp/protocol=JDBC_PING:read-resource
+end-if
+/subsystem=jgroups/channel=ee:write-attribute(name=stack, value="tcp")
+if (outcome == success) of /subsystem=jgroups/stack=udp:read-resource
+/subsystem=jgroups/stack=udp: remove()
+end-if
+if (outcome == success) of /socket-binding-group=standard-sockets/socket-binding=jgroups-udp:read-resource
+/socket-binding-group=standard-sockets/socket-binding=jgroups-udp:remove()
+end-if
+if (outcome == success) of /socket-binding-group=standard-sockets/socket-binding=jgroups-mping:read-resource
+/socket-binding-group=standard-sockets/socket-binding=jgroups-mping:remove()
+end-if
+/interface=private:write-attribute(name=inet-address, value=${jboss.bind.address.private:<%= scope['::ipaddress'] %>})
+/interface=public:write-attribute(name=inet-address, value=${jboss.bind.address:<%= scope['::ipaddress'] %>})
+<%- end -%>

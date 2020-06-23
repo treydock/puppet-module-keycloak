@@ -189,6 +189,10 @@
 #   Path to the file with environment variables for the systemd service
 # @param operating_mode
 #   Keycloak operating mode deployment
+# @param enable_jdbc_ping
+#   Use JDBC_PING to discover the nodes and manage the replication of data
+#     More info: http://jgroups.org/manual/#_jdbc_ping
+#   Only applies when `operating_mode` is `clustered`.
 # @param user_cache
 #   Boolean that determines if userCache is enabled
 # @param tech_preview_features
@@ -274,6 +278,7 @@ class keycloak (
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum['standalone', 'clustered'] $operating_mode = 'standalone',
+  Boolean $enable_jdbc_ping = false,
   Boolean $user_cache = true,
   Array $tech_preview_features = [],
   Boolean $auto_deploy_exploded = false,
