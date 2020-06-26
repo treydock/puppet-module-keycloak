@@ -192,7 +192,9 @@
 # @param enable_jdbc_ping
 #   Use JDBC_PING to discover the nodes and manage the replication of data
 #     More info: http://jgroups.org/manual/#_jdbc_ping
-#   Only applies when `operating_mode` is `clustered`.
+#   Only applies when `operating_mode` is `clustered`
+#   JDBC_PING uses port 7600 to ensure cluster members are discoverable by each other
+#   This module does not manage firewall changes
 # @param jboss_bind_public_address
 #   JBoss bind public IP address
 # @param jboss_bind_private_address
