@@ -98,9 +98,11 @@ describe 'keycloak class:' do
       pp = <<-EOS
       include postgresql::server
       class { 'keycloak':
-        datasource_driver => 'postgresql',
-        enable_jdbc_ping  => true,
-        operating_mode    => 'clustered',
+        datasource_driver          => 'postgresql',
+        operating_mode             => 'clustered',
+        enable_jdbc_ping           => true,
+        jboss_bind_private_address => '0.0.0.0',
+        jboss_bind_public_address  => '0.0.0.0',
       }
       EOS
 
@@ -122,7 +124,7 @@ describe 'keycloak class:' do
     end
 
     describe port(7600) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
   end
 
