@@ -122,7 +122,7 @@ describe 'keycloak class:' do
     end
 
     describe port(7600) do
-      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
+      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
     end
   end
 

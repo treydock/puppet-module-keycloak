@@ -111,6 +111,6 @@ end-if
 if (outcome == success) of /socket-binding-group=standard-sockets/socket-binding=jgroups-mping:read-resource
 /socket-binding-group=standard-sockets/socket-binding=jgroups-mping:remove()
 end-if
-/interface=private:write-attribute(name=inet-address, value=${jboss.bind.address.private:<%= scope['::ipaddress'] %>})
-/interface=public:write-attribute(name=inet-address, value=${jboss.bind.address:<%= scope['::ipaddress'] %>})
+/interface=private:write-attribute(name=inet-address, value=${jboss.bind.address.private:<%= scope['keycloak::jboss_bind_private_address'] %>})
+/interface=public:write-attribute(name=inet-address, value=${jboss.bind.address:<%= scope['keycloak::jboss_bind_public_address'] %>})
 <%- end -%>
