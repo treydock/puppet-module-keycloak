@@ -155,4 +155,11 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   def name_uuid(*args)
     self.class.name_uuid(*args)
   end
+
+  def check_theme_exists(theme, res)
+    install_dir = self.class.install_dir || '/opt/keycloak'
+    path = File.join(install_dir, 'themes', theme)
+    return if File.exist?(path)
+    Puppet.warning("#{res}: Theme #{theme} not found at path #{path}.")
+  end
 end

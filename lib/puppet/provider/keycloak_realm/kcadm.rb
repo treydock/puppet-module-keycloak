@@ -163,6 +163,16 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     t.close
     Puppet.debug(IO.read(t.path))
     begin
+      [
+        :login_theme,
+        :account_theme,
+        :admin_theme,
+        :email_theme,
+      ].each do |theme|
+        if resource[theme]
+          check_theme_exists(resource[theme], "Keycloak_realm[#{resource[:name]}]")
+        end
+      end
       kcadm('create', 'realms', nil, t.path)
     rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm create realm failed\nError message: #{e.message}"
@@ -291,6 +301,16 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
         t.close
         Puppet.debug(IO.read(t.path))
         begin
+          [
+            :login_theme,
+            :account_theme,
+            :admin_theme,
+            :email_theme,
+          ].each do |theme|
+            if @property_flush[theme]
+              check_theme_exists(@property_flush[theme], "Keycloak_realm[#{resource[:name]}]")
+            end
+          end
           kcadm('update', "realms/#{resource[:name]}", nil, t.path)
         rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update realm failed\nError message: #{e.message}"
