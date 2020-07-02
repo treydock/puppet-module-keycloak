@@ -490,8 +490,7 @@ installation</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that determines if configured datasource will be managed. Only
-applies when <code>datasource_driver</code> is <code>mysql</code>. Default
+<p>Boolean that determines if configured datasource will be managed. Default
 is <code>true</code>.</p>
 </div>
       
@@ -1407,6 +1406,65 @@ by this module</p>
   
     <li>
       
+        <span class='name'>enable_jdbc_ping</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Use JDBC_PING to discover the nodes and manage the replication of data 
+More info: <a
+href="http://jgroups.org/manual/#_jdbc_ping">jgroups.org/manual/#_jdbc_ping</a>
+Only applies when <code>operating_mode</code> is <code>clustered</code>
+JDBC_PING uses port 7600 to ensure cluster members are discoverable by each
+other This module does not manage firewall changes</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jboss_bind_public_address</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$facts[&#39;networking&#39;][&#39;ip&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>JBoss bind public IP address</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jboss_bind_private_address</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$facts[&#39;networking&#39;][&#39;ip&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>JBoss bind private IP address</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>user_cache</span>
       
       
@@ -1506,15 +1564,6 @@ by this module</p>
         <pre class="lines">
 
 
-203
-204
-205
-206
-207
-208
-209
-210
-211
 212
 213
 214
@@ -1677,10 +1726,22 @@ by this module</p>
 371
 372
 373
-374</pre>
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 203</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 212</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1756,6 +1817,9 @@ class keycloak (
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum[&#39;standalone&#39;, &#39;clustered&#39;] $operating_mode = &#39;standalone&#39;,
+  Boolean $enable_jdbc_ping = false,
+  Stdlib::IP::Address $jboss_bind_public_address = $facts[&#39;networking&#39;][&#39;ip&#39;],
+  Stdlib::IP::Address $jboss_bind_private_address = $facts[&#39;networking&#39;][&#39;ip&#39;],
   Boolean $user_cache = true,
   Array $tech_preview_features = [],
   Boolean $auto_deploy_exploded = false,

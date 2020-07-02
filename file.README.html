@@ -232,11 +232,32 @@ a service restart, not recommended for production.</p>
 }
 </code></pre>
 
-<p>Run Keycloak using standalone clustered mode:</p>
+<p>Run Keycloak using standalone clustered mode (multicast):</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
   operating_mode =&gt; &#39;clustered&#39;,
 }
+</code></pre>
+
+<p>Run Keycloak using standalone clustered mode (JDBC_PING):</p>
+
+<blockquote>
+<p><a href="http://jgroups.org/manual/#_jdbc_ping">JDBC_PING</a> uses port
+<strong>7600</strong> to ensure cluster members are discoverable by each
+other. This module <strong>does NOT manage firewall changes</strong>.</p>
+</blockquote>
+
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
+  operating_mode             =&gt; &#39;clustered&#39;,
+  datasource_driver          =&gt; &#39;postgresql&#39;,
+  enable_jdbc_ping           =&gt; true,
+  jboss_bind_private_address =&gt; $facts[&#39;networking&#39;][&#39;ip&#39;],
+  jboss_bind_public_address  =&gt; $facts[&#39;networking&#39;][&#39;ip&#39;],
+}
+
+# your puppet code to open port 7600
+# ...
+# ...
 </code></pre>
 
 <h3 id="label-Deploy+SPI">Deploy SPI</h3>
