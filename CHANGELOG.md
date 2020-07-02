@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.12.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.12.0) (2020-07-02)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.11.0...v6.12.0)
+
+### Added
+
+- Emit warning if configured theme does not exist [\#140](https://github.com/treydock/puppet-module-keycloak/pull/140) ([treydock](https://github.com/treydock))
+- Add support for JGroups JDBC\_PING mode in clustered mode [\#139](https://github.com/treydock/puppet-module-keycloak/pull/139) ([danifr](https://github.com/danifr))
+
+### UNCATEGORIZED PRS; GO LABEL THEM
+
+- Remove outdated line in class documentation [\#137](https://github.com/treydock/puppet-module-keycloak/pull/137) ([danifr](https://github.com/danifr))
+
 ## [v6.11.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.11.0) (2020-05-22)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.10.0...v6.11.0)
@@ -160,6 +173,10 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.6.0...v5.7.0)
 
+### Added
+
+- Make JDBC xa-datasource-class name configurable [\#93](https://github.com/treydock/puppet-module-keycloak/pull/93) ([danifr](https://github.com/danifr))
+
 ## [v5.6.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.6.0) (2019-10-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.5.0...v5.6.0)
@@ -174,7 +191,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Make JDBC xa-datasource-class name configurable [\#93](https://github.com/treydock/puppet-module-keycloak/pull/93) ([danifr](https://github.com/danifr))
 - Allow managing Keycloak installation from outside this module [\#87](https://github.com/treydock/puppet-module-keycloak/pull/87) ([mattock](https://github.com/mattock))
 - Enable passing extra options to Keycloak in the systemd unit file [\#86](https://github.com/treydock/puppet-module-keycloak/pull/86) ([mattock](https://github.com/mattock))
 - Enable defining bind address for the Keycloak systemd service [\#85](https://github.com/treydock/puppet-module-keycloak/pull/85) ([mattock](https://github.com/mattock))

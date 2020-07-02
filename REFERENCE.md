@@ -253,7 +253,6 @@ Default value: 'changeme'
 Data type: `Boolean`
 
 Boolean that determines if configured datasource will be managed.
-Only applies when `datasource_driver` is `mysql`.
 Default is `true`.
 
 Default value: `true`
@@ -674,6 +673,34 @@ Data type: `Enum['standalone', 'clustered']`
 Keycloak operating mode deployment
 
 Default value: 'standalone'
+
+##### `enable_jdbc_ping`
+
+Data type: `Boolean`
+
+Use JDBC_PING to discover the nodes and manage the replication of data
+  More info: http://jgroups.org/manual/#_jdbc_ping
+Only applies when `operating_mode` is `clustered`
+JDBC_PING uses port 7600 to ensure cluster members are discoverable by each other
+This module does not manage firewall changes
+
+Default value: `false`
+
+##### `jboss_bind_public_address`
+
+Data type: `Stdlib::IP::Address`
+
+JBoss bind public IP address
+
+Default value: $facts['networking']['ip']
+
+##### `jboss_bind_private_address`
+
+Data type: `Stdlib::IP::Address`
+
+JBoss bind private IP address
+
+Default value: $facts['networking']['ip']
 
 ##### `user_cache`
 
