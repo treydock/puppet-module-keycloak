@@ -90,6 +90,8 @@ appveyor.yml:
   delete: true
 spec/acceptance/nodesets/centos-6.yml:
   delete: true
+spec/acceptance/nodesets/centos-8.yml:
+  image: centos:8.1.1911
 spec/acceptance/nodesets/debian-8.yml:
   delete: true
 spec/acceptance/nodesets/debian-10.yml:

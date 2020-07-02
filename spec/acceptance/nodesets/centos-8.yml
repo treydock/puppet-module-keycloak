@@ -4,7 +4,7 @@ HOSTS:
       - agent
     platform: el-8-x86_64
     hypervisor: docker
-    image: centos:8
+    image: centos:8.1.1911
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
