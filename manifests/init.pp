@@ -188,6 +188,16 @@
 #   Path to the file with environment variables for the systemd service
 # @param operating_mode
 #   Keycloak operating mode deployment
+# @param enable_jdbc_ping
+#   Use JDBC_PING to discover the nodes and manage the replication of data
+#     More info: http://jgroups.org/manual/#_jdbc_ping
+#   Only applies when `operating_mode` is `clustered`
+#   JDBC_PING uses port 7600 to ensure cluster members are discoverable by each other
+#   This module does not manage firewall changes
+# @param jboss_bind_public_address
+#   JBoss bind public IP address
+# @param jboss_bind_private_address
+#   JBoss bind private IP address
 # @param user_cache
 #   Boolean that determines if userCache is enabled
 # @param tech_preview_features
@@ -273,6 +283,9 @@ class keycloak (
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Enum['standalone', 'clustered'] $operating_mode = 'standalone',
+  Boolean $enable_jdbc_ping = false,
+  Stdlib::IP::Address $jboss_bind_public_address = $facts['networking']['ip'],
+  Stdlib::IP::Address $jboss_bind_private_address = $facts['networking']['ip'],
   Boolean $user_cache = true,
   Array $tech_preview_features = [],
   Boolean $auto_deploy_exploded = false,

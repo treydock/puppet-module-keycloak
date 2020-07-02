@@ -147,12 +147,30 @@ class { 'keycloak':
 }
 ```
 
-Run Keycloak using standalone clustered mode:
+Run Keycloak using standalone clustered mode (multicast):
 
 ```puppet
 class { 'keycloak':
   operating_mode => 'clustered',
 }
+```
+
+Run Keycloak using standalone clustered mode (JDBC_PING):
+
+> [JDBC_PING](http://jgroups.org/manual/#_jdbc_ping) uses port **7600** to ensure cluster members are discoverable by each other. This module **does NOT manage firewall changes**.
+
+```puppet
+class { 'keycloak':
+  operating_mode             => 'clustered',
+  datasource_driver          => 'postgresql',
+  enable_jdbc_ping           => true,
+  jboss_bind_private_address => $facts['networking']['ip'],
+  jboss_bind_public_address  => $facts['networking']['ip'],
+}
+
+# your puppet code to open port 7600
+# ...
+# ...
 ```
 
 ### Deploy SPI
