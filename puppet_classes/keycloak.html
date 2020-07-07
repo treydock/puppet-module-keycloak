@@ -1553,6 +1553,42 @@ other This module does not manage firewall changes</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>custom_config_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Custom configuration content to be added to config.cli</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>custom_config_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[String, Array]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Custom configuration source file to be added to config.cli</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -1564,10 +1600,6 @@ other This module does not manage firewall changes</p>
         <pre class="lines">
 
 
-212
-213
-214
-215
 216
 217
 218
@@ -1738,10 +1770,16 @@ other This module does not manage firewall changes</p>
 383
 384
 385
-386</pre>
+386
+387
+388
+389
+390
+391
+392</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 212</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 216</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1825,6 +1863,8 @@ class keycloak (
   Boolean $auto_deploy_exploded = false,
   Boolean $auto_deploy_zipped = true,
   Hash $spi_deployments = {},
+  Optional[String] $custom_config_content = undef,
+  Optional[Variant[String, Array]] $custom_config_source = undef,
 ) {
 
   if ! ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;]) {

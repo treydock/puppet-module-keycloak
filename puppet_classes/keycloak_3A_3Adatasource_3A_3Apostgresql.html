@@ -187,7 +187,7 @@ class keycloak::datasource::postgresql {
     include ::postgresql::server
     postgresql::server::db { $keycloak::datasource_dbname:
       user     =&gt; $keycloak::datasource_username,
-      password =&gt; postgresql_password($keycloak::datasource_username, $keycloak::datasource_password),
+      password =&gt; postgresql::postgresql_password($keycloak::datasource_username, $keycloak::datasource_password),
     }
   }
 }</pre>
