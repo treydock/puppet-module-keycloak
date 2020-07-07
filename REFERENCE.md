@@ -742,6 +742,22 @@ Hash used to define keycloak::spi_deployment resources
 
 Default value: {}
 
+##### `custom_config_content`
+
+Data type: `Optional[String]`
+
+Custom configuration content to be added to config.cli
+
+Default value: `undef`
+
+##### `custom_config_source`
+
+Data type: `Optional[Variant[String, Array]]`
+
+Custom configuration source file to be added to config.cli
+
+Default value: `undef`
+
 ### keycloak::config
 
 Private class.
