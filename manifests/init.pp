@@ -208,6 +208,10 @@
 #   Set if zipped deployments will be auto deployed
 # @param spi_deployments
 #   Hash used to define keycloak::spi_deployment resources
+# @param custom_config_content
+#   Custom configuration content to be added to config.cli
+# @param custom_config_source
+#   Custom configuration source file to be added to config.cli
 #
 class keycloak (
   Boolean $manage_install       = true,
@@ -291,6 +295,8 @@ class keycloak (
   Boolean $auto_deploy_exploded = false,
   Boolean $auto_deploy_zipped = true,
   Hash $spi_deployments = {},
+  Optional[String] $custom_config_content = undef,
+  Optional[Variant[String, Array]] $custom_config_source = undef,
 ) {
 
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {

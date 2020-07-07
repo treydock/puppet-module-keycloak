@@ -119,14 +119,21 @@ describe 'keycloak' do
         end
 
         it do
-          is_expected.to contain_file("/opt/keycloak-#{version}/config.cli").only_with(
-            ensure: 'file',
+          is_expected.to contain_concat("/opt/keycloak-#{version}/config.cli").with(
+            ensure: 'present',
             owner: 'keycloak',
             group: 'keycloak',
             mode: '0600',
-            content: %r{.*},
             notify: 'Exec[jboss-cli.sh --file=config.cli]',
             show_diff: 'false',
+          )
+        end
+
+        it do
+          is_expected.to contain_concat__fragment('config.cli-keycloak').with(
+            target: "/opt/keycloak-#{version}/config.cli",
+            content: %r{.*},
+            order: '00',
           )
         end
 

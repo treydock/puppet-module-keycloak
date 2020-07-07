@@ -53,14 +53,27 @@ class keycloak::config {
     notify  => Class['keycloak::service'],
   }
 
-  file { "${keycloak::install_base}/config.cli":
-    ensure    => 'file',
+  concat { "${keycloak::install_base}/config.cli":
     owner     => $keycloak::user,
     group     => $keycloak::group,
     mode      => '0600',
-    content   => template('keycloak/config.cli.erb'),
     notify    => Exec['jboss-cli.sh --file=config.cli'],
     show_diff => false,
+  }
+
+  concat::fragment { 'config.cli-keycloak':
+    target  => "${keycloak::install_base}/config.cli",
+    content => template('keycloak/config.cli.erb'),
+    order   => '00',
+  }
+
+  if $keycloak::custom_config_content or $keycloak::custom_config_source {
+    concat::fragment { 'config.cli-custom':
+      target  => "${keycloak::install_base}/config.cli",
+      content => $keycloak::custom_config_content,
+      source  => $keycloak::custom_config_source,
+      order   => '01',
+    }
   }
 
   exec { 'jboss-cli.sh --file=config.cli':
