@@ -28,6 +28,7 @@ class keycloak::config {
     command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
     creates => $_add_user_keycloak_state,
     notify  => Class['keycloak::service'],
+    user    => $keycloak::user,
   }
 
   file { "${keycloak::install_base}/tmp":
