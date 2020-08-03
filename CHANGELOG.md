@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.13.1](https://github.com/treydock/puppet-module-keycloak/tree/v6.13.1) (2020-08-03)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.13.0...v6.13.1)
+
+### UNCATEGORIZED PRS; GO LABEL THEM
+
+- Explicitly specifies what user to use with the admin generation script [\#146](https://github.com/treydock/puppet-module-keycloak/pull/146) ([ZloeSabo](https://github.com/ZloeSabo))
+
 ## [v6.13.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.13.0) (2020-07-07)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.12.0...v6.13.0)
@@ -345,6 +353,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Support managing realm's events config [\#55](https://github.com/treydock/puppet-module-keycloak/pull/55) ([treydock](https://github.com/treydock))
 - Test against Keycloak 6 [\#54](https://github.com/treydock/puppet-module-keycloak/pull/54) ([treydock](https://github.com/treydock))
+- Add enabled property to keycloak\_ldap\_user\_provider [\#41](https://github.com/treydock/puppet-module-keycloak/pull/41) ([treydock](https://github.com/treydock))
 
 ## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
 
@@ -384,7 +393,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Support SSSD User Provider [\#42](https://github.com/treydock/puppet-module-keycloak/pull/42) ([treydock](https://github.com/treydock))
-- Add enabled property to keycloak\_ldap\_user\_provider [\#41](https://github.com/treydock/puppet-module-keycloak/pull/41) ([treydock](https://github.com/treydock))
 
 ## [3.1.0](https://github.com/treydock/puppet-module-keycloak/tree/3.1.0) (2018-12-13)
 
