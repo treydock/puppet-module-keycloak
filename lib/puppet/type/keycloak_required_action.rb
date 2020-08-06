@@ -52,7 +52,8 @@ Manage Keycloak required actions
 
   newproperty(:enabled, boolean: true) do
     desc 'If the required action is enabled. Default to true.'
-    defaultto true
+    defaultto :true
+    newvalues(:true, :false)
   end
 
   newproperty(:alias) do
@@ -64,7 +65,8 @@ Manage Keycloak required actions
 
   newproperty(:default, boolean: true) do
     desc 'If the required action is a default one. Default to false'
-    defaultto false
+    defaultto :false
+    newvalues(:true, :false)
   end
 
   newproperty(:priority, parent: PuppetX::Keycloak::IntegerProperty) do
