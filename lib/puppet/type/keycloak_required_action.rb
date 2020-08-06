@@ -44,16 +44,14 @@ Manage Keycloak required actions
 
   newproperty(:display_name) do
     desc 'Displayed name. Default to `provider_id`'
-    defaultto do
-      @resource[:provider_id]
-    end
     munge { |v| v.to_s }
   end
 
   newproperty(:enabled, boolean: true) do
     desc 'If the required action is enabled. Default to true.'
-    defaultto :true
+    defaultto true
     newvalues(:true, :false)
+    munge { |v| v.to_s == 'true' }
   end
 
   newproperty(:alias) do
@@ -65,8 +63,9 @@ Manage Keycloak required actions
 
   newproperty(:default, boolean: true) do
     desc 'If the required action is a default one. Default to false'
-    defaultto :false
+    defaultto false
     newvalues(:true, :false)
+    munge { |v| v.to_s == 'true' }
   end
 
   newproperty(:priority, parent: PuppetX::Keycloak::IntegerProperty) do
@@ -79,7 +78,7 @@ Manage Keycloak required actions
       raise Puppet::Error, 'config must be a Hash' unless value.is_a?(Hash)
     end
     def insync?(is)
-      is == @should
+      is == @should[0] #for whatever reason puppet makes @should an array, so we actually need to compare with first element
     end
 
     def change_to_s(currentvalue, _newvalue)

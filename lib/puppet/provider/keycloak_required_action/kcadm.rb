@@ -60,6 +60,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
         action = {
           ensure: :absent,
           alias: a['providerId'],
+          display_name: a['name'],
           realm: realm,
           enabled: false,
           default: false,
@@ -89,8 +90,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
     Puppet.debug('Keycloak required action: create')
 
     t = Tempfile.new('keycloak_required_action_register')
-    t.write(JSON.pretty_generate(providerId: resource[:provider_id],
-                                 name: resource[:display_name]))
+    t.write(JSON.pretty_generate(providerId: resource[:provider_id]))
     t.close
     Puppet.debug(IO.read(t.path))
     begin
@@ -128,7 +128,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
     begin
       t = Tempfile.new('keycloak_required_action_configure')
       t.write(JSON.pretty_generate(alias: resource[:alias],
-                                   name: resource[:display_name],
+                                   name: resource[:display_name] || @property_hash[:display_name],
                                    enabled: resource[:enabled],
                                    priority: resource[:priority],
                                    config: resource[:config] || {},
