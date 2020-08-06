@@ -1,4 +1,3 @@
-# require_relative '../provider/keycloak_api'
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
@@ -7,26 +6,29 @@ Puppet::Type.newtype(:keycloak_required_action) do
   desc <<-DESC
 Manage Keycloak required actions
 @example Enable Webauthn Register and make it default
-  keycloak_required_action { 'Webauthn Register on master':
-    ensure => 'present',
+  keycloak_required_action { 'webauthn-register on master':
+    ensure => present,
     provider_id => 'webauthn-register',
     display_name => 'Webauthn Register',
     default => true,
     enabled => true,
     priority => 1,
-    config => {},
-    alias => 'smh'
+    config => {
+      'something' => 'true', # keep in mind that keycloak only supports strings for both keys and values
+      'smth else' => '1',
+    },
+    alias => 'webauthn',
+  }
+
+  @example Minimal example to enable email verification without making it default
+  keycloak_required_action { 'VERIFY_EMAIL on master':
+    ensure => present,
   }
   DESC
 
   extend PuppetX::Keycloak::Type
-  # add_autorequires
 
   ensurable
-
-  newparam(:id) do
-    desc 'Id.'
-  end
 
   newparam(:name, namevar: true) do
     desc 'The required action name'
@@ -42,7 +44,7 @@ Manage Keycloak required actions
   end
 
   newproperty(:display_name) do
-    desc 'Displayed name'
+    desc 'Displayed name. Default to `provider_id`'
     defaultto do
       @resource[:provider_id]
     end
@@ -50,7 +52,7 @@ Manage Keycloak required actions
   end
 
   newproperty(:enabled, boolean: true) do
-    desc 'If the required action is marked enabled (only for ensure => present)'
+    desc 'If the required action is enabled. Default to true.'
     defaultto true
   end
 
@@ -62,7 +64,7 @@ Manage Keycloak required actions
   end
 
   newproperty(:default, boolean: true) do
-    desc 'If the required action is a default one'
+    desc 'If the required action is a default one. Default to false'
     defaultto false
   end
 
@@ -70,34 +72,35 @@ Manage Keycloak required actions
     desc 'Required action priority'
   end
 
-  newproperty(:config, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+  newproperty(:config) do
     desc 'Required action config'
+    validate do |value|
+      raise Puppet::Error, 'config must be a Hash' unless value.is_a?(Hash)
+    end
+    def insync?(is)
+      is == @should
+    end
+
+    def change_to_s(currentvalue, _newvalue)
+      if currentvalue == :absent
+        'created config'
+      else
+        'changed config'
+      end
+    end
+
+    def is_to_s(_currentvalue) # rubocop:disable Style/PredicateName
+      '[old config redacted]'
+    end
+
+    def should_to_s(_newvalue)
+      '[new config redacted]'
+    end
   end
-
-  # autorequire(:keycloak_ldap_user_provider) do
-  #   requires = []
-  #   catalog.resources.each do |resource|
-  #     next unless resource.class.to_s == 'Puppet::Type::Keycloak_ldap_user_provider'
-  #     if self[:ldap] == "#{resource[:resource_name]}-#{resource[:realm]}"
-  #       requires << resource.name
-  #     end
-  #   end
-  #   requires
-  # end
-
-  # autorequire(:keycloak_client) do
-  #   requires = []
-  #   if self[:type] == 'role-ldap-mapper'
-  #     if self[:use_realm_roles_mapping].to_sym == :false
-  #       requires = [self[:client_id]]
-  #     end
-  #   end
-  #   requires
-  # end
 
   def self.title_patterns
     [
-      [ # TODO: use provider id here? see the keycloak_flow_execution
+      [
         %r{^((\S+) on (\S+))$},
         [
           [:name],
@@ -125,11 +128,8 @@ Manage Keycloak required actions
       end
     end
     if self[:ensure] == :present
-      # if self[:priority].nil?
-      #   raise "Keycloak_required_action[#{self[:name]}] priority is required"
-      # end
       if self[:provider_id].nil?
-        raise "Keycloak_required_action[#{self[:name]}] provider_id is required"
+        raise Puppet::Error, "Keycloak_required_action[#{self[:name]}] provider_id is required"
       end
     end
   end
