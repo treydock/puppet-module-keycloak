@@ -23,6 +23,7 @@
     * [keycloak_identity_provider](#keycloak_identity_provider)
     * [Keycloak Flows](#keycloak-flows)
     * [keycloak_api](#keycloak_api)
+    * [keycloak_required_action](#keycloak_required_action)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
 
@@ -413,6 +414,38 @@ keycloak_api { 'keycloak'
 ```
 
 The path for `install_dir` will be joined with `bin/kcadm.sh` to produce the full path to `kcadm.sh`.
+
+### keycloak\_required\_action
+
+The keycloak_required_action type can be used to define actions a user must perform during the authentication process.
+A user will not be able to complete the authentication process until these actions are complete. For instance, change a one-time password, accept T&C, etc.
+
+The name for an action is `$alias on $realm`.
+
+**Important**: actions from puppet config and from a server are matched based on a combination of alias and realm, so edition of aliases is not supported.
+
+ ```puppet
+# Minimal example
+keycloak_required_action { 'VERIFY_EMAIL on master':
+  ensure => present,
+  provider_id => 'webauthn-register',
+}
+
+# Full example
+
+keycloak_required_action { 'webauthn-register on master':
+  ensure => present,
+  provider_id => 'webauthn-register',
+  display_name => 'Webauthn Register',
+  default => true,
+  enabled => true,
+  priority => 1,
+  config => {
+    'something' => 'true', # keep in mind that keycloak only supports strings for both keys and values
+    'smth else' => '1',
+  },
+}
+```
 
 ## Reference
 
