@@ -101,7 +101,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
     Puppet.info("Keycloak: registered required action for provider #{resource[:provider_id]} for #{resource[:realm]}")
 
     # Asigning property_flush to is needed to make the flush method to
-    # set properties of the required action after registration.
+    # configure properties of the required action after the registration.
     @property_flush = resource.to_hash
     @property_hash[:ensure] = :present
   end
@@ -109,11 +109,11 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
   def destroy
     Puppet.debug('Keycloak required action: destroy')
     begin
-      kcadm('delete', "authentication/required-actions/#{@property_hash[:alias]}", resource[:realm])
+      kcadm('delete', "authentication/required-actions/#{resource[:alias]}", resource[:realm])
     rescue => e
       raise Puppet::Error, "kcadm deletion of required action failed\nError message: #{e.message}"
     end
-    Puppet.info("Keycloak: deregistered required action #{@property_hash[:alias]} for #{resource[:realm]}")
+    Puppet.info("Keycloak: deregistered required action #{resource[:alias]} for #{resource[:realm]}")
     @property_hash.clear
   end
 

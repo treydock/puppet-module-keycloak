@@ -1,0 +1,7 @@
+[ {
+  "providerId" : "webauthn-register-passwordless",
+  "name" : "Webauthn Register Passwordless"
+}, {
+  "providerId" : "webauthn-register",
+  "name" : "Webauthn Register"
+} ]
