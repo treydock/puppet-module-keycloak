@@ -141,7 +141,6 @@ describe Puppet::Type.type(:keycloak_required_action) do
   end
 
   describe 'validations' do
-    # config.add(:alias, 'something')
     it 'requires realm' do
       config.delete(:realm)
       expect { resource }.to raise_error(%r{must have a realm defined})
