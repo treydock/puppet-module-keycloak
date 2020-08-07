@@ -7,8 +7,8 @@ embed-server --server-config=standalone-ha.xml
 if (result.proxy-address-forwarding != true) of /subsystem=undertow/server=default-server/http-listener=default:read-resource
 /subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
 end-if
-if (result.proxy-address-forwarding != true) of /subsystem=undertow/server=default-server/https-listener=default:read-resource
-/subsystem=undertow/server=default-server/https-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
+if (result.proxy-address-forwarding != true) of /subsystem=undertow/server=default-server/https-listener=https:read-resource
+/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=proxy-address-forwarding,value=true)
 end-if
 if (outcome != success) of /socket-binding-group=standard-sockets/socket-binding=proxy-https:read-resource
 /socket-binding-group=standard-sockets/socket-binding=proxy-https:add(port=443)
