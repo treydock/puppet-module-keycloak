@@ -105,6 +105,8 @@ href="#label-Keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</a
 <p><a href="#label-Keycloak+flows">Keycloak Flows</a></p>
 </li><li>
 <p><a href="#label-Keycloak_api">keycloak_api</a></p>
+</li><li>
+<p><a href="#label-Keycloak_required_action">keycloak_required_action</a></p>
 </li></ul>
 </li><li>
 <p><a href="#label-Reference">Reference - Parameter and detailed reference to all
@@ -508,6 +510,35 @@ user       =&gt; &#39;admin&#39;,   password   =&gt; &#39;changeme&#39;, }
 <p>The path for <code>install_dir</code> will be joined with
 <code>bin/kcadm.sh</code> to produce the full path to
 <code>kcadm.sh</code>.</p>
+
+<h3 id="label-keycloak_required_action">keycloak_required_action</h3>
+
+<p>The keycloak_required_action type can be used to define actions a user must
+perform during the authentication process. A user will not be able to
+complete the authentication process until these actions are complete. For
+instance, change a one-time password, accept T&amp;C, etc.</p>
+
+<p>The name for an action is <code>$alias on $realm</code>.</p>
+
+<p><strong>Important</strong>: actions from puppet config and from a server
+are matched based on a combination of alias and realm, so edition of
+aliases is not supported.</p>
+
+<p>“`puppet</p>
+
+<h1 id="label-Minimal+example">Minimal example</h1>
+
+<p>keycloak_required_action { &#39;VERIFY_EMAIL on master&#39;:  ensure =&gt;
+present,  provider_id =&gt; &#39;webauthn-register&#39;, }</p>
+
+<h1 id="label-Full+example">Full example</h1>
+
+<p>keycloak_required_action { &#39;webauthn-register on master&#39;:  ensure
+=&gt; present,  provider_id =&gt; &#39;webauthn-register&#39;, 
+display_name =&gt; &#39;Webauthn Register&#39;,  default =&gt; true, 
+enabled =&gt; true,  priority =&gt; 1,  config =&gt; {  &#39;something&#39;
+=&gt; &#39;true&#39;, # keep in mind that keycloak only supports strings
+for both keys and values  &#39;smth else&#39; =&gt; &#39;1&#39;,  }, } “`</p>
 
 <h2 id="label-Reference">Reference</h2>
 
