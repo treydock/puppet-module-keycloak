@@ -42,6 +42,7 @@ _Private Classes_
 * [`keycloak_ldap_user_provider`](#keycloak_ldap_user_provider): Manage Keycloak LDAP user providers
 * [`keycloak_protocol_mapper`](#keycloak_protocol_mapper): Manage Keycloak client scope protocol mappers
 * [`keycloak_realm`](#keycloak_realm): Manage Keycloak realms
+* [`keycloak_required_action`](#keycloak_required_action): Manage Keycloak required actions
 * [`keycloak_resource_validator`](#keycloak_resource_validator): Verify that a specific Keycloak resource is available
 * [`keycloak_sssd_user_provider`](#keycloak_sssd_user_provider): Manage Keycloak SSSD user providers
 
@@ -2710,6 +2711,98 @@ The realm name
 ##### `id`
 
 Id. Default to `name`.
+
+### keycloak_required_action
+
+Manage Keycloak required actions
+
+#### Examples
+
+##### Enable Webauthn Register and make it default
+
+```puppet
+keycloak_required_action { 'webauthn-register on master':
+  ensure => present,
+  provider_id => 'webauthn-register',
+  display_name => 'Webauthn Register',
+  default => true,
+  enabled => true,
+  priority => 1,
+  config => {
+    'something' => 'true', # keep in mind that keycloak only supports strings for both keys and values
+    'smth else' => '1',
+  },
+  alias => 'webauthn',
+}
+
+@example Minimal example to enable email verification without making it default
+keycloak_required_action { 'VERIFY_EMAIL on master':
+  ensure => present,
+  provider_id => 'webauthn-register',
+}
+```
+
+#### Properties
+
+The following properties are available in the `keycloak_required_action` type.
+
+##### `ensure`
+
+Valid values: present, absent
+
+The basic property that the resource should be in.
+
+Default value: present
+
+##### `display_name`
+
+Displayed name. Default to `provider_id`
+
+##### `enabled`
+
+Valid values: `true`, `false`
+
+If the required action is enabled. Default to true.
+
+Default value: true
+
+##### `alias`
+
+Alias. Default to `provider_id`.
+
+##### `default`
+
+Valid values: `true`, `false`
+
+If the required action is a default one. Default to false
+
+Default value: false
+
+##### `priority`
+
+Required action priority
+
+##### `config`
+
+Required action config
+
+#### Parameters
+
+The following parameters are available in the `keycloak_required_action` type.
+
+##### `name`
+
+namevar
+
+The required action name
+
+##### `realm`
+
+realm
+
+##### `provider_id`
+
+providerId of the required action
 
 ### keycloak_resource_validator
 
