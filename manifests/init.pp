@@ -212,6 +212,8 @@
 #   Custom configuration content to be added to config.cli
 # @param custom_config_source
 #   Custom configuration source file to be added to config.cli
+# @param custom_config_lines
+#   Custom configuration content to be added to config.cli
 #
 class keycloak (
   Boolean $manage_install       = true,
@@ -297,6 +299,7 @@ class keycloak (
   Hash $spi_deployments = {},
   Optional[String] $custom_config_content = undef,
   Optional[Variant[String, Array]] $custom_config_source = undef,
+  Optional[Variant[String, Array]] $custom_config_lines = undef,
 ) {
 
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {

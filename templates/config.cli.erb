@@ -117,3 +117,7 @@ end-if
 /interface=private:write-attribute(name=inet-address, value=${jboss.bind.address.private:<%= scope['keycloak::jboss_bind_private_address'] %>})
 /interface=public:write-attribute(name=inet-address, value=${jboss.bind.address:<%= scope['keycloak::jboss_bind_public_address'] %>})
 <%- end -%>
+<% if scope['keycloak::custom_config_lines'] -%>
+<% scope['keycloak::custom_config_lines'].flatten.each do |line|; line.each_line do |eachline| -%>
+<%= eachline.chomp %>
+<% end; end; end -%>
