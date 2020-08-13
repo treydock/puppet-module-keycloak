@@ -48,6 +48,21 @@ class keycloak::resources {
   } else {
     $flow_executions = $keycloak::flow_executions
   }
+  if $keycloak::required_actions_merge {
+    $required_actions = lookup('keycloak::required_actions', Hash, 'deep', {})
+  } else {
+    $required_actions = $keycloak::required_actions
+  }
+  if $keycloak::ldap_mappers_merge {
+    $ldap_mappers = lookup('keycloak::ldap_mappers', Hash, 'deep', {})
+  } else {
+    $ldap_mappers = $keycloak::ldap_mappers
+  }
+  if $keycloak::ldap_user_providers_merge {
+    $ldap_user_providers = lookup('keycloak::ldap_user_providers', Hash, 'deep', {})
+  } else {
+    $ldap_user_providers = $keycloak::ldap_user_providers
+  }
 
   $realms.each |$name, $realm| {
     keycloak_realm { $name: * => $realm }
@@ -75,6 +90,15 @@ class keycloak::resources {
   }
   $flow_executions.each |$name, $data| {
     keycloak_flow_execution { $name: * => $data }
+  }
+  $required_actions.each |$name, $data| {
+    keycloak_required_action { $name: * => $data }
+  }
+  $ldap_mappers.each |$name, $data| {
+    keycloak_ldap_mapper { $name: * => $data }
+  }
+  $ldap_user_providers.each |$name, $data| {
+    keycloak_ldap_user_provider { $name: * => $data }
   }
   $keycloak::spi_deployments.each |$name, $deployment| {
     keycloak::spi_deployment { $name: * => $deployment }
