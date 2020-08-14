@@ -166,6 +166,18 @@
 #   Hash taht is used to define keycloak_flow resources.
 # @param flow_executions_merge
 #   Boolean that sets if `flows` should be merged from Hiera.
+# @param required_actions
+#   Hash that is used to define keycloak_required_action resources.
+# @param required_actions_merge
+#   Boolean that sets if `required_actions` should be merged from Hiera.
+# @param ldap_mappers
+#   Hash that is used to define keycloak_ldap_mapper resources.
+# @param ldap_mappers_merge
+#   Boolean that sets if `ldap_mappers` should be merged from Hiera.
+# @param ldap_user_providers
+#   Hash that is used to define keycloak_ldap_user_provider resources.
+# @param ldap_user_providers_merge
+#   Boolean that sets if `ldap_user_providers` should be merged from Hiera.
 # @param with_sssd_support
 #   Boolean that determines if SSSD user provider support should be available
 # @param libunix_dbus_java_source
@@ -274,6 +286,12 @@ class keycloak (
   Hash $flows = {},
   Boolean $flows_merge = false,
   Hash $flow_executions = {},
+  Hash $required_actions = {},
+  Boolean $required_actions_merge = false,
+  Hash $ldap_mappers = {},
+  Boolean $ldap_mappers_merge = false,
+  Hash $ldap_user_providers = {},
+  Boolean $ldap_user_providers_merge = false,
   Boolean $flow_executions_merge = false,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
