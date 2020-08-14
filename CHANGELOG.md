@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.15.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.15.0) (2020-08-14)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.14.0...v6.15.0)
+
+### Added
+
+- add resources [\#151](https://github.com/treydock/puppet-module-keycloak/pull/151) ([aba-rechsteiner](https://github.com/aba-rechsteiner))
+
 ## [v6.14.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.14.0) (2020-08-11)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.13.1...v6.14.0)
@@ -258,6 +266,10 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.1.0...v5.2.0)
 
+### Added
+
+- Test against Keycloak 7.0.0 [\#77](https://github.com/treydock/puppet-module-keycloak/pull/77) ([treydock](https://github.com/treydock))
+
 ## [v5.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.1.0) (2019-08-28)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.0.1...v5.1.0)
@@ -305,7 +317,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Test against Keycloak 7.0.0 [\#77](https://github.com/treydock/puppet-module-keycloak/pull/77) ([treydock](https://github.com/treydock))
 - Add clients parameter [\#69](https://github.com/treydock/puppet-module-keycloak/pull/69) ([treydock](https://github.com/treydock))
 - Simplify how keycloak\_client\_protocol\_mapper and keycloak\_protcol\_mapper are queried during prefetch [\#68](https://github.com/treydock/puppet-module-keycloak/pull/68) ([treydock](https://github.com/treydock))
 - Support managing protocl mapper saml-javascript-mapper [\#67](https://github.com/treydock/puppet-module-keycloak/pull/67) ([treydock](https://github.com/treydock))
@@ -409,7 +420,6 @@ All notable changes to this project will be documented in this file. The format 
 - Bump dependency ranges for stdlib and mysql [\#40](https://github.com/treydock/puppet-module-keycloak/pull/40) ([treydock](https://github.com/treydock))
 - Support Puppet 6 and drop support for Puppet 4 [\#39](https://github.com/treydock/puppet-module-keycloak/pull/39) ([treydock](https://github.com/treydock))
 - Use beaker 4.x [\#37](https://github.com/treydock/puppet-module-keycloak/pull/37) ([treydock](https://github.com/treydock))
-- Update module dependency version ranges [\#35](https://github.com/treydock/puppet-module-keycloak/pull/35) ([treydock](https://github.com/treydock))
 
 ### Fixed
 
@@ -418,6 +428,10 @@ All notable changes to this project will be documented in this file. The format 
 ## [3.0.0](https://github.com/treydock/puppet-module-keycloak/tree/3.0.0) (2018-08-14)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.7.1...3.0.0)
+
+### Added
+
+- Update module dependency version ranges [\#35](https://github.com/treydock/puppet-module-keycloak/pull/35) ([treydock](https://github.com/treydock))
 
 ## [2.7.1](https://github.com/treydock/puppet-module-keycloak/tree/2.7.1) (2018-08-14)
 
@@ -484,7 +498,6 @@ All notable changes to this project will be documented in this file. The format 
 - Add SAML username protocol mapper to keycloak::client\_template [\#17](https://github.com/treydock/puppet-module-keycloak/pull/17) ([treydock](https://github.com/treydock))
 - Support SAML role list protocol mapper [\#16](https://github.com/treydock/puppet-module-keycloak/pull/16) ([treydock](https://github.com/treydock))
 - Add SAML support to keycloak\_protocol\_mapper and keycloak::client\_template [\#15](https://github.com/treydock/puppet-module-keycloak/pull/15) ([treydock](https://github.com/treydock))
-- Add support for http port configuration [\#9](https://github.com/treydock/puppet-module-keycloak/pull/9) ([NITEMAN](https://github.com/NITEMAN))
 
 ### Fixed
 
@@ -514,6 +527,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Increase minimum java dependency to 2.2.0 to to support Debian 9. Update unit tests to test all supported OSes [\#12](https://github.com/treydock/puppet-module-keycloak/pull/12) ([treydock](https://github.com/treydock))
 - Symlink instead of copy mysql connector. puppetlabs/mysql 5 compatibility [\#11](https://github.com/treydock/puppet-module-keycloak/pull/11) ([NITEMAN](https://github.com/NITEMAN))
+- Add support for http port configuration [\#9](https://github.com/treydock/puppet-module-keycloak/pull/9) ([NITEMAN](https://github.com/NITEMAN))
 - Add Debian 9 support [\#8](https://github.com/treydock/puppet-module-keycloak/pull/8) ([NITEMAN](https://github.com/NITEMAN))
 
 ### Fixed
