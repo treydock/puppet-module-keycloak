@@ -172,7 +172,31 @@
 79
 80
 81
-82</pre>
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/resources.pp', line 3</span>
@@ -225,6 +249,21 @@ class keycloak::resources {
   } else {
     $flow_executions = $keycloak::flow_executions
   }
+  if $keycloak::required_actions_merge {
+    $required_actions = lookup(&#39;keycloak::required_actions&#39;, Hash, &#39;deep&#39;, {})
+  } else {
+    $required_actions = $keycloak::required_actions
+  }
+  if $keycloak::ldap_mappers_merge {
+    $ldap_mappers = lookup(&#39;keycloak::ldap_mappers&#39;, Hash, &#39;deep&#39;, {})
+  } else {
+    $ldap_mappers = $keycloak::ldap_mappers
+  }
+  if $keycloak::ldap_user_providers_merge {
+    $ldap_user_providers = lookup(&#39;keycloak::ldap_user_providers&#39;, Hash, &#39;deep&#39;, {})
+  } else {
+    $ldap_user_providers = $keycloak::ldap_user_providers
+  }
 
   $realms.each |$name, $realm| {
     keycloak_realm { $name: * =&gt; $realm }
@@ -252,6 +291,15 @@ class keycloak::resources {
   }
   $flow_executions.each |$name, $data| {
     keycloak_flow_execution { $name: * =&gt; $data }
+  }
+  $required_actions.each |$name, $data| {
+    keycloak_required_action { $name: * =&gt; $data }
+  }
+  $ldap_mappers.each |$name, $data| {
+    keycloak_ldap_mapper { $name: * =&gt; $data }
+  }
+  $ldap_user_providers.each |$name, $data| {
+    keycloak_ldap_user_provider { $name: * =&gt; $data }
   }
   $keycloak::spi_deployments.each |$name, $deployment| {
     keycloak::spi_deployment { $name: * =&gt; $deployment }

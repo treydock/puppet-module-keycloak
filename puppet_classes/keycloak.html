@@ -1207,6 +1207,116 @@ Hiera.</p>
   
     <li>
       
+        <span class='name'>required_actions</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash that is used to define keycloak_required_action resources.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>required_actions_merge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if <code>required_actions</code> should be merged from
+Hiera.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ldap_mappers</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash that is used to define keycloak_ldap_mapper resources.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ldap_mappers_merge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if <code>ldap_mappers</code> should be merged from Hiera.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ldap_user_providers</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash that is used to define keycloak_ldap_user_provider resources.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ldap_user_providers_merge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if <code>ldap_user_providers</code> should be merged from
+Hiera.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>with_sssd_support</span>
       
       
@@ -1600,18 +1710,6 @@ other This module does not manage firewall changes</p>
         <pre class="lines">
 
 
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
 228
 229
 230
@@ -1776,10 +1874,28 @@ other This module does not manage firewall changes</p>
 389
 390
 391
-392</pre>
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 216</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 228</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1842,6 +1958,12 @@ class keycloak (
   Hash $flows = {},
   Boolean $flows_merge = false,
   Hash $flow_executions = {},
+  Hash $required_actions = {},
+  Boolean $required_actions_merge = false,
+  Hash $ldap_mappers = {},
+  Boolean $ldap_mappers_merge = false,
+  Hash $ldap_user_providers = {},
+  Boolean $ldap_user_providers_merge = false,
   Boolean $flow_executions_merge = false,
   Boolean $with_sssd_support = false,
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
