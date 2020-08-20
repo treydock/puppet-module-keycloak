@@ -12,12 +12,14 @@ class keycloak::install {
       uid        => $keycloak::user_uid,
       home       => '/var/lib/keycloak',
       managehome => true,
+      system     => $keycloak::system_user,
     }
     group { 'keycloak':
       ensure     => 'present',
       name       => $keycloak::group,
       forcelocal => true,
       gid        => $keycloak::group_gid,
+      system     => $keycloak::system_user,
     }
   }
 

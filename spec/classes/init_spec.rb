@@ -31,7 +31,8 @@ describe 'keycloak' do
                                                             shell: shell,
                                                             gid: 'keycloak',
                                                             home: '/var/lib/keycloak',
-                                                            managehome: 'true')
+                                                            managehome: 'true',
+                                                            system: 'true')
         end
       end
 

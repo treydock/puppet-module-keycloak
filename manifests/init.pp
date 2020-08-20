@@ -56,6 +56,9 @@
 # @param group_gid
 #   Keycloak user group GID.
 #   Default is `undef`.
+# @param system_user
+#   If keycloak user should be a system user with lower uid and gid.
+#   Default is `true`
 # @param admin_user
 #   Keycloak administrative username.
 #   Default is `admin`.
@@ -244,6 +247,7 @@ class keycloak (
   String $user                  = 'keycloak',
   Stdlib::Absolutepath $user_shell = '/sbin/nologin',
   String $group                 = 'keycloak',
+  Boolean $system_user          = true,
   Optional[Integer] $user_uid   = undef,
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = 'admin',
