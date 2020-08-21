@@ -141,7 +141,9 @@
 48
 49
 50
-51</pre>
+51
+52
+53</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/install.pp', line 2</span>
@@ -159,12 +161,14 @@ class keycloak::install {
       uid        =&gt; $keycloak::user_uid,
       home       =&gt; &#39;/var/lib/keycloak&#39;,
       managehome =&gt; true,
+      system     =&gt; $keycloak::system_user,
     }
     group { &#39;keycloak&#39;:
       ensure     =&gt; &#39;present&#39;,
       name       =&gt; $keycloak::group,
       forcelocal =&gt; true,
       gid        =&gt; $keycloak::group_gid,
+      system     =&gt; $keycloak::system_user,
     }
   }
 

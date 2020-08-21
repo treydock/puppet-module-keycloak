@@ -443,6 +443,25 @@ installation</p>
   
     <li>
       
+        <span class='name'>system_user</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>If keycloak user should be a system user with lower uid and gid. Default is
+<code>true</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>admin_user</span>
       
       
@@ -1710,9 +1729,6 @@ other This module does not manage firewall changes</p>
         <pre class="lines">
 
 
-228
-229
-230
 231
 232
 233
@@ -1892,10 +1908,14 @@ other This module does not manage firewall changes</p>
 407
 408
 409
-410</pre>
+410
+411
+412
+413
+414</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 228</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 231</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1916,6 +1936,7 @@ class keycloak (
   String $user                  = &#39;keycloak&#39;,
   Stdlib::Absolutepath $user_shell = &#39;/sbin/nologin&#39;,
   String $group                 = &#39;keycloak&#39;,
+  Boolean $system_user          = true,
   Optional[Integer] $user_uid   = undef,
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = &#39;admin&#39;,
