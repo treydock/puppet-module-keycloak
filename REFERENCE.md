@@ -231,6 +231,15 @@ Default is `undef`.
 
 Default value: `undef`
 
+##### `system_user`
+
+Data type: `Boolean`
+
+If keycloak user should be a system user with lower uid and gid.
+Default is `true`.
+
+Default value: `true`
+
 ##### `admin_user`
 
 Data type: `String`
