@@ -2,7 +2,7 @@
 <module xmlns="urn:jboss:module:1.3" name="org.oracle">
 
     <resources>
-        <resource-root path="ojdbc8.jar"/>
+        <resource-root path="oracle.jar"/>
     </resources>
 
     <dependencies>
