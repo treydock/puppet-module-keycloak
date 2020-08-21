@@ -236,7 +236,7 @@ Default value: `undef`
 Data type: `Boolean`
 
 If keycloak user should be a system user with lower uid and gid.
-Default is `true`.
+Default is `true`
 
 Default value: `true`
 
