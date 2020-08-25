@@ -95,6 +95,9 @@
 #   Source for datasource JDBC driver - could be puppet link or local file on the node.
 #   Default is dependent on value for `datasource_driver`.
 #   This parameter is required if `datasource_driver` is `oracle`.
+# @param datasource_jar_filename
+#   Specify the filename of the destination datasource jar in the module dir of keycloak.
+#   This parameter is only working at the moment if `datasource_driver` is `oracle`.
 # @param datasource_module_source
 #   Source for datasource module.xml. Default depends on `datasource_driver`.
 # @param datasource_xa_class
@@ -259,6 +262,7 @@ class keycloak (
   String $datasource_password = 'sa',
   Optional[String] $datasource_package = undef,
   Optional[String] $datasource_jar_source = undef,
+  Optional[String] $datasource_jar_filename = undef,
   Optional[String] $datasource_module_source = undef,
   Boolean $proxy_https = false,
   Boolean $truststore = false,
