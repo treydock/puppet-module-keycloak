@@ -5,7 +5,7 @@
 class keycloak::datasource::oracle {
   assert_private()
 
-  $jar_filename = pick($keycloak::datasource_jar_filename, 'oracle.jar')
+  $jar_filename = pick($keycloak::datasource_jar_filename, 'ojdbc8.jar')
   $module_dir = "${keycloak::install_base}/modules/system/layers/keycloak/org/oracle/main"
 
   exec { "mkdir -p ${module_dir}":
