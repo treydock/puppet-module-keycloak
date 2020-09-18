@@ -1,5 +1,6 @@
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
+require_relative '../../puppet_x/keycloak/integer_property'
 
 Puppet::Type.newtype(:keycloak_identity_provider) do
   desc <<-DESC
@@ -51,7 +52,7 @@ Manage Keycloak identity providers
 
   newparam(:provider_id) do
     desc 'providerId'
-    newvalues('oidc')
+    newvalues('oidc', 'keycloak-oidc')
     defaultto 'oidc'
     munge { |v| v }
   end
@@ -99,6 +100,11 @@ Manage Keycloak identity providers
     defaultto :false
   end
 
+  newproperty(:gui_order, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'guiOrder'
+    munge { |v| v.to_s }
+  end
+
   newproperty(:first_broker_login_flow_alias) do
     desc 'firstBrokerLoginFlowAlias'
     defaultto 'first broker login'
@@ -107,6 +113,13 @@ Manage Keycloak identity providers
 
   newproperty(:post_broker_login_flow_alias) do
     desc 'postBrokerLoginFlowAlias'
+    munge { |v| v }
+  end
+
+  newproperty(:sync_mode) do
+    desc 'syncMode'
+    defaultto 'IMPORT'
+    newvalues('IMPORT', 'LEGACY', 'FORCE')
     munge { |v| v }
   end
 
@@ -191,6 +204,11 @@ Manage Keycloak identity providers
     defaultto :true
   end
 
+  newproperty(:jwks_url) do
+    desc 'jwksUrl'
+    munge { |v| v }
+  end
+
   newproperty(:login_hint, boolean: true) do
     desc 'loginHint'
     newvalues(:true, :false)
@@ -258,7 +276,7 @@ Manage Keycloak identity providers
     if self[:realm].nil?
       raise Puppet::Error, 'realm is required'
     end
-    if self[:ensure].to_s == 'present' && self[:provider_id] == 'oidc'
+    if self[:ensure].to_s == 'present' && ['oidc', 'keycloak-oidc'].include?(self[:provider_id])
       if self[:authorization_url].nil?
         raise Puppet::Error, 'authorization_url is required'
       end
