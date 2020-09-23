@@ -21,6 +21,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         smtp_server_from_display_name     => 'Keycloak',
         smtp_server_reply_to              => 'webmaster@example.org',
         smtp_server_reply_to_display_name => 'Webmaster',
+        brute_force_protected             => false,
       }
       EOS
 
@@ -32,6 +33,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
         data = JSON.parse(stdout)
         expect(data['id']).to eq('test')
+        expect(data['bruteForceProtected']).to eq(false)
       end
     end
 
@@ -114,7 +116,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         smtp_server_from_display_name     => 'Keycloak',
         smtp_server_reply_to              => 'webmaster@example.org',
         smtp_server_reply_to_display_name => 'Hostmaster',
-
+        brute_force_protected             => true,
       }
       EOS
 
@@ -141,6 +143,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['smtpServer']['fromDisplayName']).to eq('Keycloak')
         expect(data['smtpServer']['replyTo']).to eq('webmaster@example.org')
         expect(data['smtpServer']['replyToDisplayName']).to eq('Hostmaster')
+        expect(data['bruteForceProtected']).to eq(true)
       end
     end
 

@@ -49,6 +49,9 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         expect(data['config']['usersDn']).to eq(['ou=People,dc=test'])
         expect(data['config']['connectionUrl']).to eq(['ldap://localhost:389'])
         expect(data['config']['customUserSearchFilter']).to eq(['(objectClass=posixAccount)'])
+        expect(data['config']['trustEmail']).to eq(['false'])
+        expect(data['config']['fullSyncPeriod']).to eq(['-1'])
+        expect(data['config']['changedSyncPeriod']).to eq(['-1'])
       end
     end
 
@@ -105,6 +108,9 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         users_dn => 'ou=People,dc=test',
         connection_url => 'ldap://localhost:389',
         user_object_classes => ['posixAccount'],
+        trust_email         => true,
+        full_sync_period    => 60,
+        changed_sync_period => 30,
       }
       keycloak_ldap_mapper { 'full-name':
         realm => 'test',
@@ -135,6 +141,9 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         expect(data['config']['connectionUrl']).to eq(['ldap://localhost:389'])
         expect(data['config']['userObjectClasses']).to eq(['posixAccount'])
         expect(data['config'].key?('customUserSearchFilter')).to eq(false)
+        expect(data['config']['trustEmail']).to eq(['true'])
+        expect(data['config']['fullSyncPeriod']).to eq(['60'])
+        expect(data['config']['changedSyncPeriod']).to eq(['30'])
       end
     end
 

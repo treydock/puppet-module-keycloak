@@ -177,6 +177,9 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     uuid_ldap_attribute: 'entryUUID',
     import_enabled: :true,
     user_object_classes: ['inetOrgPerson', 'organizationalPerson'],
+    trust_email: :false,
+    full_sync_period: '-1',
+    changed_sync_period: '-1',
   }
 
   describe 'basic properties' do
@@ -201,11 +204,29 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     end
   end
 
+  describe 'integer properties' do
+    # Test integer properties
+    [
+      :full_sync_period,
+      :changed_sync_period,
+    ].each do |p|
+      it "should accept a #{p}" do
+        config[p] = 100
+        expect(resource[p]).to eq('100')
+      end
+      next unless defaults[p]
+      it "should have default for #{p}" do
+        expect(resource[p]).to eq(defaults[p])
+      end
+    end
+  end
+
   describe 'boolean properties' do
     # Test boolean properties
     [
       :enabled,
       :import_enabled,
+      :trust_email,
     ].each do |p|
       it "should accept true for #{p}" do
         config[p] = true
