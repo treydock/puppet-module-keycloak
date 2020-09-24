@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.17.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.17.0) (2020-09-24)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.16.0...v6.17.0)
+
+### Added
+
+- Improved unit and acceptance tests for recent changes [\#158](https://github.com/treydock/puppet-module-keycloak/pull/158) ([treydock](https://github.com/treydock))
+- add bruteForceProtected [\#157](https://github.com/treydock/puppet-module-keycloak/pull/157) ([aba-rechsteiner](https://github.com/aba-rechsteiner))
+- add trustEmail [\#156](https://github.com/treydock/puppet-module-keycloak/pull/156) ([aba-rechsteiner](https://github.com/aba-rechsteiner))
+- add keycloak-oidc providerid and other new parameters [\#155](https://github.com/treydock/puppet-module-keycloak/pull/155) ([aba-rechsteiner](https://github.com/aba-rechsteiner))
+
 ## [v6.16.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.16.0) (2020-08-21)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.15.0...v6.16.0)
@@ -467,7 +478,6 @@ All notable changes to this project will be documented in this file. The format 
 - Add search\_scope and custom\_user\_search\_filter properties to keycloak\_ldap\_user\_provider type [\#29](https://github.com/treydock/puppet-module-keycloak/pull/29) ([treydock](https://github.com/treydock))
 - Explicitly define all type properties [\#27](https://github.com/treydock/puppet-module-keycloak/pull/27) ([treydock](https://github.com/treydock))
 - Improve acceptance tests [\#26](https://github.com/treydock/puppet-module-keycloak/pull/26) ([treydock](https://github.com/treydock))
-- Add keycloak\_api configuration type [\#22](https://github.com/treydock/puppet-module-keycloak/pull/22) ([treydock](https://github.com/treydock))
 
 ### Fixed
 
@@ -484,6 +494,10 @@ All notable changes to this project will be documented in this file. The format 
 ## [2.4.0](https://github.com/treydock/puppet-module-keycloak/tree/2.4.0) (2018-06-04)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.3.1...2.4.0)
+
+### Added
+
+- Add keycloak\_api configuration type [\#22](https://github.com/treydock/puppet-module-keycloak/pull/22) ([treydock](https://github.com/treydock))
 
 ## [2.3.1](https://github.com/treydock/puppet-module-keycloak/tree/2.3.1) (2018-03-10)
 

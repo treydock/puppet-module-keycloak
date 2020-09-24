@@ -1854,6 +1854,10 @@ linkOnly
 
 Default value: false
 
+##### `gui_order`
+
+guiOrder
+
 ##### `first_broker_login_flow_alias`
 
 firstBrokerLoginFlowAlias
@@ -1863,6 +1867,14 @@ Default value: first broker login
 ##### `post_broker_login_flow_alias`
 
 postBrokerLoginFlowAlias
+
+##### `sync_mode`
+
+Valid values: IMPORT, LEGACY, FORCE
+
+syncMode
+
+Default value: IMPORT
 
 ##### `hide_on_login_page`
 
@@ -1927,6 +1939,10 @@ Valid values: `true`, `false`
 useJwksUrl
 
 Default value: true
+
+##### `jwks_url`
+
+jwksUrl
 
 ##### `login_hint`
 
@@ -1998,7 +2014,7 @@ realm
 
 ##### `provider_id`
 
-Valid values: oidc
+Valid values: oidc, keycloak-oidc
 
 providerId
 
@@ -2339,6 +2355,26 @@ Valid values: %r{.*}, absent
 customUserSearchFilter
 
 Default value: absent
+
+##### `trust_email`
+
+Valid values: `true`, `false`
+
+trustEmail
+
+Default value: false
+
+##### `full_sync_period`
+
+fullSyncPeriod
+
+Default value: -1
+
+##### `changed_sync_period`
+
+changedSyncPeriod
+
+Default value: -1
 
 #### Parameters
 
@@ -2754,6 +2790,12 @@ smtpServer replyto
 ##### `smtp_server_reply_to_display_name`
 
 smtpServer replyToDisplayName
+
+##### `brute_force_protected`
+
+Valid values: `true`, `false`
+
+bruteForceProtected
 
 #### Parameters
 
