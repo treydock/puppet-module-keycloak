@@ -19,6 +19,20 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
         user_info_url                  => 'https://cilogon.org/oauth2/userinfo',
         token_url                      => 'https://cilogon.org/oauth2/token',
         authorization_url              => 'https://cilogon.org/authorize',
+        jwks_url                       => 'https://cilogon.org/jwks',
+        gui_order                      => 1,
+      }
+      keycloak_identity_provider { 'foo on test':
+        ensure                         => 'present',
+        display_name                   => 'foo',
+        provider_id                    => 'keycloak-oidc',
+        first_broker_login_flow_alias  => 'browser',
+        client_id                      => 'foobar',
+        client_secret                  => 'supersecret',
+        user_info_url                  => 'https://foo/oauth2/userinfo',
+        token_url                      => 'https://foo/oauth2/token',
+        authorization_url              => 'https://foo/authorize',
+        gui_order                      => 2,
       }
       EOS
 
@@ -31,6 +45,23 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
         data = JSON.parse(stdout)
         expect(data['enabled']).to eq(true)
         expect(data['displayName']).to eq('CILogon')
+        expect(data['providerId']).to eq('oidc')
+        expect(data['config']['jwksUrl']).to eq('https://cilogon.org/jwks')
+        expect(data['config']['guiOrder']).to eq('1')
+        expect(data['config']['syncMode']).to eq('IMPORT')
+      end
+    end
+
+    it 'has created keycloak-oidc identity provider' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/foo -r test' do
+        data = JSON.parse(stdout)
+        expect(data['enabled']).to eq(true)
+        expect(data['displayName']).to eq('foo')
+        expect(data['providerId']).to eq('keycloak-oidc')
+        expect(data['config']['userInfoUrl']).to eq('https://foo/oauth2/userinfo')
+        expect(data['config']['tokenUrl']).to eq('https://foo/oauth2/token')
+        expect(data['config']['authorizationUrl']).to eq('https://foo/authorize')
+        expect(data['config']['guiOrder']).to eq('2')
       end
     end
   end
@@ -53,6 +84,21 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
         user_info_url                  => 'https://cilogon.org/oauth2/userinfo',
         token_url                      => 'https://cilogon.org/oauth2/token',
         authorization_url              => 'https://cilogon.org/authorize',
+        jwks_url                       => 'https://cilogon.org/jwks',
+        gui_order                      => 3,
+        sync_mode                      => 'FORCE',
+      }
+      keycloak_identity_provider { 'foo on test':
+        ensure                         => 'present',
+        display_name                   => 'foo',
+        provider_id                    => 'keycloak-oidc',
+        first_broker_login_flow_alias  => 'browser',
+        client_id                      => 'foobar',
+        client_secret                  => 'supersecret',
+        user_info_url                  => 'https://foo/userinfo',
+        token_url                      => 'https://foo/token',
+        authorization_url              => 'https://foo/authorize',
+        gui_order                      => 4,
       }
       EOS
 
@@ -64,7 +110,25 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/cilogon -r test' do
         data = JSON.parse(stdout)
         expect(data['enabled']).to eq(true)
+        expect(data['displayName']).to eq('CILogon')
+        expect(data['providerId']).to eq('oidc')
+        expect(data['config']['jwksUrl']).to eq('https://cilogon.org/jwks')
         expect(data['firstBrokerLoginFlowAlias']).to eq('first broker login')
+        expect(data['config']['guiOrder']).to eq('3')
+        expect(data['config']['syncMode']).to eq('FORCE')
+      end
+    end
+
+    it 'has created keycloak-oidc identity provider' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/foo -r test' do
+        data = JSON.parse(stdout)
+        expect(data['enabled']).to eq(true)
+        expect(data['displayName']).to eq('foo')
+        expect(data['providerId']).to eq('keycloak-oidc')
+        expect(data['config']['userInfoUrl']).to eq('https://foo/userinfo')
+        expect(data['config']['tokenUrl']).to eq('https://foo/token')
+        expect(data['config']['authorizationUrl']).to eq('https://foo/authorize')
+        expect(data['config']['guiOrder']).to eq('4')
       end
     end
   end

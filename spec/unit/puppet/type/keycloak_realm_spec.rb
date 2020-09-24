@@ -122,6 +122,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       :smtp_server_auth,
       :smtp_server_starttls,
       :smtp_server_ssl,
+      :brute_force_protected,
     ].each do |p|
       it "should accept true for #{p}" do
         config[p] = true
