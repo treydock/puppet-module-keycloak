@@ -2641,6 +2641,14 @@ rememberMe
 
 Default value: false
 
+##### `registration_allowed`
+
+Valid values: `true`, `false`
+
+registrationAllowed
+
+Default value: false
+
 ##### `login_with_email_allowed`
 
 Valid values: `true`, `false`
