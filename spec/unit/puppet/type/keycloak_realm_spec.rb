@@ -114,6 +114,7 @@ describe Puppet::Type.type(:keycloak_realm) do
     # Test boolean properties
     [
       :remember_me,
+      :registration_allowed,
       :login_with_email_allowed,
       :internationalization_enabled,
       :events_enabled,
