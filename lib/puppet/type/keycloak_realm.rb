@@ -261,31 +261,4 @@ Manage Keycloak realms
     desc 'bruteForceProtected'
     newvalues(:true, :false)
   end
-
-  autorequire(:keycloak_flow) do
-    requires = []
-    catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
-      next if self[:name] != resource[:realm]
-      if self[:browser_flow] == resource[:alias]
-        requires << resource.name
-      end
-      if self[:registration_flow] == resource[:alias]
-        requires << resource.name
-      end
-      if self[:direct_grant_flow] == resource[:alias]
-        requires << resource.name
-      end
-      if self[:reset_credentials_flow] == resource[:alias]
-        requires << resource.name
-      end
-      if self[:client_authentication_flow] == resource[:alias]
-        requires << resource.name
-      end
-      if self[:docker_authentication_flow] == resource[:alias]
-        requires << resource.name
-      end
-    end
-    requires
-  end
 end
