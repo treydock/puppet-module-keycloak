@@ -192,4 +192,15 @@ describe Puppet::Type.type(:keycloak_realm) do
     expect(rel.source.ref).to eq(file.ref)
     expect(rel.target.ref).to eq(resource.ref)
   end
+
+  it 'autorequires browser flow' do
+    config[:browser_flow] = 'foo'
+    flow = Puppet::Type.type(:keycloak_flow).new(name: 'foo', realm: 'test')
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource resource
+    catalog.add_resource flow
+    rel = resource.autorequire[0]
+    expect(rel.source.ref).to eq(flow.ref)
+    expect(rel.target.ref).to eq(resource.ref)
+  end
 end

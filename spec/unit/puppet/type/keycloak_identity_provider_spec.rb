@@ -266,6 +266,17 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
+  it 'autorequires browser flow' do
+    config[:first_broker_login_flow_alias] = 'foo'
+    flow = Puppet::Type.type(:keycloak_flow).new(name: 'foo', realm: 'test')
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource resource
+    catalog.add_resource flow
+    rel = resource.autorequire[0]
+    expect(rel.source.ref).to eq(flow.ref)
+    expect(rel.target.ref).to eq(resource.ref)
+  end
+
   it 'requires realm' do
     config[:ensure] = :present
     config[:provider_id] = 'oidc'

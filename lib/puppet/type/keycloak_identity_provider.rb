@@ -291,4 +291,19 @@ Manage Keycloak identity providers
       end
     end
   end
+
+  autorequire(:keycloak_flow) do
+    requires = []
+    catalog.resources.each do |resource|
+      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
+      next if self[:realm] != resource[:realm]
+      if self[:first_broker_login_flow_alias] == resource[:alias]
+        requires << resource.name
+      end
+      if self[:post_broker_login_flow_alias] == resource[:alias]
+        requires << resource.name
+      end
+    end
+    requires
+  end
 end
