@@ -1,0 +1,37 @@
+[ {
+  "id" : "179892ab-2a2c-43f4-9ddb-08312df71b03",
+  "alias" : "direct grant"
+}, {
+  "id" : "5a6bbfbb-5096-4d7b-bdcd-819145a10bb1",
+  "alias" : "browser"
+}, {
+  "id" : "6a54fc22-389c-421c-94eb-13aa8a6bc89f",
+  "alias" : "registration"
+}, {
+  "id" : "80412938-9327-4f98-bda0-3a8a2b20b6f7",
+  "alias" : "reset credentials"
+}, {
+  "id" : "9d85d580-841a-47c5-8e5d-c30d0fa62d8f",
+  "alias" : "first broker login"
+}, {
+  "id" : "a63b4f41-1eca-4ec1-a6f0-3f0fe22af31d",
+  "alias" : "cilogon-flow2"
+}, {
+  "id" : "browser-with-duo-osc",
+  "alias" : "browser-with-duo"
+}, {
+  "id" : "c40f1064-dfb9-4af2-85d3-5179b4316c5d",
+  "alias" : "copy-browser-with-duo"
+}, {
+  "id" : "d4b835f9-f5ab-4508-9006-22d074a05487",
+  "alias" : "clients"
+}, {
+  "id" : "e033144f-6148-499b-bb3c-01a7c065d0c2",
+  "alias" : "docker auth"
+}, {
+  "id" : "fac37945-1aa2-40cb-8bb4-fbcbe74215bc",
+  "alias" : "cilogon-flow"
+}, {
+  "id" : "identity-provider-duo-osc",
+  "alias" : "identity-provider-duo"
+} ]

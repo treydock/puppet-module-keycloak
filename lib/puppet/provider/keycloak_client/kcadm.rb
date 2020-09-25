@@ -18,6 +18,17 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
     ]
   end
 
+  def self.auth_flow_properties
+    {
+      browser_flow: 'browser',
+      direct_grant_flow: 'direct_grant',
+    }
+  end
+
+  def auth_flow_properties
+    self.class.auth_flow_properties
+  end
+
   def attribute_key(property)
     if dot_attributes_properties.include?(property)
       property.to_s.tr('_', '.')
@@ -65,6 +76,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
           dot_key = property.to_s.tr('_', '.')
           key = property.to_s
           attributes = d['attributes'] || {}
+          auth_flows = d['authenticationFlowBindingOverrides'] || {}
           if property == :secret
             value = secret
           elsif d.key?(camel_key)
@@ -73,6 +85,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
             value = attributes[dot_key]
           elsif attributes.key?(key)
             value = attributes[key]
+          elsif auth_flows.key?(auth_flow_properties[property])
+            flow_alias = flow_ids(realm)[auth_flows[auth_flow_properties[property]]]
+            value = flow_alias
           end
           if !!value == value # rubocop:disable Style/DoubleNegation
             value = value.to_s.to_sym
@@ -113,6 +128,32 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
     @scope_map
   end
 
+  def self.flow_ids(realm)
+    @flow_ids = {} unless @flow_ids
+    return @flow_ids[realm] if @flow_ids[realm]
+    output = kcadm('get', 'authentication/flows', realm, nil, ['id', 'alias'])
+    begin
+      data = JSON.parse(output)
+    rescue JSON::ParserError
+      Puppet.debug('Unable to parse output from kcadm get authentication/flows')
+      return {}
+    end
+    @flow_ids[realm] = {}
+    data.each do |d|
+      @flow_ids[realm][d['alias']] = d['id']
+      @flow_ids[realm][d['id']] = d['alias']
+    end
+    @flow_ids[realm]
+  end
+
+  def flow_ids
+    @flow_ids = {} unless @flow_ids
+    return @flow_ids unless @flow_ids.empty?
+    self.class.instance_variable_set(:@flow_ids, nil)
+    @flow_ids = self.class.flow_ids(resource[:realm])
+    @flow_ids
+  end
+
   def create
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
@@ -130,6 +171,12 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
           data[:attributes] = {}
         end
         data[:attributes][attribute_key(property)] = value
+      elsif auth_flow_properties.include?(property)
+        unless data.key?(:authenticationFlowBindingOverrides)
+          data[:authenticationFlowBindingOverrides] = {}
+        end
+        flow_id = flow_ids[value]
+        data[:authenticationFlowBindingOverrides][auth_flow_properties[property]] = flow_id
       else
         data[camelize(property)] = value
       end
@@ -231,6 +278,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
 
       data = {}
       data[:clientId] = resource[:client_id]
+      data[:authenticationFlowBindingOverrides] = {}
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes].include?(property)
         next unless @property_flush[property.to_sym]
@@ -241,6 +289,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
             data[:attributes] = {}
           end
           data[:attributes][attribute_key(property)] = value
+        elsif auth_flow_properties.include?(property)
+          flow_id = value.nil? ? nil : flow_ids[value]
+          data[:authenticationFlowBindingOverrides][auth_flow_properties[property]] = flow_id
         else
           data[camelize(property)] = value
         end

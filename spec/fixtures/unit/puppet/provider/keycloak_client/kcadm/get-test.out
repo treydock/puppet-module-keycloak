@@ -22,7 +22,10 @@
   "clientTemplate" : "oidc-clients",
   "useTemplateConfig" : false,
   "useTemplateScope" : true,
-  "useTemplateMappers" : true
+  "useTemplateMappers" : true,
+  "authenticationFlowBindingOverrides" : {
+    "browser" : "5a6bbfbb-5096-4d7b-bdcd-819145a10bb1"
+  }
 }, {
   "id" : "c34ca6ea-f447-4948-9f5e-78020af6755f",
   "clientId" : "account",

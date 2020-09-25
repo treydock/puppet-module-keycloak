@@ -16,6 +16,8 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       allow(described_class).to receive(:kcadm).with('get', 'clients', 'master').and_return(my_fixture_read('get-master.out'))
       allow(described_class).to receive(:kcadm).with('get', 'clients', 'test').and_return(my_fixture_read('get-test.out'))
       allow(described_class).to receive(:kcadm).with('get', 'clients/example.com/client-secret', 'test').and_return(my_fixture_read('get-client-secret.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'master', nil, ['id', 'alias']).and_return('[]')
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['id', 'alias']).and_return(my_fixture_read('get-flows.out'))
       expect(described_class.instances.length).to eq(7 + 6)
     end
 
@@ -24,8 +26,11 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       allow(described_class).to receive(:kcadm).with('get', 'clients', 'master').and_return(my_fixture_read('get-master.out'))
       allow(described_class).to receive(:kcadm).with('get', 'clients', 'test').and_return(my_fixture_read('get-test.out'))
       allow(described_class).to receive(:kcadm).with('get', 'clients/example.com/client-secret', 'test').and_return(my_fixture_read('get-client-secret.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'master', nil, ['id', 'alias']).and_return('[]')
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['id', 'alias']).and_return(my_fixture_read('get-flows.out'))
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
       expect(property_hash[:name]).to eq('example.com on test')
+      expect(property_hash[:browser_flow]).to eq('browser')
     end
   end
   #   describe 'self.prefetch' do
@@ -51,6 +56,7 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
   #   end
   describe 'create' do
     it 'creates a realm' do
+      resource[:browser_flow] = 'browser'
       temp = Tempfile.new('keycloak_client')
       allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
       allow(resource.provider).to receive(:kcadm).with('get', 'client-scopes', 'test', nil, ['id', 'name']).and_return(my_fixture_read('get-scopes.out'))
@@ -61,9 +67,13 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/optional-client-scopes/a83d9575-d122-4af1-afb0-10edb851798e', 'test')
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/optional-client-scopes/dbd3b1c1-9159-46d9-a879-9602972f1994', 'test')
       expect(resource.provider).to receive(:kcadm).with('update', 'clients/foo/default-client-scopes/ee85ec64-4853-4fd4-a2f4-ff578016c9b5', 'test')
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['id', 'alias']).and_return(my_fixture_read('get-flows.out'))
       resource.provider.create
       property_hash = resource.provider.instance_variable_get('@property_hash')
       expect(property_hash[:ensure]).to eq(:present)
+      f = File.read(temp.path)
+      data = JSON.parse(f)
+      expect(data['authenticationFlowBindingOverrides']['browser']).to eq('5a6bbfbb-5096-4d7b-bdcd-819145a10bb1')
     end
   end
 
@@ -101,6 +111,20 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       resource.provider.default_client_scopes = ['openid-connect-clients']
       resource.provider.redirect_uris = ['foobar']
       resource.provider.flush
+    end
+
+    it 'updates flow' do
+      hash = resource.to_hash
+      resource.provider.instance_variable_set(:@property_hash, hash)
+      temp = Tempfile.new('keycloak_client')
+      allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['id', 'alias']).and_return(my_fixture_read('get-flows.out'))
+      expect(resource.provider).to receive(:kcadm).with('update', 'clients/foo', 'test', temp.path)
+      resource.provider.browser_flow = 'browser'
+      resource.provider.flush
+      f = File.read(temp.path)
+      data = JSON.parse(f)
+      expect(data['authenticationFlowBindingOverrides']['browser']).to eq('5a6bbfbb-5096-4d7b-bdcd-819145a10bb1')
     end
   end
 end
