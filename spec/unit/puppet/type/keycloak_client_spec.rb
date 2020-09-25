@@ -72,6 +72,8 @@ describe Puppet::Type.type(:keycloak_client) do
     redirect_uris: [],
     web_origins: [],
     login_theme: 'absent',
+    browser_flow: :absent,
+    direct_grant_flow: :absent,
   }
 
   describe 'basic properties' do
@@ -81,6 +83,8 @@ describe Puppet::Type.type(:keycloak_client) do
       :login_theme,
       :root_url,
       :base_url,
+      :browser_flow,
+      :direct_grant_flow,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'
@@ -201,6 +205,17 @@ describe Puppet::Type.type(:keycloak_client) do
     catalog.add_resource keycloak_protocol_mapper
     rel = resource.autorequire[0]
     expect(rel.source.ref).to eq(keycloak_protocol_mapper.ref)
+    expect(rel.target.ref).to eq(resource.ref)
+  end
+
+  it 'autorequires browser flow' do
+    config[:browser_flow] = 'foo'
+    flow = Puppet::Type.type(:keycloak_flow).new(name: 'foo', realm: 'test')
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource resource
+    catalog.add_resource flow
+    rel = resource.autorequire[0]
+    expect(rel.source.ref).to eq(flow.ref)
     expect(rel.target.ref).to eq(resource.ref)
   end
 end

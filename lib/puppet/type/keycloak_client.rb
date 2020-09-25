@@ -175,6 +175,16 @@ Manage Keycloak clients
     desc 'access.token.lifespan'
   end
 
+  newproperty(:browser_flow) do
+    desc 'authenticationFlowBindingOverrides.browser (Use flow alias, not ID)'
+    defaultto :absent
+  end
+
+  newproperty(:direct_grant_flow) do
+    desc 'authenticationFlowBindingOverrides.direct_grant (Use flow alias, not ID)'
+    defaultto :absent
+  end
+
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
@@ -197,6 +207,21 @@ Manage Keycloak clients
         requires << resource.name
       end
       if self[:optional_client_scopes].include?(resource[:client_scope])
+        requires << resource.name
+      end
+    end
+    requires
+  end
+
+  autorequire(:keycloak_flow) do
+    requires = []
+    catalog.resources.each do |resource|
+      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
+      next if self[:realm] != resource[:realm]
+      if self[:browser_flow] == resource[:alias]
+        requires << resource.name
+      end
+      if self[:direct_grant_flow] == resource[:alias]
         requires << resource.name
       end
     end

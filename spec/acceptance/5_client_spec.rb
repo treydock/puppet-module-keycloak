@@ -9,6 +9,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         datasource_driver => 'mysql',
       }
       keycloak_realm { 'test': ensure => 'present' }
+      keycloak_flow { 'foo on test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
         realm                          => 'test',
         root_url                       => 'https://test.foo.bar',
@@ -18,6 +19,18 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         login_theme                    => 'keycloak',
         authorization_services_enabled => false,
         service_accounts_enabled       => true,
+        browser_flow                   => 'foo',
+      }
+      keycloak_client { 'test.foo.baz':
+        realm                          => 'test',
+        root_url                       => 'https://test.foo.bar',
+        redirect_uris                  => ['https://test.foo.bar/test1'],
+        default_client_scopes          => ['address'],
+        secret                         => 'foobar',
+        login_theme                    => 'keycloak',
+        authorization_services_enabled => false,
+        service_accounts_enabled       => true,
+        browser_flow                   => 'foo',
       }
       EOS
 
@@ -36,6 +49,14 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(data['attributes']['login_theme']).to eq('keycloak')
         expect(data['authorizationServicesEnabled']).to eq(nil)
         expect(data['serviceAccountsEnabled']).to eq(true)
+        expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
+      end
+    end
+
+    it 'has created a client2' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz -r test' do
+        data = JSON.parse(stdout)
+        expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
       end
     end
 
@@ -64,6 +85,17 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         authorization_services_enabled => true,
         service_accounts_enabled       => true,
       }
+      keycloak_client { 'test.foo.baz':
+        realm                          => 'test',
+        root_url                       => 'https://test.foo.bar',
+        redirect_uris                  => ['https://test.foo.bar/test1'],
+        default_client_scopes          => ['address'],
+        secret                         => 'foobar',
+        login_theme                    => 'keycloak',
+        authorization_services_enabled => false,
+        service_accounts_enabled       => true,
+        browser_flow                   => 'browser',
+      }
       EOS
 
       apply_manifest(pp, catch_failures: true)
@@ -81,6 +113,24 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(data['attributes']['login_theme']).to be_nil
         expect(data['authorizationServicesEnabled']).to eq(true)
         expect(data['serviceAccountsEnabled']).to eq(true)
+        expect(data['authenticationFlowBindingOverrides']).to eq({})
+      end
+    end
+
+    it 'has updated a client flow' do
+      browser_id = nil
+      on hosts, "/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows -r test --fields 'id,alias'" do
+        data = JSON.parse(stdout)
+        data.each do |d|
+          if d['alias'] == 'browser'
+            browser_id = d['id']
+            break
+          end
+        end
+      end
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz -r test' do
+        data = JSON.parse(stdout)
+        expect(data['authenticationFlowBindingOverrides']['browser']).to eq(browser_id)
       end
     end
 
