@@ -1242,6 +1242,18 @@ Default value: absent
 
 access.token.lifespan
 
+##### `browser_flow`
+
+authenticationFlowBindingOverrides.browser (Use flow alias, not ID)
+
+Default value: absent
+
+##### `direct_grant_flow`
+
+authenticationFlowBindingOverrides.direct_grant (Use flow alias, not ID)
+
+Default value: absent
+
 #### Parameters
 
 The following parameters are available in the `keycloak_client` type.

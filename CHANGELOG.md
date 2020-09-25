@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.18.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.18.0) (2020-09-25)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.17.0...v6.18.0)
+
+### Added
+
+- Support flow overrides on clients [\#161](https://github.com/treydock/puppet-module-keycloak/pull/161) ([treydock](https://github.com/treydock))
+- Add registration\_allowed to keycloak\_realm [\#160](https://github.com/treydock/puppet-module-keycloak/pull/160) ([anlambert](https://github.com/anlambert))
+- Have realms and identity providers auto require their configured flows [\#159](https://github.com/treydock/puppet-module-keycloak/pull/159) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Realm can not depend on flow that depends on realm [\#162](https://github.com/treydock/puppet-module-keycloak/pull/162) ([treydock](https://github.com/treydock))
+
 ## [v6.17.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.17.0) (2020-09-24)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.16.0...v6.17.0)
@@ -166,6 +180,7 @@ All notable changes to this project will be documented in this file. The format 
 - Add content\_security\_policy to keycloak\_realm [\#112](https://github.com/treydock/puppet-module-keycloak/pull/112) ([treydock](https://github.com/treydock))
 - Improve handling of realm flow assignment to avoid errors [\#111](https://github.com/treydock/puppet-module-keycloak/pull/111) ([treydock](https://github.com/treydock))
 - Support managing realm flow properties [\#110](https://github.com/treydock/puppet-module-keycloak/pull/110) ([treydock](https://github.com/treydock))
+- Add support for access.token.lifespan client attribute [\#109](https://github.com/treydock/puppet-module-keycloak/pull/109) ([mattock](https://github.com/mattock))
 
 ### Fixed
 
@@ -177,7 +192,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Add support for access.token.lifespan client attribute [\#109](https://github.com/treydock/puppet-module-keycloak/pull/109) ([mattock](https://github.com/mattock))
 - Add two new realm properties [\#108](https://github.com/treydock/puppet-module-keycloak/pull/108) ([mattock](https://github.com/mattock))
 
 ## [v6.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.0.0) (2019-12-18)
