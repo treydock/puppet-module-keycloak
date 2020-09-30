@@ -273,4 +273,9 @@ Manage Keycloak realms
     desc 'bruteForceProtected'
     newvalues(:true, :false)
   end
+
+  newproperty(:roles, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'roles'
+    defaultto ['offline_access', 'uma_authorization']
+  end
 end

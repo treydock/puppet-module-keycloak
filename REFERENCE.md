@@ -2833,6 +2833,12 @@ Valid values: `true`, `false`
 
 bruteForceProtected
 
+##### `roles`
+
+List of non composite realm roles to define.
+
+Default value: ['offline_access', 'uma_authorization']
+
 #### Parameters
 
 The following parameters are available in the `keycloak_realm` type.

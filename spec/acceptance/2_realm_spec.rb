@@ -22,6 +22,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         smtp_server_reply_to              => 'webmaster@example.org',
         smtp_server_reply_to_display_name => 'Webmaster',
         brute_force_protected             => false,
+        roles                             => ['offline_access', 'uma_authorization', 'new_role'],
       }
       EOS
 
@@ -86,6 +87,20 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['smtpServer']['replyToDisplayName']).to eq('Webmaster')
       end
     end
+
+    it 'has correct roles settings' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r test' do
+        data = JSON.parse(stdout)
+        expected_roles = ['new_role', 'offline_access', 'uma_authorization']
+        realm_roles = []
+        data.each do |d|
+          unless d['composite']
+            realm_roles.push(d['name'])
+          end
+        end
+        expect(expected_roles - realm_roles).to eq([])
+      end
+    end
   end
 
   context 'updates realm' do
@@ -123,6 +138,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         smtp_server_reply_to              => 'webmaster@example.org',
         smtp_server_reply_to_display_name => 'Hostmaster',
         brute_force_protected             => true,
+        roles                             => ['uma_authorization', 'new_role', 'other_new_role'],
       }
       EOS
 
@@ -172,6 +188,20 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['eventsListeners']).to eq(['jboss-logging'])
         expect(data['adminEventsEnabled']).to eq(true)
         expect(data['adminEventsDetailsEnabled']).to eq(true)
+      end
+    end
+
+    it 'has updated roles settings' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r test' do
+        data = JSON.parse(stdout)
+        expected_roles = ['new_role', 'other_new_role', 'uma_authorization']
+        realm_roles = []
+        data.each do |d|
+          unless d['composite']
+            realm_roles.push(d['name'])
+          end
+        end
+        expect(expected_roles - realm_roles).to eq([])
       end
     end
   end

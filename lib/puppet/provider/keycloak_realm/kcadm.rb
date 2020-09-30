@@ -55,6 +55,25 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     self.class.get_client_scopes(*args)
   end
 
+  def self.get_realm_roles(realm)
+    output = kcadm('get', 'roles', realm)
+    Puppet.debug("Realms #{realm} roles: #{output}")
+    data = JSON.parse(output)
+    roles = []
+    data.each do |d|
+      # filter out 'create-realm' role from master realm as it should not be removed
+      if !d['composite'] && d['name'] != 'create-realm'
+        roles.push(d['name'])
+      end
+    end
+    Puppet.debug("Returned roles: #{roles}")
+    roles
+  end
+
+  def get_realm_roles(*args)
+    self.class.get_realm_roles(*args)
+  end
+
   def self.get_events_config(realm)
     output = kcadm('get', 'events/config', realm)
     Puppet.debug("#{realm} events/config: #{output}")
@@ -97,7 +116,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       realm[:name] = d['realm']
       events_config = get_events_config(d['realm'])
       type_properties.each do |property|
-        next if [:default_client_scopes, :optional_client_scopes].include?(property)
+        next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
         value = if property.to_s =~ %r{events}
                   events_config[camelize(property)]
                 elsif browser_security_headers.include?(property)
@@ -116,6 +135,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       realm[:default_client_scopes] = default_scopes.keys.map { |k| k.to_s }
       optional_scopes = get_client_scopes(realm[:name], 'optional')
       realm[:optional_client_scopes] = optional_scopes.keys.map { |k| k.to_s }
+      realm[:roles] = get_realm_roles(realm[:name])
       realms << new(realm)
     end
     realms
@@ -138,7 +158,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     data[:realm] = resource[:name]
     type_properties.each do |property|
       next if flow_properties.include?(property)
-      next if [:default_client_scopes, :optional_client_scopes].include?(property)
+      next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
       if self.class.browser_security_headers.include?(property) && !data.key?('browserSecurityHeaders')
         data['browserSecurityHeaders'] = {}
       end
@@ -226,6 +246,33 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
         raise Puppet::Error, "kcadm update realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}: #{e.message}"
       end
     end
+    role = nil
+    if resource[:roles]
+      roles = get_realm_roles(resource[:name])
+      remove_roles = roles - resource[:roles]
+      begin
+        remove_roles.each do |s|
+          role = s
+          kcadm('delete', "roles/#{role}", resource[:name])
+        end
+      rescue Puppet::ExecutionFailure => e
+        raise Puppet::Error, "kcadm delete realms/#{resource[:name]}/roles/#{role}: #{e.message}"
+      end
+      add_roles = resource[:roles] - roles
+      begin
+        add_roles.each do |s|
+          role = s
+          role_data = { 'description' => "${role_#{role}}", 'name' => role }
+          role_data_t = Tempfile.new('keycloak_realm_role')
+          role_data_t.write(JSON.pretty_generate(role_data))
+          role_data_t.close
+          Puppet.debug(IO.read(role_data_t.path))
+          kcadm('create', 'roles', resource[:name], role_data_t.path)
+        end
+      rescue Puppet::ExecutionFailure => e
+        raise Puppet::Error, "kcadm create realms/#{resource[:name]}/roles/#{role}: #{e.message}"
+      end
+    end
     unless events_config.empty?
       events_config_t = Tempfile.new('keycloak_events_config')
       events_config_t.write(JSON.pretty_generate(events_config))
@@ -270,7 +317,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       data = {}
       events_config = {}
       type_properties.each do |property|
-        next if [:default_client_scopes, :optional_client_scopes].include?(property)
+        next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
         if flow_properties.include?(property) && !available_flows(resource[:name]).include?(resource[property.to_sym])
           Puppet.warning("Keycloak_realm[#{resource[:name]}]: #{property} '#{resource[property.to_sym]}' does not exist, skipping")
           next
@@ -363,6 +410,32 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
           end
         rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update realms/#{resource[:name]}/default-optional-client-scopes/#{scope_id}: #{e.message}"
+        end
+      end
+      role = nil
+      if @property_flush[:roles]
+        remove_roles = @property_hash[:roles] - @property_flush[:roles]
+        begin
+          remove_roles.each do |s|
+            role = s
+            kcadm('delete', "roles/#{role}", resource[:name])
+          end
+        rescue Puppet::ExecutionFailure => e
+          raise Puppet::Error, "kcadm delete realms/#{resource[:name]}/roles/#{role}: #{e.message}"
+        end
+        add_roles = @property_flush[:roles] - @property_hash[:roles]
+        begin
+          add_roles.each do |s|
+            role = s
+            role_data = { 'description' => "${role_#{role}}", 'name' => role }
+            role_data_t = Tempfile.new('keycloak_realm_role')
+            role_data_t.write(JSON.pretty_generate(role_data))
+            role_data_t.close
+            Puppet.debug(IO.read(role_data_t.path))
+            kcadm('create', 'roles', resource[:name], role_data_t.path)
+          end
+        rescue Puppet::ExecutionFailure => e
+          raise Puppet::Error, "kcadm create realms/#{resource[:name]}/roles/#{role}: #{e.message}"
         end
       end
       unless events_config.empty?
