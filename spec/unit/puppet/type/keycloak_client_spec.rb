@@ -144,6 +144,7 @@ describe Puppet::Type.type(:keycloak_client) do
       :optional_client_scopes,
       :redirect_uris,
       :web_origins,
+      :roles,
     ].each do |p|
       it "should accept array for #{p}" do
         config[p] = ['foo', 'bar']

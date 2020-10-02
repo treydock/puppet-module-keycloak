@@ -1254,6 +1254,12 @@ authenticationFlowBindingOverrides.direct_grant (Use flow alias, not ID)
 
 Default value: absent
 
+##### `roles`
+
+List of non composite client roles to define.
+
+Default value: []
+
 #### Parameters
 
 The following parameters are available in the `keycloak_client` type.

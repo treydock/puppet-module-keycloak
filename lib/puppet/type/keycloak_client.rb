@@ -185,6 +185,11 @@ Manage Keycloak clients
     defaultto :absent
   end
 
+  newproperty(:roles, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'roles'
+    defaultto []
+  end
+
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
