@@ -2669,6 +2669,14 @@ loginWithEmailAllowed
 
 Default value: true
 
+##### `reset_password_allowed`
+
+Valid values: `true`, `false`
+
+resetPasswordAllowed
+
+Default value: false
+
 ##### `browser_flow`
 
 browserFlow

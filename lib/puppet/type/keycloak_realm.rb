@@ -112,6 +112,12 @@ Manage Keycloak realms
     defaultto :true
   end
 
+  newproperty(:reset_password_allowed, boolean: true) do
+    desc 'resetPasswordAllowed'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:browser_flow) do
     desc 'browserFlow'
     defaultto('browser')
