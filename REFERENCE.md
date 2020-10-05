@@ -2677,6 +2677,14 @@ resetPasswordAllowed
 
 Default value: false
 
+##### `verify_email`
+
+Valid values: `true`, `false`
+
+verifyEmail
+
+Default value: false
+
 ##### `browser_flow`
 
 browserFlow

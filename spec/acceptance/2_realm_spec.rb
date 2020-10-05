@@ -36,6 +36,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['bruteForceProtected']).to eq(false)
         expect(data['registrationAllowed']).to eq(false)
         expect(data['resetPasswordAllowed']).to eq(false)
+        expect(data['verifyEmail']).to eq(false)
       end
     end
 
@@ -99,6 +100,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         remember_me => true,
         registration_allowed => true,
         reset_password_allowed => true,
+        verify_email => true,
         access_code_lifespan => 3600,
         access_token_lifespan => 3600,
         sso_session_idle_timeout => 3600,
@@ -134,6 +136,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['rememberMe']).to eq(true)
         expect(data['registrationAllowed']).to eq(true)
         expect(data['resetPasswordAllowed']).to eq(true)
+        expect(data['verifyEmail']).to eq(true)
         expect(data['accessCodeLifespan']).to eq(3600)
         expect(data['accessTokenLifespan']).to eq(3600)
         expect(data['ssoSessionIdleTimeout']).to eq(3600)
