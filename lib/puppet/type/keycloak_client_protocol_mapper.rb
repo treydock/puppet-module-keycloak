@@ -55,6 +55,7 @@ Manage Keycloak protocol mappers
     `saml-user-property-mapper` for `protocol` `saml`.
     DESC
     newvalues(
+      'oidc-usermodel-client-role-mapper',
       'oidc-usermodel-property-mapper',
       'oidc-full-name-mapper',
       'oidc-group-membership-mapper',
@@ -239,7 +240,7 @@ Manage Keycloak protocol mappers
   end
 
   validate do
-    if self[:protocol] == 'openid-connect' && !['oidc-usermodel-property-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper', 'oidc-audience-mapper'].include?(self[:type])
+    if self[:protocol] == 'openid-connect' && !['oidc-usermodel-client-role-mapper', 'oidc-usermodel-property-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper', 'oidc-audience-mapper'].include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
     if self[:protocol] == 'saml' && !['saml-user-property-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])

@@ -42,7 +42,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
           if protocol_mapper[:type] == 'oidc-usermodel-property-mapper' || protocol_mapper[:type] == 'saml-user-property-mapper'
             protocol_mapper[:user_attribute] = d['config']['user.attribute']
           end
-          if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(protocol_mapper[:type])
+          if ['oidc-usermodel-client-role-mapper', 'oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:claim_name] = d['config']['claim.name']
             protocol_mapper[:json_type_label] = d['config']['jsonType.label']
           end
@@ -105,7 +105,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
     if resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper'
       data[:config][:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
     end
-    if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(resource[:type])
+    if ['oidc-usermodel-client-role-mapper', 'oidc-group-membership-mapper'].include?(resource[:type])
       data[:config][:'claim.name'] = resource[:claim_name] if resource[:claim_name]
       data[:config][:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
     end
@@ -189,7 +189,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
       if resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper'
         config[:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
       end
-      if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(resource[:type])
+      if ['oidc-usermodel-client-role-mapper', 'oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(resource[:type])
         config[:'claim.name'] = resource[:claim_name] if resource[:claim_name]
         config[:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
       end
