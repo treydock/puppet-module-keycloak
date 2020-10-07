@@ -20,6 +20,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         authorization_services_enabled => false,
         service_accounts_enabled       => true,
         browser_flow                   => 'foo',
+        roles                          => ['bar_role', 'other_bar_role'],
       }
       keycloak_client { 'test.foo.baz':
         realm                          => 'test',
@@ -66,6 +67,27 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(data['value']).to eq('foobar')
       end
     end
+
+    it 'has updated roles settings for client' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/roles -r test' do
+        data = JSON.parse(stdout)
+        expected_roles = ['bar_role', 'other_bar_role']
+        client_roles = []
+        data.each do |d|
+          unless d['composite']
+            client_roles.push(d['name'])
+          end
+        end
+        expect(expected_roles - client_roles).to eq([])
+      end
+    end
+
+    it 'has not updated roles settings for client2' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz/roles -r test' do
+        data = JSON.parse(stdout)
+        expect(data).to eq([])
+      end
+    end
   end
 
   context 'updates client' do
@@ -84,6 +106,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         secret                         => 'foobar',
         authorization_services_enabled => true,
         service_accounts_enabled       => true,
+        roles                          => ['bar_role'],
       }
       keycloak_client { 'test.foo.baz':
         realm                          => 'test',
@@ -95,6 +118,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         authorization_services_enabled => false,
         service_accounts_enabled       => true,
         browser_flow                   => 'browser',
+        roles                          => ['baz_role'],
       }
       EOS
 
@@ -138,6 +162,34 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do
         data = JSON.parse(stdout)
         expect(data['value']).to eq('foobar')
+      end
+    end
+
+    it 'has updated client roles settings' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/roles -r test' do
+        data = JSON.parse(stdout)
+        expected_roles = ['bar_role']
+        client_roles = []
+        data.each do |d|
+          unless d['composite']
+            client_roles.push(d['name'])
+          end
+        end
+        expect(expected_roles - client_roles).to eq([])
+      end
+    end
+
+    it 'has updated client2 roles settings' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz/roles -r test' do
+        data = JSON.parse(stdout)
+        expected_roles = ['baz_role']
+        client_roles = []
+        data.each do |d|
+          unless d['composite']
+            client_roles.push(d['name'])
+          end
+        end
+        expect(expected_roles - client_roles).to eq([])
       end
     end
   end
