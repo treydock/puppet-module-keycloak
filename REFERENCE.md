@@ -1256,7 +1256,7 @@ Default value: absent
 
 ##### `roles`
 
-List of non composite client roles to define.
+roles
 
 Default value: []
 
@@ -2841,7 +2841,7 @@ bruteForceProtected
 
 ##### `roles`
 
-List of non composite realm roles to define.
+roles
 
 Default value: ['offline_access', 'uma_authorization']
 

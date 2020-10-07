@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.19.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.19.0) (2020-10-07)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.18.0...v6.19.0)
+
+### Added
+
+- Enable roles management at realm and client level [\#164](https://github.com/treydock/puppet-module-keycloak/pull/164) ([anlambert](https://github.com/anlambert))
+- Add more realm login related properties [\#163](https://github.com/treydock/puppet-module-keycloak/pull/163) ([anlambert](https://github.com/anlambert))
+
 ## [v6.18.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.18.0) (2020-09-25)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.17.0...v6.18.0)
@@ -180,7 +189,6 @@ All notable changes to this project will be documented in this file. The format 
 - Add content\_security\_policy to keycloak\_realm [\#112](https://github.com/treydock/puppet-module-keycloak/pull/112) ([treydock](https://github.com/treydock))
 - Improve handling of realm flow assignment to avoid errors [\#111](https://github.com/treydock/puppet-module-keycloak/pull/111) ([treydock](https://github.com/treydock))
 - Support managing realm flow properties [\#110](https://github.com/treydock/puppet-module-keycloak/pull/110) ([treydock](https://github.com/treydock))
-- Add support for access.token.lifespan client attribute [\#109](https://github.com/treydock/puppet-module-keycloak/pull/109) ([mattock](https://github.com/mattock))
 
 ### Fixed
 
@@ -192,6 +200,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Add support for access.token.lifespan client attribute [\#109](https://github.com/treydock/puppet-module-keycloak/pull/109) ([mattock](https://github.com/mattock))
 - Add two new realm properties [\#108](https://github.com/treydock/puppet-module-keycloak/pull/108) ([mattock](https://github.com/mattock))
 
 ## [v6.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.0.0) (2019-12-18)
@@ -490,7 +499,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - Use puppet-strings for documentation [\#30](https://github.com/treydock/puppet-module-keycloak/pull/30) ([treydock](https://github.com/treydock))
 - Add search\_scope and custom\_user\_search\_filter properties to keycloak\_ldap\_user\_provider type [\#29](https://github.com/treydock/puppet-module-keycloak/pull/29) ([treydock](https://github.com/treydock))
-- Explicitly define all type properties [\#27](https://github.com/treydock/puppet-module-keycloak/pull/27) ([treydock](https://github.com/treydock))
 - Improve acceptance tests [\#26](https://github.com/treydock/puppet-module-keycloak/pull/26) ([treydock](https://github.com/treydock))
 
 ### Fixed
@@ -503,6 +511,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Explicitly define all type properties [\#27](https://github.com/treydock/puppet-module-keycloak/pull/27) ([treydock](https://github.com/treydock))
 - Support setting auth\_type=simple related properties for keycloak\_ldap\_user\_provider type [\#24](https://github.com/treydock/puppet-module-keycloak/pull/24) ([treydock](https://github.com/treydock))
 
 ## [2.4.0](https://github.com/treydock/puppet-module-keycloak/tree/2.4.0) (2018-06-04)
