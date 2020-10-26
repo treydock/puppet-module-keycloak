@@ -39,10 +39,10 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
           protocol_mapper[:protocol] = d['protocol']
           protocol_mapper[:name] = "#{protocol_mapper[:resource_name]} for #{protocol_mapper[:client_scope]} on #{protocol_mapper[:realm]}"
           protocol_mapper[:type] = d['protocolMapper']
-          if protocol_mapper[:type] == 'oidc-usermodel-property-mapper' || protocol_mapper[:type] == 'saml-user-property-mapper'
+          if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'oidc-usermodel-attribute-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:user_attribute] = d['config']['user.attribute']
           end
-          if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(protocol_mapper[:type])
+          if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper', 'oidc-usermodel-attribute-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:claim_name] = d['config']['claim.name']
             protocol_mapper[:json_type_label] = d['config']['jsonType.label']
           end
@@ -102,10 +102,10 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
     data[:protocol] = resource[:protocol]
     data[:protocolMapper] = resource[:type]
     data[:config] = {}
-    if resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper'
+    if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
       data[:config][:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
     end
-    if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(resource[:type])
+    if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
       data[:config][:'claim.name'] = resource[:claim_name] if resource[:claim_name]
       data[:config][:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
     end
@@ -186,10 +186,10 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
       config = {}
-      if resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper'
+      if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
         config[:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
       end
-      if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(resource[:type])
+      if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
         config[:'claim.name'] = resource[:claim_name] if resource[:claim_name]
         config[:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
       end
