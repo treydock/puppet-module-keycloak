@@ -56,6 +56,7 @@ Manage Keycloak client scope protocol mappers
     DESC
     newvalues(
       'oidc-usermodel-property-mapper',
+      'oidc-usermodel-attribute-mapper',
       'oidc-full-name-mapper',
       'oidc-group-membership-mapper',
       'oidc-audience-mapper',
@@ -78,7 +79,7 @@ Manage Keycloak client scope protocol mappers
   newproperty(:user_attribute) do
     desc 'user.attribute. Default to `resource_name` for `type` `oidc-usermodel-property-mapper` or `saml-user-property-mapper`'
     defaultto do
-      if @resource[:type] == 'oidc-usermodel-property-mapper' || @resource[:type] == 'saml-user-property-mapper'
+      if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'oidc-usermodel-attribute-mapper'].include?(@resource[:type])
         @resource[:resource_name]
       else
         nil
@@ -89,7 +90,7 @@ Manage Keycloak client scope protocol mappers
   newproperty(:json_type_label) do
     desc 'json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper` and `oidc-group-membership-mapper`.'
     defaultto do
-      if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(@resource[:type])
+      if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper', 'oidc-usermodel-attribute-mapper'].include?(@resource[:type])
         'String'
       else
         nil
@@ -239,7 +240,14 @@ Manage Keycloak client scope protocol mappers
   end
 
   validate do
-    if self[:protocol] == 'openid-connect' && !['oidc-usermodel-property-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper', 'oidc-audience-mapper'].include?(self[:type])
+    openid_connect_types = [
+      'oidc-usermodel-property-mapper',
+      'oidc-full-name-mapper',
+      'oidc-group-membership-mapper',
+      'oidc-audience-mapper',
+      'oidc-usermodel-attribute-mapper',
+    ]
+    if self[:protocol] == 'openid-connect' && !openid_connect_types.include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
     if self[:protocol] == 'saml' && !['saml-user-property-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
