@@ -1413,7 +1413,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, oidc-audience-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-client-role-mapper, oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, oidc-audience-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 
@@ -2543,7 +2543,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, oidc-audience-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-usermodel-attribute-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, oidc-audience-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 
