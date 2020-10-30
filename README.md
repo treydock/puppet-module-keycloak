@@ -100,6 +100,27 @@ class { 'keycloak':
 }
 ```
 
+Configure keycloak to use a remote Oracle database.
+
+The parameter *$datasource_jar_source* is always required with Oracle database.
+The jar is downloaded to the keycloak module dir and renamed to *$datasource_jar_filename* or 'ojdbc8.jar' as default value.
+
+With a special database configuration it may be more suitable to give the complete database url 'jdbc:oracle:thin:@[...]' using the parameter *$database_url* instead of *$database_host, $database_port and $database_dbname*.
+The default value for *$database_host* is 'localhost' and for *$database_port* 1521.
+
+```puppet
+class { 'keycloak':
+    datasource_driver       => 'oracle',
+    datasource_host         => 'oracleserver.mydomain.de',
+    datasource_port         => 1521,
+    datasource_dbname       => 'keycloak',
+    datasource_username     => 'keycloak',
+    datasource_password     => 'foobar',
+    datasource_jar_source   => 'https://oracle.com/path/to/driver.jar',
+    datasource_jar_filename => 'ojdbc8.jar',
+}
+```
+
 Configure a SSL certificate truststore and add a LDAP server's certificate to the truststore.
 
 ```puppet
