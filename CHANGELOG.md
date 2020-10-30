@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.21.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.21.0) (2020-10-30)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.20.0...v6.21.0)
+
+### Added
+
+- Fixing wrong filename in module.xml for datasource oracle [\#153](https://github.com/treydock/puppet-module-keycloak/pull/153) ([zaeh](https://github.com/zaeh))
+
 ## [v6.20.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.20.0) (2020-10-27)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.19.0...v6.20.0)
@@ -384,10 +392,6 @@ All notable changes to this project will be documented in this file. The format 
 - Simplify and consolidate datasource parameters [\#63](https://github.com/treydock/puppet-module-keycloak/pull/63) ([treydock](https://github.com/treydock))
 - Set default Keycloak version to 6.0.1 [\#61](https://github.com/treydock/puppet-module-keycloak/pull/61) ([treydock](https://github.com/treydock))
 
-### Added
-
-- Use hiera v5 module data [\#62](https://github.com/treydock/puppet-module-keycloak/pull/62) ([treydock](https://github.com/treydock))
-
 ## [v3.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v3.8.0) (2019-05-23)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.7.0...v3.8.0)
@@ -428,6 +432,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Use hiera v5 module data [\#62](https://github.com/treydock/puppet-module-keycloak/pull/62) ([treydock](https://github.com/treydock))
 - manage user support [\#53](https://github.com/treydock/puppet-module-keycloak/pull/53) ([cborisa](https://github.com/cborisa))
 
 ## [3.4.0](https://github.com/treydock/puppet-module-keycloak/tree/3.4.0) (2019-02-25)
@@ -437,7 +442,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - JAVA\_OPTS via systemd unit Environment variable [\#51](https://github.com/treydock/puppet-module-keycloak/pull/51) ([danifr](https://github.com/danifr))
-- Add option for service environment file [\#50](https://github.com/treydock/puppet-module-keycloak/pull/50) ([asieraguado](https://github.com/asieraguado))
 
 ## [3.3.0](https://github.com/treydock/puppet-module-keycloak/tree/3.3.0) (2019-01-28)
 
@@ -459,6 +463,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Add option for service environment file [\#50](https://github.com/treydock/puppet-module-keycloak/pull/50) ([asieraguado](https://github.com/asieraguado))
 - Support SSSD User Provider [\#42](https://github.com/treydock/puppet-module-keycloak/pull/42) ([treydock](https://github.com/treydock))
 - Add enabled property to keycloak\_ldap\_user\_provider [\#41](https://github.com/treydock/puppet-module-keycloak/pull/41) ([treydock](https://github.com/treydock))
 

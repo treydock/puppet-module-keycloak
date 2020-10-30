@@ -351,6 +351,15 @@ This parameter is required if `datasource_driver` is `oracle`.
 
 Default value: `undef`
 
+##### `datasource_jar_filename`
+
+Data type: `Optional[String]`
+
+Specify the filename of the destination datasource jar in the module dir of keycloak.
+This parameter is only working at the moment if `datasource_driver` is `oracle`.
+
+Default value: `undef`
+
 ##### `datasource_module_source`
 
 Data type: `Optional[String]`
