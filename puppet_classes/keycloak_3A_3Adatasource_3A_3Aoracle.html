@@ -127,7 +127,18 @@
 36
 37
 38
-39</pre>
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/datasource/oracle.pp', line 5</span>
@@ -135,7 +146,7 @@
 class keycloak::datasource::oracle {
   assert_private()
 
-  $module_source = pick($keycloak::datasource_module_source, &#39;puppet:///modules/keycloak/database/oracle/module.xml&#39;)
+  $jar_filename = pick($keycloak::datasource_jar_filename, &#39;ojdbc8.jar&#39;)
   $module_dir = &quot;${keycloak::install_base}/modules/system/layers/keycloak/org/oracle/main&quot;
 
   exec { &quot;mkdir -p ${module_dir}&quot;:
@@ -151,7 +162,7 @@ class keycloak::datasource::oracle {
     mode   =&gt; &#39;0755&#39;,
   }
 
-  file { &quot;${module_dir}/oracle.jar&quot;:
+  file { &quot;${module_dir}/${jar_filename}&quot;:
     ensure =&gt; &#39;file&#39;,
     source =&gt; $keycloak::datasource_jar_source,
     owner  =&gt; $keycloak::user,
@@ -159,12 +170,23 @@ class keycloak::datasource::oracle {
     mode   =&gt; &#39;0644&#39;,
   }
 
-  file { &quot;${$module_dir}/module.xml&quot;:
+  $module_xml_defaults = {
     ensure =&gt; &#39;file&#39;,
-    source =&gt; $module_source,
     owner  =&gt; $keycloak::user,
     group  =&gt; $keycloak::group,
     mode   =&gt; &#39;0644&#39;,
+  }
+  if $keycloak::datasource_module_source {
+    $module_xml_options = {
+      source =&gt; $keycloak::datasource_module_source,
+    }
+  } else {
+    $module_xml_options = {
+      content =&gt; template(&#39;keycloak/database/oracle/module.xml.erb&#39;),
+    }
+  }
+  file { &quot;${$module_dir}/module.xml&quot;:
+    * =&gt; $module_xml_defaults + $module_xml_options,
   }
 }</pre>
       </td>

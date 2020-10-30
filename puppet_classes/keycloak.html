@@ -688,6 +688,26 @@ This parameter is required if <code>datasource_driver</code> is
   
     <li>
       
+        <span class='name'>datasource_jar_filename</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Specify the filename of the destination datasource jar in the module dir of
+keycloak. This parameter is only working at the moment if
+<code>datasource_driver</code> is <code>oracle</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>datasource_module_source</span>
       
       
@@ -1729,9 +1749,6 @@ other This module does not manage firewall changes</p>
         <pre class="lines">
 
 
-231
-232
-233
 234
 235
 236
@@ -1912,10 +1929,14 @@ other This module does not manage firewall changes</p>
 411
 412
 413
-414</pre>
+414
+415
+416
+417
+418</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 231</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 234</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1952,6 +1973,7 @@ class keycloak (
   String $datasource_password = &#39;sa&#39;,
   Optional[String] $datasource_package = undef,
   Optional[String] $datasource_jar_source = undef,
+  Optional[String] $datasource_jar_filename = undef,
   Optional[String] $datasource_module_source = undef,
   Boolean $proxy_https = false,
   Boolean $truststore = false,

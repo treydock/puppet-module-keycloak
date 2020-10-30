@@ -187,6 +187,33 @@ class { &#39;keycloak&#39;:
 }
 </code></pre>
 
+<p>Configure keycloak to use a remote Oracle database.</p>
+
+<p>The parameter <code>datasource_jar_source</code> is always required with
+Oracle database. The jar is downloaded to the keycloak module dir and
+renamed to <code>datasource_jar_filename</code> or
+<code>&#39;ojdbc8.jar&#39;</code> as default value.</p>
+
+<p>With a special database configuration it may be more suitable to give the
+complete database url <code>&#39;jdbc:oracle:thin:@[...]&#39;</code> using
+the parameter <code>database_url</code> instead of
+<code>database_host</code>, <code>database_port</code> and
+<code>database_dbname</code>. The default value with Oracle database for
+<code>database_host</code> is <code>&#39;localhost&#39;</code> and the
+default value for <code>database_port</code> is here <code>1521</code>.</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
+    datasource_driver       =&gt; &#39;oracle&#39;,
+    datasource_host         =&gt; &#39;oracleserver.mydomain.de&#39;,
+    datasource_port         =&gt; 1521,
+    datasource_dbname       =&gt; &#39;keycloak&#39;,
+    datasource_username     =&gt; &#39;keycloak&#39;,
+    datasource_password     =&gt; &#39;foobar&#39;,
+    datasource_jar_source   =&gt; &#39;https://oracle.com/path/to/driver.jar&#39;,
+    datasource_jar_filename =&gt; &#39;ojdbc8.jar&#39;,
+}
+</code></pre>
+
 <p>Configure a SSL certificate truststore and add a LDAP server&#39;s
 certificate to the truststore.</p>
 
