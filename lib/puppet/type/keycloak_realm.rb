@@ -64,6 +64,14 @@ Manage Keycloak realms
     defaultto :false
   end
 
+  newproperty(:sso_session_idle_timeout_remember_me, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'ssoSessionIdleTimeoutRememberMe'
+  end
+
+  newproperty(:sso_session_max_lifespan_remember_me, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'ssoSessionMaxLifespanRememberMe'
+  end
+
   newproperty(:sso_session_idle_timeout, parent: PuppetX::Keycloak::IntegerProperty) do
     desc 'ssoSessionIdleTimeout'
   end

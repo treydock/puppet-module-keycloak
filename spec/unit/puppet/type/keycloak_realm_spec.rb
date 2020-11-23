@@ -91,6 +91,8 @@ describe Puppet::Type.type(:keycloak_realm) do
   describe 'integer properties' do
     # Test integer properties
     [
+      :sso_session_idle_timeout_remember_me,
+      :sso_session_max_lifespan_remember_me,
       :sso_session_idle_timeout,
       :sso_session_max_lifespan,
       :access_code_lifespan,
