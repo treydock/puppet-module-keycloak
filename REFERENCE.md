@@ -2628,6 +2628,14 @@ internationalizationEnabled
 
 Default value: false
 
+##### `sso_session_idle_timeout_remember_me`
+
+ssoSessionIdleTimeoutRememberMe
+
+##### `sso_session_max_lifespan_remember_me`
+
+ssoSessionMaxLifespanRememberMe
+
 ##### `sso_session_idle_timeout`
 
 ssoSessionIdleTimeout
