@@ -1,6 +1,11 @@
 RSpec.configure do |c|
   c.add_setting :keycloak_version
-  c.keycloak_version = (ENV['BEAKER_keycloak_version'] || '8.0.1')
+  keycloak_version = if ENV['BEAKER_keycloak_version'].nil? || ENV['BEAKER_keycloak_version'].empty?
+                       '8.0.1'
+                     else
+                       ENV['BEAKER_keycloak_version']
+                     end
+  c.keycloak_version = keycloak_version
   c.add_setting :keycloak_full
   c.keycloak_full = (ENV['BEAKER_keycloak_full'] == 'true' || ENV['BEAKER_keycloak_full'] == 'yes')
 end
