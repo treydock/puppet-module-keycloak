@@ -60,6 +60,7 @@ Manage Keycloak client scope protocol mappers
       'oidc-full-name-mapper',
       'oidc-group-membership-mapper',
       'oidc-audience-mapper',
+      'saml-group-membership-mapper',
       'saml-user-property-mapper',
       'saml-role-list-mapper',
       'saml-javascript-mapper',
@@ -250,10 +251,10 @@ Manage Keycloak client scope protocol mappers
     if self[:protocol] == 'openid-connect' && !openid_connect_types.include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
-    if self[:protocol] == 'saml' && !['saml-user-property-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
+    if self[:protocol] == 'saml' && !['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol saml"
     end
-    if self[:friendly_name] && !['saml-user-property-mapper', 'saml-javascript-mapper'].include?(self[:type])
+    if self[:friendly_name] && !['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(self[:type])
       raise Puppet::Error, "friendly_name is not valid for type #{self[:type]}"
     end
     if self[:attribute_name] && self[:protocol] != 'saml'
@@ -262,7 +263,7 @@ Manage Keycloak client scope protocol mappers
     if self[:attribute_nameformat] && self[:protocol] != 'saml'
       raise Puppet::Error, "attribute_nameformat is not valid for protocol #{self[:protocol]}"
     end
-    if self[:single] && !['saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
+    if self[:single] && !['saml-group-membership-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
       raise Puppet::Error, "single is not valid for type #{self[:type]}"
     end
     if self[:type] == 'saml-javascript-mapper' && self[:script].nil?
