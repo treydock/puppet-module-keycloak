@@ -193,7 +193,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
         config[:'claim.name'] = resource[:claim_name] if resource[:claim_name]
         config[:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
       end
-      if ['oidc-group-membership-mapper','saml-group-membership-mapper'].include?(resource[:type])
+      if ['oidc-group-membership-mapper', 'saml-group-membership-mapper'].include?(resource[:type])
         config[:'full.path'] = resource[:full_path] if resource[:full_path]
       end
       if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
