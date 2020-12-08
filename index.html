@@ -356,6 +356,19 @@ import_enabled     =&gt; false,   use_truststore_spi =&gt; &#39;never&#39;,
 <code>LDAP-test</code> where the format is
 <code>${resource_name}-${realm}</code>.</p>
 
+<p>If you&#39;re using FreeIPA you can use a defined resource that wraps
+keycloak_ldap_user_provider:</p>
+
+<pre class="code ruby"><code class="ruby">keycloak::freeipa_user_provider { &#39;ipa.example.org&#39;:
+  ensure          =&gt; &#39;present&#39;,
+  realm           =&gt; &#39;EXAMPLE.ORG&#39;,
+  bind_dn         =&gt; &#39;uid=ldapproxy,cn=sysaccounts,cn=etc,dc=example,dc=org&#39;,
+  bind_credential =&gt; &#39;secret&#39;,
+  users_dn        =&gt; &#39;cn=users,cn=accounts,dc=example,dc=org&#39;,
+  priority        =&gt; 10,
+}
+</code></pre>
+
 <h3 id="label-keycloak_ldap_mapper">keycloak_ldap_mapper</h3>
 
 <p>Use the LDAP attribute &#39;gecos&#39; as the full name attribute.</p>
@@ -365,6 +378,16 @@ import_enabled     =&gt; false,   use_truststore_spi =&gt; &#39;never&#39;,
   resource_name  =&gt; &#39;full name&#39;,
   type           =&gt; &#39;full-name-ldap-mapper&#39;,
   ldap_attribute =&gt; &#39;gecos&#39;,
+}
+</code></pre>
+
+<p>If you&#39;re using FreeIPA you can use a defined resource that adds all
+the required attribute mappings automatically:</p>
+
+<pre class="code ruby"><code class="ruby">keycloak::freeipa_ldap_mappers { &#39;ipa.example.org&#39;:
+  realm            =&gt; &#39;EXAMPLE.ORG&#39;,
+  groups_dn        =&gt; &#39;cn=groups,cn=accounts,dc=example,dc=org&#39;,
+  roles_dn         =&gt; &#39;cn=groups,cn=accounts,dc=example,dc=org&#39;
 }
 </code></pre>
 

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Defined Type: keycloak::freeipa_ldap_mappers
+  
+    &mdash; Documentation by YARD 0.9.25
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "puppet_defined_types::keycloak::freeipa_ldap_mappers";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_defined_type_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (k)</a> &raquo;
+    <span class='title'><span class='object_link'>Defined Types</span></span>
+     &raquo; 
+    <span class="title">keycloak::freeipa_ldap_mappers</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Defined Type: keycloak::freeipa_ldap_mappers</h1>
+<div class="box_info">
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/freeipa_ldap_mappers.pp
+    </dd>
+  </dl>
+</div>
+
+  <h2>Summary</h2>
+  setup FreeIPA LDAP mappers for Keycloak
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+  </div>
+</div>
+
+
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+      <pre class="example code"><code>keycloak::freeipa_ldap_mappers { &#39;ipa.example.org&#39;:
+  realm            =&gt; &#39;EXAMPLE.ORG&#39;,
+  groups_dn        =&gt; &#39;cn=groups,cn=accounts,dc=example,dc=org&#39;,
+  roles_dn         =&gt; &#39;cn=groups,cn=accounts,dc=example,dc=org&#39;
+}</code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>realm</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak realm</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>groups_dn</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Groups DN</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>roles_dn</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Roles DN</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>parent_id</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Identifier (parentId) for the LDAP provider to add this mapper to. Will be
+passed to the $ldap parameter in keycloak_ldap_mapper.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/freeipa_ldap_mappers.pp', line 21</span>
+
+define keycloak::freeipa_ldap_mappers
+(
+  String           $realm,
+  String           $groups_dn,
+  String           $roles_dn,
+  Optional[String] $parent_id = undef,
+)
+{
+  $_parent_id = pick($parent_id, &quot;${title}-${realm}&quot;)
+  $title_suffix = &quot;for ${_parent_id}&quot;
+
+  # This translates to parentId in JSON and must be correct or hard-to-debug
+  # issues will ensue.
+
+  keycloak_ldap_mapper {
+    default:
+      ensure                      =&gt; &#39;present&#39;,
+      realm                       =&gt; $realm,
+      ldap                        =&gt; $_parent_id,
+      always_read_value_from_ldap =&gt; true,
+      read_only                   =&gt; true,
+      is_mandatory_in_ldap        =&gt; true,
+    ;
+    [&quot;cn ${title_suffix}&quot;]:
+      ldap_attribute       =&gt; &#39;cn&#39;,
+      user_model_attribute =&gt; &#39;cn&#39;,
+    ;
+    [&quot;displayName ${title_suffix}&quot;]:
+      ldap_attribute       =&gt; &#39;displayName&#39;,
+      user_model_attribute =&gt; &#39;displayName&#39;,
+    ;
+    [&quot;email ${title_suffix}&quot;]:
+      ldap_attribute       =&gt; &#39;mail&#39;,
+      user_model_attribute =&gt; &#39;email&#39;,
+    ;
+    [&quot;first name ${title_suffix}&quot;]:
+      ldap_attribute       =&gt; &#39;givenName&#39;,
+      user_model_attribute =&gt; &#39;firstName&#39;,
+    ;
+    [&quot;last name ${title_suffix}&quot;]:
+      ldap_attribute       =&gt; &#39;sn&#39;,
+      user_model_attribute =&gt; &#39;lastName&#39;,
+    ;
+    [&quot;username ${title_suffix}&quot;]:
+      ldap_attribute       =&gt; &#39;uid&#39;,
+      user_model_attribute =&gt; &#39;username&#39;,
+    ;
+    [&quot;modify date ${title_suffix}&quot;]:
+      is_mandatory_in_ldap =&gt; false,
+      ldap_attribute       =&gt; &#39;modifyTimestamp&#39;,
+      user_model_attribute =&gt; &#39;modifyTimestamp&#39;,
+    ;
+    [&quot;creation date ${title_suffix}&quot;]:
+      is_mandatory_in_ldap =&gt; false,
+      ldap_attribute       =&gt; &#39;createTimestamp&#39;,
+      user_model_attribute =&gt; &#39;createTimestamp&#39;,
+    ;
+  }
+
+  keycloak_ldap_mapper { &quot;roles ${title_suffix}&quot;:
+    ensure                         =&gt; &#39;present&#39;,
+    realm                          =&gt; $realm,
+    type                           =&gt; &#39;role-ldap-mapper&#39;,
+    ldap                           =&gt; $_parent_id,
+    is_mandatory_in_ldap           =&gt; false,
+    mode                           =&gt; &#39;READ_ONLY&#39;,
+    memberof_ldap_attribute        =&gt; &#39;memberOf&#39;,
+    membership_attribute_type      =&gt; &#39;UID&#39;,
+    membership_ldap_attribute      =&gt; &#39;memberUid&#39;,
+    membership_user_ldap_attribute =&gt; &#39;uid&#39;,
+    role_name_ldap_attribute       =&gt; &#39;cn&#39;,
+    role_object_classes            =&gt; &#39;posixGroup&#39;,
+    roles_dn                       =&gt; $roles_dn,
+    use_realm_roles_mapping        =&gt; true,
+    user_roles_retrieve_strategy   =&gt; &#39;LOAD_ROLES_BY_MEMBER_ATTRIBUTE&#39;,
+  }
+
+  keycloak_ldap_mapper { &quot;groups ${title_suffix}&quot;:
+    ensure                               =&gt; &#39;present&#39;,
+    realm                                =&gt; $realm,
+    type                                 =&gt; &#39;group-ldap-mapper&#39;,
+    ldap                                 =&gt; $_parent_id,
+    is_mandatory_in_ldap                 =&gt; false,
+    mode                                 =&gt; &#39;READ_ONLY&#39;,
+    memberof_ldap_attribute              =&gt; &#39;memberOf&#39;,
+    drop_non_existing_groups_during_sync =&gt; true,
+    group_name_ldap_attribute            =&gt; &#39;cn&#39;,
+    group_object_classes                 =&gt; &#39;groupOfNames, posixGroup&#39;,
+    groups_dn                            =&gt; $groups_dn,
+    ignore_missing_groups                =&gt; false,
+    membership_attribute_type            =&gt; &#39;DN&#39;,
+    membership_ldap_attribute            =&gt; &#39;member&#39;,
+    membership_user_ldap_attribute       =&gt; &#39;uid&#39;,
+    preserve_group_inheritance           =&gt; false,
+    user_roles_retrieve_strategy         =&gt; &#39;LOAD_GROUPS_BY_MEMBER_ATTRIBUTE&#39;,
+  }
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
