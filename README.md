@@ -255,9 +255,9 @@ keycloak_ldap_user_provider { 'LDAP on test':
 
 **NOTE** The `Id` for the above resource would be `LDAP-test` where the format is `${resource_name}-${realm}`.
 
-If you're using FreeIPA you use a defined resource that wraps keycloak\_ldap\_user\_provider:
+If you're using FreeIPA you can use a defined resource that wraps keycloak\_ldap\_user\_provider:
 
-```
+```puppet
 keycloak::freeipa_user_provider { 'ipa.example.org':
   ensure          => 'present',
   realm           => 'EXAMPLE.ORG',
@@ -278,6 +278,17 @@ keycloak_ldap_mapper { 'full name for LDAP-test on test:
   resource_name  => 'full name',
   type           => 'full-name-ldap-mapper',
   ldap_attribute => 'gecos',
+}
+```
+
+If you're using FreeIPA you can use a defined resource that adds all the
+required attribute mappings automatically:
+
+```puppet
+keycloak::freeipa_ldap_mappers { 'ipa.example.org':
+  realm            => 'EXAMPLE.ORG',
+  groups_dn        => 'cn=groups,cn=accounts,dc=example,dc=org',
+  roles_dn         => 'cn=groups,cn=accounts,dc=example,dc=org'
 }
 ```
 
