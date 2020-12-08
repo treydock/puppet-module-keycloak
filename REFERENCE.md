@@ -25,6 +25,8 @@ _Private Classes_
 
 * [`keycloak::client_scope::oidc`](#keycloakclient_scopeoidc): Manage Keycloak OpenID Connect client scope using built-in mappers
 * [`keycloak::client_scope::saml`](#keycloakclient_scopesaml): Manage Keycloak SAML client scope using built-in mappers
+* [`keycloak::freeipa_ldap_mappers`](#keycloakfreeipa_ldap_mappers): setup FreeIPA LDAP mappers for Keycloak
+* [`keycloak::freeipa_user_provider`](#keycloakfreeipa_user_provider): setup IPA as an LDAP user provider for Keycloak
 * [`keycloak::spi_deployment`](#keycloakspi_deployment): Manage Keycloak SPI deployment
 * [`keycloak::truststore::host`](#keycloaktruststorehost): Add host to Keycloak truststore
 
@@ -910,6 +912,132 @@ Data type: `String`
 Name of the client scope resource
 
 Default value: $name
+
+### keycloak::freeipa_ldap_mappers
+
+setup FreeIPA LDAP mappers for Keycloak
+
+#### Examples
+
+##### 
+
+```puppet
+keycloak::freeipa_ldap_mappers { 'ipa.example.org':
+  realm            => 'EXAMPLE.ORG',
+  groups_dn        => 'cn=groups,cn=accounts,dc=example,dc=org',
+  roles_dn         => 'cn=groups,cn=accounts,dc=example,dc=org'
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `keycloak::freeipa_ldap_mappers` defined type.
+
+##### `realm`
+
+Data type: `String`
+
+Keycloak realm
+
+##### `groups_dn`
+
+Data type: `String`
+
+Groups DN
+
+##### `roles_dn`
+
+Data type: `String`
+
+Roles DN
+
+##### `parent_id`
+
+Data type: `Optional[String]`
+
+Identifier (parentId) for the LDAP provider to add this mapper to.
+Will be passed to the $ldap parameter in keycloak_ldap_mapper.
+
+Default value: `undef`
+
+### keycloak::freeipa_user_provider
+
+setup IPA as an LDAP user provider for Keycloak
+
+#### Examples
+
+##### Add FreeIPA as a user provider
+
+```puppet
+keycloak::freeipa_user_provider { 'ipa.example.org':
+  ensure          => 'present',
+  realm           => 'EXAMPLE.ORG',
+  bind_dn         => 'uid=ldapproxy,cn=sysaccounts,cn=etc,dc=example,dc=org',
+  bind_credential => 'secret',
+  users_dn        => 'cn=users,cn=accounts,dc=example,dc=org',
+  priority        => 10,
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `keycloak::freeipa_user_provider` defined type.
+
+##### `ensure`
+
+Data type: `Enum['present', 'absent']`
+
+LDAP user provider status
+
+Default value: 'present'
+
+##### `ipa_host`
+
+Data type: `Stdlib::Host`
+
+Hostname of the FreeIPA server (e.g. ipa.example.org)
+
+Default value: $title
+
+##### `realm`
+
+Data type: `String`
+
+Keycloak realm
+
+##### `bind_dn`
+
+Data type: `String`
+
+LDAP bind dn
+
+##### `bind_credential`
+
+Data type: `String`
+
+LDAP bind password
+
+##### `users_dn`
+
+Data type: `String`
+
+The DN for user search
+
+##### `priority`
+
+Data type: `Integer`
+
+Priority for this user provider
+
+Default value: 10
+
+##### `ldaps`
+
+Data type: `Boolean`
+
+Use LDAPS protocol instead of LDAP
+
+Default value: `false`
 
 ### keycloak::spi_deployment
 
@@ -2552,7 +2680,7 @@ realm
 
 ##### `type`
 
-Valid values: oidc-usermodel-property-mapper, oidc-usermodel-attribute-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, oidc-audience-mapper, saml-user-property-mapper, saml-role-list-mapper
+Valid values: oidc-usermodel-property-mapper, oidc-usermodel-attribute-mapper, oidc-full-name-mapper, oidc-group-membership-mapper, oidc-audience-mapper, saml-group-membership-mapper, saml-user-property-mapper, saml-role-list-mapper
 
 protocolMapper.
 

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.23.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.23.0) (2020-12-08)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.22.0...v6.23.0)
+
+### Added
+
+- Support saml-group-membership-mapper [\#171](https://github.com/treydock/puppet-module-keycloak/pull/171) ([mattock](https://github.com/mattock))
+- Add convenience define for setting up FreeIPA LDAP mappers [\#170](https://github.com/treydock/puppet-module-keycloak/pull/170) ([mattock](https://github.com/mattock))
+- PDK Update - Use Github Actions [\#169](https://github.com/treydock/puppet-module-keycloak/pull/169) ([treydock](https://github.com/treydock))
+- Add convenience wrapper for setting up FreeIPA ldap user providers [\#135](https://github.com/treydock/puppet-module-keycloak/pull/135) ([mattock](https://github.com/mattock))
+
+### Fixed
+
+- Fix puppet-lint warning [\#172](https://github.com/treydock/puppet-module-keycloak/pull/172) ([mattock](https://github.com/mattock))
+
 ## [v6.22.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.22.0) (2020-11-23)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.21.0...v6.22.0)
@@ -278,10 +293,6 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.6.0...v5.7.0)
 
-### Added
-
-- Make JDBC xa-datasource-class name configurable [\#93](https://github.com/treydock/puppet-module-keycloak/pull/93) ([danifr](https://github.com/danifr))
-
 ## [v5.6.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.6.0) (2019-10-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.5.0...v5.6.0)
@@ -296,6 +307,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Make JDBC xa-datasource-class name configurable [\#93](https://github.com/treydock/puppet-module-keycloak/pull/93) ([danifr](https://github.com/danifr))
 - Allow managing Keycloak installation from outside this module [\#87](https://github.com/treydock/puppet-module-keycloak/pull/87) ([mattock](https://github.com/mattock))
 - Enable passing extra options to Keycloak in the systemd unit file [\#86](https://github.com/treydock/puppet-module-keycloak/pull/86) ([mattock](https://github.com/mattock))
 - Enable defining bind address for the Keycloak systemd service [\#85](https://github.com/treydock/puppet-module-keycloak/pull/85) ([mattock](https://github.com/mattock))
@@ -353,6 +365,10 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.0.0...v5.0.1)
 
+### Added
+
+- Support group-ldap-mapper and role-ldap-mapper [\#73](https://github.com/treydock/puppet-module-keycloak/pull/73) ([treydock](https://github.com/treydock))
+
 ### Fixed
 
 - Should be no default for keycloak\_client\_scope consent\_screen\_text property [\#74](https://github.com/treydock/puppet-module-keycloak/pull/74) ([treydock](https://github.com/treydock))
@@ -371,7 +387,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Support group-ldap-mapper and role-ldap-mapper [\#73](https://github.com/treydock/puppet-module-keycloak/pull/73) ([treydock](https://github.com/treydock))
 - Support saml-javascript-mapper for keycloak\_client\_protocol\_mapper [\#72](https://github.com/treydock/puppet-module-keycloak/pull/72) ([treydock](https://github.com/treydock))
 
 ## [v4.1.1](https://github.com/treydock/puppet-module-keycloak/tree/v4.1.1) (2019-08-26)
@@ -404,13 +419,16 @@ All notable changes to this project will be documented in this file. The format 
 - Simplify and consolidate datasource parameters [\#63](https://github.com/treydock/puppet-module-keycloak/pull/63) ([treydock](https://github.com/treydock))
 - Set default Keycloak version to 6.0.1 [\#61](https://github.com/treydock/puppet-module-keycloak/pull/61) ([treydock](https://github.com/treydock))
 
+### Added
+
+- Use hiera v5 module data [\#62](https://github.com/treydock/puppet-module-keycloak/pull/62) ([treydock](https://github.com/treydock))
+
 ## [v3.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v3.8.0) (2019-05-23)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.7.0...v3.8.0)
 
 ### Added
 
-- Use hiera v5 module data [\#62](https://github.com/treydock/puppet-module-keycloak/pull/62) ([treydock](https://github.com/treydock))
 - Expand postgresql support to behave more like mysql support, simplified a bit [\#60](https://github.com/treydock/puppet-module-keycloak/pull/60) ([treydock](https://github.com/treydock))
 - Use PDK [\#58](https://github.com/treydock/puppet-module-keycloak/pull/58) ([treydock](https://github.com/treydock))
 
@@ -521,10 +539,6 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/2.5.0...2.6.0)
 
-### Changed
-
-- BREAKING: Major overhaul to support Keycloak 4.x [\#32](https://github.com/treydock/puppet-module-keycloak/pull/32) ([treydock](https://github.com/treydock))
-
 ### Added
 
 - Use puppet-strings for documentation [\#30](https://github.com/treydock/puppet-module-keycloak/pull/30) ([treydock](https://github.com/treydock))
@@ -551,7 +565,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Add keycloak\_api configuration type [\#22](https://github.com/treydock/puppet-module-keycloak/pull/22) ([treydock](https://github.com/treydock))
-- Add SAML username protocol mapper to keycloak::client\_template [\#17](https://github.com/treydock/puppet-module-keycloak/pull/17) ([treydock](https://github.com/treydock))
 
 ## [2.3.1](https://github.com/treydock/puppet-module-keycloak/tree/2.3.1) (2018-03-10)
 
@@ -568,6 +581,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Allow keycloak\_protocol\_mapper attribute\_nameformat to be simpler values [\#18](https://github.com/treydock/puppet-module-keycloak/pull/18) ([treydock](https://github.com/treydock))
+- Add SAML username protocol mapper to keycloak::client\_template [\#17](https://github.com/treydock/puppet-module-keycloak/pull/17) ([treydock](https://github.com/treydock))
 - Support SAML role list protocol mapper [\#16](https://github.com/treydock/puppet-module-keycloak/pull/16) ([treydock](https://github.com/treydock))
 - Add SAML support to keycloak\_protocol\_mapper and keycloak::client\_template [\#15](https://github.com/treydock/puppet-module-keycloak/pull/15) ([treydock](https://github.com/treydock))
 
