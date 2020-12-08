@@ -3,43 +3,40 @@
 #
 # @example
 #   keycloak::freeipa_ldap_mappers { 'ipa.example.org':
-#     ldap_provider_id => '6bd0f68d-5618-a74d-bcab-089702f1bc80',
 #     realm            => 'EXAMPLE.ORG',
 #     groups_dn        => 'cn=groups,cn=accounts,dc=example,dc=org',
 #     roles_dn         => 'cn=groups,cn=accounts,dc=example,dc=org'
 #   }
 #
-# @param parent_name
-#   The name of the parent resource. Usually the title of the
-#   keycloak_ldap_provider.
 # @param realm
 #   Keycloak realm
 # @param groups_dn
 #   Groups DN
 # @param roles_dn
 #   Roles DN
-# @param ldap_provider_id
-#   Identifier for the LDAP provider to add this mapper to
+# @param parent_id
+#   Identifier (parentId) for the LDAP provider to add this mapper to.
+#   Will be passed to the $ldap parameter in keycloak_ldap_mapper.
 #
 define keycloak::freeipa_ldap_mappers
 (
-  String $realm,
-  String $groups_dn,
-  String $roles_dn,
-  String $parent_name = $title,
-  String $ldap_provider_id = $title,
+  String           $realm,
+  String           $groups_dn,
+  String           $roles_dn,
+  Optional[String] $parent_id = undef,
 )
 {
-  $title_suffix = "for ${ldap_provider_id} on ${realm}"
+  $_parent_id = pick($parent_id, "${title}-${realm}")
+  $title_suffix = "for ${_parent_id}"
 
   # This translates to parentId in JSON and must be correct or hard-to-debug
   # issues will ensue.
-  $ldap = "${parent_name}-${realm}"
 
   keycloak_ldap_mapper {
     default:
       ensure                      => 'present',
-      ldap                        => $ldap,
+      realm                       => $realm,
+      ldap                        => $_parent_id,
       always_read_value_from_ldap => true,
       read_only                   => true,
       is_mandatory_in_ldap        => true,
@@ -82,15 +79,15 @@ define keycloak::freeipa_ldap_mappers
 
   keycloak_ldap_mapper { "roles ${title_suffix}":
     ensure                         => 'present',
+    realm                          => $realm,
     type                           => 'role-ldap-mapper',
-    ldap                           => $ldap,
+    ldap                           => $_parent_id,
     is_mandatory_in_ldap           => false,
     mode                           => 'READ_ONLY',
     memberof_ldap_attribute        => 'memberOf',
     membership_attribute_type      => 'UID',
     membership_ldap_attribute      => 'memberUid',
     membership_user_ldap_attribute => 'uid',
-    read_only                      => true,
     role_name_ldap_attribute       => 'cn',
     role_object_classes            => 'posixGroup',
     roles_dn                       => $roles_dn,
@@ -100,8 +97,9 @@ define keycloak::freeipa_ldap_mappers
 
   keycloak_ldap_mapper { "groups ${title_suffix}":
     ensure                               => 'present',
+    realm                                => $realm,
     type                                 => 'group-ldap-mapper',
-    ldap                                 => $ldap,
+    ldap                                 => $_parent_id,
     is_mandatory_in_ldap                 => false,
     mode                                 => 'READ_ONLY',
     memberof_ldap_attribute              => 'memberOf',
@@ -114,7 +112,6 @@ define keycloak::freeipa_ldap_mappers
     membership_ldap_attribute            => 'member',
     membership_user_ldap_attribute       => 'uid',
     preserve_group_inheritance           => false,
-    read_only                            => true,
     user_roles_retrieve_strategy         => 'LOAD_GROUPS_BY_MEMBER_ATTRIBUTE',
   }
 }
