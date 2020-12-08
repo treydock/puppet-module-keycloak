@@ -46,10 +46,10 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
             protocol_mapper[:claim_name] = d['config']['claim.name']
             protocol_mapper[:json_type_label] = d['config']['jsonType.label']
           end
-          if protocol_mapper[:type] == 'oidc-group-membership-mapper'
+          if ['oidc-group-membership-mapper', 'saml-group-membership-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:full_path] = d['config']['full.path']
           end
-          if ['saml-user-property-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
+          if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:friendly_name] = d['config']['friendly.name']
           end
           if protocol_mapper[:type] == 'saml-javascript-mapper'
@@ -69,7 +69,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
             protocol_mapper[:attribute_name] = d['config']['attribute.name']
             protocol_mapper[:attribute_nameformat] = get_attribute_nameformat_reverse(d['config']['attribute.nameformat'])
           end
-          if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
+          if ['saml-group-membership-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
           end
           protocol_mappers << new(protocol_mapper)
@@ -109,10 +109,10 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       data[:config][:'claim.name'] = resource[:claim_name] if resource[:claim_name]
       data[:config][:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
     end
-    if resource[:type] == 'oidc-group-membership-mapper'
+    if ['oidc-group-membership-mapper', 'saml-group-membership-mapper'].include?(resource[:type])
       data[:config][:'full.path'] = resource[:full_path] if resource[:full_path]
     end
-    if ['saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+    if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
       data[:config][:'friendly.name'] = resource[:friendly_name] if resource[:friendly_name]
     end
     if resource[:type] == 'saml-javascript-mapper'
@@ -132,7 +132,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       data[:config][:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
       data[:config][:'attribute.nameformat'] = self.class.get_attribute_nameformat(resource[:attribute_nameformat]) if resource[:attribute_nameformat]
     end
-    if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+    if ['saml-group-membership-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(resource[:type])
       data[:config][:single] = resource[:single].to_s if resource[:single]
     end
 
@@ -193,10 +193,10 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
         config[:'claim.name'] = resource[:claim_name] if resource[:claim_name]
         config[:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
       end
-      if resource[:type] == 'oidc-group-membership-mapper'
+      if ['oidc-group-membership-mapper', 'saml-group-membership-mapper'].include?(resource[:type])
         config[:'full.path'] = resource[:full_path] if resource[:full_path]
       end
-      if ['saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+      if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
         config[:'friendly.name'] = resource[:friendly_name] if resource[:friendly_name]
       end
       if resource[:type] == 'saml-javascript-mapper'
@@ -216,7 +216,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
         config[:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
         config[:'attribute.nameformat'] = self.class.get_attribute_nameformat(resource[:attribute_nameformat]) if resource[:attribute_nameformat]
       end
-      if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+      if ['saml-group-membership-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(resource[:type])
         config[:single] = resource[:single].to_s if resource[:single]
       end
       data[:config] = config unless config.empty?
