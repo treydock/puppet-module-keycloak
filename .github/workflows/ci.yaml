@@ -47,6 +47,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+          bundler: '2.1.0'
       - name: Validate
         run: bundle exec rake check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint
       - name: Run tests
@@ -96,6 +97,7 @@ jobs:
         run: |
           echo '{"ipv6":true,"fixed-cidr-v6":"2001:db8:1::/64"}' | sudo tee /etc/docker/daemon.json
           sudo service docker restart
+      # https://github.com/actions/virtual-environments/issues/181#issuecomment-610874237
       - name: apparmor
         run: |
             set -x
@@ -108,6 +110,7 @@ jobs:
         with:
           ruby-version: '2.7'
           bundler-cache: true
+          bundler: '2.1.0'
       - name: Run tests
         run: bundle exec rake beaker
         env:
