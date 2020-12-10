@@ -1,7 +1,7 @@
 # puppet-module-keycloak
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/keycloak.svg)](https://forge.puppetlabs.com/treydock/keycloak)
-[![Build Status](https://travis-ci.org/treydock/puppet-module-keycloak.png)](https://travis-ci.org/treydock/puppet-module-keycloak)
+[![CI Status](https://github.com/treydock/puppet-module-keycloak/workflows/CI/badge.svg?branch=master)](https://github.com/treydock/puppet-module-keycloak/actions?query=workflow%3ACI)
 
 #### Table of Contents
 
