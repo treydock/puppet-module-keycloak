@@ -80,6 +80,6 @@
     }
   ],
   "pdk-version": "1.17.0",
-  "template-url": "/Users/tdockendorf/git/pdk-templates#master",
-  "template-ref": "heads/github-actions-0-g6ee62a2"
+  "template-url": "https://github.com/treydock/pdk-templates.git#master",
+  "template-ref": "heads/master-0-g553c432"
 }
