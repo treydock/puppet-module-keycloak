@@ -52,13 +52,18 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     end
   end
 
-  def self.kcadm(action, resource, realm = nil, file = nil, fields = nil, print_id = false)
+  def self.kcadm(action, resource, realm = nil, file = nil, fields = nil, print_id = false, params = nil)
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
 
-    arguments = [action, resource]
+    arguments = [action]
+
+    # get-roles does not accept a resource as its parameter
+    arguments << resource if resource
+
     if ['create', 'update'].include?(action) && !print_id
       arguments << '-o'
     end
+
     if realm
       arguments << '-r'
       arguments << realm
@@ -70,6 +75,19 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     if fields
       arguments << '--fields'
       arguments << fields.join(',')
+    end
+    unless params.nil?
+      params.each do |param, value|
+        if value.is_a?(String)
+          arguments << "--#{param}"
+          arguments << value
+        elsif value.is_a?(Array)
+          value.each do |val|
+            arguments << "--#{param}"
+            arguments << val
+          end
+        end
+      end
     end
     if action == 'create' && print_id
       arguments << '--id'
@@ -86,6 +104,8 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     else
       cmd = [kcadm_wrapper] + arguments
     end
+
+    cmd.reject! { |c| c.empty? }
 
     execute(cmd, combine: false, failonfail: true)
   end
