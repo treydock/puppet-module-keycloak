@@ -4,14 +4,14 @@ HOSTS:
       - agent
     platform: el-8-x86_64
     hypervisor: docker
-    image: centos:8.1.1911
+    image: centos:8
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y dnf-utils'
-      - 'dnf config-manager --set-enabled PowerTools'
-      - 'yum install -y wget which cronie iproute initscripts'
+      - 'dnf config-manager --set-enabled powertools'
+      - 'yum install -y wget which cronie iproute initscripts langpacks-en glibc-all-langpacks'
     docker_container_name: 'keycloak-el8'
 CONFIG:
   log_level: debug
