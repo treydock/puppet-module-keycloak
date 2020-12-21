@@ -6,9 +6,6 @@ on:
       - main
       - master
   pull_request:
-    branches:
-      - main
-      - master
 
 jobs:
   unit:
@@ -68,7 +65,7 @@ jobs:
           - "puppet6"
         keycloak_version:
           - "8.0.1"
-          - "10.0.1"
+          - "12.0.1"
         keycloak_full:
           - "no"
         include:
@@ -78,7 +75,7 @@ jobs:
             keycloak_full: "yes"
           - set: "centos-7"
             puppet: "puppet5"
-            keycloak_version: "10.0.1"
+            keycloak_version: "12.0.1"
             keycloak_full: "yes"
           - set: "centos-7"
             puppet: "puppet6"
@@ -86,7 +83,7 @@ jobs:
             keycloak_full: "yes"
           - set: "centos-7"
             puppet: "puppet6"
-            keycloak_version: "10.0.1"
+            keycloak_version: "12.0.1"
             keycloak_full: "yes"
     env:
       BUNDLE_WITHOUT: development:release
