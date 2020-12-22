@@ -329,7 +329,11 @@ class keycloak (
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
   }
 
-  $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
+  if versioncmp($version, '12.0.0') >= 0 {
+    $download_url = pick($package_url, "https://github.com/keycloak/keycloak/releases/download/${version}/keycloak-${version}.tar.gz")
+  } else {
+    $download_url = pick($package_url, "https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz")
+  }
   case $datasource_driver {
     'h2': {
       $datasource_connection_url = pick($datasource_url, "jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE")
