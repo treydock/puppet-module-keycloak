@@ -1933,7 +1933,11 @@ other This module does not manage firewall changes</p>
 415
 416
 417
-418</pre>
+418
+419
+420
+421
+422</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 234</span>
@@ -2036,7 +2040,11 @@ class keycloak (
     fail(&quot;Unsupported osfamily: ${facts[&#39;os&#39;][&#39;family&#39;]}, module ${module_name} only support osfamilies Debian and Redhat&quot;)
   }
 
-  $download_url = pick($package_url, &quot;https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz&quot;)
+  if versioncmp($version, &#39;12.0.0&#39;) &gt;= 0 {
+    $download_url = pick($package_url, &quot;https://github.com/keycloak/keycloak/releases/download/${version}/keycloak-${version}.tar.gz&quot;)
+  } else {
+    $download_url = pick($package_url, &quot;https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz&quot;)
+  }
   case $datasource_driver {
     &#39;h2&#39;: {
       $datasource_connection_url = pick($datasource_url, &quot;jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE&quot;)
