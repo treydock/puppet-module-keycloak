@@ -152,6 +152,8 @@
 #   Hash that is used to define keycloak_identity_provider resources.
 # @param identity_providers_merge
 #   Boolean that sets if `identity_providers` should be merged from Hiera.
+# @param client_protocol_mappers
+#   Hash that is used to define keycloak_client_protocol_mapper resources.
 # @param client_scopes
 #   Hash that is used to define keycloak_client_scope resources.
 # @param client_scopes_merge
@@ -283,6 +285,7 @@ class keycloak (
   Boolean $oidc_client_scopes_merge = false,
   Hash $saml_client_scopes = {},
   Boolean $saml_client_scopes_merge = false,
+  Hash $client_protocol_mappers = {},
   Hash $client_scopes = {},
   Boolean $client_scopes_merge = false,
   Hash $protocol_mappers = {},
