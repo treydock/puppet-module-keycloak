@@ -6,7 +6,7 @@
 <title>
   Puppet Class: keycloak
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -1064,6 +1064,24 @@ Hiera.</p>
   
     <li>
       
+        <span class='name'>client_protocol_mappers</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash that is used to define keycloak_client_protocol_mapper resources.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>client_scopes</span>
       
       
@@ -1749,8 +1767,6 @@ other This module does not manage firewall changes</p>
         <pre class="lines">
 
 
-234
-235
 236
 237
 238
@@ -1937,10 +1953,13 @@ other This module does not manage firewall changes</p>
 419
 420
 421
-422</pre>
+422
+423
+424
+425</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 234</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 236</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1994,6 +2013,7 @@ class keycloak (
   Boolean $oidc_client_scopes_merge = false,
   Hash $saml_client_scopes = {},
   Boolean $saml_client_scopes_merge = false,
+  Hash $client_protocol_mappers = {},
   Hash $client_scopes = {},
   Boolean $client_scopes_merge = false,
   Hash $protocol_mappers = {},

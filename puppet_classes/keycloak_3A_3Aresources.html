@@ -6,7 +6,7 @@
 <title>
   Puppet Class: keycloak::resources
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -196,7 +196,10 @@
 103
 104
 105
-106</pre>
+106
+107
+108
+109</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/resources.pp', line 3</span>
@@ -273,6 +276,9 @@ class keycloak::resources {
   }
   $saml_client_scopes.each |$name, $scope| {
     keycloak::client_scope::saml { $name: * =&gt; $scope }
+  }
+  $keycloak::client_protocol_mappers.each |$name, $client_protocol_mapper| {
+    keycloak_client_protocol_mapper { $name: * =&gt; $client_protocol_mapper }
   }
   $client_scopes.each |$name, $client_scope| {
     keycloak_client_scope { $name: * =&gt; $client_scope }
