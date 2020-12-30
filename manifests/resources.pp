@@ -73,6 +73,9 @@ class keycloak::resources {
   $saml_client_scopes.each |$name, $scope| {
     keycloak::client_scope::saml { $name: * => $scope }
   }
+  $keycloak::client_protocol_mappers.each |$name, $client_protocol_mapper| {
+    keycloak_client_protocol_mapper { $name: * => $client_protocol_mapper }
+  }
   $client_scopes.each |$name, $client_scope| {
     keycloak_client_scope { $name: * => $client_scope }
   }
