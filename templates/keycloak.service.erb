@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 Type=idle
+SyslogIdentifier=keycloak
 <% if scope['keycloak::service_environment_file'] -%>
 EnvironmentFile=<%= scope['keycloak::service_environment_file'] %>
 <% end -%>
