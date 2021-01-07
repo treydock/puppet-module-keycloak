@@ -209,7 +209,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
     t.close
     Puppet.debug(IO.read(t.path))
     begin
-      if resource[:login_theme]
+      if resource[:login_theme] && resource[:login_theme].to_sym != :absent
         check_theme_exists(resource[:login_theme], "Keycloak_client[#{resource[:name]}]")
       end
       output = kcadm('create', 'clients', resource[:realm], t.path)
@@ -359,7 +359,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
         t.close
         Puppet.debug(IO.read(t.path))
         begin
-          if @property_flush[:login_theme]
+          if @property_flush[:login_theme] && @property_flush[:login_theme].to_sym != :absent
             check_theme_exists(@property_flush[:login_theme], "Keycloak_client[#{resource[:name]}]")
           end
           kcadm('update', "clients/#{id}", resource[:realm], t.path)

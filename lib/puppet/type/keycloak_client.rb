@@ -168,7 +168,7 @@ Manage Keycloak clients
 
   newproperty(:login_theme) do
     desc 'login_theme'
-    defaultto 'absent'
+    defaultto :absent
   end
 
   newproperty(:access_token_lifespan) do
