@@ -1,0 +1,165 @@
+embed-host-controller --std-out=echo
+
+if (outcome == success) of /host=master/server-config=load-balancer:read-resource
+/host=master/server-config=load-balancer:remove
+end-if
+
+if (outcome == success) of /server-group=load-balancer-group:read-resource
+/server-group=load-balancer-group:remove
+end-if
+
+if (outcome == success) of /profile=load-balancer:read-resource
+/profile=load-balancer:remove
+end-if
+
+if (outcome == success) of /socket-binding-group=load-balancer-sockets:read-resource
+/socket-binding-group=load-balancer-sockets:remove
+end-if
+
+<%- if scope['keycloak::proxy_https'] -%>
+if (result.proxy-address-forwarding != true) of /profile=auth-server-clustered/subsystem=undertow/server=default-server/http-listener=default:read-resource
+/profile=auth-server-clustered/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
+end-if
+
+if (outcome != success) of /socket-binding-group=ha-sockets/socket-binding=proxy-https:read-resource
+/socket-binding-group=ha-sockets/socket-binding=proxy-https:add(port=443)
+end-if
+
+if (result.redirect-socket != proxy-https) of /profile=auth-server-clustered/subsystem=undertow/server=default-server/http-listener=default:read-resource
+/profile=auth-server-clustered/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=redirect-socket,value=proxy-https)
+end-if
+<%- end -%>
+
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=driver-name, value=<%= scope['keycloak::datasource_driver'] %>)
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=connection-url, value="<%= scope['keycloak::datasource_connection_url'] %>")
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=jndi-name, value=java:jboss/datasources/KeycloakDS)
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=user-name, value=<%= scope['keycloak::datasource_username'] %>)
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=password, value=<%= scope['keycloak::datasource_password'] %>)
+
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation, value=true)
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1")
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation-millis, value=60000)
+/profile=auth-server-clustered/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=flush-strategy, value=IdleConnections)
+
+try
+/profile=auth-server-clustered/subsystem=datasources/jdbc-driver=postgresql:add(driver-module-name=org.postgresql,driver-name=postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+
+catch
+/profile=auth-server-clustered/subsystem=datasources/jdbc-driver=postgresql:remove
+/profile=auth-server-clustered/subsystem=datasources/jdbc-driver=postgresql:add(driver-module-name=org.postgresql,driver-name=postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+end-try
+
+<%- if scope['keycloak::truststore'] -%>
+if (outcome != success) of /profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore:read-resource
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore/:add
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore/provider=file/:add(enabled=true)
+end-if
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=file,value=<%= scope['keycloak::install_base'] %>/domain/configuration/truststore.jks)
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=password,value=<%= scope['keycloak::truststore_password'] %>)
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=hostname-verification-policy,value=<%= scope['keycloak::truststore_hostname_verification_policy'] %>)
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore/provider=file/:map-put(name=properties,key=disabled,value=false)
+<%- else -%>
+if (outcome == success) of /profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore:read-resource
+/subsystem=keycloak-server/subsystem=keycloak-server/spi=truststore/:remove
+end-if
+<%- end -%>
+
+/profile=auth-server-clustered/subsystem=keycloak-server/theme=defaults/:write-attribute(name=staticMaxAge, value=<%= scope['keycloak::theme_static_max_age'] %>)
+/profile=auth-server-clustered/subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheThemes, value=<%= scope['keycloak::theme_cache_themes'] %>)
+/profile=auth-server-clustered/subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheTemplates, value=<%= scope['keycloak::theme_cache_templates'] %>)
+
+try
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=userCache/provider=default/:add(enabled=<%= scope['keycloak::user_cache']%>)
+catch
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=userCache/provider=default/:remove
+/profile=auth-server-clustered/subsystem=keycloak-server/spi=userCache/provider=default/:add(enabled=<%= scope['keycloak::user_cache']%>)
+end-try
+
+/server-group=auth-server-group:write-attribute(name=profile, value=auth-server-clustered)
+
+/profile=auth-server-clustered/subsystem=infinispan/cache-container=keycloak/distributed-cache=sessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+/profile=auth-server-clustered/subsystem=infinispan/cache-container=keycloak/distributed-cache=authenticationSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+/profile=auth-server-clustered/subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+/profile=auth-server-clustered/subsystem=infinispan/cache-container=keycloak/distributed-cache=clientSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+/profile=auth-server-clustered/subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineClientSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+/profile=auth-server-clustered/subsystem=infinispan/cache-container=keycloak/distributed-cache=loginFailures:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+/profile=auth-server-clustered/subsystem=infinispan/cache-container=keycloak/distributed-cache=actionTokens:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+
+<%- if scope['keycloak::enable_jdbc_ping'] -%>
+if (outcome != success) of /profile=auth-server-clustered/subsystem=jgroups/stack=tcp/protocol=JDBC_PING:read-resource
+/profile=auth-server-clustered/subsystem=jgroups/stack=tcp/protocol=JDBC_PING: add(add-index=0, data-source="KeycloakDS", properties=[initialize_sql="CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"])
+end-if
+
+if (outcome == success) of /profile=auth-server-clustered/subsystem=jgroups/stack=tcp/protocol=MPING:read-resource
+/profile=auth-server-clustered/subsystem=jgroups/stack=tcp/protocol=MPING: remove()
+end-if
+
+if (outcome == success) of /profile=auth-server-clustered/subsystem=jgroups/stack=tcp/protocol=pbcast.GMS:read-resource
+/profile=auth-server-clustered/subsystem=jgroups/stack=tcp/protocol=pbcast.GMS: remove()
+/profile=auth-server-clustered/subsystem=jgroups/stack=tcp/protocol=pbcast.GMS: add(properties=[join_timeout=30000, print_local_addr=true, print_physical_addrs=true])
+end-if
+
+/profile=auth-server-clustered/subsystem=jgroups/channel=ee:write-attribute(name=stack, value="tcp")
+
+if (outcome == success) of /profile=auth-server-clustered/subsystem=jgroups/stack=udp:read-resource
+/profile=auth-server-clustered/subsystem=jgroups/stack=udp: remove()
+end-if
+
+if (outcome == success) of /profile=auth-server-clustered/socket-binding-group=ha-sockets/socket-binding=jgroups-udp:read-resource
+/profile=auth-server-clustered/socket-binding-group=standard-sockets/socket-binding=jgroups-udp:remove()
+end-if
+
+if (outcome == success) of /profile=auth-server-clustered/socket-binding-group=ha-sockets/socket-binding=jgroups-mping:read-resource
+/profile=auth-server-clustered/socket-binding-group=standard-sockets/socket-binding=jgroups-mping:remove()
+end-if
+
+if (outcome != success) of /interface=management:read-resource()
+/interface=management:add()
+end-if
+
+if (result != undefined) of /interface=management:read-attribute(name=inet-address)
+/interface=management:write-attribute(name=inet-address, value=undefined)
+end-if
+
+if (outcome != success) of /interface=private:read-resource()
+/interface=private:add()
+end-if
+
+if (result != undefined) of /interface=private:read-attribute(name=inet-address)
+/interface=private:write-attribute(name=inet-address, value=undefined)
+end-if
+
+if (outcome != success) of /interface=public:read-resource()
+/interface=public:add()
+end-if
+
+if (result != undefined) of /interface=public:read-attribute(name=inet-address)
+/interface=public:write-attribute(name=inet-address, value=undefined)
+end-if
+
+if (result != public) of /socket-binding-group=ha-sockets:read-attribute(name=default-interface)
+/socket-binding-group=ha-sockets:write-attribute(name=default-interface, value=public)
+end-if
+
+if (result != defined) of /socket-binding-group=ha-sockets/socket-binding=ajp:read-attribute(name=interface)
+/socket-binding-group=ha-sockets/socket-binding=ajp:write-attribute(name=interface, value=undefined)
+end-if
+
+if (result != defined) of /socket-binding-group=ha-sockets/socket-binding=http:read-attribute(name=interface)
+/socket-binding-group=ha-sockets/socket-binding=http:write-attribute(name=interface, value=undefined)
+end-if
+
+if (result != defined) of /socket-binding-group=ha-sockets/socket-binding=https:read-attribute(name=interface)
+/socket-binding-group=ha-sockets/socket-binding=https:write-attribute(name=interface, value=undefined)
+end-if
+
+if (result != management) of /socket-binding-group=ha-sockets/socket-binding=jgroups-tcp:read-attribute(name=interface)
+/socket-binding-group=ha-sockets/socket-binding=jgroups-tcp:write-attribute(name=interface,value=management)
+end-if
+
+if (result != java:jboss/datasources/KeycloakDS) of /profile=auth-server-clustered/subsystem=ee/service=default-bindings:read-attribute(name=datasource)
+/profile=auth-server-clustered/subsystem=ee/service=default-bindings:write-attribute(name=datasource,value=java:jboss/datasources/KeycloakDS)
+end-if
+<%- end -%>
+
+stop-embedded-host-controller

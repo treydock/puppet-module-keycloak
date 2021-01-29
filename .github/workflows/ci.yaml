@@ -68,6 +68,8 @@ jobs:
           - "12.0.1"
         keycloak_full:
           - "no"
+        keycloak_domain_mode_cluster:
+          - "no"
         include:
           - set: "centos-7"
             puppet: "puppet5"
@@ -85,6 +87,22 @@ jobs:
             puppet: "puppet6"
             keycloak_version: "12.0.1"
             keycloak_full: "yes"
+          - set: "centos-7-domain-mode-cluster"
+            puppet: puppet5
+            keycloak_version: 8.0.1
+            keycloak_domain_mode_cluster: 'yes'
+          - set: "centos-7-domain-mode-cluster"
+            puppet: puppet5
+            keycloak_version: 12.0.1
+            keycloak_domain_mode_cluster: 'yes'
+          - set: "centos-7-domain-mode-cluster"
+            puppet: puppet6
+            keycloak_version: 8.0.1
+            keycloak_domain_mode_cluster: 'yes'
+          - set: "centos-7-domain-mode-cluster"
+            puppet: puppet6
+            keycloak_version: 12.0.1
+            keycloak_domain_mode_cluster: 'yes'
     env:
       BUNDLE_WITHOUT: development:release
       BEAKER_debug: true
@@ -115,3 +133,4 @@ jobs:
           BEAKER_set: ${{ matrix.set }}
           BEAKER_keycloak_version: ${{ matrix.keycloak_version }}
           BEAKER_keycloak_full: ${{ matrix.keycloak_full }}
+          BEAKER_keycloak_domain_mode_cluster: ${{ matrix.keycloak_domain_mode_cluster }}

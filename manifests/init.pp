@@ -34,6 +34,9 @@
 # @param service_bind_address
 #   Bind address for Keycloak service.
 #   Default is '0.0.0.0'.
+# @param management_bind_address
+#   Bind address for Keycloak management.
+#   Default is '0.0.0.0'.
 # @param java_opts
 #   Sets additional options to Java virtual machine environment variable.
 # @param java_opts_append
@@ -65,6 +68,10 @@
 # @param admin_user_password
 #   Keycloak administrative user password.
 #   Default is `changeme`.
+# @param wildfly_user
+#   Wildfly user. Required for domain mode.
+# @param wildfly_user_password
+#   Wildfly user password. Required for domain mode.
 # @param manage_datasource
 #   Boolean that determines if configured datasource will be managed.
 #   Default is `true`.
@@ -211,13 +218,15 @@
 # @param enable_jdbc_ping
 #   Use JDBC_PING to discover the nodes and manage the replication of data
 #     More info: http://jgroups.org/manual/#_jdbc_ping
-#   Only applies when `operating_mode` is `clustered`
+#   Only applies when `operating_mode` is either `clustered` or `domain`
 #   JDBC_PING uses port 7600 to ensure cluster members are discoverable by each other
 #   This module does not manage firewall changes
 # @param jboss_bind_public_address
 #   JBoss bind public IP address
 # @param jboss_bind_private_address
 #   JBoss bind private IP address
+# @param role
+#   Role when operating mode is domain.
 # @param user_cache
 #   Boolean that determines if userCache is enabled
 # @param tech_preview_features
@@ -232,7 +241,10 @@
 #   Custom configuration content to be added to config.cli
 # @param custom_config_source
 #   Custom configuration source file to be added to config.cli
-#
+# @param master_address
+#   IP address of the master in domain mode
+# @param server_name
+#   Server name in domain mode. Defaults to hostname.
 class keycloak (
   Boolean $manage_install       = true,
   String $version               = '8.0.1',
@@ -245,6 +257,7 @@ class keycloak (
   Boolean $service_hasstatus    = true,
   Boolean $service_hasrestart   = true,
   Stdlib::IP::Address $service_bind_address = '0.0.0.0',
+  Stdlib::IP::Address $management_bind_address = '0.0.0.0',
   Optional[Variant[String, Array]] $java_opts = undef,
   Boolean $java_opts_append = true,
   Optional[String] $service_extra_opts = undef,
@@ -257,6 +270,8 @@ class keycloak (
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = 'admin',
   String $admin_user_password   = 'changeme',
+  Optional[String] $wildfly_user = undef,
+  Optional[String] $wildfly_user_password = undef,
   Boolean $manage_datasource = true,
   Enum['h2', 'mysql', 'oracle', 'postgresql'] $datasource_driver = 'h2',
   Optional[String] $datasource_host = undef,
@@ -315,10 +330,11 @@ class keycloak (
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
-  Enum['standalone', 'clustered'] $operating_mode = 'standalone',
+  Enum['standalone', 'clustered', 'domain'] $operating_mode = 'standalone',
   Boolean $enable_jdbc_ping = false,
   Stdlib::IP::Address $jboss_bind_public_address = $facts['networking']['ip'],
   Stdlib::IP::Address $jboss_bind_private_address = $facts['networking']['ip'],
+  Optional[Enum['master', 'slave']] $role = undef,
   Boolean $user_cache = true,
   Array $tech_preview_features = [],
   Boolean $auto_deploy_exploded = false,
@@ -326,10 +342,38 @@ class keycloak (
   Hash $spi_deployments = {},
   Optional[String] $custom_config_content = undef,
   Optional[Variant[String, Array]] $custom_config_source = undef,
+  Optional[Stdlib::Host] $master_address = undef,
+  String $server_name = $facts['hostname'],
 ) {
 
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
+  }
+
+  if $role and ! ($operating_mode == 'domain') {
+    fail('Role can only be specified in domain operating mode')
+  }
+
+  if $operating_mode == 'domain' {
+    unless $role {
+      fail("Role not specified: in domain mode role needs to be specified. This needs to be either 'master' or 'slave'.")
+    }
+    unless $wildfly_user {
+      fail('Wildfly user not specified: in domain mode Wildfly user needs to be specified.')
+    }
+    unless $wildfly_user_password {
+      fail('Wildfly user password not specified: in domain, mode Wildfly user password needs to be specified.')
+    }
+
+    if $role == 'slave' and ! $master_address {
+      fail('Master address not specified: in domain mode, master address needs to be specified for a slave.')
+    }
+
+    if $datasource_driver == 'h2' {
+      fail("Invalid datasource driver for domain mode: ${datasource_driver}")
+    }
+
+    $wildfly_user_password_base64 = strip(base64('encode', $wildfly_user_password))
   }
 
   if versioncmp($version, '12.0.0') >= 0 {
