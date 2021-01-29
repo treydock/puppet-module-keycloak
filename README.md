@@ -158,6 +158,44 @@ apache::vhost { 'idp.example.com':
   ssl_key             => '/etc/pki/tls/private/idp.example.com.key',
 }
 ```
+Setup a domain master. (This needs a shared database, here '1.2.3.4').
+
+```puppet
+class { '::keycloak':
+  operating_mode        => 'domain',
+  role                  => 'master',
+  wildfly_user          => 'wildfly,
+  wildfly_user_password => 'changeme,
+  manage_datasource     => false,
+  datasource_driver     => 'postgresql',
+  datasource_host       => '1.2.3.4,
+  datasource_dbname     => 'keycloak,
+  datasource_username   => 'keycloak,
+  datasource_password   => 'changeme,
+  admin_user            => 'admin,
+  admin_user_password   => 'changeme,
+}
+```
+
+Setup a domain slave. (This needs a shared database, here '1.2.3.4').
+
+```puppet
+class { '::keycloak':
+  operating_mode        => 'domain',
+  role                  => 'slave',
+  wildfly_user          => 'wildfly,
+  wildfly_user_password => 'changeme,
+  manage_datasource     => false,
+  datasource_driver     => 'postgresql',
+  datasource_host       => '1.2.3.4,
+  datasource_dbname     => 'keycloak,
+  datasource_username   => 'keycloak,
+  datasource_password   => 'changeme,
+  admin_user            => 'admin,
+  admin_user_password   => 'changeme,
+}
+```
+**NOTE:** The wilfdly user and password need to match those in domain master. These are required for authentication in a cluster.
 
 Setup a host for theme development so that theme changes don't require a service restart, not recommended for production.
 

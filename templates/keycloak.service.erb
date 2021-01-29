@@ -14,6 +14,12 @@ Group=<%= scope['keycloak::group'] %>
 ExecStart=<%= scope['keycloak::install_base'] %>/bin/standalone.sh -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %><% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
 <% elsif scope['keycloak::operating_mode'] == 'clustered'-%>
 ExecStart=<%= scope['keycloak::install_base'] %>/bin/standalone.sh --server-config=standalone-ha.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %><% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
+<% elsif scope['keycloak::operating_mode'] == 'domain'-%>
+<% if scope['keycloak::role'] == 'master' -%>
+ExecStart=<%= scope['keycloak::install_base'] %>/bin/domain.sh --host-config=host-master.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %> -Djboss.bind.address.management=<%= scope['keycloak::management_bind_address'] %> <% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
+<% else -%>
+ExecStart=<%= scope['keycloak::install_base'] %>/bin/domain.sh --host-config=host-slave.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %> -Djboss.domain.master.address=<%= scope['keycloak::master_address'] %> -Djboss.bind.address.management=<%= scope['keycloak::management_bind_address'] %> <% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end -%>
+<% end -%>
 <% end -%>
 TimeoutStartSec=600
 TimeoutStopSec=600

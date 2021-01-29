@@ -23,6 +23,101 @@ describe 'keycloak' do
       it { is_expected.to contain_class('keycloak::config').that_comes_before('Class[keycloak::service]') }
       it { is_expected.to contain_class('keycloak::service') }
 
+      context 'domain master' do
+        let(:params) do
+          {
+            operating_mode: 'domain',
+            install_dir: '/opt/keycloak-x',
+            role: 'master',
+            datasource_driver: 'postgresql',
+            wildfly_user: 'wildfly',
+            wildfly_user_password: 'changeme',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('keycloak::config::domain') }
+        it { is_expected.not_to contain_class('keycloak::config::standalone') }
+        it do
+          is_expected.to contain_augeas('ensure-servername').with(incl: '/opt/keycloak-x/domain/configuration/host-master.xml',
+                                                                  context: '/files/opt/keycloak-x/domain/configuration/host-master.xml/host/servers')
+        end
+        it { is_expected.to contain_file('/opt/keycloak-x/config-domain.cli').with(notify: 'Exec[jboss-cli.sh --file=config-domain.cli]') }
+        it { is_expected.to contain_exec('jboss-cli.sh --file=config-domain.cli').with(command: '/opt/keycloak-x/bin/jboss-cli.sh --file=config-domain.cli') }
+      end
+
+      context 'domain slave' do
+        let(:params) do
+          {
+            operating_mode: 'domain',
+            install_dir: '/opt/keycloak-x',
+            role: 'slave',
+            master_address: '10.0.5.10',
+            datasource_driver: 'postgresql',
+            wildfly_user: 'wildfly',
+            wildfly_user_password: 'changeme',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('keycloak::config::domain') }
+        it { is_expected.not_to contain_class('keycloak::config::standalone') }
+
+        it do
+          is_expected.to contain_augeas('ensure-servername').with(incl: '/opt/keycloak-x/domain/configuration/host-slave.xml',
+                                                                  context: '/files/opt/keycloak-x/domain/configuration/host-slave.xml/host/servers')
+        end
+        it { is_expected.to contain_file('/opt/keycloak-x/config-domain.cli') }
+      end
+
+      context 'standalone with domain role defined' do
+        let(:params) do
+          {
+            operating_mode: 'standalone',
+            role: 'master',
+          }
+        end
+
+        it { is_expected.not_to compile }
+      end
+
+      context 'domain slave without master_address' do
+        let(:params) do
+          {
+            operating_mode: 'domain',
+            wildfly_user: 'wildfly',
+            wildfly_user_password: 'wildfly',
+            role: 'slave',
+          }
+        end
+
+        it { is_expected.not_to compile }
+      end
+
+      context 'domain master without wildfly user' do
+        let(:params) do
+          {
+            operating_mode: 'domain',
+            role: 'master',
+            wildfly_user_password: 'wildfly',
+          }
+        end
+
+        it { is_expected.not_to compile }
+      end
+
+      context 'domain master without wildfly user password' do
+        let(:params) do
+          {
+            operating_mode: 'domain',
+            role: 'master',
+            wildfly_user: 'wildfly',
+          }
+        end
+
+        it { is_expected.not_to compile }
+      end
+
       context 'keycloak::install' do
         it do
           is_expected.to contain_user('keycloak').only_with(ensure: 'present',

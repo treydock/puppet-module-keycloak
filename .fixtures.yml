@@ -21,6 +21,9 @@ fixtures:
     systemd:
       repo: https://github.com/camptocamp/puppet-systemd.git
       ref: 0.4.0
+    augeas_core:
+      repo: https://github.com/puppetlabs/puppetlabs-augeas_core.git
+      puppet_version: ">= 6.0.0"
     yumrepo_core:
       repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
       puppet_version: ">= 6.0.0"
