@@ -1,0 +1,34 @@
+HOSTS:
+  centos-7-master:
+    roles:
+      - agent
+      - master
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: centos:7
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y wget which cronie iproute initscripts'
+    docker_container_name: 'keycloak-master-el7'
+  centos-7-slave:
+    roles:
+      - agent
+      - slave
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: centos:7
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y wget which cronie iproute initscripts'
+    docker_container_name: 'keycloak-slave-el7'
+CONFIG:
+  log_level: debug
+  type: foss
+ssh:
+  password: root
+  auth_methods: ["password"]
+
