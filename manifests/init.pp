@@ -342,7 +342,7 @@ class keycloak (
   Hash $spi_deployments = {},
   Optional[String] $custom_config_content = undef,
   Optional[Variant[String, Array]] $custom_config_source = undef,
-  Optional[Stdlib::IP::Address] $master_address = undef,
+  Optional[Stdlib::Host] $master_address = undef,
   String $server_name = $facts['hostname'],
 ) {
 
