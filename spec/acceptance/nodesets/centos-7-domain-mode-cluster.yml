@@ -2,7 +2,8 @@ HOSTS:
   centos-7-master:
     roles:
       - agent
-      - master
+      - default
+      - domain_master
     platform: el-7-x86_64
     hypervisor: docker
     image: centos:7
@@ -15,7 +16,7 @@ HOSTS:
   centos-7-slave:
     roles:
       - agent
-      - slave
+      - domain_slave
     platform: el-7-x86_64
     hypervisor: docker
     image: centos:7
