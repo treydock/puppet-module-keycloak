@@ -20,9 +20,6 @@ fixtures:
     augeas_core:
       repo: https://github.com/puppetlabs/puppetlabs-augeas_core.git
       puppet_version: ">= 6.0.0"
-    yumrepo_core:
-      repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
-      puppet_version: ">= 6.0.0"
     apt:
       repo: https://github.com/puppetlabs/puppetlabs-apt.git
     concat:
