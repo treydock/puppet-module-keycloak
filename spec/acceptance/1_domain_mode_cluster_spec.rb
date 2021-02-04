@@ -99,6 +99,7 @@ describe 'keycloak domain mode cluster', if: RSpec.configuration.keycloak_domain
       apply_manifest_on(domain_master, master_pp, catch_failures: true)
       apply_manifest_on(domain_master, master_pp, catch_changes: true)
       apply_manifest_on(domain_slave,  slave_pp,  catch_failures: true)
+      apply_manifest_on(domain_slave,  slave_pp,  catch_changes: true)
     end
 
     describe service('keycloak'), :node => domain_master do
@@ -109,6 +110,23 @@ describe 'keycloak domain mode cluster', if: RSpec.configuration.keycloak_domain
     describe service('keycloak'), :node => domain_slave do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
+    end
+
+    it 'data should replicate from master to slave' do
+      on domain_master, '/opt/keycloak/bin/kcadm-wrapper.sh create roles -r master -s name=testrole'
+      on domain_slave, '/opt/keycloak/bin/kcadm-wrapper.sh get roles/testrole -r master' do
+        data = JSON.parse(stdout)
+        expect(data['name']).to eq('testrole')
+      end
+    end
+
+    it 'data should replicate from slave to master' do
+      on domain_slave, '/opt/keycloak/bin/kcadm-wrapper.sh delete roles/testrole -r master'
+      on domain_master, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r master' do
+        data = JSON.parse(stdout)
+        match = data.select { |role| role['name'] == 'testrole' }
+        expect(match).to be_empty
+      end
     end
   end
 end
