@@ -26,4 +26,4 @@
 .envrc
 /inventory.yaml
 /vagrant/.vagrant/
-/vagrant/ubuntu-bionic-18.04-cloudimg-console.log
+/vagrant/*.log
