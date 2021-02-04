@@ -6,35 +6,35 @@ describe 'keycloak domain mode cluster', if: RSpec.configuration.keycloak_domain
   db = find_only_one('db')
 
   context 'new cluster' do
-    it 'should launch' do
+    it 'launches' do
       db_pp = <<-EOS
       class { '::postgresql::globals':
         manage_package_repo => true,
         version             => '9.6',
       }
-      
+
       class { '::postgresql::server':
         listen_addresses => '*',
         require          => Class['::postgresql::globals']
       }
-      
+
       ::postgresql::server::role { 'keycloak':
         password_hash    => postgresql_password('keycloak', 'keycloak'),
         connection_limit => 300,
         require          => Class['::postgresql::server']
       }
-      
+
       ::postgresql::server::database_grant { 'Grant all to keycloak':
         privilege => 'ALL',
         db        => 'keycloak',
         role      => 'keycloak',
       }
-      
+
       ::postgresql::server::db { 'keycloak':
         user     => 'keycloak',
         password => postgresql_password('keycloak', 'keycloak'),
       }
-      
+
       postgresql::server::pg_hba_rule { 'Allow Keycloak instances network access to the database':
         description => 'Open up PostgreSQL for access from anywhere',
         type        => 'host',
@@ -102,17 +102,17 @@ describe 'keycloak domain mode cluster', if: RSpec.configuration.keycloak_domain
       apply_manifest_on(domain_slave,  slave_pp,  catch_changes: true)
     end
 
-    describe service('keycloak'), :node => domain_master do
+    describe service('keycloak'), node: domain_master do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
 
-    describe service('keycloak'), :node => domain_slave do
+    describe service('keycloak'), node: domain_slave do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
 
-    it 'data should replicate from master to slave' do
+    it 'data replicates from master to slave' do
       on domain_master, '/opt/keycloak/bin/kcadm-wrapper.sh create roles -r master -s name=testrole'
       on domain_slave, '/opt/keycloak/bin/kcadm-wrapper.sh get roles/testrole -r master' do
         data = JSON.parse(stdout)
@@ -120,7 +120,7 @@ describe 'keycloak domain mode cluster', if: RSpec.configuration.keycloak_domain
       end
     end
 
-    it 'data should replicate from slave to master' do
+    it 'data replicates from slave to master' do
       on domain_slave, '/opt/keycloak/bin/kcadm-wrapper.sh delete roles/testrole -r master'
       on domain_master, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r master' do
         data = JSON.parse(stdout)
