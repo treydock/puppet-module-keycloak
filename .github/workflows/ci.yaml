@@ -85,6 +85,22 @@ jobs:
             puppet: "puppet6"
             keycloak_version: "12.0.1"
             keycloak_full: "yes"
+          - set: centos-7-domain-mode-cluster
+            puppet: puppet5
+            keycloak_version: 8.0.1
+            keycloak_domain_mode_cluster: 'yes'
+          - set: centos-7-domain-mode-cluster
+            puppet: puppet5
+            keycloak_version: 12.0.1
+            keycloak_domain_mode_cluster: 'yes'
+          - set: centos-7-domain-mode-cluster
+            puppet: puppet6
+            keycloak_version: 8.0.1
+            keycloak_domain_mode_cluster: 'yes'
+          - set: centos-7-domain-mode-cluster
+            puppet: puppet6
+            keycloak_version: 12.0.1
+            keycloak_domain_mode_cluster: 'yes'
     env:
       BUNDLE_WITHOUT: development:release
       BEAKER_debug: true
