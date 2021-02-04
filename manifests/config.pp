@@ -34,6 +34,7 @@ class keycloak::config {
   if $::keycloak::operating_mode != 'domain' {
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
   } else {
+    $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
   }
 
@@ -137,7 +138,7 @@ class keycloak::config {
       mode   => '0755',
     }
 
-    $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
+
 
     exec { 'create-keycloak-admin-domain':
       command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
