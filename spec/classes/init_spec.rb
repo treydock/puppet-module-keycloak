@@ -36,8 +36,6 @@ describe 'keycloak' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('keycloak::config::domain') }
-        it { is_expected.not_to contain_class('keycloak::config::standalone') }
         it do
           is_expected.to contain_augeas('ensure-servername').with(incl: '/opt/keycloak-x/domain/configuration/host-master.xml',
                                                                   context: '/files/opt/keycloak-x/domain/configuration/host-master.xml/host/servers')
@@ -60,8 +58,6 @@ describe 'keycloak' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('keycloak::config::domain') }
-        it { is_expected.not_to contain_class('keycloak::config::standalone') }
 
         it do
           is_expected.to contain_augeas('ensure-servername').with(incl: '/opt/keycloak-x/domain/configuration/host-slave.xml',
