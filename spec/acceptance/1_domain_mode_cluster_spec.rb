@@ -4,8 +4,8 @@ describe 'keycloak domain mode cluster', if: RSpec.configuration.keycloak_domain
   domain_master = find_only_one('domain_master')
   domain_slave = find_only_one('domain_slave')
 
-  context 'domain test' do
-    it 'replication is successful' do
+  context 'new cluster' do
+    it 'should launch' do
       master_pp = <<-EOS
       class { 'keycloak':
         operating_mode        => 'domain',
@@ -31,5 +31,16 @@ describe 'keycloak domain mode cluster', if: RSpec.configuration.keycloak_domain
       apply_manifest_on(domain_master, master_pp, catch_changes: true)
       apply_manifest_on(domain_slave,  slave_pp,  catch_failures: true)
     end
+
+    describe service('keycloak'), :node => domain_master do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
+    describe service('keycloak'), :node => domain_slave do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
   end
 end
