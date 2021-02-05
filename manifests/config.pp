@@ -33,9 +33,11 @@ class keycloak::config {
 
   if $::keycloak::operating_mode != 'domain' {
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
+    $config_cli_content = template('keycloak/config.cli.erb')
   } else {
     $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
+    $config_cli_content = template('keycloak/config-domain.cli.erb')
   }
 
   exec { 'create-keycloak-admin':
@@ -43,6 +45,39 @@ class keycloak::config {
     creates => $_add_user_keycloak_state,
     notify  => Class['keycloak::service'],
     user    => $keycloak::user,
+  }
+
+  concat { "${keycloak::install_base}/config.cli":
+    owner     => $keycloak::user,
+    group     => $keycloak::group,
+    mode      => '0600',
+    notify    => Exec['jboss-cli.sh --file=config.cli'],
+    show_diff => false,
+  }
+
+  concat::fragment { 'config.cli-keycloak':
+    target  => "${keycloak::install_base}/config.cli",
+    content => $config_cli_content,
+    order   => '00',
+  }
+
+  if $keycloak::custom_config_content or $keycloak::custom_config_source {
+    concat::fragment { 'config.cli-custom':
+      target  => "${keycloak::install_base}/config.cli",
+      content => $keycloak::custom_config_content,
+      source  => $keycloak::custom_config_source,
+      order   => '01',
+    }
+  }
+
+  exec { 'jboss-cli.sh --file=config.cli':
+    command     => "${keycloak::install_base}/bin/jboss-cli.sh --file=config.cli",
+    cwd         => $keycloak::install_base,
+    user        => $keycloak::user,
+    group       => $keycloak::group,
+    refreshonly => true,
+    logoutput   => true,
+    notify      => Class['keycloak::service'],
   }
 
   if $::keycloak::operating_mode != 'domain' {
@@ -62,39 +97,6 @@ class keycloak::config {
       content => template('keycloak/profile.properties.erb'),
       mode    => '0644',
       notify  => Class['keycloak::service'],
-    }
-
-    concat { "${keycloak::install_base}/config.cli":
-      owner     => $keycloak::user,
-      group     => $keycloak::group,
-      mode      => '0600',
-      notify    => Exec['jboss-cli.sh --file=config.cli'],
-      show_diff => false,
-    }
-
-    concat::fragment { 'config.cli-keycloak':
-      target  => "${keycloak::install_base}/config.cli",
-      content => template('keycloak/config.cli.erb'),
-      order   => '00',
-    }
-
-    if $keycloak::custom_config_content or $keycloak::custom_config_source {
-      concat::fragment { 'config.cli-custom':
-        target  => "${keycloak::install_base}/config.cli",
-        content => $keycloak::custom_config_content,
-        source  => $keycloak::custom_config_source,
-        order   => '01',
-      }
-    }
-
-    exec { 'jboss-cli.sh --file=config.cli':
-      command     => "${keycloak::install_base}/bin/jboss-cli.sh --file=config.cli",
-      cwd         => $keycloak::install_base,
-      user        => $keycloak::user,
-      group       => $keycloak::group,
-      refreshonly => true,
-      logoutput   => true,
-      notify      => Class['keycloak::service'],
     }
 
     create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
@@ -125,6 +127,7 @@ class keycloak::config {
     }
   }
   else {
+    ### DOMAIN SPECIFIC START
     $_dirs = [
       "${keycloak::install_base}/domain/servers",
       "${keycloak::install_base}/domain/servers/${keycloak::server_name}",
@@ -136,15 +139,6 @@ class keycloak::config {
       owner  => $keycloak::user,
       group  => $keycloak::group,
       mode   => '0755',
-    }
-
-
-
-    exec { 'create-keycloak-admin-domain':
-      command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
-      creates => $_add_user_keycloak_state,
-      notify  => Class['keycloak::service'],
-      user    => $keycloak::user,
     }
 
     $_add_user_wildfly_cmd = "${keycloak::install_base}/bin/add-user.sh"
@@ -280,26 +274,7 @@ class keycloak::config {
         notify    => Class['keycloak::service'],
       }
     }
-
-    file { "${keycloak::install_base}/config-domain.cli":
-      ensure    => 'file',
-      owner     => $keycloak::user,
-      group     => $keycloak::group,
-      mode      => '0600',
-      content   => template('keycloak/config-domain.cli.erb'),
-      notify    => Exec['jboss-cli.sh --file=config-domain.cli'],
-      show_diff => false,
-    }
-
-    exec { 'jboss-cli.sh --file=config-domain.cli':
-      command     => "${keycloak::install_base}/bin/jboss-cli.sh --file=config-domain.cli",
-      cwd         => $keycloak::install_base,
-      user        => $keycloak::user,
-      group       => $keycloak::group,
-      refreshonly => true,
-      logoutput   => true,
-      notify      => Class['keycloak::service'],
-    }
+    ### DOMAIN SPECIFIC END
 
     if $keycloak::java_opts {
       $java_opts_ensure = 'present'
