@@ -33,11 +33,13 @@ class keycloak::config {
 
   if $::keycloak::operating_mode != 'domain' {
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
+    $_subdir = 'standalone'
     $config_cli_content = template('keycloak/config.cli.erb')
     $java_opts_path = "${keycloak::install_base}/bin/standalone.conf"
   } else {
     $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
+    $_subdir = 'domain'
     $config_cli_content = template('keycloak/config-domain.cli.erb')
     $java_opts_path = "${keycloak::install_base}/bin/domain.conf"
 
@@ -119,28 +121,25 @@ class keycloak::config {
     notify => Class['keycloak::service'],
   }
 
+  file { "${keycloak::install_base}/${_subdir}/configuration":
+    ensure => 'directory',
+    owner  => $keycloak::user,
+    group  => $keycloak::group,
+    mode   => '0750',
+  }
 
-  if $::keycloak::operating_mode != 'domain' {
-    $_subdir = 'standalone'
+  file { "${keycloak::install_base}/${_subdir}/configuration/profile.properties":
+    ensure  => 'file',
+    owner   => $keycloak::user,
+    group   => $keycloak::group,
+    content => template('keycloak/profile.properties.erb'),
+    mode    => '0644',
+    notify  => Class['keycloak::service'],
+  }
 
-    file { "${keycloak::install_base}/${_subdir}/configuration":
-      ensure => 'directory',
-      owner  => $keycloak::user,
-      group  => $keycloak::group,
-      mode   => '0750',
-    }
+  create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
 
-    file { "${keycloak::install_base}/${_subdir}/configuration/profile.properties":
-      ensure  => 'file',
-      owner   => $keycloak::user,
-      group   => $keycloak::group,
-      content => template('keycloak/profile.properties.erb'),
-      mode    => '0644',
-      notify  => Class['keycloak::service'],
-    }
-
-    create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
-  } else {
+  if $::keycloak::operating_mode == 'domain' {
     $_add_user_wildfly_cmd = "${keycloak::install_base}/bin/add-user.sh"
     $_add_user_wildfly_args = "--user ${keycloak::wildfly_user} --password ${keycloak::wildfly_user_password} -e -s"
     $_add_user_wildfly_state = "${::keycloak::install_base}/.create-wildfly-user"
