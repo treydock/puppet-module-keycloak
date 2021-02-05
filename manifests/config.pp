@@ -40,6 +40,19 @@ class keycloak::config {
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
     $config_cli_content = template('keycloak/config-domain.cli.erb')
     $java_opts_path = "${keycloak::install_base}/bin/domain.conf"
+
+    $_dirs = [
+      "${keycloak::install_base}/domain/servers",
+      "${keycloak::install_base}/domain/servers/${keycloak::server_name}",
+      "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration",
+    ]
+
+    file { $_dirs:
+      ensure => 'directory',
+      owner  => $keycloak::user,
+      group  => $keycloak::group,
+      mode   => '0755',
+    }
   }
 
   exec { 'create-keycloak-admin':
@@ -128,19 +141,6 @@ class keycloak::config {
 
     create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
   } else {
-    $_dirs = [
-      "${keycloak::install_base}/domain/servers",
-      "${keycloak::install_base}/domain/servers/${keycloak::server_name}",
-      "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration",
-    ]
-
-    file { $_dirs:
-      ensure => 'directory',
-      owner  => $keycloak::user,
-      group  => $keycloak::group,
-      mode   => '0755',
-    }
-
     $_add_user_wildfly_cmd = "${keycloak::install_base}/bin/add-user.sh"
     $_add_user_wildfly_args = "--user ${keycloak::wildfly_user} --password ${keycloak::wildfly_user_password} -e -s"
     $_add_user_wildfly_state = "${::keycloak::install_base}/.create-wildfly-user"
