@@ -34,10 +34,12 @@ class keycloak::config {
   if $::keycloak::operating_mode != 'domain' {
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
     $config_cli_content = template('keycloak/config.cli.erb')
+    $java_opts_path = "${keycloak::install_base}/bin/standalone.conf"
   } else {
     $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
     $config_cli_content = template('keycloak/config-domain.cli.erb')
+    $java_opts_path = "${keycloak::install_base}/bin/domain.conf"
   }
 
   exec { 'create-keycloak-admin':
@@ -80,6 +82,31 @@ class keycloak::config {
     notify      => Class['keycloak::service'],
   }
 
+  if $keycloak::java_opts {
+    $java_opts_ensure = 'present'
+  } else {
+    $java_opts_ensure = 'absent'
+  }
+  if $keycloak::java_opts =~ Array {
+    $java_opts = join($keycloak::java_opts, ' ')
+  } else {
+    $java_opts = $keycloak::java_opts
+  }
+  if $keycloak::java_opts_append {
+    $_java_opts = "\$JAVA_OPTS ${java_opts}"
+  } else {
+    $_java_opts = $java_opts
+  }
+
+  file_line { 'JAVA_OPTS':
+    ensure => $java_opts_ensure,
+    path   => $java_opts_path,
+    line   => "JAVA_OPTS=\"${_java_opts}\"",
+    match  => '^JAVA_OPTS=',
+    notify => Class['keycloak::service'],
+  }
+
+
   if $::keycloak::operating_mode != 'domain' {
     $_subdir = 'standalone'
 
@@ -100,34 +127,7 @@ class keycloak::config {
     }
 
     create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
-
-    if $keycloak::java_opts {
-      $java_opts_ensure = 'present'
-    } else {
-      $java_opts_ensure = 'absent'
-    }
-
-    if $keycloak::java_opts =~ Array {
-      $java_opts = join($keycloak::java_opts, ' ')
-    } else {
-      $java_opts = $keycloak::java_opts
-    }
-    if $keycloak::java_opts_append {
-      $_java_opts = "\$JAVA_OPTS ${java_opts}"
-    } else {
-      $_java_opts = $java_opts
-    }
-
-    file_line { 'standalone.conf-JAVA_OPTS':
-      ensure => $java_opts_ensure,
-      path   => "${keycloak::install_base}/bin/standalone.conf",
-      line   => "JAVA_OPTS=\"${_java_opts}\"",
-      match  => '^JAVA_OPTS=',
-      notify => Class['keycloak::service'],
-    }
-  }
-  else {
-    ### DOMAIN SPECIFIC START
+  } else {
     $_dirs = [
       "${keycloak::install_base}/domain/servers",
       "${keycloak::install_base}/domain/servers/${keycloak::server_name}",
@@ -273,33 +273,6 @@ class keycloak::config {
         ],
         notify    => Class['keycloak::service'],
       }
-    }
-    ### DOMAIN SPECIFIC END
-
-    if $keycloak::java_opts {
-      $java_opts_ensure = 'present'
-    } else {
-      $java_opts_ensure = 'absent'
-    }
-
-    if $keycloak::java_opts =~ Array {
-      $java_opts = join($keycloak::java_opts, ' ')
-    } else {
-      $java_opts = $keycloak::java_opts
-    }
-
-    if $keycloak::java_opts_append {
-      $_java_opts = "\$JAVA_OPTS ${java_opts}"
-    } else {
-      $_java_opts = $java_opts
-    }
-
-    file_line { 'domain.conf-JAVA_OPTS':
-      ensure => $java_opts_ensure,
-      path   => "${keycloak::install_base}/bin/domain.conf",
-      line   => "JAVA_OPTS=\"${_java_opts}\"",
-      match  => '^JAVA_OPTS=',
-      notify => Class['keycloak::service'],
     }
   }
 }
