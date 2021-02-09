@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.25.2](https://github.com/treydock/puppet-module-keycloak/tree/v6.25.2) (2021-02-09)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.25.1...v6.25.2)
+
+### Fixed
+
+- Fix missing IntegerProperty when keycloak\_ldap\_user\_provider [\#182](https://github.com/treydock/puppet-module-keycloak/pull/182) ([ZloeSabo](https://github.com/ZloeSabo))
+
 ## [v6.25.1](https://github.com/treydock/puppet-module-keycloak/tree/v6.25.1) (2021-01-07)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.25.0...v6.25.1)
@@ -245,7 +253,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Add client\_auth\_method property to keycloak\_identity\_provider [\#117](https://github.com/treydock/puppet-module-keycloak/pull/117) ([treydock](https://github.com/treydock))
-- Support disabling the user cache [\#114](https://github.com/treydock/puppet-module-keycloak/pull/114) ([treydock](https://github.com/treydock))
 
 ## [v6.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v6.2.0) (2020-01-09)
 
@@ -254,6 +261,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Support managing authentication flows [\#115](https://github.com/treydock/puppet-module-keycloak/pull/115) ([treydock](https://github.com/treydock))
+- Support disabling the user cache [\#114](https://github.com/treydock/puppet-module-keycloak/pull/114) ([treydock](https://github.com/treydock))
 - Support Keycloak SPI deployments [\#113](https://github.com/treydock/puppet-module-keycloak/pull/113) ([treydock](https://github.com/treydock))
 - Add content\_security\_policy to keycloak\_realm [\#112](https://github.com/treydock/puppet-module-keycloak/pull/112) ([treydock](https://github.com/treydock))
 - Improve handling of realm flow assignment to avoid errors [\#111](https://github.com/treydock/puppet-module-keycloak/pull/111) ([treydock](https://github.com/treydock))
@@ -454,7 +462,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Expand postgresql support to behave more like mysql support, simplified a bit [\#60](https://github.com/treydock/puppet-module-keycloak/pull/60) ([treydock](https://github.com/treydock))
 - Use PDK [\#58](https://github.com/treydock/puppet-module-keycloak/pull/58) ([treydock](https://github.com/treydock))
 
 ## [3.7.0](https://github.com/treydock/puppet-module-keycloak/tree/3.7.0) (2019-05-20)
@@ -463,6 +470,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Expand postgresql support to behave more like mysql support, simplified a bit [\#60](https://github.com/treydock/puppet-module-keycloak/pull/60) ([treydock](https://github.com/treydock))
 - Postgresql support [\#59](https://github.com/treydock/puppet-module-keycloak/pull/59) ([verrydtj](https://github.com/verrydtj))
 
 ## [3.6.1](https://github.com/treydock/puppet-module-keycloak/tree/3.6.1) (2019-05-13)
@@ -507,6 +515,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Better ID handling [\#47](https://github.com/treydock/puppet-module-keycloak/pull/47) ([treydock](https://github.com/treydock))
 - Test against Keycloak 4.8.1.Final and document version handling and upgrade [\#43](https://github.com/treydock/puppet-module-keycloak/pull/43) ([treydock](https://github.com/treydock))
+- Add enabled property to keycloak\_ldap\_user\_provider [\#41](https://github.com/treydock/puppet-module-keycloak/pull/41) ([treydock](https://github.com/treydock))
 
 ### Fixed
 
@@ -520,7 +529,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Support SSSD User Provider [\#42](https://github.com/treydock/puppet-module-keycloak/pull/42) ([treydock](https://github.com/treydock))
-- Add enabled property to keycloak\_ldap\_user\_provider [\#41](https://github.com/treydock/puppet-module-keycloak/pull/41) ([treydock](https://github.com/treydock))
 
 ## [3.1.0](https://github.com/treydock/puppet-module-keycloak/tree/3.1.0) (2018-12-13)
 
