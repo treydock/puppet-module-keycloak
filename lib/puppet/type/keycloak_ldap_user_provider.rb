@@ -1,5 +1,6 @@
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
+require_relative '../../puppet_x/keycloak/integer_property'
 
 Puppet::Type.newtype(:keycloak_ldap_user_provider) do
   desc <<-DESC
