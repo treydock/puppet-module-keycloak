@@ -118,7 +118,7 @@ catch
 end-try
 <%- end -%>
 
-<%- if scope['keycloak::operating_mode'] != 'domain' %>
+<%- if scope['keycloak::operating_mode'] != 'domain' -%>
 <%- if scope['keycloak::truststore'] -%>
 if (outcome != success) of /subsystem=keycloak-server/spi=truststore:read-resource
 /subsystem=keycloak-server/spi=truststore/:add
@@ -135,7 +135,7 @@ end-if
 <%- end -%><%- # end keystore -%>
 <%- end -%><%- # end is not domain -%>
 
-<%- if scope['keycloak::operating_mode'] == 'domain' %>
+<%- if scope['keycloak::operating_mode'] == 'domain' -%>
 <%- if scope['keycloak::truststore'] -%>
 if (outcome != success) of /profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore:read-resource
 /profile=auth-server-clustered/subsystem=keycloak-server/spi=truststore/:add
@@ -152,7 +152,7 @@ end-if
 <% end -%><%- # end keystore -%>
 <% end -%><%- # end is not domain -%>
 
-<%- if scope['keycloak::operating_mode'] != 'domain' %>
+<%- if scope['keycloak::operating_mode'] != 'domain' -%>
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=staticMaxAge, value=<%= scope['keycloak::theme_static_max_age'] %>)
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheThemes, value=<%= scope['keycloak::theme_cache_themes'] %>)
 /subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheTemplates, value=<%= scope['keycloak::theme_cache_templates'] %>)
@@ -279,6 +279,6 @@ if (result != java:jboss/datasources/KeycloakDS) of /profile=auth-server-cluster
 end-if
 <% end -%>
 
-<% if scope['keycloak::operating_mode'] == 'domain'-%>
+<% if scope['keycloak::operating_mode'] == 'domain' -%>
 stop-embedded-host-controller
 <% end -%>
