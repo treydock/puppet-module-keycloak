@@ -30,17 +30,16 @@ class keycloak::config {
 
   $_add_user_keycloak_cmd = "${keycloak::install_base}/bin/add-user-keycloak.sh"
   $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}"
+  $_config_cli_content = template('keycloak/config.cli.erb')
 
   if $::keycloak::operating_mode != 'domain' {
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
     $_subdir = 'standalone'
-    $_config_cli_content = template('keycloak/config.cli.erb')
     $_java_opts_path = "${keycloak::install_base}/bin/standalone.conf"
   } else {
     $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
     $_subdir = 'domain'
-    $_config_cli_content = template('keycloak/config-domain.cli.erb')
     $_java_opts_path = "${keycloak::install_base}/bin/domain.conf"
 
     $_dirs = [

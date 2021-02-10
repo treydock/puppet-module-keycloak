@@ -47,7 +47,7 @@ fi
 # Pass variables to Puppet manifests via environment variables
 export FACTER_profile='/etc/profile.d/myprofile.sh'
 export FACTER_basedir="$BASEDIR"
-export FACTER_keycloak_version='10.0.1'
+export FACTER_keycloak_version='12.0.2'
 export FACTER_keycloak_datasource_host='db.local'
 export FACTER_keycloak_datasource_dbname='keycloak'
 export FACTER_keycloak_datasource_username='keycloak'
