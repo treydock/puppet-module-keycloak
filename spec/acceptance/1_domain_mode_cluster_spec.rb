@@ -39,7 +39,7 @@ context 'new cluster' do
     }
     
     postgresql::server::pg_hba_rule { 'Allow Keycloak instances network access to the database':
-      description => 'Open up PostgreSQL for access from anywhere',
+    description => 'Open up PostgreSQL for access from anywhere',
       type        => 'host',
       database    => 'keycloak',
       user        => 'keycloak',
@@ -132,5 +132,3 @@ context 'new cluster' do
     end
   end
 end
-
-
