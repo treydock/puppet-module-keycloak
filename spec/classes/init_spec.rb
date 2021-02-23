@@ -228,7 +228,7 @@ describe 'keycloak' do
         end
 
         it do
-          is_expected.to contain_file_line('JAVA_OPTS').with(
+          is_expected.to contain_file_line('keycloak-JAVA_OPTS').with(
             ensure: 'absent',
             path: "/opt/keycloak-#{version}/bin/standalone.conf",
             line: 'JAVA_OPTS="$JAVA_OPTS "',
@@ -249,7 +249,7 @@ describe 'keycloak' do
           let(:params) { { java_opts: '-Xmx512m -Xms64m' } }
 
           it do
-            is_expected.to contain_file_line('JAVA_OPTS').with(
+            is_expected.to contain_file_line('keycloak-JAVA_OPTS').with(
               ensure: 'present',
               path: "/opt/keycloak-#{version}/bin/standalone.conf",
               line: 'JAVA_OPTS="$JAVA_OPTS -Xmx512m -Xms64m"',
@@ -262,7 +262,7 @@ describe 'keycloak' do
             let(:params) { { java_opts: '-Xmx512m -Xms64m', java_opts_append: false } }
 
             it do
-              is_expected.to contain_file_line('JAVA_OPTS').with(
+              is_expected.to contain_file_line('keycloak-JAVA_OPTS').with(
                 ensure: 'present',
                 path: "/opt/keycloak-#{version}/bin/standalone.conf",
                 line: 'JAVA_OPTS="-Xmx512m -Xms64m"',
