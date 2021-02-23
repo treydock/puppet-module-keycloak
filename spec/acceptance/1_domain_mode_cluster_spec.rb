@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 # This check needs to be here or Beaker will try to run find_only_one on
 # non-domain-mode tests and fail miserably.
 describe 'keycloak domain mode cluster' if RSpec.configuration.keycloak_domain_mode_cluster
-  
+
 domain_master = find_only_one('domain_master')
 domain_slave = find_only_one('domain_slave')
 db = find_only_one('db')
@@ -37,7 +37,7 @@ context 'new cluster' do
       user     => 'keycloak',
       password => postgresql_password('keycloak', 'keycloak'),
     }
-
+    
     postgresql::server::pg_hba_rule { 'Allow Keycloak instances network access to the database':
       description => 'Open up PostgreSQL for access from anywhere',
       type        => 'host',
@@ -114,7 +114,7 @@ context 'new cluster' do
     it { is_expected.to be_enabled }
     it { is_expected.to be_running }
   end
-  
+
   it 'data replicates from master to slave' do
     on domain_master, '/opt/keycloak/bin/kcadm-wrapper.sh create roles -r master -s name=testrole'
     on domain_slave, '/opt/keycloak/bin/kcadm-wrapper.sh get roles/testrole -r master' do
@@ -122,7 +122,7 @@ context 'new cluster' do
       expect(data['name']).to eq('testrole')
     end
   end
-  
+
   it 'data replicates from slave to master' do
     on domain_slave, '/opt/keycloak/bin/kcadm-wrapper.sh delete roles/testrole -r master'
     on domain_master, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r master' do
