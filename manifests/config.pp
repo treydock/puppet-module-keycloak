@@ -114,7 +114,7 @@ class keycloak::config {
   } else {
     $_java_opts = $java_opts
   }
-  file_line { 'JAVA_OPTS':
+  file_line { 'keycloak-JAVA_OPTS':
     ensure => $java_opts_ensure,
     path   => $_java_opts_path,
     line   => "JAVA_OPTS=\"${_java_opts}\"",
