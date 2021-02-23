@@ -37,7 +37,7 @@ context 'new cluster' do
       user     => 'keycloak',
       password => postgresql_password('keycloak', 'keycloak'),
     }
-    
+
     postgresql::server::pg_hba_rule { 'Allow Keycloak instances network access to the database':
     description => 'Open up PostgreSQL for access from anywhere',
       type        => 'host',
