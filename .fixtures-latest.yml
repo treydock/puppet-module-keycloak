@@ -14,6 +14,7 @@ fixtures:
       repo: https://github.com/voxpupuli/puppet-archive.git
     systemd:
       repo: https://github.com/camptocamp/puppet-systemd.git
+      ref: "8f68b0dcf3bbbafc60c025879a28004fc9815aab"
     yumrepo_core:
       repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
       puppet_version: ">= 6.0.0"
