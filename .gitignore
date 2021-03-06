@@ -25,3 +25,5 @@
 .project
 .envrc
 /inventory.yaml
+/vagrant/.vagrant/
+/vagrant/*.log

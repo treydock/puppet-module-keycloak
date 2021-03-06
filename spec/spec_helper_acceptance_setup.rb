@@ -8,6 +8,8 @@ RSpec.configure do |c|
   c.keycloak_version = keycloak_version
   c.add_setting :keycloak_full
   c.keycloak_full = (ENV['BEAKER_keycloak_full'] == 'true' || ENV['BEAKER_keycloak_full'] == 'yes')
+  c.add_setting :keycloak_domain_mode_cluster
+  c.keycloak_domain_mode_cluster = (ENV['BEAKER_keycloak_domain_mode_cluster'] == 'true' || ENV['BEAKER_keycloak_domain_mode_cluster'] == 'yes')
 end
 
 proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))

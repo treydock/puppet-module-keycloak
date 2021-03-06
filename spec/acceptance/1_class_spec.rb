@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak class:' do
+describe 'keycloak class:', unless: RSpec.configuration.keycloak_domain_mode_cluster do
   context 'default parameters' do
     it 'runs successfully' do
       pp = <<-EOS
