@@ -9,6 +9,8 @@ describe 'keycloak domain mode cluster', if: RSpec.configuration.keycloak_domain
     it 'launches' do
       db_pp = <<-EOS
       class { '::postgresql::globals':
+        encoding            => 'UTF-8',
+        locale              => 'en_US.UTF-8',
         manage_package_repo => true,
         version             => '9.6',
       }

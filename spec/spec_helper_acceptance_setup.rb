@@ -31,10 +31,13 @@ EOS
 debian10_yaml = <<-EOS
 mysql::bindings::java_package_name: libmariadb-java
 EOS
+centos7_yaml = <<-EOS
+postgresql::server::service_reload: 'systemctl reload postgresql 2>/dev/null 1>/dev/null'
+EOS
 common_yaml = <<-EOS
 ---
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
-postgresql::globals::service_status: 'service postgresql status'
+postgresql::server::service_status: 'service postgresql status 2>/dev/null 1>/dev/null'
 EOS
 
 create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
@@ -42,3 +45,5 @@ on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
 on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Debian'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Debian/10.yaml', debian10_yaml)
+on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/RedHat'
+create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/RedHat/7.yaml', centos7_yaml)
