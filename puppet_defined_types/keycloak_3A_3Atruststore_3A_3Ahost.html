@@ -155,7 +155,13 @@
 26
 27
 28
-29</pre>
+29
+30
+31
+32
+33
+34
+35</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/truststore/host.pp', line 13</span>
@@ -167,10 +173,16 @@ define keycloak::truststore::host (
 
   include keycloak
 
+  if $keycloak::operating_mode == &#39;domain&#39; {
+    $_path = &quot;${keycloak::install_base}/domain/configuration/truststore.jks&quot;
+  } else {
+    $_path = &quot;${keycloak::install_base}/standalone/configuration/truststore.jks&quot;
+  }
+
   java_ks { $name:
     ensure       =&gt; $ensure,
     certificate  =&gt; $certificate,
-    target       =&gt; &quot;${keycloak::install_base}/standalone/configuration/truststore.jks&quot;,
+    target       =&gt; $_path,
     password     =&gt; $keycloak::truststore_password,
     trustcacerts =&gt; true,
     notify       =&gt; Class[&#39;keycloak::service&#39;],

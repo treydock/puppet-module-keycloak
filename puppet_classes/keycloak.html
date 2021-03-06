@@ -279,6 +279,24 @@ Defaults to true.</p>
   
     <li>
       
+        <span class='name'>management_bind_address</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;0.0.0.0&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Bind address for Keycloak management. Default is &#39;0.0.0.0&#39;.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>java_opts</span>
       
       
@@ -492,6 +510,42 @@ installation</p>
         &mdash;
         <div class='inline'>
 <p>Keycloak administrative user password. Default is <code>changeme</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>wildfly_user</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Wildfly user. Required for domain mode.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>wildfly_user_password</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Wildfly user password. Required for domain mode.</p>
 </div>
       
     </li>
@@ -1558,7 +1612,7 @@ by this module</p>
         <span class='name'>operating_mode</span>
       
       
-        <span class='type'>(<tt>Enum['standalone', 'clustered']</tt>)</span>
+        <span class='type'>(<tt>Enum['standalone', 'clustered', 'domain']</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>&#39;standalone&#39;</tt>)</em>
@@ -1587,9 +1641,10 @@ by this module</p>
 <p>Use JDBC_PING to discover the nodes and manage the replication of data 
 More info: <a
 href="http://jgroups.org/manual/#_jdbc_ping">jgroups.org/manual/#_jdbc_ping</a>
-Only applies when <code>operating_mode</code> is <code>clustered</code>
-JDBC_PING uses port 7600 to ensure cluster members are discoverable by each
-other This module does not manage firewall changes</p>
+Only applies when <code>operating_mode</code> is either
+<code>clustered</code> or <code>domain</code> JDBC_PING uses port 7600 to
+ensure cluster members are discoverable by each other This module does not
+manage firewall changes</p>
 </div>
       
     </li>
@@ -1626,6 +1681,24 @@ other This module does not manage firewall changes</p>
         &mdash;
         <div class='inline'>
 <p>JBoss bind private IP address</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>role</span>
+      
+      
+        <span class='type'>(<tt>Optional[Enum['master', 'slave']]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Role when operating mode is domain.</p>
 </div>
       
     </li>
@@ -1756,6 +1829,42 @@ other This module does not manage firewall changes</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>master_address</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Host]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>IP address of the master in domain mode</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>server_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$facts[&#39;hostname&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Server name in domain mode. Defaults to hostname.</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -1767,18 +1876,6 @@ other This module does not manage firewall changes</p>
         <pre class="lines">
 
 
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246
-247
 248
 249
 250
@@ -1956,10 +2053,54 @@ other This module does not manage firewall changes</p>
 422
 423
 424
-425</pre>
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 236</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 248</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1973,6 +2114,7 @@ class keycloak (
   Boolean $service_hasstatus    = true,
   Boolean $service_hasrestart   = true,
   Stdlib::IP::Address $service_bind_address = &#39;0.0.0.0&#39;,
+  Stdlib::IP::Address $management_bind_address = &#39;0.0.0.0&#39;,
   Optional[Variant[String, Array]] $java_opts = undef,
   Boolean $java_opts_append = true,
   Optional[String] $service_extra_opts = undef,
@@ -1985,6 +2127,8 @@ class keycloak (
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = &#39;admin&#39;,
   String $admin_user_password   = &#39;changeme&#39;,
+  Optional[String] $wildfly_user = undef,
+  Optional[String] $wildfly_user_password = undef,
   Boolean $manage_datasource = true,
   Enum[&#39;h2&#39;, &#39;mysql&#39;, &#39;oracle&#39;, &#39;postgresql&#39;] $datasource_driver = &#39;h2&#39;,
   Optional[String] $datasource_host = undef,
@@ -2043,10 +2187,11 @@ class keycloak (
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
-  Enum[&#39;standalone&#39;, &#39;clustered&#39;] $operating_mode = &#39;standalone&#39;,
+  Enum[&#39;standalone&#39;, &#39;clustered&#39;, &#39;domain&#39;] $operating_mode = &#39;standalone&#39;,
   Boolean $enable_jdbc_ping = false,
   Stdlib::IP::Address $jboss_bind_public_address = $facts[&#39;networking&#39;][&#39;ip&#39;],
   Stdlib::IP::Address $jboss_bind_private_address = $facts[&#39;networking&#39;][&#39;ip&#39;],
+  Optional[Enum[&#39;master&#39;, &#39;slave&#39;]] $role = undef,
   Boolean $user_cache = true,
   Array $tech_preview_features = [],
   Boolean $auto_deploy_exploded = false,
@@ -2054,10 +2199,38 @@ class keycloak (
   Hash $spi_deployments = {},
   Optional[String] $custom_config_content = undef,
   Optional[Variant[String, Array]] $custom_config_source = undef,
+  Optional[Stdlib::Host] $master_address = undef,
+  String $server_name = $facts[&#39;hostname&#39;],
 ) {
 
   if ! ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;]) {
     fail(&quot;Unsupported osfamily: ${facts[&#39;os&#39;][&#39;family&#39;]}, module ${module_name} only support osfamilies Debian and Redhat&quot;)
+  }
+
+  if $role and ! ($operating_mode == &#39;domain&#39;) {
+    fail(&#39;Role can only be specified in domain operating mode&#39;)
+  }
+
+  if $operating_mode == &#39;domain&#39; {
+    unless $role {
+      fail(&quot;Role not specified: in domain mode role needs to be specified. This needs to be either &#39;master&#39; or &#39;slave&#39;.&quot;)
+    }
+    unless $wildfly_user {
+      fail(&#39;Wildfly user not specified: in domain mode Wildfly user needs to be specified.&#39;)
+    }
+    unless $wildfly_user_password {
+      fail(&#39;Wildfly user password not specified: in domain, mode Wildfly user password needs to be specified.&#39;)
+    }
+
+    if $role == &#39;slave&#39; and ! $master_address {
+      fail(&#39;Master address not specified: in domain mode, master address needs to be specified for a slave.&#39;)
+    }
+
+    if $datasource_driver == &#39;h2&#39; {
+      fail(&quot;Invalid datasource driver for domain mode: ${datasource_driver}&quot;)
+    }
+
+    $wildfly_user_password_base64 = strip(base64(&#39;encode&#39;, $wildfly_user_password))
   }
 
   if versioncmp($version, &#39;12.0.0&#39;) &gt;= 0 {

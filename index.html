@@ -251,6 +251,47 @@ apache::vhost { &#39;idp.example.com&#39;:
 }
 </code></pre>
 
+<p>Setup a domain master. (This needs a shared database, here
+&#39;1.2.3.4&#39;).</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;::keycloak&#39;:
+  operating_mode        =&gt; &#39;domain&#39;,
+  role                  =&gt; &#39;master&#39;,
+  wildfly_user          =&gt; &#39;wildfly,
+  wildfly_user_password =&gt; &#39;changeme,
+  manage_datasource     =&gt; false,
+  datasource_driver     =&gt; &#39;postgresql&#39;,
+  datasource_host       =&gt; &#39;1.2.3.4,
+  datasource_dbname     =&gt; &#39;keycloak,
+  datasource_username   =&gt; &#39;keycloak,
+  datasource_password   =&gt; &#39;changeme,
+  admin_user            =&gt; &#39;admin,
+  admin_user_password   =&gt; &#39;changeme,
+}
+</code></pre>
+
+<p>Setup a domain slave. (This needs a shared database, here
+&#39;1.2.3.4&#39;).</p>
+
+<pre class="code ruby"><code class="ruby">class { &#39;::keycloak&#39;:
+  operating_mode        =&gt; &#39;domain&#39;,
+  role                  =&gt; &#39;slave&#39;,
+  wildfly_user          =&gt; &#39;wildfly,
+  wildfly_user_password =&gt; &#39;changeme,
+  manage_datasource     =&gt; false,
+  datasource_driver     =&gt; &#39;postgresql&#39;,
+  datasource_host       =&gt; &#39;1.2.3.4,
+  datasource_dbname     =&gt; &#39;keycloak,
+  datasource_username   =&gt; &#39;keycloak,
+  datasource_password   =&gt; &#39;changeme,
+  admin_user            =&gt; &#39;admin,
+  admin_user_password   =&gt; &#39;changeme,
+}
+</code></pre>
+
+<p><strong>NOTE:</strong> The wilfdly user and password need to match those in
+domain master. These are required for authentication in a cluster.</p>
+
 <p>Setup a host for theme development so that theme changes don&#39;t require
 a service restart, not recommended for production.</p>
 

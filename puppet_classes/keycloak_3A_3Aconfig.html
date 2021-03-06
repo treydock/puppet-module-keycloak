@@ -205,7 +205,168 @@
 112
 113
 114
-115</pre>
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 2</span>
@@ -232,16 +393,6 @@ class keycloak::config {
     show_diff =&gt; false,
   }
 
-  $_add_user_keycloak_cmd = &quot;${keycloak::install_base}/bin/add-user-keycloak.sh&quot;
-  $_add_user_keycloak_args = &quot;--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master&quot;
-  $_add_user_keycloak_state = &quot;${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}&quot;
-  exec { &#39;create-keycloak-admin&#39;:
-    command =&gt; &quot;${_add_user_keycloak_cmd} ${_add_user_keycloak_args} &amp;&amp; touch ${_add_user_keycloak_state}&quot;,
-    creates =&gt; $_add_user_keycloak_state,
-    notify  =&gt; Class[&#39;keycloak::service&#39;],
-    user    =&gt; $keycloak::user,
-  }
-
   file { &quot;${keycloak::install_base}/tmp&quot;:
     ensure =&gt; &#39;directory&#39;,
     owner  =&gt; $keycloak::user,
@@ -249,20 +400,39 @@ class keycloak::config {
     mode   =&gt; &#39;0755&#39;,
   }
 
-  file { &quot;${keycloak::install_base}/standalone/configuration&quot;:
-    ensure =&gt; &#39;directory&#39;,
-    owner  =&gt; $keycloak::user,
-    group  =&gt; $keycloak::group,
-    mode   =&gt; &#39;0750&#39;,
+  $_add_user_keycloak_cmd = &quot;${keycloak::install_base}/bin/add-user-keycloak.sh&quot;
+  $_add_user_keycloak_state = &quot;${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}&quot;
+  $_config_cli_content = template(&#39;keycloak/config.cli.erb&#39;)
+
+  if $::keycloak::operating_mode != &#39;domain&#39; {
+    $_add_user_keycloak_args = &quot;--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master&quot;
+    $_subdir = &#39;standalone&#39;
+    $_java_opts_path = &quot;${keycloak::install_base}/bin/standalone.conf&quot;
+  } else {
+    $_server_conf_dir = &quot;${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration&quot;
+    $_add_user_keycloak_args = &quot;--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/&quot; # lint:ignore:140chars
+    $_subdir = &#39;domain&#39;
+    $_java_opts_path = &quot;${keycloak::install_base}/bin/domain.conf&quot;
+
+    $_dirs = [
+      &quot;${keycloak::install_base}/domain/servers&quot;,
+      &quot;${keycloak::install_base}/domain/servers/${keycloak::server_name}&quot;,
+      &quot;${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration&quot;,
+    ]
+
+    file { $_dirs:
+      ensure =&gt; &#39;directory&#39;,
+      owner  =&gt; $keycloak::user,
+      group  =&gt; $keycloak::group,
+      mode   =&gt; &#39;0755&#39;,
+    }
   }
 
-  file { &quot;${keycloak::install_base}/standalone/configuration/profile.properties&quot;:
-    ensure  =&gt; &#39;file&#39;,
-    owner   =&gt; $keycloak::user,
-    group   =&gt; $keycloak::group,
-    content =&gt; template(&#39;keycloak/profile.properties.erb&#39;),
-    mode    =&gt; &#39;0644&#39;,
+  exec { &#39;create-keycloak-admin&#39;:
+    command =&gt; &quot;${_add_user_keycloak_cmd} ${_add_user_keycloak_args} &amp;&amp; touch ${_add_user_keycloak_state}&quot;,
+    creates =&gt; $_add_user_keycloak_state,
     notify  =&gt; Class[&#39;keycloak::service&#39;],
+    user    =&gt; $keycloak::user,
   }
 
   concat { &quot;${keycloak::install_base}/config.cli&quot;:
@@ -275,7 +445,7 @@ class keycloak::config {
 
   concat::fragment { &#39;config.cli-keycloak&#39;:
     target  =&gt; &quot;${keycloak::install_base}/config.cli&quot;,
-    content =&gt; template(&#39;keycloak/config.cli.erb&#39;),
+    content =&gt; $_config_cli_content,
     order   =&gt; &#39;00&#39;,
   }
 
@@ -316,12 +486,164 @@ class keycloak::config {
   } else {
     $_java_opts = $java_opts
   }
-  file_line { &#39;standalone.conf-JAVA_OPTS&#39;:
+  file_line { &#39;keycloak-JAVA_OPTS&#39;:
     ensure =&gt; $java_opts_ensure,
-    path   =&gt; &quot;${keycloak::install_base}/bin/standalone.conf&quot;,
+    path   =&gt; $_java_opts_path,
     line   =&gt; &quot;JAVA_OPTS=\&quot;${_java_opts}\&quot;&quot;,
     match  =&gt; &#39;^JAVA_OPTS=&#39;,
     notify =&gt; Class[&#39;keycloak::service&#39;],
+  }
+
+  file { &quot;${keycloak::install_base}/${_subdir}/configuration&quot;:
+    ensure =&gt; &#39;directory&#39;,
+    owner  =&gt; $keycloak::user,
+    group  =&gt; $keycloak::group,
+    mode   =&gt; &#39;0750&#39;,
+  }
+
+  file { &quot;${keycloak::install_base}/${_subdir}/configuration/profile.properties&quot;:
+    ensure  =&gt; &#39;file&#39;,
+    owner   =&gt; $keycloak::user,
+    group   =&gt; $keycloak::group,
+    content =&gt; template(&#39;keycloak/profile.properties.erb&#39;),
+    mode    =&gt; &#39;0644&#39;,
+    notify  =&gt; Class[&#39;keycloak::service&#39;],
+  }
+
+  if $::keycloak::operating_mode == &#39;domain&#39; {
+    $_add_user_wildfly_cmd = &quot;${keycloak::install_base}/bin/add-user.sh&quot;
+    $_add_user_wildfly_args = &quot;--user ${keycloak::wildfly_user} --password ${keycloak::wildfly_user_password} -e -s&quot;
+    $_add_user_wildfly_state = &quot;${::keycloak::install_base}/.create-wildfly-user&quot;
+
+    exec { &#39;create-wildfly-user&#39;:
+      command =&gt; &quot;${_add_user_wildfly_cmd} ${_add_user_wildfly_args} &amp;&amp; touch ${_add_user_wildfly_state}&quot;,
+      creates =&gt; $_add_user_wildfly_state,
+      notify  =&gt; Class[&#39;keycloak::service&#39;],
+    }
+
+    if $keycloak::role == &#39;master&#39; {
+
+      # Remove load balancer group
+      # Rename the server
+      # Set port offset to zero to run server on port 8080
+      augeas { &#39;ensure-servername&#39;:
+        incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-master.xml&quot;,
+        context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-master.xml/host/servers&quot;,
+        load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
+        lens      =&gt; &#39;Xml.lns&#39;,
+        changes   =&gt; [
+          &#39;rm server[1]&#39;,
+          &#39;rm server&#39;,
+          &quot;set server/#attribute/name ${keycloak::server_name}&quot;,
+          &#39;set server/#attribute/group auth-server-group&#39;,
+          &#39;set server/#attribute/auto-start true&#39;,
+          &#39;set server/socket-bindings/#attribute/port-offset 0&#39;,
+        ],
+        notify    =&gt; Class[&#39;keycloak::service&#39;],
+      }
+
+      # Set up interface names and defaults in host-master.xml
+      augeas { &#39;ensure-interface-names-defaults-master&#39;:
+        incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-master.xml&quot;,
+        context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-master.xml/host/interfaces&quot;,
+        load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
+        lens      =&gt; &#39;Xml.lns&#39;,
+        changes   =&gt; [
+          # lint:ignore:single_quote_string_with_variables
+          &#39;set interface[1]/#attribute/name management&#39;,
+          &#39;set interface[1]/inet-address/#attribute/value ${jboss.bind.address.management:127.0.0.1}&#39;,
+          &#39;set interface[2]/#attribute/name private&#39;,
+          &#39;set interface[2]/inet-address/#attribute/value ${jboss.bind.address.private:127.0.0.1}&#39;,
+          &#39;set interface[3]/#attribute/name public&#39;,
+          &#39;set interface[3]/inet-address/#attribute/value ${jboss.bind.address:127.0.0.1}&#39;,
+          # lint:endignore
+        ],
+        notify    =&gt; Class[&#39;keycloak::service&#39;],
+      }
+
+      # Assing management interfaces to logical interfaces
+      augeas { &#39;assign-management-interaces-master&#39;:
+        incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-master.xml&quot;,
+        context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-master.xml/host/management/management-interfaces&quot;,
+        load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
+        lens      =&gt; &#39;Xml.lns&#39;,
+        changes   =&gt; [
+          &#39;set native-interface/socket/#attribute/interface management&#39;,
+          &#39;set http-interface/socket/#attribute/interface private&#39;,
+        ],
+        notify    =&gt; Class[&#39;keycloak::service&#39;],
+      }
+    } else {
+      # Rename the server
+      # Set port offset to zero, to run server in port 8080
+      augeas { &#39;ensure-servername&#39;:
+        incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-slave.xml&quot;,
+        context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-slave.xml/host/servers&quot;,
+        load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
+        lens      =&gt; &#39;Xml.lns&#39;,
+        changes   =&gt; [
+          &quot;set server/#attribute/name ${keycloak::server_name}&quot;,
+          &#39;set server/socket-bindings/#attribute/port-offset 0&#39;
+        ],
+        notify    =&gt; Class[&#39;keycloak::service&#39;],
+      }
+
+      # Set username for authentication to master
+      augeas { &#39;ensure-username&#39;:
+        incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-slave.xml&quot;,
+        context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-slave.xml/host/domain-controller/remote&quot;,
+        load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
+        lens      =&gt; &#39;Xml.lns&#39;,
+        changes   =&gt; [
+          &quot;set #attribute/username ${keycloak::wildfly_user}&quot;
+        ],
+        notify    =&gt; Class[&#39;keycloak::service&#39;],
+      }
+
+      # Set secret for authentication to master
+      augeas { &#39;ensure-secret&#39;:
+        incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-slave.xml&quot;,
+        context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-slave.xml/host/management/security-realms/security-realm[1]/server-identities/secret&quot;, # lint:ignore:140chars
+        load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
+        lens      =&gt; &#39;Xml.lns&#39;,
+        changes   =&gt; [
+          &quot;set #attribute/value ${keycloak::wildfly_user_password_base64}&quot;
+        ],
+        notify    =&gt; Class[&#39;keycloak::service&#39;],
+      }
+
+      # Set up interface names and default in host-slave.xml
+      augeas { &#39;ensure-interface-names-defaults-slave&#39;:
+        incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-slave.xml&quot;,
+        context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-slave.xml/host/interfaces&quot;,
+        load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
+        lens      =&gt; &#39;Xml.lns&#39;,
+        changes   =&gt; [
+          # lint:ignore:single_quote_string_with_variables
+          &#39;set interface[1]/#attribute/name management&#39;,
+          &#39;set interface[1]/inet-address/#attribute/value ${jboss.bind.address.management:127.0.0.1}&#39;,
+          &#39;set interface[2]/#attribute/name private&#39;,
+          &#39;set interface[2]/inet-address/#attribute/value ${jboss.bind.address.private:127.0.0.1}&#39;,
+          &#39;set interface[3]/#attribute/name public&#39;,
+          &#39;set interface[3]/inet-address/#attribute/value ${jboss.bind.address:127.0.0.1}&#39;,
+          # lint:endignore
+        ],
+        notify    =&gt; Class[&#39;keycloak::service&#39;],
+      }
+
+      # Assing management interfaces to logical interfaces
+      augeas { &#39;assign-management-interaces-slave&#39;:
+        incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-slave.xml&quot;,
+        context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-slave.xml/host/management/management-interfaces&quot;,
+        load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
+        lens      =&gt; &#39;Xml.lns&#39;,
+        changes   =&gt; [
+          &#39;set native-interface/socket/#attribute/interface management&#39;,
+          &#39;set http-interface/socket/#attribute/interface private&#39;,
+        ],
+        notify    =&gt; Class[&#39;keycloak::service&#39;],
+      }
+    }
   }
 }</pre>
       </td>
