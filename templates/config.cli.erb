@@ -1,16 +1,15 @@
 <% if scope['keycloak::operating_mode'] == 'standalone'-%>
 embed-server
-<% @prefix=''-%>
-<% elsif scope['keycloak::operating_mode'] == 'clustered'-%>
+<%- @prefix=''-%>
+<%- elsif scope['keycloak::operating_mode'] == 'clustered'-%>
 embed-server --server-config=standalone-ha.xml
-<% @prefix=''-%>
+<%- @prefix=''-%>
 <% else -%>
 embed-host-controller
-<% @prefix='/profile=auth-server-clustered'-%>  
+<%- @prefix='/profile=auth-server-clustered'-%>
 <% end -%>
-
 <%- # https proxying -%>
-<%- if scope['keycloak::proxy_https'] -%> 
+<%- if scope['keycloak::proxy_https'] -%>
 if (result.proxy-address-forwarding != true) of <%= @prefix -%>/subsystem=undertow/server=default-server/http-listener=default:read-resource
 <%= @prefix -%>/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=proxy-address-forwarding,value=true)
 end-if
@@ -24,7 +23,6 @@ if (result.redirect-socket != proxy-https) of <%= @prefix -%>/subsystem=undertow
 <%= @prefix -%>/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=redirect-socket,value=proxy-https)
 end-if
 <%- end -%>
-
 <%- # datasources -%> 
 <%= @prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=driver-name, value=<%= scope['keycloak::datasource_driver'] %>)
 <%= @prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=connection-url, value="<%= scope['keycloak::datasource_connection_url'] %>")
@@ -70,7 +68,6 @@ catch
 <%= @prefix -%>/subsystem=datasources/jdbc-driver=postgresql:add(driver-module-name=org.postgresql,driver-name=postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
 end-try
 <%- end -%>
-
 <%- # truststore -%>
 <%- if scope['keycloak::truststore'] -%>
 if (outcome != success) of <%= @prefix -%>/subsystem=keycloak-server/spi=truststore:read-resource
@@ -90,25 +87,21 @@ if (outcome == success) of <%= @prefix -%>/subsystem=keycloak-server/spi=trustst
 <%= @prefix -%>/subsystem=keycloak-server/spi=truststore/:remove
 end-if
 <%- end -%>
-
 <%- # theming -%>
 <%= @prefix -%>/subsystem=keycloak-server/theme=defaults/:write-attribute(name=staticMaxAge, value=<%= scope['keycloak::theme_static_max_age'] %>)
 <%= @prefix -%>/subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheThemes, value=<%= scope['keycloak::theme_cache_themes'] %>)
 <%= @prefix -%>/subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheTemplates, value=<%= scope['keycloak::theme_cache_templates'] %>)
-
 <%- # deployment scanner is not compatible with domain mode -%>
 <% if scope['keycloak::operating_mode'] != 'domain'-%>
 <%= @prefix -%>/subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-exploded",value=<%= scope['keycloak::auto_deploy_exploded'] %>)
 <%= @prefix -%>/subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-zipped",value=<%= scope['keycloak::auto_deploy_zipped'] %>)
 <% end -%>
-
 try
 <%= @prefix -%>/subsystem=keycloak-server/spi=userCache/provider=default/:add(enabled=<%= scope['keycloak::user_cache']%>)
 catch
 <%= @prefix -%>/subsystem=keycloak-server/spi=userCache/provider=default/:remove
 <%= @prefix -%>/subsystem=keycloak-server/spi=userCache/provider=default/:add(enabled=<%= scope['keycloak::user_cache']%>)
 end-try
-
 <%- # JDBC_PING & remove udp stack -%>
 <%- if scope['keycloak::operating_mode'] != 'standalone' && scope['keycloak::enable_jdbc_ping'] -%>
 if (outcome != success) of <%= @prefix -%>/subsystem=jgroups/stack=tcp/protocol=JDBC_PING:read-resource
@@ -143,7 +136,6 @@ end-if
 /interface=public:write-attribute(name=inet-address, value=${jboss.bind.address:<%= scope['keycloak::jboss_bind_public_address'] %>})
 <%- end -%>
 <%- end -%>
-
 <%- # domain mode specific things -%>
 <% if scope['keycloak::operating_mode'] == 'domain' -%>
 
