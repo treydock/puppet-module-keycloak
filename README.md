@@ -538,7 +538,9 @@ keycloak_required_action { 'webauthn-register on master':
 
 This module has been tested on:
 
-* CentOS 7 x86_64
-* RedHat 7 x86_64
+* RedHat/CentOS 7 x86_64
+* RedHat/CentOS 8 x86_64
 * Debian 9 x86_64
+* Debian 10 x86_64
 * Ubuntu 18.04 x86_64
+* Ubuntu 20.04 x86_64
