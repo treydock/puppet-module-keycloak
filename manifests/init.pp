@@ -247,7 +247,7 @@
 #   Server name in domain mode. Defaults to hostname.
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = '8.0.1',
+  String $version               = '12.0.4',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,

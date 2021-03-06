@@ -6,7 +6,7 @@ describe 'keycloak' do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
-      let(:version) { '8.0.1' }
+      let(:version) { '12.0.4' }
 
       case facts[:osfamily]
       when %r{RedHat}
