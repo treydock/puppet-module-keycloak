@@ -1,0 +1,7 @@
+<%- |
+Boolean $auto_deploy_exploded,
+Boolean $auto_deploy_zipped,
+String $prefix
+| -%>
+<%= $prefix -%>/subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-exploded",value=<%= $auto_deploy_exploded %>)
+<%= $prefix -%>/subsystem=deployment-scanner/scanner=default:write-attribute(name="auto-deploy-zipped",value=<%= $auto_deploy_zipped %>)

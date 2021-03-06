@@ -1,0 +1,6 @@
+<%- |
+String $operating_mode
+| -%>
+<% if $operating_mode == 'domain' { -%>
+stop-embedded-host-controller
+<% } -%>

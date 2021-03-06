@@ -1,0 +1,70 @@
+<%- |
+String $prefix
+| -%>
+<%# remove load balancer -%>
+if (outcome == success) of /host=master/server-config=load-balancer:read-resource
+/host=master/server-config=load-balancer:remove
+end-if
+if (outcome == success) of /server-group=load-balancer-group:read-resource
+/server-group=load-balancer-group:remove
+end-if
+if (outcome == success) of /profile=load-balancer:read-resource
+/profile=load-balancer:remove
+end-if
+if (outcome == success) of /socket-binding-group=load-balancer-sockets:read-resource
+/socket-binding-group=load-balancer-sockets:remove
+end-if
+
+<%# ensure proxying for ha sockets -%>
+if (outcome != success) of /socket-binding-group=ha-sockets/socket-binding=proxy-https:read-resource
+/socket-binding-group=ha-sockets/socket-binding=proxy-https:add(port=443)
+end-if
+
+<%# caches -%>
+<%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=sessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+<%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=authenticationSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+<%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+<%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=clientSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+<%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=offlineClientSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+<%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=loginFailures:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+<%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=actionTokens:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
+
+<%# take control of the interfaces -%>
+if (outcome != success) of /interface=management:read-resource()
+/interface=management:add()
+end-if
+if (result != undefined) of /interface=management:read-attribute(name=inet-address)
+/interface=management:write-attribute(name=inet-address, value=undefined)
+end-if
+if (outcome != success) of /interface=private:read-resource()
+/interface=private:add()
+end-if
+if (result != undefined) of /interface=private:read-attribute(name=inet-address)
+/interface=private:write-attribute(name=inet-address, value=undefined)
+end-if
+if (outcome != success) of /interface=public:read-resource()
+/interface=public:add()
+end-if
+if (result != undefined) of /interface=public:read-attribute(name=inet-address)
+/interface=public:write-attribute(name=inet-address, value=undefined)
+end-if
+if (result != public) of /socket-binding-group=ha-sockets:read-attribute(name=default-interface)
+/socket-binding-group=ha-sockets:write-attribute(name=default-interface, value=public)
+end-if
+if (result != defined) of /socket-binding-group=ha-sockets/socket-binding=ajp:read-attribute(name=interface)
+/socket-binding-group=ha-sockets/socket-binding=ajp:write-attribute(name=interface, value=undefined)
+end-if
+if (result != defined) of /socket-binding-group=ha-sockets/socket-binding=http:read-attribute(name=interface)
+/socket-binding-group=ha-sockets/socket-binding=http:write-attribute(name=interface, value=undefined)
+end-if
+if (result != defined) of /socket-binding-group=ha-sockets/socket-binding=https:read-attribute(name=interface)
+/socket-binding-group=ha-sockets/socket-binding=https:write-attribute(name=interface, value=undefined)
+end-if
+if (result != management) of /socket-binding-group=ha-sockets/socket-binding=jgroups-tcp:read-attribute(name=interface)
+/socket-binding-group=ha-sockets/socket-binding=jgroups-tcp:write-attribute(name=interface,value=management)
+end-if
+
+<%# ensure datasource for ee default bindings is correct -%>
+if (result != java:jboss/datasources/KeycloakDS) of <%= $prefix -%>/subsystem=ee/service=default-bindings:read-attribute(name=datasource)
+<%= $prefix -%>/subsystem=ee/service=default-bindings:write-attribute(name=datasource,value=java:jboss/datasources/KeycloakDS)
+end-if
