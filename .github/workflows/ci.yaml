@@ -15,20 +15,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby: 2.4.9
-            puppet: 5
-            fixtures: .fixtures.yml
-            allow_failure: false
           - ruby: 2.5.7
             puppet: 6
             fixtures: .fixtures.yml
             allow_failure: false
-          - ruby: 2.4.9
-            puppet: 5
+          - ruby: 2.7.0
+            puppet: 7
+            fixtures: .fixtures.yml
+            allow_failure: false
+          - ruby: 2.5.7
+            puppet: 6
             fixtures: .fixtures-latest.yml
             allow_failure: true
-          - ruby: 2.5.7
-            puppet: 6
+          - ruby: 2.7.0
+            puppet: 7
             fixtures: .fixtures-latest.yml
             allow_failure: true
     env:
@@ -61,8 +61,8 @@ jobs:
           - "debian-10"
           - "ubuntu-1804"
         puppet:
-          - "puppet5"
           - "puppet6"
+          - "puppet7"
         keycloak_version:
           - "8.0.1"
           - "12.0.1"
@@ -72,14 +72,6 @@ jobs:
           - "no"
         include:
           - set: "centos-7"
-            puppet: "puppet5"
-            keycloak_version: "8.0.1"
-            keycloak_full: "yes"
-          - set: "centos-7"
-            puppet: "puppet5"
-            keycloak_version: "12.0.1"
-            keycloak_full: "yes"
-          - set: "centos-7"
             puppet: "puppet6"
             keycloak_version: "8.0.1"
             keycloak_full: "yes"
@@ -87,20 +79,28 @@ jobs:
             puppet: "puppet6"
             keycloak_version: "12.0.1"
             keycloak_full: "yes"
+          - set: "centos-7"
+            puppet: "puppet7"
+            keycloak_version: "8.0.1"
+            keycloak_full: "yes"
+          - set: "centos-7"
+            puppet: "puppet7"
+            keycloak_version: "12.0.1"
+            keycloak_full: "yes"
           - set: "centos-7-domain-mode-cluster"
-            puppet: "puppet5"
+            puppet: "puppet6"
             keycloak_version: "8.0.1"
             keycloak_domain_mode_cluster: "yes"
           - set: "centos-7-domain-mode-cluster"
-            puppet: "puppet5"
+            puppet: "puppet6"
             keycloak_version: "12.0.1"
             keycloak_domain_mode_cluster: "yes"
           - set: "centos-7-domain-mode-cluster"
-            puppet: "puppet6"
+            puppet: "puppet7"
             keycloak_version: "8.0.1"
             keycloak_domain_mode_cluster: "yes"
           - set: "centos-7-domain-mode-cluster"
-            puppet: "puppet6"
+            puppet: "puppet7"
             keycloak_version: "12.0.1"
             keycloak_domain_mode_cluster: "yes"
     env:

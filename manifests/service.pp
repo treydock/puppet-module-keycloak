@@ -2,12 +2,9 @@
 class keycloak::service {
   assert_private()
 
-  if $::service_provider == 'systemd' {
-    ::systemd::unit_file { 'keycloak.service':
-      content => template('keycloak/keycloak.service.erb'),
-      notify  => Service['keycloak'],
-    }
-    Exec['systemctl-daemon-reload'] -> Service['keycloak']
+  systemd::unit_file { 'keycloak.service':
+    content => template('keycloak/keycloak.service.erb'),
+    notify  => Service['keycloak'],
   }
 
   service { 'keycloak':
