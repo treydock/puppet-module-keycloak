@@ -158,6 +158,15 @@ Default is '0.0.0.0'.
 
 Default value: `'0.0.0.0'`
 
+##### `management_bind_address`
+
+Data type: `Stdlib::IP::Address`
+
+Bind address for Keycloak management.
+Default is '0.0.0.0'.
+
+Default value: `'0.0.0.0'`
+
 ##### `java_opts`
 
 Data type: `Optional[Variant[String, Array]]`
@@ -260,6 +269,22 @@ Keycloak administrative user password.
 Default is `changeme`.
 
 Default value: `'changeme'`
+
+##### `wildfly_user`
+
+Data type: `Optional[String]`
+
+Wildfly user. Required for domain mode.
+
+Default value: ``undef``
+
+##### `wildfly_user_password`
+
+Data type: `Optional[String]`
+
+Wildfly user password. Required for domain mode.
+
+Default value: ``undef``
 
 ##### `manage_datasource`
 
@@ -746,7 +771,7 @@ Default value: ``undef``
 
 ##### `operating_mode`
 
-Data type: `Enum['standalone', 'clustered']`
+Data type: `Enum['standalone', 'clustered', 'domain']`
 
 Keycloak operating mode deployment
 
@@ -758,7 +783,7 @@ Data type: `Boolean`
 
 Use JDBC_PING to discover the nodes and manage the replication of data
   More info: http://jgroups.org/manual/#_jdbc_ping
-Only applies when `operating_mode` is `clustered`
+Only applies when `operating_mode` is either `clustered` or `domain`
 JDBC_PING uses port 7600 to ensure cluster members are discoverable by each other
 This module does not manage firewall changes
 
@@ -779,6 +804,14 @@ Data type: `Stdlib::IP::Address`
 JBoss bind private IP address
 
 Default value: `$facts['networking']['ip']`
+
+##### `role`
+
+Data type: `Optional[Enum['master', 'slave']]`
+
+Role when operating mode is domain.
+
+Default value: ``undef``
 
 ##### `user_cache`
 
@@ -835,6 +868,22 @@ Data type: `Optional[Variant[String, Array]]`
 Custom configuration source file to be added to config.cli
 
 Default value: ``undef``
+
+##### `master_address`
+
+Data type: `Optional[Stdlib::Host]`
+
+IP address of the master in domain mode
+
+Default value: ``undef``
+
+##### `server_name`
+
+Data type: `String`
+
+Server name in domain mode. Defaults to hostname.
+
+Default value: `$facts['hostname']`
 
 ### `keycloak::config`
 
