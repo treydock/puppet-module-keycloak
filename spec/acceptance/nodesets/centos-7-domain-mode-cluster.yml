@@ -12,6 +12,10 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y wget which cronie iproute initscripts'
+    docker_env:
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
     docker_container_name: 'keycloak-master-el7'
   slave:
     roles:
@@ -25,6 +29,10 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y wget which cronie iproute initscripts'
+    docker_env:
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
     docker_container_name: 'keycloak-slave-el7'
   db:
     roles:
@@ -38,6 +46,10 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y wget which cronie iproute initscripts'
+    docker_env:
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
     docker_container_name: 'keycloak-db-el7'
 CONFIG:
   log_level: debug

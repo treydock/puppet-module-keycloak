@@ -10,6 +10,19 @@ RSpec.configure do |c|
   c.keycloak_full = (ENV['BEAKER_keycloak_full'] == 'true' || ENV['BEAKER_keycloak_full'] == 'yes')
   c.add_setting :keycloak_domain_mode_cluster
   c.keycloak_domain_mode_cluster = (ENV['BEAKER_keycloak_domain_mode_cluster'] == 'true' || ENV['BEAKER_keycloak_domain_mode_cluster'] == 'yes')
+
+  c.before(:suite) do
+    if fact('os.release.major').to_i == 7 && fact('os.family') == 'RedHat'
+      on hosts, 'mkdir -p /etc/systemd/system/postgresql.service.d'
+      env_override = <<-EOS
+[Service]
+Environment=LANG=en_US.UTF-8
+Environment=LANGUAGE=en_US.UTF-8
+Environment=LC_ALL=en_US.UTF-8
+      EOS
+      create_remote_file(hosts, '/etc/systemd/system/postgresql.service.d/env.conf', env_override)
+    end
+  end
 end
 
 proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
@@ -34,6 +47,8 @@ EOS
 common_yaml = <<-EOS
 ---
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
+postgresql::globals::encoding: 'UTF-8'
+postgresql::globals::locale: 'en_US.UTF-8'
 postgresql::globals::service_status: 'service postgresql status'
 EOS
 
