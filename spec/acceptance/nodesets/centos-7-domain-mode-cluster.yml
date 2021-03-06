@@ -1,5 +1,5 @@
 HOSTS:
-  centos-7-master:
+  master:
     roles:
       - agent
       - default
@@ -13,7 +13,7 @@ HOSTS:
     docker_image_commands:
       - 'yum install -y wget which cronie iproute initscripts'
     docker_container_name: 'keycloak-master-el7'
-  centos-7-slave:
+  slave:
     roles:
       - agent
       - domain_slave
@@ -26,7 +26,7 @@ HOSTS:
     docker_image_commands:
       - 'yum install -y wget which cronie iproute initscripts'
     docker_container_name: 'keycloak-slave-el7'
-  centos-7-db:
+  db:
     roles:
       - agent
       - db

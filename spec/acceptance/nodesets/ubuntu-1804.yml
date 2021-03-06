@@ -11,6 +11,10 @@ HOSTS:
       - "rm -f /etc/dpkg/dpkg.cfg.d/excludes"
       - 'apt-get install -y wget net-tools locales apt-transport-https ca-certificates iproute2'
       - 'locale-gen en_US.UTF-8'
+    docker_env:
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
     docker_container_name: 'keycloak-ubuntu1804'
 CONFIG:
   log_level: debug
