@@ -82,3 +82,6 @@ spec/acceptance/nodesets/ubuntu-1604.yml:
 spec/acceptance/nodesets/ubuntu-1804.yml:
   packages:
     - iproute2
+spec/acceptance/nodesets/ubuntu-2004.yml:
+  packages:
+    - iproute2
