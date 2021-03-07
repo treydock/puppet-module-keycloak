@@ -5,7 +5,7 @@ fixtures:
       ref: 4.25.0
     mysql:
       repo: https://github.com/puppetlabs/puppetlabs-mysql.git
-      ref: v10.2.0
+      ref: v10.3.0
     postgresql:
       repo: https://github.com/puppetlabs/puppetlabs-postgresql.git
       ref: v6.6.0
