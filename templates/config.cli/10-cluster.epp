@@ -1,0 +1,41 @@
+<%- |
+String $operating_mode,
+Boolean $enable_jdbc_ping,
+String $datasource_driver,
+String $jboss_bind_private_address,
+String $jboss_bind_public_address,
+String $prefix
+| -%>
+<%- if $operating_mode != 'standalone' and $enable_jdbc_ping { -%>
+if (outcome != success) of <%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=JDBC_PING:read-resource
+<%- if $datasource_driver == 'postgresql' { -%>
+<%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=JDBC_PING: add(add-index=0, data-source="KeycloakDS", properties=[initialize_sql="CREATE TABLE IF NOT EXISTS JGROUPSPING ( own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, created TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ping_data BYTEA, constraint PK_JGROUPSPING PRIMARY KEY (own_addr, cluster_name))"])
+<%- } -%>
+<%- if $datasource_driver == 'mysql' { -%>
+<%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=JDBC_PING: add(add-index=0, data-source="KeycloakDS", properties=[initialize_sql="CREATE TABLE IF NOT EXISTS JGROUPSPING (own_addr varchar(200) NOT NULL, cluster_name varchar(200) NOT NULL, updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, ping_data varbinary(5000) DEFAULT NULL, PRIMARY KEY (own_addr, cluster_name)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin"])
+<%- } -%>
+end-if
+if (outcome == success) of <%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=MPING:read-resource
+<%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=MPING: remove()
+end-if
+if (outcome == success) of <%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=pbcast.GMS:read-resource
+<%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=pbcast.GMS: remove()
+<%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=pbcast.GMS: add(properties=[join_timeout=30000, print_local_addr=true, print_physical_addrs=true])
+end-if
+if (outcome != success) of <%= $prefix -%>/subsystem=jgroups/stack=tcp/protocol=JDBC_PING:read-resource
+end-if
+<%= $prefix -%>/subsystem=jgroups/channel=ee:write-attribute(name=stack, value="tcp")
+if (outcome == success) of <%= $prefix -%>/subsystem=jgroups/stack=udp:read-resource
+<%= $prefix -%>/subsystem=jgroups/stack=udp: remove()
+end-if
+if (outcome == success) of <%= $prefix -%>/socket-binding-group=standard-sockets/socket-binding=jgroups-udp:read-resource
+<%= $prefix -%>/socket-binding-group=standard-sockets/socket-binding=jgroups-udp:remove()
+end-if
+if (outcome == success) of <%= $prefix -%>/socket-binding-group=standard-sockets/socket-binding=jgroups-mping:read-resource
+<%= $prefix -%>/socket-binding-group=standard-sockets/socket-binding=jgroups-mping:remove()
+end-if
+<%- if $operating_mode != 'domain' { -%>
+/interface=private:write-attribute(name=inet-address, value=${jboss.bind.address.private:<%= $jboss_bind_private_address %>})
+/interface=public:write-attribute(name=inet-address, value=${jboss.bind.address:<%= $jboss_bind_public_address %>})
+<%- } -%>
+<%- } -%>

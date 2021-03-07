@@ -30,7 +30,6 @@ class keycloak::config {
 
   $_add_user_keycloak_cmd = "${keycloak::install_base}/bin/add-user-keycloak.sh"
   $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}"
-  $_config_cli_content = template('keycloak/config.cli.erb')
 
   if $::keycloak::operating_mode != 'domain' {
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
@@ -63,27 +62,130 @@ class keycloak::config {
     user    => $keycloak::user,
   }
 
-  concat { "${keycloak::install_base}/config.cli":
-    owner     => $keycloak::user,
-    group     => $keycloak::group,
-    mode      => '0600',
-    notify    => Exec['jboss-cli.sh --file=config.cli'],
-    show_diff => false,
+  if $keycloak::operating_mode == 'domain' {
+    $config_cli_prefix = '/profile=auth-server-clustered'
+  } else {
+    $config_cli_prefix = ''
   }
 
-  concat::fragment { 'config.cli-keycloak':
+  concat { "${keycloak::install_base}/config.cli":
+    owner          => $keycloak::user,
+    group          => $keycloak::group,
+    mode           => '0600',
+    notify         => Exec['jboss-cli.sh --file=config.cli'],
+    show_diff      => false,
+    ensure_newline => true,
+  }
+
+  concat::fragment { 'keycloak-config.cli-header':
     target  => "${keycloak::install_base}/config.cli",
-    content => $_config_cli_content,
+    content => epp('keycloak/config.cli/00-header.epp', {'operating_mode' => $keycloak::operating_mode}),
     order   => '00',
   }
 
+  if $keycloak::proxy_https {
+    concat::fragment { 'keycloak-config.cli-https-proxy':
+      target  => "${keycloak::install_base}/config.cli",
+      content => epp('keycloak/config.cli/01-https-proxy.epp', {'prefix' => $config_cli_prefix}),
+      order   => '01',
+    }
+  }
+
+  concat::fragment { 'keycloak-config.cli-datasource':
+    target  => "${keycloak::install_base}/config.cli",
+    content => epp('keycloak/config.cli/02-datasource.epp', {
+      'datasource_driver'         => $keycloak::datasource_driver,
+      'datasource_connection_url' => $keycloak::datasource_connection_url,
+      'datasource_username'       => $keycloak::datasource_username,
+      'datasource_password'       => $keycloak::datasource_password,
+      'mysql_datasource_class'    => $keycloak::mysql_datasource_class,
+      'prefix'                    => $config_cli_prefix,
+    }),
+    order   => '02',
+  }
+
+  concat::fragment { 'keycloak-config.cli-truststore':
+    target  => "${keycloak::install_base}/config.cli",
+    content => epp('keycloak/config.cli/03-truststore.epp', {
+      'truststore'                              => $keycloak::truststore,
+      'operating_mode'                          => $keycloak::operating_mode,
+      'install_base'                            => $keycloak::install_base,
+      'truststore_password'                     => $keycloak::truststore_password,
+      'truststore_hostname_verification_policy' => $keycloak::truststore_hostname_verification_policy,
+      'prefix'                                  => $config_cli_prefix,
+    }),
+    order   => '03',
+  }
+
+  concat::fragment { 'keycloak-config.cli-theming':
+    target  => "${keycloak::install_base}/config.cli",
+    content => epp('keycloak/config.cli/04-theming.epp', {
+      'theme_static_max_age'  => $keycloak::theme_static_max_age,
+      'theme_cache_themes'    => $keycloak::theme_cache_themes,
+      'theme_cache_templates' => $keycloak::theme_cache_templates,
+      'prefix'                => $config_cli_prefix,
+    }),
+    order   => '04',
+  }
+
+  # deployment scanner is not compatible with domain mode
+  if $keycloak::operating_mode != 'domain' {
+    concat::fragment { 'keycloak-config.cli-deployment-scanner':
+      target  => "${keycloak::install_base}/config.cli",
+      content => epp('keycloak/config.cli/05-deployment-scanner.epp', {
+        'auto_deploy_exploded' => $keycloak::auto_deploy_exploded,
+        'auto_deploy_zipped'   => $keycloak::auto_deploy_zipped,
+        'prefix'               => $config_cli_prefix,
+      }),
+      order   => '05',
+    }
+  }
+
+  concat::fragment { 'keycloak-config.cli-user-cache':
+    target  => "${keycloak::install_base}/config.cli",
+    content => epp('keycloak/config.cli/06-user-cache.epp', {
+      'user_cache' => $keycloak::user_cache,
+      'prefix'     => $config_cli_prefix,
+    }),
+    order   => '06',
+  }
+
+  concat::fragment { 'keycloak-config.cli-cluster':
+    target  => "${keycloak::install_base}/config.cli",
+    content => epp('keycloak/config.cli/10-cluster.epp', {
+      'operating_mode'             => $keycloak::operating_mode,
+      'enable_jdbc_ping'           => $keycloak::enable_jdbc_ping,
+      'datasource_driver'          => $keycloak::datasource_driver,
+      'jboss_bind_private_address' => $keycloak::jboss_bind_private_address,
+      'jboss_bind_public_address'  => $keycloak::jboss_bind_public_address,
+      'prefix'                     => $config_cli_prefix,
+    }),
+    order   => '10',
+  }
+
+  if $keycloak::operating_mode == 'domain' {
+    concat::fragment { 'keycloak-config.cli-domain':
+      target  => "${keycloak::install_base}/config.cli",
+      content => epp('keycloak/config.cli/11-domain.epp', {
+        'prefix' => $config_cli_prefix,
+      }),
+      order   => '11',
+    }
+  }
+
   if $keycloak::custom_config_content or $keycloak::custom_config_source {
-    concat::fragment { 'config.cli-custom':
+    concat::fragment { 'keycloak-config.cli-custom':
       target  => "${keycloak::install_base}/config.cli",
       content => $keycloak::custom_config_content,
       source  => $keycloak::custom_config_source,
-      order   => '01',
+      order   => '50',
     }
+  }
+
+  concat::fragment { 'keycloak-config.cli-footer':
+    target  => "${keycloak::install_base}/config.cli",
+    content => epp('keycloak/config.cli/99-footer.epp', {'operating_mode' => $keycloak::operating_mode}),
+    order   => '99',
   }
 
   exec { 'jboss-cli.sh --file=config.cli':
@@ -150,7 +252,6 @@ class keycloak::config {
     }
 
     if $keycloak::role == 'master' {
-
       # Remove load balancer group
       # Rename the server
       # Set port offset to zero to run server on port 8080

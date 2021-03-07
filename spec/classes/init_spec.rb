@@ -220,14 +220,6 @@ describe 'keycloak' do
         end
 
         it do
-          is_expected.to contain_concat__fragment('config.cli-keycloak').with(
-            target: "/opt/keycloak-#{version}/config.cli",
-            content: %r{.*},
-            order: '00',
-          )
-        end
-
-        it do
           is_expected.to contain_file_line('keycloak-JAVA_OPTS').with(
             ensure: 'absent',
             path: "/opt/keycloak-#{version}/bin/standalone.conf",
