@@ -23,12 +23,12 @@ defaults:
   data_hash: yaml_data
 hierarchy:
   - name: 'os family major release'
-    path: "os/%{facts.os.family}/%{facts.os.release.major}.yaml"
+    path: "os/%{facts.os.name}/%{facts.os.release.major}.yaml"
   - name: "Common"
     path: "common.yaml"
 EOS
-# Hack until released: https://github.com/puppetlabs/puppetlabs-mysql/pull/1264
-debian10_yaml = <<-EOS
+# TODO: Use until released https://github.com/puppetlabs/puppetlabs-mysql/pull/1373
+ubuntu2004_yaml = <<-EOS
 mysql::bindings::java_package_name: libmariadb-java
 EOS
 centos7_yaml = <<-EOS
@@ -43,7 +43,7 @@ EOS
 create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
 on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
-on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Debian'
-create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Debian/10.yaml', debian10_yaml)
-on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/RedHat'
-create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/RedHat/7.yaml', centos7_yaml)
+on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Ubuntu'
+create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Ubuntu/20.04.yaml', ubuntu2004_yaml)
+on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/CentOS'
+create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/CentOS/7.yaml', centos7_yaml)

@@ -60,6 +60,7 @@ jobs:
           - "debian-9"
           - "debian-10"
           - "ubuntu-1804"
+          - "ubuntu-2004"
         puppet:
           - "puppet6"
           - "puppet7"

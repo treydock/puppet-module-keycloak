@@ -18,6 +18,7 @@
       - debian-9
       - debian-10
       - ubuntu-1804
+      - ubuntu-2004
     puppet:
       - puppet6
       - puppet7
@@ -62,5 +63,8 @@ spec/acceptance/nodesets/ubuntu-1404.yml:
 spec/acceptance/nodesets/ubuntu-1604.yml:
   delete: true
 spec/acceptance/nodesets/ubuntu-1804.yml:
+  packages:
+    - iproute2
+spec/acceptance/nodesets/ubuntu-2004.yml:
   packages:
     - iproute2

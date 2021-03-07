@@ -420,7 +420,8 @@ class keycloak (
       }
     }
     'Debian': {
-      if $facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['major'], '10') >= 0 {
+      if ($facts['os']['name'] == 'Debian' and versioncmp($facts['os']['release']['major'], '10') >= 0) or
+      ($facts['os']['name'] == 'Ubuntu' and versioncmp($facts['os']['release']['major'], '20.04') >= 0) {
         $mysql_datasource_class = pick($datasource_xa_class, 'org.mariadb.jdbc.MariaDbDataSource')
         $mysql_jar_source = '/usr/share/java/mariadb-java-client.jar'
       } else {
