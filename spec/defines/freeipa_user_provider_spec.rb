@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'keycloak::freeipa_user_provider' do
   on_supported_os.each do |os, _facts|
     context "on #{os}" do
-      let(:version) { '8.0.1' }
+      let(:version) { '12.0.4' }
       let(:title) { 'ipa.example.org' }
       let(:params) do
         {

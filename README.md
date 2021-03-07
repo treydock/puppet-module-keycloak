@@ -33,7 +33,8 @@ The keycloak module allows easy installation and management of Keycloak.
 
 ### Supported Versions of Keycloak
 
-Currently this module supports Keycloak version 8.x to 12.x.
+Currently this module supports Keycloak version 12.x.
+This module may work on earlier versions but this is the only version tested.
 
 | Keycloak Version | Keycloak Puppet module versions |
 | ---------------- | ------------------------------- |
@@ -41,6 +42,7 @@ Currently this module supports Keycloak version 8.x to 12.x.
 | 4.x - 6.x        | 3.x                             |
 | 6.x - 8.x        | 4.x - 5.x                       |
 | 8.x - 12.x       | 6.x                             |
+| 12.x             | 7.x                             |
 
 ## Usage
 
