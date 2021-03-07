@@ -8,10 +8,10 @@ fixtures:
       ref: v10.2.0
     postgresql:
       repo: https://github.com/puppetlabs/puppetlabs-postgresql.git
-      ref: v6.4.0
+      ref: v6.6.0
     java:
       repo: https://github.com/puppetlabs/puppetlabs-java.git
-      ref: v5.0.0
+      ref: v6.3.0
     java_ks:
       repo: https://github.com/puppetlabs/puppetlabs-java_ks.git
       ref: 1.4.1
