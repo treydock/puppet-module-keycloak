@@ -84,7 +84,7 @@ Data type: `String`
 
 Version of Keycloak to install and manage.
 
-Default value: `'8.0.1'`
+Default value: `'12.0.4'`
 
 ##### `package_url`
 
