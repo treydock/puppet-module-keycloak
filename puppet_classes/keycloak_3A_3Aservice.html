@@ -108,10 +108,7 @@
 15
 16
 17
-18
-19
-20
-21</pre>
+18</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/service.pp', line 2</span>
@@ -119,12 +116,9 @@
 class keycloak::service {
   assert_private()
 
-  if $::service_provider == &#39;systemd&#39; {
-    ::systemd::unit_file { &#39;keycloak.service&#39;:
-      content =&gt; template(&#39;keycloak/keycloak.service.erb&#39;),
-      notify  =&gt; Service[&#39;keycloak&#39;],
-    }
-    Exec[&#39;systemctl-daemon-reload&#39;] -&gt; Service[&#39;keycloak&#39;]
+  systemd::unit_file { &#39;keycloak.service&#39;:
+    content =&gt; template(&#39;keycloak/keycloak.service.erb&#39;),
+    notify  =&gt; Service[&#39;keycloak&#39;],
   }
 
   service { &#39;keycloak&#39;:
