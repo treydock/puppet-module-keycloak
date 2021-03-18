@@ -20,6 +20,7 @@ class { '::keycloak':
   admin_user_password     => $keycloak_admin_user_password,
   service_bind_address    => '0.0.0.0',
   proxy_https             => false,
+  syslog                  => true,
 }
 
 keycloak_realm { 'TEST.NET':

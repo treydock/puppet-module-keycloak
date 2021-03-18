@@ -245,6 +245,22 @@
 #   IP address of the master in domain mode
 # @param server_name
 #   Server name in domain mode. Defaults to hostname.
+# @param syslog
+#   Enable syslog. Default false.
+# @param syslog_app_name
+#  Syslog app name. Default 'keycloak'.
+# @param syslog_facility
+#  Syslog facility. Default 'user-level'.
+# @syslog_hostname
+#  Syslog hostname of the server. Default $facts['fqdn'].
+# @syslog_level
+#  Syslog level. Default 'INFO'.
+# @syslog_port
+#  The port the syslog server is listening on. Default '514'.
+# @syslog_server_address
+#  The address of the syslog server. Default 'localhost'.
+# @syslog-format
+#  Syslog format. Either 'RFC3164' or 'RFC5424' Default 'RFC3164'.
 class keycloak (
   Boolean $manage_install       = true,
   String $version               = '12.0.4',
@@ -344,6 +360,14 @@ class keycloak (
   Optional[Variant[String, Array]] $custom_config_source = undef,
   Optional[Stdlib::Host] $master_address = undef,
   String $server_name = $facts['hostname'],
+  Boolean $syslog = false,
+  String $syslog_app_name = 'keycloak',
+  String $syslog_facility = 'user-level',
+  String $syslog_hostname = $facts['fqdn'],
+  String $syslog_level = 'INFO',
+  String $syslog_port = '514',
+  Stdlib::Host $syslog_server_address = 'localhost',
+  Enum['RFC3164', 'RFC5424'] $syslog_format = 'RFC3164',
 ) {
 
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {
