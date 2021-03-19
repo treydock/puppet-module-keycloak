@@ -283,7 +283,6 @@ describe 'keycloak' do
           is_expected.to contain_concat_fragment('keycloak-config.cli-syslog').with(target: '/opt/keycloak-x/config.cli', order: '12')
         end
       end
-
     end # end context
   end # end on_supported_os loop
 end # end describe
