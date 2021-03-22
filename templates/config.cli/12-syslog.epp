@@ -5,13 +5,14 @@ String $syslog_app_name,
 String $syslog_facility,
 String $syslog_hostname,
 String $syslog_level,
-String $syslog_port,
+Stdlib::Port $syslog_port,
 Stdlib::Host $syslog_server_address,
-String $syslog_format
+Enum['RFC3164', 'RFC5424'] $syslog_format = 'RFC3164'
 | -%>
 <%- if $syslog { -%>
 if (outcome != success) of <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG:read-resource
 <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG:add
+end-if
 <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG/:write-attribute(name=app-name, value=<%= $syslog_app_name %>)
 <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG/:write-attribute(name=facility, value=<%= $syslog_facility %>)
 <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG/:write-attribute(name=hostname, value=<%= $syslog_hostname %>)
@@ -19,5 +20,8 @@ if (outcome != success) of <%= $prefix -%>/subsystem=logging/syslog-handler=SYSL
 <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG/:write-attribute(name=port, value=<%= $syslog_port %>)
 <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG/:write-attribute(name=server-address, value=<%= $syslog_server_address %>)
 <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG/:write-attribute(name=syslog-format, value=<%= $syslog_format %>)
+<%- } else { -%>
+if (outcome == success) of <%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG:read-resource
+<%= $prefix -%>/subsystem=logging/syslog-handler=SYSLOG:remove
 end-if
 <%- } -%>

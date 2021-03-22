@@ -173,22 +173,20 @@ class keycloak::config {
     }
   }
 
-  if $keycloak::syslog {
-    concat::fragment { 'keycloak-config.cli-syslog':
-      target  => "${keycloak::install_base}/config.cli",
-      content => epp('keycloak/config.cli/12-syslog.epp', {
-        'prefix'                => $config_cli_prefix,
-        'syslog'                => $keycloak::syslog,
-        'syslog_app_name'       => $keycloak::syslog_app_name,
-        'syslog_facility'       => $keycloak::syslog_facility,
-        'syslog_hostname'       => $keycloak::syslog_hostname,
-        'syslog_level'          => $keycloak::syslog_level,
-        'syslog_port'           => $keycloak::syslog_port,
-        'syslog_server_address' => $keycloak::syslog_server_address,
-        'syslog_format'         => $keycloak::syslog_format,
-      }),
-      order   => '12',
-    }
+  concat::fragment { 'keycloak-config.cli-syslog':
+    target  => "${keycloak::install_base}/config.cli",
+    content => epp('keycloak/config.cli/12-syslog.epp', {
+      'prefix'                => $config_cli_prefix,
+      'syslog'                => $keycloak::syslog,
+      'syslog_app_name'       => $keycloak::syslog_app_name,
+      'syslog_facility'       => $keycloak::syslog_facility,
+      'syslog_hostname'       => $keycloak::syslog_hostname,
+      'syslog_level'          => $keycloak::syslog_level,
+      'syslog_port'           => $keycloak::syslog_port,
+      'syslog_server_address' => $keycloak::syslog_server_address,
+      'syslog_format'         => $keycloak::syslog_format,
+    }),
+      order => '12',
   }
 
   if $keycloak::custom_config_content or $keycloak::custom_config_source {

@@ -250,16 +250,16 @@
 # @param syslog_app_name
 #  Syslog app name. Default 'keycloak'.
 # @param syslog_facility
-#  Syslog facility. Default 'user-level'.
-# @syslog_hostname
+#  Syslog facility. Default 'user-level'. See https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html
+# @param syslog_hostname
 #  Syslog hostname of the server. Default $facts['fqdn'].
-# @syslog_level
-#  Syslog level. Default 'INFO'.
-# @syslog_port
+# @param syslog_level
+#  Syslog level. Default 'INFO'. See https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html
+# @param syslog_port
 #  The port the syslog server is listening on. Default '514'.
-# @syslog_server_address
+# @param syslog_server_address
 #  The address of the syslog server. Default 'localhost'.
-# @syslog-format
+# @param syslog_format
 #  Syslog format. Either 'RFC3164' or 'RFC5424' Default 'RFC3164'.
 class keycloak (
   Boolean $manage_install       = true,
@@ -365,7 +365,7 @@ class keycloak (
   String $syslog_facility = 'user-level',
   String $syslog_hostname = $facts['fqdn'],
   String $syslog_level = 'INFO',
-  String $syslog_port = '514',
+  Stdlib::Port $syslog_port = 514,
   Stdlib::Host $syslog_server_address = 'localhost',
   Enum['RFC3164', 'RFC5424'] $syslog_format = 'RFC3164',
 ) {
