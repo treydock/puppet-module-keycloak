@@ -282,8 +282,21 @@ Manage Keycloak realms
     newvalues(:true, :false)
   end
 
+  newparam(:manage_roles, boolean: true) do
+    desc 'Manage realm roles'
+    newvalues(:true, :false)
+    defaultto(:true)
+  end
+
   newproperty(:roles, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'roles'
     defaultto ['offline_access', 'uma_authorization']
+
+    def insync?(is)
+      if resource[:manage_roles].to_s == 'false'
+        return true
+      end
+      super(is)
+    end
   end
 end

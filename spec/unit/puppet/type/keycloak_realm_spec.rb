@@ -121,6 +121,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       :verify_email,
       :login_with_email_allowed,
       :internationalization_enabled,
+      :manage_roles,
       :events_enabled,
       :admin_events_enabled,
       :admin_events_details_enabled,
