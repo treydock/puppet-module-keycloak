@@ -27,6 +27,10 @@
 #   Priority for this user provider
 # @param ldaps
 #   Use LDAPS protocol instead of LDAP
+# @param full_sync_period
+#   Synchronize all users this often (fullSyncPeriod)
+# @param changed_sync_period
+#   Synchronize changed users this often (changedSyncPeriod)
 #
 define keycloak::freeipa_user_provider
 (
@@ -38,6 +42,8 @@ define keycloak::freeipa_user_provider
   Stdlib::Host              $ipa_host = $title,
   Integer                   $priority = 10,
   Boolean                   $ldaps = false,
+  Optional[Integer]         $full_sync_period = undef,
+  Optional[Integer]         $changed_sync_period = undef
 )
 {
   if $ldaps {
@@ -65,5 +71,7 @@ define keycloak::freeipa_user_provider
     users_dn                                 => $users_dn,
     uuid_ldap_attribute                      => 'ipaUniqueID',
     vendor                                   => 'rhds',
+    full_sync_period                         => $full_sync_period,
+    changed_sync_period                      => $changed_sync_period,
   }
 }

@@ -247,7 +247,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       end
     end
     role = nil
-    if resource[:roles]
+    if resource[:roles] && resource[:manage_roles].to_s == 'true'
       roles = get_realm_roles(resource[:name])
       remove_roles = roles - resource[:roles]
       begin
@@ -413,7 +413,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
         end
       end
       role = nil
-      if @property_flush[:roles]
+      if @property_flush[:roles] && resource[:manage_roles].to_s == 'true'
         remove_roles = @property_hash[:roles] - @property_flush[:roles]
         begin
           remove_roles.each do |s|
