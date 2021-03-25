@@ -239,6 +239,42 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>full_sync_period</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Synchronize all users this often (fullSyncPeriod)</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>changed_sync_period</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Synchronize changed users this often (changedSyncPeriod)</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -250,10 +286,6 @@
         <pre class="lines">
 
 
-31
-32
-33
-34
 35
 36
 37
@@ -288,10 +320,18 @@
 66
 67
 68
-69</pre>
+69
+70
+71
+72
+73
+74
+75
+76
+77</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/freeipa_user_provider.pp', line 31</span>
+        <pre class="code"><span class="info file"># File 'manifests/freeipa_user_provider.pp', line 35</span>
 
 define keycloak::freeipa_user_provider
 (
@@ -303,6 +343,8 @@ define keycloak::freeipa_user_provider
   Stdlib::Host              $ipa_host = $title,
   Integer                   $priority = 10,
   Boolean                   $ldaps = false,
+  Optional[Integer]         $full_sync_period = undef,
+  Optional[Integer]         $changed_sync_period = undef
 )
 {
   if $ldaps {
@@ -330,6 +372,8 @@ define keycloak::freeipa_user_provider
     users_dn                                 =&gt; $users_dn,
     uuid_ldap_attribute                      =&gt; &#39;ipaUniqueID&#39;,
     vendor                                   =&gt; &#39;rhds&#39;,
+    full_sync_period                         =&gt; $full_sync_period,
+    changed_sync_period                      =&gt; $changed_sync_period,
   }
 }</pre>
       </td>
