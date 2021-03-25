@@ -1097,6 +1097,22 @@ Use LDAPS protocol instead of LDAP
 
 Default value: ``false``
 
+##### `full_sync_period`
+
+Data type: `Optional[Integer]`
+
+Synchronize all users this often (fullSyncPeriod)
+
+Default value: ``undef``
+
+##### `changed_sync_period`
+
+Data type: `Optional[Integer]`
+
+Synchronize changed users this often (changedSyncPeriod)
+
+Default value: ``undef``
+
 ### `keycloak::spi_deployment`
 
 }
@@ -3107,6 +3123,14 @@ The following parameters are available in the `keycloak_realm` type.
 ##### `id`
 
 Id. Default to `name`.
+
+##### `manage_roles`
+
+Valid values: ``true``, ``false``
+
+Manage realm roles
+
+Default value: ``true``
 
 ##### `name`
 

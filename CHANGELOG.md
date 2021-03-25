@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.1.0) (2021-03-25)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.0.0...v7.1.0)
+
+### Added
+
+- FreeIPA/LDAP provider related regression fixes [\#189](https://github.com/treydock/puppet-module-keycloak/pull/189) ([mattock](https://github.com/mattock))
+
 ## [v7.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.0.0) (2021-03-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.26.0...v7.0.0)
@@ -481,6 +489,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Use hiera v5 module data [\#62](https://github.com/treydock/puppet-module-keycloak/pull/62) ([treydock](https://github.com/treydock))
+- Add option for service environment file [\#50](https://github.com/treydock/puppet-module-keycloak/pull/50) ([asieraguado](https://github.com/asieraguado))
 
 ## [v3.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v3.8.0) (2019-05-23)
 
@@ -513,6 +522,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Support managing realm's events config [\#55](https://github.com/treydock/puppet-module-keycloak/pull/55) ([treydock](https://github.com/treydock))
 - Test against Keycloak 6 [\#54](https://github.com/treydock/puppet-module-keycloak/pull/54) ([treydock](https://github.com/treydock))
 
 ## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
@@ -521,7 +531,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Support managing realm's events config [\#55](https://github.com/treydock/puppet-module-keycloak/pull/55) ([treydock](https://github.com/treydock))
 - manage user support [\#53](https://github.com/treydock/puppet-module-keycloak/pull/53) ([cborisa](https://github.com/cborisa))
 
 ## [3.4.0](https://github.com/treydock/puppet-module-keycloak/tree/3.4.0) (2019-02-25)
@@ -531,7 +540,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - JAVA\_OPTS via systemd unit Environment variable [\#51](https://github.com/treydock/puppet-module-keycloak/pull/51) ([danifr](https://github.com/danifr))
-- Add option for service environment file [\#50](https://github.com/treydock/puppet-module-keycloak/pull/50) ([asieraguado](https://github.com/asieraguado))
 
 ## [3.3.0](https://github.com/treydock/puppet-module-keycloak/tree/3.3.0) (2019-01-28)
 
@@ -555,6 +563,7 @@ All notable changes to this project will be documented in this file. The format 
 
 - Support SSSD User Provider [\#42](https://github.com/treydock/puppet-module-keycloak/pull/42) ([treydock](https://github.com/treydock))
 - Add enabled property to keycloak\_ldap\_user\_provider [\#41](https://github.com/treydock/puppet-module-keycloak/pull/41) ([treydock](https://github.com/treydock))
+- Use beaker 4.x [\#37](https://github.com/treydock/puppet-module-keycloak/pull/37) ([treydock](https://github.com/treydock))
 
 ## [3.1.0](https://github.com/treydock/puppet-module-keycloak/tree/3.1.0) (2018-12-13)
 
@@ -564,7 +573,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - Bump dependency ranges for stdlib and mysql [\#40](https://github.com/treydock/puppet-module-keycloak/pull/40) ([treydock](https://github.com/treydock))
 - Support Puppet 6 and drop support for Puppet 4 [\#39](https://github.com/treydock/puppet-module-keycloak/pull/39) ([treydock](https://github.com/treydock))
-- Use beaker 4.x [\#37](https://github.com/treydock/puppet-module-keycloak/pull/37) ([treydock](https://github.com/treydock))
 
 ### Fixed
 
