@@ -363,7 +363,7 @@ class keycloak (
   Boolean $syslog = false,
   String $syslog_app_name = 'keycloak',
   String $syslog_facility = 'user-level',
-  String $syslog_hostname = $facts['fqdn'],
+  Stdlib::Host $syslog_hostname = $facts['fqdn'],
   String $syslog_level = 'INFO',
   Stdlib::Port $syslog_port = 514,
   Stdlib::Host $syslog_server_address = 'localhost',
