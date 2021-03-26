@@ -1865,6 +1865,153 @@ manage firewall changes</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>syslog</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable syslog. Default false.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>syslog_app_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Syslog app name. Default &#39;keycloak&#39;.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>syslog_facility</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;user-level&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Syslog facility. Default &#39;user-level&#39;. See <a
+href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">docs.jboss.org/author/display/AS72/Logging%20Configuration.html</a></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>syslog_hostname</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Host</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$facts[&#39;fqdn&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Syslog hostname of the server. Default $<a href="'fqdn'">facts</a>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>syslog_level</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;INFO&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Syslog level. Default &#39;INFO&#39;. See <a
+href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">docs.jboss.org/author/display/AS72/Logging%20Configuration.html</a></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>syslog_port</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Port</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>514</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The port the syslog server is listening on. Default &#39;514&#39;.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>syslog_server_address</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Host</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;localhost&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The address of the syslog server. Default &#39;localhost&#39;.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>syslog_format</span>
+      
+      
+        <span class='type'>(<tt>Enum['RFC3164', 'RFC5424']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;RFC3164&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Syslog format. Either &#39;RFC3164&#39; or &#39;RFC5424&#39; Default
+&#39;RFC3164&#39;.</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -1876,22 +2023,6 @@ manage firewall changes</p>
         <pre class="lines">
 
 
-248
-249
-250
-251
-252
-253
-254
-255
-256
-257
-258
-259
-260
-261
-262
-263
 264
 265
 266
@@ -2098,10 +2229,34 @@ manage firewall changes</p>
 467
 468
 469
-470</pre>
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 248</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 264</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -2202,6 +2357,14 @@ class keycloak (
   Optional[Variant[String, Array]] $custom_config_source = undef,
   Optional[Stdlib::Host] $master_address = undef,
   String $server_name = $facts[&#39;hostname&#39;],
+  Boolean $syslog = false,
+  String $syslog_app_name = &#39;keycloak&#39;,
+  String $syslog_facility = &#39;user-level&#39;,
+  Stdlib::Host $syslog_hostname = $facts[&#39;fqdn&#39;],
+  String $syslog_level = &#39;INFO&#39;,
+  Stdlib::Port $syslog_port = 514,
+  Stdlib::Host $syslog_server_address = &#39;localhost&#39;,
+  Enum[&#39;RFC3164&#39;, &#39;RFC5424&#39;] $syslog_format = &#39;RFC3164&#39;,
 ) {
 
   if ! ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;]) {

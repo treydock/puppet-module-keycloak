@@ -467,7 +467,23 @@
 374
 375
 376
-377</pre>
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 2</span>
@@ -644,6 +660,22 @@ class keycloak::config {
       }),
       order   =&gt; &#39;11&#39;,
     }
+  }
+
+  concat::fragment { &#39;keycloak-config.cli-syslog&#39;:
+    target  =&gt; &quot;${keycloak::install_base}/config.cli&quot;,
+    content =&gt; epp(&#39;keycloak/config.cli/12-syslog.epp&#39;, {
+      &#39;prefix&#39;                =&gt; $config_cli_prefix,
+      &#39;syslog&#39;                =&gt; $keycloak::syslog,
+      &#39;syslog_app_name&#39;       =&gt; $keycloak::syslog_app_name,
+      &#39;syslog_facility&#39;       =&gt; $keycloak::syslog_facility,
+      &#39;syslog_hostname&#39;       =&gt; $keycloak::syslog_hostname,
+      &#39;syslog_level&#39;          =&gt; $keycloak::syslog_level,
+      &#39;syslog_port&#39;           =&gt; $keycloak::syslog_port,
+      &#39;syslog_server_address&#39; =&gt; $keycloak::syslog_server_address,
+      &#39;syslog_format&#39;         =&gt; $keycloak::syslog_format,
+    }),
+      order =&gt; &#39;12&#39;,
   }
 
   if $keycloak::custom_config_content or $keycloak::custom_config_source {
