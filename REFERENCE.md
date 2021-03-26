@@ -885,6 +885,70 @@ Server name in domain mode. Defaults to hostname.
 
 Default value: `$facts['hostname']`
 
+##### `syslog`
+
+Data type: `Boolean`
+
+Enable syslog. Default false.
+
+Default value: ``false``
+
+##### `syslog_app_name`
+
+Data type: `String`
+
+Syslog app name. Default 'keycloak'.
+
+Default value: `'keycloak'`
+
+##### `syslog_facility`
+
+Data type: `String`
+
+Syslog facility. Default 'user-level'. See https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html
+
+Default value: `'user-level'`
+
+##### `syslog_hostname`
+
+Data type: `Stdlib::Host`
+
+Syslog hostname of the server. Default $facts['fqdn'].
+
+Default value: `$facts['fqdn']`
+
+##### `syslog_level`
+
+Data type: `String`
+
+Syslog level. Default 'INFO'. See https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html
+
+Default value: `'INFO'`
+
+##### `syslog_port`
+
+Data type: `Stdlib::Port`
+
+The port the syslog server is listening on. Default '514'.
+
+Default value: `514`
+
+##### `syslog_server_address`
+
+Data type: `Stdlib::Host`
+
+The address of the syslog server. Default 'localhost'.
+
+Default value: `'localhost'`
+
+##### `syslog_format`
+
+Data type: `Enum['RFC3164', 'RFC5424']`
+
+Syslog format. Either 'RFC3164' or 'RFC5424' Default 'RFC3164'.
+
+Default value: `'RFC3164'`
+
 ### `keycloak::config`
 
 Private class.
