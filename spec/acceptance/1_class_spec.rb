@@ -136,6 +136,34 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_domain_mode_clu
         datasource_driver => 'mysql',
         proxy_https       => true,
         java_opts         => '-Xmx512m -Xms64m',
+        syslog            => true,
+      }
+      EOS
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    describe service('keycloak') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+
+    describe port(8080) do
+      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
+    end
+
+    describe port(9990) do
+      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+    end
+  end
+
+  context 'reset to defaults' do
+    it 'runs successfully' do
+      pp = <<-EOS
+      include mysql::server
+      class { 'keycloak':
+        datasource_driver => 'mysql',
       }
       EOS
 
