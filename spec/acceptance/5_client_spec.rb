@@ -103,7 +103,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         root_url                       => 'https://test.foo.bar/test',
         redirect_uris                  => ['https://test.foo.bar/test2'],
         default_client_scopes          => ['profile', 'email'],
-        secret                         => 'foobar',
+        secret                         => 'foobar2',
         authorization_services_enabled => true,
         service_accounts_enabled       => true,
         roles                          => ['bar_role'],
@@ -161,7 +161,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
     it 'has set the same client secret' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do
         data = JSON.parse(stdout)
-        expect(data['value']).to eq('foobar')
+        expect(data['value']).to eq('foobar2')
       end
     end
 

@@ -44,7 +44,7 @@ Manage Keycloak clients
     desc 'realm'
   end
 
-  newparam(:secret) do
+  newproperty(:secret) do
     desc 'secret'
 
     def change_to_s(currentvalue, _newvalue)
