@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.2.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.2.1) (2021-04-17)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.2.0...v7.2.1)
+
+### Fixed
+
+- Fix keycloak\_client to be able to update the secret [\#191](https://github.com/treydock/puppet-module-keycloak/pull/191) ([treydock](https://github.com/treydock))
+
 ## [v7.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.2.0) (2021-03-26)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.1.0...v7.2.0)
@@ -451,10 +459,6 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.2.0...v5.0.0)
 
-### Changed
-
-- Remove keycloak::client\_template [\#71](https://github.com/treydock/puppet-module-keycloak/pull/71) ([treydock](https://github.com/treydock))
-
 ## [v4.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v4.2.0) (2019-08-27)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.1.1...v4.2.0)
@@ -475,6 +479,10 @@ All notable changes to this project will be documented in this file. The format 
 ## [v4.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v4.1.0) (2019-08-26)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.0.0...v4.1.0)
+
+### Changed
+
+- Remove keycloak::client\_template [\#71](https://github.com/treydock/puppet-module-keycloak/pull/71) ([treydock](https://github.com/treydock))
 
 ### Added
 
@@ -519,10 +527,6 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.6.0...3.6.1)
 
-### Fixed
-
-- Fix handling of events config during updates [\#56](https://github.com/treydock/puppet-module-keycloak/pull/56) ([treydock](https://github.com/treydock))
-
 ## [3.6.0](https://github.com/treydock/puppet-module-keycloak/tree/3.6.0) (2019-05-06)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.5.0...3.6.0)
@@ -531,6 +535,10 @@ All notable changes to this project will be documented in this file. The format 
 
 - Support managing realm's events config [\#55](https://github.com/treydock/puppet-module-keycloak/pull/55) ([treydock](https://github.com/treydock))
 - Test against Keycloak 6 [\#54](https://github.com/treydock/puppet-module-keycloak/pull/54) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Fix handling of events config during updates [\#56](https://github.com/treydock/puppet-module-keycloak/pull/56) ([treydock](https://github.com/treydock))
 
 ## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
 

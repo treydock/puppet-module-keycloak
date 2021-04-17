@@ -1513,6 +1513,10 @@ Default value: `[]`
 
 rootUrl
 
+##### `secret`
+
+secret
+
 ##### `service_accounts_enabled`
 
 Valid values: ``true``, ``false``
@@ -1561,10 +1565,6 @@ usually discover the appropriate provider for your platform.
 ##### `realm`
 
 realm
-
-##### `secret`
-
-secret
 
 ### `keycloak_client_protocol_mapper`
 
