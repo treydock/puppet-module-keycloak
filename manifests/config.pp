@@ -86,7 +86,10 @@ class keycloak::config {
   if $keycloak::proxy_https {
     concat::fragment { 'keycloak-config.cli-https-proxy':
       target  => "${keycloak::install_base}/config.cli",
-      content => epp('keycloak/config.cli/01-https-proxy.epp', {'prefix' => $config_cli_prefix}),
+      content => epp('keycloak/config.cli/01-https-proxy.epp', {
+        'prefix'         => $config_cli_prefix,
+        'operating_mode' => $keycloak::operating_mode,
+      }),
       order   => '01',
     }
   }
