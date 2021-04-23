@@ -15,11 +15,6 @@ if (outcome == success) of /socket-binding-group=load-balancer-sockets:read-reso
 /socket-binding-group=load-balancer-sockets:remove
 end-if
 
-<%# ensure proxying for ha sockets -%>
-if (outcome != success) of /socket-binding-group=ha-sockets/socket-binding=proxy-https:read-resource
-/socket-binding-group=ha-sockets/socket-binding=proxy-https:add(port=443)
-end-if
-
 <%# caches -%>
 <%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=sessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
 <%= $prefix -%>/subsystem=infinispan/cache-container=keycloak/distributed-cache=authenticationSessions:write-attribute(name=owners, value=${env.CACHE_OWNERS:2})
