@@ -483,7 +483,10 @@
 390
 391
 392
-393</pre>
+393
+394
+395
+396</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 2</span>
@@ -575,7 +578,10 @@ class keycloak::config {
   if $keycloak::proxy_https {
     concat::fragment { &#39;keycloak-config.cli-https-proxy&#39;:
       target  =&gt; &quot;${keycloak::install_base}/config.cli&quot;,
-      content =&gt; epp(&#39;keycloak/config.cli/01-https-proxy.epp&#39;, {&#39;prefix&#39; =&gt; $config_cli_prefix}),
+      content =&gt; epp(&#39;keycloak/config.cli/01-https-proxy.epp&#39;, {
+        &#39;prefix&#39;         =&gt; $config_cli_prefix,
+        &#39;operating_mode&#39; =&gt; $keycloak::operating_mode,
+      }),
       order   =&gt; &#39;01&#39;,
     }
   }
