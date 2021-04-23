@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.2.2](https://github.com/treydock/puppet-module-keycloak/tree/v7.2.2) (2021-04-23)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.2.1...v7.2.2)
+
+### Fixed
+
+- Domain mode sockets [\#192](https://github.com/treydock/puppet-module-keycloak/pull/192) ([kibahop](https://github.com/kibahop))
+
 ## [v7.2.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.2.1) (2021-04-17)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.2.0...v7.2.1)
@@ -14,7 +22,7 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.1.0...v7.2.0)
 
-### UNCATEGORIZED PRS; GO LABEL THEM
+### Added
 
 - Add support for logging to syslog [\#190](https://github.com/treydock/puppet-module-keycloak/pull/190) ([kibahop](https://github.com/kibahop))
 
@@ -394,7 +402,6 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Allow managing Keycloak installation from outside this module [\#87](https://github.com/treydock/puppet-module-keycloak/pull/87) ([mattock](https://github.com/mattock))
 - Enable passing extra options to Keycloak in the systemd unit file [\#86](https://github.com/treydock/puppet-module-keycloak/pull/86) ([mattock](https://github.com/mattock))
 - Enable defining bind address for the Keycloak systemd service [\#85](https://github.com/treydock/puppet-module-keycloak/pull/85) ([mattock](https://github.com/mattock))
 
@@ -429,6 +436,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Allow managing Keycloak installation from outside this module [\#87](https://github.com/treydock/puppet-module-keycloak/pull/87) ([mattock](https://github.com/mattock))
 - Fix \#78. Add clustered mode support [\#79](https://github.com/treydock/puppet-module-keycloak/pull/79) ([danifr](https://github.com/danifr))
 
 ## [v5.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.2.0) (2019-08-29)
@@ -459,6 +467,14 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.2.0...v5.0.0)
 
+### Changed
+
+- Remove keycloak::client\_template [\#71](https://github.com/treydock/puppet-module-keycloak/pull/71) ([treydock](https://github.com/treydock))
+
+### Added
+
+- Simplify how keycloak\_client\_protocol\_mapper and keycloak\_protcol\_mapper are queried during prefetch [\#68](https://github.com/treydock/puppet-module-keycloak/pull/68) ([treydock](https://github.com/treydock))
+
 ## [v4.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v4.2.0) (2019-08-27)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.1.1...v4.2.0)
@@ -480,14 +496,9 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v4.0.0...v4.1.0)
 
-### Changed
-
-- Remove keycloak::client\_template [\#71](https://github.com/treydock/puppet-module-keycloak/pull/71) ([treydock](https://github.com/treydock))
-
 ### Added
 
 - Add clients parameter [\#69](https://github.com/treydock/puppet-module-keycloak/pull/69) ([treydock](https://github.com/treydock))
-- Simplify how keycloak\_client\_protocol\_mapper and keycloak\_protcol\_mapper are queried during prefetch [\#68](https://github.com/treydock/puppet-module-keycloak/pull/68) ([treydock](https://github.com/treydock))
 - Support managing protocl mapper saml-javascript-mapper [\#67](https://github.com/treydock/puppet-module-keycloak/pull/67) ([treydock](https://github.com/treydock))
 - Update module dependency version requirements [\#66](https://github.com/treydock/puppet-module-keycloak/pull/66) ([treydock](https://github.com/treydock))
 - Use iteration and added parameters to define resources [\#65](https://github.com/treydock/puppet-module-keycloak/pull/65) ([treydock](https://github.com/treydock))
@@ -499,16 +510,15 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
-- Simplify and consolidate datasource parameters [\#63](https://github.com/treydock/puppet-module-keycloak/pull/63) ([treydock](https://github.com/treydock))
 - Set default Keycloak version to 6.0.1 [\#61](https://github.com/treydock/puppet-module-keycloak/pull/61) ([treydock](https://github.com/treydock))
-
-### Added
-
-- Use hiera v5 module data [\#62](https://github.com/treydock/puppet-module-keycloak/pull/62) ([treydock](https://github.com/treydock))
 
 ## [v3.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v3.8.0) (2019-05-23)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.7.0...v3.8.0)
+
+### Changed
+
+- Simplify and consolidate datasource parameters [\#63](https://github.com/treydock/puppet-module-keycloak/pull/63) ([treydock](https://github.com/treydock))
 
 ### Added
 
@@ -527,6 +537,14 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.6.0...3.6.1)
 
+### Added
+
+- Use hiera v5 module data [\#62](https://github.com/treydock/puppet-module-keycloak/pull/62) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Fix handling of events config during updates [\#56](https://github.com/treydock/puppet-module-keycloak/pull/56) ([treydock](https://github.com/treydock))
+
 ## [3.6.0](https://github.com/treydock/puppet-module-keycloak/tree/3.6.0) (2019-05-06)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/3.5.0...3.6.0)
@@ -535,10 +553,6 @@ All notable changes to this project will be documented in this file. The format 
 
 - Support managing realm's events config [\#55](https://github.com/treydock/puppet-module-keycloak/pull/55) ([treydock](https://github.com/treydock))
 - Test against Keycloak 6 [\#54](https://github.com/treydock/puppet-module-keycloak/pull/54) ([treydock](https://github.com/treydock))
-
-### Fixed
-
-- Fix handling of events config during updates [\#56](https://github.com/treydock/puppet-module-keycloak/pull/56) ([treydock](https://github.com/treydock))
 
 ## [3.5.0](https://github.com/treydock/puppet-module-keycloak/tree/3.5.0) (2019-04-09)
 
