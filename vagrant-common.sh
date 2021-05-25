@@ -4,6 +4,7 @@
 #
 puppet module install puppetlabs-stdlib
 puppet module install puppetlabs-mysql
+puppet module install puppetlabs-postgresql
 puppet module install puppetlabs-java
 puppet module install puppetlabs-java_ks
 puppet module install puppetlabs-concat
