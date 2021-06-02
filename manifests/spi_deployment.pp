@@ -32,6 +32,8 @@
 #   Value of the `test_key` when testing for resources created by this SPI
 # @param test_realm
 #   Realm to query when looking for resources created by this SPI
+# @param test_before
+#   Setup autorequires for validator dependent resources
 #
 define keycloak::spi_deployment (
   Variant[Stdlib::Filesource, Stdlib::HTTPSUrl] $source,
@@ -41,6 +43,7 @@ define keycloak::spi_deployment (
   Optional[String] $test_key = undef,
   Optional[String] $test_value = undef,
   Optional[String] $test_realm = undef,
+  Optional[Array] $test_before = undef,
 ) {
   include keycloak
 
@@ -88,11 +91,12 @@ define keycloak::spi_deployment (
 
     if $test_url and $test_key and $test_value {
       keycloak_resource_validator { $name:
-        test_url   => $test_url,
-        test_key   => $test_key,
-        test_value => $test_value,
-        realm      => $test_realm,
-        require    => Exec["${name}-dodeploy"],
+        test_url            => $test_url,
+        test_key            => $test_key,
+        test_value          => $test_value,
+        realm               => $test_realm,
+        dependent_resources => $test_before,
+        require             => Exec["${name}-dodeploy"],
       }
     }
   }

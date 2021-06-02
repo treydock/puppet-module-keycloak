@@ -15,7 +15,10 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         test_key      => 'id',
         test_value    => 'duo-mfa-authenticator',
         test_realm    => 'test',
-        before        => Keycloak_flow_execution['duo-mfa-authenticator under form-browser-with-duo on test'],
+        test_before   => [
+          'Keycloak_flow[form-browser-with-duo]',
+          'Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo on test]',
+        ],
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'browser-with-duo on test':
@@ -108,7 +111,10 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         test_key      => 'id',
         test_value    => 'duo-mfa-authenticator',
         test_realm    => 'test',
-        before        => Keycloak_flow_execution['duo-mfa-authenticator under form-browser-with-duo on test'],
+        test_before   => [
+          'Keycloak_flow[form-browser-with-duo]',
+          'Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo on test]',
+        ],
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'browser-with-duo on test':

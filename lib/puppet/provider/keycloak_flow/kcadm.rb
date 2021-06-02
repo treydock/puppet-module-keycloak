@@ -32,7 +32,12 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
         flow[:provider_id] = d['providerId']
         flow[:name] = "#{flow[:alias]} on #{flow[:realm]}"
         flows << new(flow)
-        executions_output = kcadm('get', "authentication/flows/#{d['alias']}/executions", realm)
+        begin
+          executions_output = kcadm('get', "authentication/flows/#{d['alias']}/executions", realm)
+        rescue
+          Puppet.notice("Unable to query flow #{d['alias']} executions")
+          executions_output = '[]'
+        end
         Puppet.debug("#{realm} flow executions: #{executions_output}")
         begin
           executions_data = JSON.parse(executions_output)

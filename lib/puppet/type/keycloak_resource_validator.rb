@@ -41,6 +41,10 @@ Verify that a specific Keycloak resource is available
     end
   end
 
+  newparam(:dependent_resources) do
+    desc 'Resources that should autorequire this validator, eg: Keycloak_flow_execution[foobar]'
+  end
+
   validate do
     if self[:test_url].nil?
       raise "Keycloak_resource_validator[#{self[:name]}] test_url is required"
