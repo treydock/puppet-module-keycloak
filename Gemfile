@@ -39,7 +39,7 @@ group :system_tests do
   gem "beaker-pe",                                                               require: false
   gem "beaker-hostgenerator"
   gem "beaker-rspec"
-  gem "beaker-docker"
+  gem "beaker-docker", *location_for(ENV['BEAKER_DOCKER_VERSION'] || '~> 0.7.0')
   gem "beaker-puppet"
 end
 
