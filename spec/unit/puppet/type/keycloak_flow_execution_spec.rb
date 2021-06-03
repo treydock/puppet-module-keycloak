@@ -212,6 +212,22 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
+  it 'autorequires keycloak_resource_validator' do
+    keycloak_resource_validator = Puppet::Type.type(:keycloak_resource_validator).new(
+      name: 'duo-spi',
+      test_url: 'foo',
+      test_key: 'bar',
+      test_value: 'baz',
+      dependent_resources: ['Keycloak_flow_execution[foo]'],
+    )
+    catalog = Puppet::Resource::Catalog.new
+    catalog.add_resource resource
+    catalog.add_resource keycloak_resource_validator
+    rel = resource.autorequire[0]
+    expect(rel.source.ref).to eq(keycloak_resource_validator.ref)
+    expect(rel.target.ref).to eq(resource.ref)
+  end
+
   describe 'validations' do
     it 'requires realm' do
       config.delete(:realm)

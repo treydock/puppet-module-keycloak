@@ -165,6 +165,17 @@ Manage a Keycloak flow
     requires
   end
 
+  autorequire(:keycloak_resource_validator) do
+    requires = []
+    catalog.resources.each do |resource|
+      next unless resource.class.to_s == 'Puppet::Type::Keycloak_resource_validator'
+      resource[:dependent_resources].to_a.each do |dep|
+        requires << resource if dep == "Keycloak_flow[#{self[:name]}]"
+      end
+    end
+    requires
+  end
+
   validate do
     if self[:realm].nil?
       raise "Keycloak_flow[#{self[:name]}] must have a realm defined"
