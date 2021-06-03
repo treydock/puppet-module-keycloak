@@ -1264,6 +1264,14 @@ Realm to query when looking for resources created by this SPI
 
 Default value: ``undef``
 
+##### `test_before`
+
+Data type: `Optional[Array]`
+
+Setup autorequires for validator dependent resources
+
+Default value: ``undef``
+
 ### `keycloak::truststore::host`
 
 Add host to Keycloak truststore
@@ -3323,6 +3331,10 @@ Default value: `present`
 #### Parameters
 
 The following parameters are available in the `keycloak_resource_validator` type.
+
+##### `dependent_resources`
+
+Resources that should autorequire this validator, eg: Keycloak_flow_execution[foobar]
 
 ##### `name`
 
