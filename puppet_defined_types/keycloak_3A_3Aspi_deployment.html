@@ -243,6 +243,24 @@ this SPI</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>test_before</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Setup autorequires for validator dependent resources</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -254,8 +272,6 @@ this SPI</p>
         <pre class="lines">
 
 
-36
-37
 38
 39
 40
@@ -324,10 +340,14 @@ this SPI</p>
 103
 104
 105
-106</pre>
+106
+107
+108
+109
+110</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/spi_deployment.pp', line 36</span>
+        <pre class="code"><span class="info file"># File 'manifests/spi_deployment.pp', line 38</span>
 
 define keycloak::spi_deployment (
   Variant[Stdlib::Filesource, Stdlib::HTTPSUrl] $source,
@@ -337,6 +357,7 @@ define keycloak::spi_deployment (
   Optional[String] $test_key = undef,
   Optional[String] $test_value = undef,
   Optional[String] $test_realm = undef,
+  Optional[Array] $test_before = undef,
 ) {
   include keycloak
 
@@ -384,11 +405,12 @@ define keycloak::spi_deployment (
 
     if $test_url and $test_key and $test_value {
       keycloak_resource_validator { $name:
-        test_url   =&gt; $test_url,
-        test_key   =&gt; $test_key,
-        test_value =&gt; $test_value,
-        realm      =&gt; $test_realm,
-        require    =&gt; Exec[&quot;${name}-dodeploy&quot;],
+        test_url            =&gt; $test_url,
+        test_key            =&gt; $test_key,
+        test_value          =&gt; $test_value,
+        realm               =&gt; $test_realm,
+        dependent_resources =&gt; $test_before,
+        require             =&gt; Exec[&quot;${name}-dodeploy&quot;],
       }
     }
   }

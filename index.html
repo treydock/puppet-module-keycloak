@@ -357,7 +357,10 @@ Keycloak before attempting to add custom resources.</p>
   test_key      =&gt; &#39;id&#39;,
   test_value    =&gt; &#39;duo-mfa-authenticator&#39;,
   test_realm    =&gt; &#39;test&#39;,
-  before        =&gt; Keycloak_flow_execution[&#39;duo-mfa-authenticator under form-browser-with-duo on test&#39;],
+  test_before   =&gt; [
+    &#39;Keycloak_flow[form-browser-with-duo]&#39;,
+    &#39;Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo on test]&#39;,
+  ],
 }
 </code></pre>
 
