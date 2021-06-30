@@ -31,6 +31,34 @@ Puppet::Type.type(:keycloak_role_mapping).provide(:kcadm, parent: Puppet::Provid
     add_roles(new_roles)
   end
 
+  def client_roles
+    @clients = []
+    @active_client_roles = {}
+
+    # Get a unique list of clients referred to in client role mappings for this
+    # user or group
+    resource[:client_roles].keys.each do |cclientid|
+      output = kcadm('get-roles', nil, resource[:realm], nil, nil, false, opt => resource[:name], 'cclientid' => cclientid)
+      begin
+        data = JSON.parse(output)
+      rescue JSON::ParserError
+        Puppet.debug('Unable to parse output from kcadm get-roles')
+      end
+      @active_client_roles[cclientid] = [] unless @active_client_roles.has_key?(cclientid)
+      data.each do |role|
+        @active_client_roles[cclientid] << role['name']
+      end
+      p @active_client_roles
+    end
+
+    @active_client_roles
+  end
+
+  def client_roles=(_value)
+    #kcadm.sh add-roles -r demorealm --gname Group --cclientid realm-management --rolename create-client --rolename view-users
+
+  end
+
   def remove_roles(roles)
     return if roles.empty?
     kcadm('remove-roles', '', resource[:realm], nil, nil, false, opt => resource[:name], rolename: roles)
