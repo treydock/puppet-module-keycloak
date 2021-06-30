@@ -35,6 +35,9 @@ Puppet::Type.type(:keycloak_role_mapping).provide(:kcadm, parent: Puppet::Provid
     @clients = []
     @active_client_roles = {}
 
+    # FIXME: we should get the _active_ client roles for this user, not the ones
+    # from the catalog.
+
     # Get a unique list of clients referred to in client role mappings for this
     # user or group
     resource[:client_roles].keys.each do |cclientid|
@@ -48,13 +51,52 @@ Puppet::Type.type(:keycloak_role_mapping).provide(:kcadm, parent: Puppet::Provid
       data.each do |role|
         @active_client_roles[cclientid] << role['name']
       end
-      p @active_client_roles
     end
 
     @active_client_roles
   end
 
   def client_roles=(_value)
+
+    p "Current:"
+    p @active_client_roles
+    p "Desired:"
+    p resource[:client_roles]
+
+    # Removed clients
+    (@active_client_roles.keys - resource[:client_roles].keys).each do |cclientid|
+      puts "Would remove #{@active_client_roles[cclientid]} from empty client #{cclientid}"
+    end
+    
+    resource[:client_roles].each do |cclientid, desired_roles|
+      # New clients
+      if @active_client_roles[cclientid].nil?
+        puts "Would add #{desired_roles} to client #{cclientid}"
+      else
+        # Removed client roles for this client
+        removed_roles = @active_client_roles[cclientid].select { |role| resource[:client_roles][cclientid].include?(role) }
+        p removed_roles
+        unless removed_roles.empty?
+          puts "Would remove #{removed_roles} from client #{cclientid}"
+        end
+    
+        # New client roles for this client
+        new_roles = resource[:client_roles][cclientid].reject { |role| @active_client_roles[cclientid].include?(role) }
+        unless new_roles.empty?
+          puts "Would add #{new_roles} to client role #{cclientid}"
+        end
+      end
+    end
+
+    #@active_client_roles
+    
+    #removed_roles = @active_client_roles.reject { |role| resource[:realm_roles].include?(role) }
+
+    #remove_roles(removed_roles)
+
+    #new_roles = resource[:realm_roles].reject { |role| @active_realm_roles.include?(role) }
+    #add_roles(new_roles)
+
     #kcadm.sh add-roles -r demorealm --gname Group --cclientid realm-management --rolename create-client --rolename view-users
 
   end
