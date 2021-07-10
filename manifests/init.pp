@@ -112,6 +112,8 @@
 #   Source for datasource module.xml. Default depends on `datasource_driver`.
 # @param datasource_xa_class
 #   MySQL Connector/J JDBC driver xa-datasource class name
+# @param mysql_database_charset
+#   MySQL database charset
 # @param proxy_https
 #   Boolean that sets if HTTPS proxy should be enabled.
 #   Set to `true` if proxying traffic through Apache.
@@ -301,6 +303,7 @@ class keycloak (
   Optional[String] $datasource_jar_source = undef,
   Optional[String] $datasource_jar_filename = undef,
   Optional[String] $datasource_module_source = undef,
+  String $mysql_database_charset = 'utf8',
   Boolean $proxy_https = false,
   Boolean $truststore = false,
   Hash $truststore_hosts = {},
