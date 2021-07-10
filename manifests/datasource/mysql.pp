@@ -51,6 +51,7 @@ class keycloak::datasource::mysql {
       password => $keycloak::datasource_password,
       host     => $keycloak::db_host,
       grant    => 'ALL',
+      charset  => $keycloak::mysql_database_charset,
     }
   }
 
