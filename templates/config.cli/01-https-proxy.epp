@@ -10,12 +10,12 @@ if (result.proxy-address-forwarding != true) of <%= $prefix -%>/subsystem=undert
 end-if
 <%# use ha sockets in domain mode -%>
 <% if $operating_mode != 'domain' { -%>
-if (outcome != success) of <%= $prefix -%>/socket-binding-group=standard-sockets/socket-binding=proxy-https:read-resource
-<%= $prefix -%>/socket-binding-group=standard-sockets/socket-binding=proxy-https:add(port=443)
+if (outcome != success) of /socket-binding-group=standard-sockets/socket-binding=proxy-https:read-resource
+/socket-binding-group=standard-sockets/socket-binding=proxy-https:add(port=443)
 end-if
 <% } else { -%>
-if (outcome != success) of <%= $prefix -%>/socket-binding-group=ha-sockets/socket-binding=proxy-https:read-resource
-<%= $prefix -%>/socket-binding-group=ha-sockets/socket-binding=proxy-https:add(port=443)
+if (outcome != success) of /socket-binding-group=ha-sockets/socket-binding=proxy-https:read-resource
+/socket-binding-group=ha-sockets/socket-binding=proxy-https:add(port=443)
 end-if
 <% end } -%>
 if (result.redirect-socket != proxy-https) of <%= $prefix -%>/subsystem=undertow/server=default-server/http-listener=default:read-resource
