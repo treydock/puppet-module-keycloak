@@ -9,9 +9,9 @@ HOSTS:
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
-      - 'yum install -y dnf-utils'
+      - 'dnf install -y dnf-utils'
       - 'dnf config-manager --set-enabled powertools'
-      - 'yum install -y wget which cronie iproute initscripts langpacks-en glibc-all-langpacks'
+      - 'dnf install -y wget which cronie iproute initscripts langpacks-en glibc-all-langpacks'
     docker_env:
       - LANG=en_US.UTF-8
       - LANGUAGE=en_US.UTF-8
