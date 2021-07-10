@@ -2,7 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v7.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.4.0) (2021-06-02)
+## [v7.4.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.4.1) (2021-07-10)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.4.0...v7.4.1)
+
+### Fixed
+
+- Remove prefixes from socket-binding-groups [\#197](https://github.com/treydock/puppet-module-keycloak/pull/197) ([kibahop](https://github.com/kibahop))
+
+## [v7.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.4.0) (2021-06-03)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.3.0...v7.4.0)
 
@@ -364,6 +372,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Changed
 
+- Change default Keycloak version to 8.0.1 [\#106](https://github.com/treydock/puppet-module-keycloak/pull/106) ([treydock](https://github.com/treydock))
 - Change JAVA\_OPTS behavior for Keycloak [\#105](https://github.com/treydock/puppet-module-keycloak/pull/105) ([treydock](https://github.com/treydock))
 - Change how install\_dir is defined, default behavior remains the same [\#90](https://github.com/treydock/puppet-module-keycloak/pull/90) ([treydock](https://github.com/treydock))
 
@@ -386,10 +395,6 @@ All notable changes to this project will be documented in this file. The format 
 ## [v5.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.8.0) (2019-12-06)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v5.7.0...v5.8.0)
-
-### Changed
-
-- Change default Keycloak version to 8.0.1 [\#106](https://github.com/treydock/puppet-module-keycloak/pull/106) ([treydock](https://github.com/treydock))
 
 ### Added
 
@@ -461,7 +466,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Fix \#78. Add clustered mode support [\#79](https://github.com/treydock/puppet-module-keycloak/pull/79) ([danifr](https://github.com/danifr))
-- Add clients parameter [\#69](https://github.com/treydock/puppet-module-keycloak/pull/69) ([treydock](https://github.com/treydock))
 
 ## [v5.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v5.2.0) (2019-08-29)
 
@@ -518,6 +522,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
+- Add clients parameter [\#69](https://github.com/treydock/puppet-module-keycloak/pull/69) ([treydock](https://github.com/treydock))
 - Simplify how keycloak\_client\_protocol\_mapper and keycloak\_protcol\_mapper are queried during prefetch [\#68](https://github.com/treydock/puppet-module-keycloak/pull/68) ([treydock](https://github.com/treydock))
 - Support managing protocl mapper saml-javascript-mapper [\#67](https://github.com/treydock/puppet-module-keycloak/pull/67) ([treydock](https://github.com/treydock))
 - Update module dependency version requirements [\#66](https://github.com/treydock/puppet-module-keycloak/pull/66) ([treydock](https://github.com/treydock))

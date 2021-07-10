@@ -51,7 +51,7 @@
 
 ## Classes
 
-### `keycloak`
+### <a name="keycloak"></a>`keycloak`
 
 Manage Keycloak
 
@@ -65,9 +65,114 @@ include ::keycloak
 
 #### Parameters
 
-The following parameters are available in the `keycloak` class.
+The following parameters are available in the `keycloak` class:
 
-##### `manage_install`
+* [`manage_install`](#manage_install)
+* [`version`](#version)
+* [`package_url`](#package_url)
+* [`install_dir`](#install_dir)
+* [`service_name`](#service_name)
+* [`service_ensure`](#service_ensure)
+* [`service_enable`](#service_enable)
+* [`service_hasstatus`](#service_hasstatus)
+* [`service_hasrestart`](#service_hasrestart)
+* [`service_bind_address`](#service_bind_address)
+* [`management_bind_address`](#management_bind_address)
+* [`java_opts`](#java_opts)
+* [`java_opts_append`](#java_opts_append)
+* [`service_extra_opts`](#service_extra_opts)
+* [`manage_user`](#manage_user)
+* [`user`](#user)
+* [`user_shell`](#user_shell)
+* [`group`](#group)
+* [`user_uid`](#user_uid)
+* [`group_gid`](#group_gid)
+* [`system_user`](#system_user)
+* [`admin_user`](#admin_user)
+* [`admin_user_password`](#admin_user_password)
+* [`wildfly_user`](#wildfly_user)
+* [`wildfly_user_password`](#wildfly_user_password)
+* [`manage_datasource`](#manage_datasource)
+* [`datasource_driver`](#datasource_driver)
+* [`datasource_host`](#datasource_host)
+* [`datasource_port`](#datasource_port)
+* [`datasource_url`](#datasource_url)
+* [`datasource_dbname`](#datasource_dbname)
+* [`datasource_username`](#datasource_username)
+* [`datasource_password`](#datasource_password)
+* [`datasource_package`](#datasource_package)
+* [`datasource_jar_source`](#datasource_jar_source)
+* [`datasource_jar_filename`](#datasource_jar_filename)
+* [`datasource_module_source`](#datasource_module_source)
+* [`datasource_xa_class`](#datasource_xa_class)
+* [`proxy_https`](#proxy_https)
+* [`truststore`](#truststore)
+* [`truststore_hosts`](#truststore_hosts)
+* [`truststore_password`](#truststore_password)
+* [`truststore_hostname_verification_policy`](#truststore_hostname_verification_policy)
+* [`http_port`](#http_port)
+* [`theme_static_max_age`](#theme_static_max_age)
+* [`theme_cache_themes`](#theme_cache_themes)
+* [`theme_cache_templates`](#theme_cache_templates)
+* [`realms`](#realms)
+* [`realms_merge`](#realms_merge)
+* [`oidc_client_scopes`](#oidc_client_scopes)
+* [`oidc_client_scopes_merge`](#oidc_client_scopes_merge)
+* [`saml_client_scopes`](#saml_client_scopes)
+* [`saml_client_scopes_merge`](#saml_client_scopes_merge)
+* [`identity_providers`](#identity_providers)
+* [`identity_providers_merge`](#identity_providers_merge)
+* [`client_protocol_mappers`](#client_protocol_mappers)
+* [`client_scopes`](#client_scopes)
+* [`client_scopes_merge`](#client_scopes_merge)
+* [`protocol_mappers`](#protocol_mappers)
+* [`protocol_mappers_merge`](#protocol_mappers_merge)
+* [`clients`](#clients)
+* [`clients_merge`](#clients_merge)
+* [`flows`](#flows)
+* [`flows_merge`](#flows_merge)
+* [`flow_executions`](#flow_executions)
+* [`flow_executions_merge`](#flow_executions_merge)
+* [`required_actions`](#required_actions)
+* [`required_actions_merge`](#required_actions_merge)
+* [`ldap_mappers`](#ldap_mappers)
+* [`ldap_mappers_merge`](#ldap_mappers_merge)
+* [`ldap_user_providers`](#ldap_user_providers)
+* [`ldap_user_providers_merge`](#ldap_user_providers_merge)
+* [`with_sssd_support`](#with_sssd_support)
+* [`libunix_dbus_java_source`](#libunix_dbus_java_source)
+* [`install_libunix_dbus_java_build_dependencies`](#install_libunix_dbus_java_build_dependencies)
+* [`libunix_dbus_java_build_dependencies`](#libunix_dbus_java_build_dependencies)
+* [`libunix_dbus_java_libdir`](#libunix_dbus_java_libdir)
+* [`jna_package_name`](#jna_package_name)
+* [`manage_sssd_config`](#manage_sssd_config)
+* [`sssd_ifp_user_attributes`](#sssd_ifp_user_attributes)
+* [`restart_sssd`](#restart_sssd)
+* [`service_environment_file`](#service_environment_file)
+* [`operating_mode`](#operating_mode)
+* [`enable_jdbc_ping`](#enable_jdbc_ping)
+* [`jboss_bind_public_address`](#jboss_bind_public_address)
+* [`jboss_bind_private_address`](#jboss_bind_private_address)
+* [`role`](#role)
+* [`user_cache`](#user_cache)
+* [`tech_preview_features`](#tech_preview_features)
+* [`auto_deploy_exploded`](#auto_deploy_exploded)
+* [`auto_deploy_zipped`](#auto_deploy_zipped)
+* [`spi_deployments`](#spi_deployments)
+* [`custom_config_content`](#custom_config_content)
+* [`custom_config_source`](#custom_config_source)
+* [`master_address`](#master_address)
+* [`server_name`](#server_name)
+* [`syslog`](#syslog)
+* [`syslog_app_name`](#syslog_app_name)
+* [`syslog_facility`](#syslog_facility)
+* [`syslog_hostname`](#syslog_hostname)
+* [`syslog_level`](#syslog_level)
+* [`syslog_port`](#syslog_port)
+* [`syslog_server_address`](#syslog_server_address)
+* [`syslog_format`](#syslog_format)
+
+##### <a name="manage_install"></a>`manage_install`
 
 Data type: `Boolean`
 
@@ -78,7 +183,7 @@ Defaults to true.
 
 Default value: ``true``
 
-##### `version`
+##### <a name="version"></a>`version`
 
 Data type: `String`
 
@@ -86,7 +191,7 @@ Version of Keycloak to install and manage.
 
 Default value: `'12.0.4'`
 
-##### `package_url`
+##### <a name="package_url"></a>`package_url`
 
 Data type: `Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]`
 
@@ -95,7 +200,7 @@ Default is based on version.
 
 Default value: ``undef``
 
-##### `install_dir`
+##### <a name="install_dir"></a>`install_dir`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
@@ -104,7 +209,7 @@ Default is `/opt/keycloak-${version}`.
 
 Default value: ``undef``
 
-##### `service_name`
+##### <a name="service_name"></a>`service_name`
 
 Data type: `String`
 
@@ -113,7 +218,7 @@ Default is `keycloak`.
 
 Default value: `'keycloak'`
 
-##### `service_ensure`
+##### <a name="service_ensure"></a>`service_ensure`
 
 Data type: `String`
 
@@ -122,7 +227,7 @@ Default is `running`.
 
 Default value: `'running'`
 
-##### `service_enable`
+##### <a name="service_enable"></a>`service_enable`
 
 Data type: `Boolean`
 
@@ -131,7 +236,7 @@ Default is `true`.
 
 Default value: ``true``
 
-##### `service_hasstatus`
+##### <a name="service_hasstatus"></a>`service_hasstatus`
 
 Data type: `Boolean`
 
@@ -140,7 +245,7 @@ Default is `true`.
 
 Default value: ``true``
 
-##### `service_hasrestart`
+##### <a name="service_hasrestart"></a>`service_hasrestart`
 
 Data type: `Boolean`
 
@@ -149,7 +254,7 @@ Default is `true`.
 
 Default value: ``true``
 
-##### `service_bind_address`
+##### <a name="service_bind_address"></a>`service_bind_address`
 
 Data type: `Stdlib::IP::Address`
 
@@ -158,7 +263,7 @@ Default is '0.0.0.0'.
 
 Default value: `'0.0.0.0'`
 
-##### `management_bind_address`
+##### <a name="management_bind_address"></a>`management_bind_address`
 
 Data type: `Stdlib::IP::Address`
 
@@ -167,7 +272,7 @@ Default is '0.0.0.0'.
 
 Default value: `'0.0.0.0'`
 
-##### `java_opts`
+##### <a name="java_opts"></a>`java_opts`
 
 Data type: `Optional[Variant[String, Array]]`
 
@@ -175,7 +280,7 @@ Sets additional options to Java virtual machine environment variable.
 
 Default value: ``undef``
 
-##### `java_opts_append`
+##### <a name="java_opts_append"></a>`java_opts_append`
 
 Data type: `Boolean`
 
@@ -183,7 +288,7 @@ Determine if $JAVA_OPTS should be appended to when setting `java_opts` parameter
 
 Default value: ``true``
 
-##### `service_extra_opts`
+##### <a name="service_extra_opts"></a>`service_extra_opts`
 
 Data type: `Optional[String]`
 
@@ -191,7 +296,7 @@ Additional options added to the end of the service command-line.
 
 Default value: ``undef``
 
-##### `manage_user`
+##### <a name="manage_user"></a>`manage_user`
 
 Data type: `Boolean`
 
@@ -199,7 +304,7 @@ Defines if the module should manage the Linux user for Keycloak installation
 
 Default value: ``true``
 
-##### `user`
+##### <a name="user"></a>`user`
 
 Data type: `String`
 
@@ -208,7 +313,7 @@ Default is `keycloak`.
 
 Default value: `'keycloak'`
 
-##### `user_shell`
+##### <a name="user_shell"></a>`user_shell`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -216,7 +321,7 @@ Keycloak user shell.
 
 Default value: `'/sbin/nologin'`
 
-##### `group`
+##### <a name="group"></a>`group`
 
 Data type: `String`
 
@@ -225,7 +330,7 @@ Default is `keycloak`.
 
 Default value: `'keycloak'`
 
-##### `user_uid`
+##### <a name="user_uid"></a>`user_uid`
 
 Data type: `Optional[Integer]`
 
@@ -234,7 +339,7 @@ Default is `undef`.
 
 Default value: ``undef``
 
-##### `group_gid`
+##### <a name="group_gid"></a>`group_gid`
 
 Data type: `Optional[Integer]`
 
@@ -243,7 +348,7 @@ Default is `undef`.
 
 Default value: ``undef``
 
-##### `system_user`
+##### <a name="system_user"></a>`system_user`
 
 Data type: `Boolean`
 
@@ -252,7 +357,7 @@ Default is `true`
 
 Default value: ``true``
 
-##### `admin_user`
+##### <a name="admin_user"></a>`admin_user`
 
 Data type: `String`
 
@@ -261,7 +366,7 @@ Default is `admin`.
 
 Default value: `'admin'`
 
-##### `admin_user_password`
+##### <a name="admin_user_password"></a>`admin_user_password`
 
 Data type: `String`
 
@@ -270,7 +375,7 @@ Default is `changeme`.
 
 Default value: `'changeme'`
 
-##### `wildfly_user`
+##### <a name="wildfly_user"></a>`wildfly_user`
 
 Data type: `Optional[String]`
 
@@ -278,7 +383,7 @@ Wildfly user. Required for domain mode.
 
 Default value: ``undef``
 
-##### `wildfly_user_password`
+##### <a name="wildfly_user_password"></a>`wildfly_user_password`
 
 Data type: `Optional[String]`
 
@@ -286,7 +391,7 @@ Wildfly user password. Required for domain mode.
 
 Default value: ``undef``
 
-##### `manage_datasource`
+##### <a name="manage_datasource"></a>`manage_datasource`
 
 Data type: `Boolean`
 
@@ -295,7 +400,7 @@ Default is `true`.
 
 Default value: ``true``
 
-##### `datasource_driver`
+##### <a name="datasource_driver"></a>`datasource_driver`
 
 Data type: `Enum['h2', 'mysql', 'oracle', 'postgresql']`
 
@@ -305,7 +410,7 @@ Default is `h2`.
 
 Default value: `'h2'`
 
-##### `datasource_host`
+##### <a name="datasource_host"></a>`datasource_host`
 
 Data type: `Optional[String]`
 
@@ -315,7 +420,7 @@ Default is `localhost` for MySQL.
 
 Default value: ``undef``
 
-##### `datasource_port`
+##### <a name="datasource_port"></a>`datasource_port`
 
 Data type: `Optional[Integer]`
 
@@ -325,7 +430,7 @@ Default is `3306` for MySQL.
 
 Default value: ``undef``
 
-##### `datasource_url`
+##### <a name="datasource_url"></a>`datasource_url`
 
 Data type: `Optional[String]`
 
@@ -334,7 +439,7 @@ Default datasource URLs are defined in init class.
 
 Default value: ``undef``
 
-##### `datasource_dbname`
+##### <a name="datasource_dbname"></a>`datasource_dbname`
 
 Data type: `String`
 
@@ -343,7 +448,7 @@ Default is `keycloak`.
 
 Default value: `'keycloak'`
 
-##### `datasource_username`
+##### <a name="datasource_username"></a>`datasource_username`
 
 Data type: `String`
 
@@ -352,7 +457,7 @@ Default is `sa`.
 
 Default value: `'sa'`
 
-##### `datasource_password`
+##### <a name="datasource_password"></a>`datasource_password`
 
 Data type: `String`
 
@@ -361,7 +466,7 @@ Default is `sa`.
 
 Default value: `'sa'`
 
-##### `datasource_package`
+##### <a name="datasource_package"></a>`datasource_package`
 
 Data type: `Optional[String]`
 
@@ -369,7 +474,7 @@ Package to add specified datasource support
 
 Default value: ``undef``
 
-##### `datasource_jar_source`
+##### <a name="datasource_jar_source"></a>`datasource_jar_source`
 
 Data type: `Optional[String]`
 
@@ -379,7 +484,7 @@ This parameter is required if `datasource_driver` is `oracle`.
 
 Default value: ``undef``
 
-##### `datasource_jar_filename`
+##### <a name="datasource_jar_filename"></a>`datasource_jar_filename`
 
 Data type: `Optional[String]`
 
@@ -388,7 +493,7 @@ This parameter is only working at the moment if `datasource_driver` is `oracle`.
 
 Default value: ``undef``
 
-##### `datasource_module_source`
+##### <a name="datasource_module_source"></a>`datasource_module_source`
 
 Data type: `Optional[String]`
 
@@ -396,7 +501,7 @@ Source for datasource module.xml. Default depends on `datasource_driver`.
 
 Default value: ``undef``
 
-##### `datasource_xa_class`
+##### <a name="datasource_xa_class"></a>`datasource_xa_class`
 
 Data type: `Optional[String]`
 
@@ -404,7 +509,7 @@ MySQL Connector/J JDBC driver xa-datasource class name
 
 Default value: ``undef``
 
-##### `proxy_https`
+##### <a name="proxy_https"></a>`proxy_https`
 
 Data type: `Boolean`
 
@@ -414,7 +519,7 @@ Default is `false`.
 
 Default value: ``false``
 
-##### `truststore`
+##### <a name="truststore"></a>`truststore`
 
 Data type: `Boolean`
 
@@ -423,7 +528,7 @@ Default is `false`.
 
 Default value: ``false``
 
-##### `truststore_hosts`
+##### <a name="truststore_hosts"></a>`truststore_hosts`
 
 Data type: `Hash`
 
@@ -432,7 +537,7 @@ Default is `{}`.
 
 Default value: `{}`
 
-##### `truststore_password`
+##### <a name="truststore_password"></a>`truststore_password`
 
 Data type: `String`
 
@@ -441,7 +546,7 @@ Default is `keycloak`.
 
 Default value: `'keycloak'`
 
-##### `truststore_hostname_verification_policy`
+##### <a name="truststore_hostname_verification_policy"></a>`truststore_hostname_verification_policy`
 
 Data type: `Enum['WILDCARD', 'STRICT', 'ANY']`
 
@@ -450,7 +555,7 @@ Default is `WILDCARD`.
 
 Default value: `'WILDCARD'`
 
-##### `http_port`
+##### <a name="http_port"></a>`http_port`
 
 Data type: `Integer`
 
@@ -459,7 +564,7 @@ Default is `8080`.
 
 Default value: `8080`
 
-##### `theme_static_max_age`
+##### <a name="theme_static_max_age"></a>`theme_static_max_age`
 
 Data type: `Integer`
 
@@ -468,7 +573,7 @@ Default is `2592000`.
 
 Default value: `2592000`
 
-##### `theme_cache_themes`
+##### <a name="theme_cache_themes"></a>`theme_cache_themes`
 
 Data type: `Boolean`
 
@@ -477,7 +582,7 @@ Default is `true`.
 
 Default value: ``true``
 
-##### `theme_cache_templates`
+##### <a name="theme_cache_templates"></a>`theme_cache_templates`
 
 Data type: `Boolean`
 
@@ -486,7 +591,7 @@ Default is `true`.
 
 Default value: ``true``
 
-##### `realms`
+##### <a name="realms"></a>`realms`
 
 Data type: `Hash`
 
@@ -495,7 +600,7 @@ Default is `{}`.
 
 Default value: `{}`
 
-##### `realms_merge`
+##### <a name="realms_merge"></a>`realms_merge`
 
 Data type: `Boolean`
 
@@ -503,7 +608,7 @@ Boolean that sets if `realms` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `oidc_client_scopes`
+##### <a name="oidc_client_scopes"></a>`oidc_client_scopes`
 
 Data type: `Hash`
 
@@ -512,7 +617,7 @@ Default is `{}`.
 
 Default value: `{}`
 
-##### `oidc_client_scopes_merge`
+##### <a name="oidc_client_scopes_merge"></a>`oidc_client_scopes_merge`
 
 Data type: `Boolean`
 
@@ -520,7 +625,7 @@ Boolean that sets if `oidc_client_scopes` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `saml_client_scopes`
+##### <a name="saml_client_scopes"></a>`saml_client_scopes`
 
 Data type: `Hash`
 
@@ -529,7 +634,7 @@ Default is `{}`.
 
 Default value: `{}`
 
-##### `saml_client_scopes_merge`
+##### <a name="saml_client_scopes_merge"></a>`saml_client_scopes_merge`
 
 Data type: `Boolean`
 
@@ -537,7 +642,7 @@ Boolean that sets if `saml_client_scopes` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `identity_providers`
+##### <a name="identity_providers"></a>`identity_providers`
 
 Data type: `Hash`
 
@@ -545,7 +650,7 @@ Hash that is used to define keycloak_identity_provider resources.
 
 Default value: `{}`
 
-##### `identity_providers_merge`
+##### <a name="identity_providers_merge"></a>`identity_providers_merge`
 
 Data type: `Boolean`
 
@@ -553,7 +658,7 @@ Boolean that sets if `identity_providers` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `client_protocol_mappers`
+##### <a name="client_protocol_mappers"></a>`client_protocol_mappers`
 
 Data type: `Hash`
 
@@ -561,7 +666,7 @@ Hash that is used to define keycloak_client_protocol_mapper resources.
 
 Default value: `{}`
 
-##### `client_scopes`
+##### <a name="client_scopes"></a>`client_scopes`
 
 Data type: `Hash`
 
@@ -569,7 +674,7 @@ Hash that is used to define keycloak_client_scope resources.
 
 Default value: `{}`
 
-##### `client_scopes_merge`
+##### <a name="client_scopes_merge"></a>`client_scopes_merge`
 
 Data type: `Boolean`
 
@@ -577,7 +682,7 @@ Boolean that sets if `client_scopes` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `protocol_mappers`
+##### <a name="protocol_mappers"></a>`protocol_mappers`
 
 Data type: `Hash`
 
@@ -585,7 +690,7 @@ Hash that is used to define keycloak_protocol_mapper resources.
 
 Default value: `{}`
 
-##### `protocol_mappers_merge`
+##### <a name="protocol_mappers_merge"></a>`protocol_mappers_merge`
 
 Data type: `Boolean`
 
@@ -593,7 +698,7 @@ Boolean that sets if `protocol_mappers` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `clients`
+##### <a name="clients"></a>`clients`
 
 Data type: `Hash`
 
@@ -601,7 +706,7 @@ Hash that is used to define keycloak_client resources.
 
 Default value: `{}`
 
-##### `clients_merge`
+##### <a name="clients_merge"></a>`clients_merge`
 
 Data type: `Boolean`
 
@@ -609,7 +714,7 @@ Boolean that sets if `clients` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `flows`
+##### <a name="flows"></a>`flows`
 
 Data type: `Hash`
 
@@ -617,7 +722,7 @@ Hash taht is used to define keycloak_flow resources.
 
 Default value: `{}`
 
-##### `flows_merge`
+##### <a name="flows_merge"></a>`flows_merge`
 
 Data type: `Boolean`
 
@@ -625,7 +730,7 @@ Boolean that sets if `flows` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `flow_executions`
+##### <a name="flow_executions"></a>`flow_executions`
 
 Data type: `Hash`
 
@@ -633,7 +738,7 @@ Hash taht is used to define keycloak_flow resources.
 
 Default value: `{}`
 
-##### `flow_executions_merge`
+##### <a name="flow_executions_merge"></a>`flow_executions_merge`
 
 Data type: `Boolean`
 
@@ -641,7 +746,7 @@ Boolean that sets if `flows` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `required_actions`
+##### <a name="required_actions"></a>`required_actions`
 
 Data type: `Hash`
 
@@ -649,7 +754,7 @@ Hash that is used to define keycloak_required_action resources.
 
 Default value: `{}`
 
-##### `required_actions_merge`
+##### <a name="required_actions_merge"></a>`required_actions_merge`
 
 Data type: `Boolean`
 
@@ -657,7 +762,7 @@ Boolean that sets if `required_actions` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `ldap_mappers`
+##### <a name="ldap_mappers"></a>`ldap_mappers`
 
 Data type: `Hash`
 
@@ -665,7 +770,7 @@ Hash that is used to define keycloak_ldap_mapper resources.
 
 Default value: `{}`
 
-##### `ldap_mappers_merge`
+##### <a name="ldap_mappers_merge"></a>`ldap_mappers_merge`
 
 Data type: `Boolean`
 
@@ -673,7 +778,7 @@ Boolean that sets if `ldap_mappers` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `ldap_user_providers`
+##### <a name="ldap_user_providers"></a>`ldap_user_providers`
 
 Data type: `Hash`
 
@@ -681,7 +786,7 @@ Hash that is used to define keycloak_ldap_user_provider resources.
 
 Default value: `{}`
 
-##### `ldap_user_providers_merge`
+##### <a name="ldap_user_providers_merge"></a>`ldap_user_providers_merge`
 
 Data type: `Boolean`
 
@@ -689,7 +794,7 @@ Boolean that sets if `ldap_user_providers` should be merged from Hiera.
 
 Default value: ``false``
 
-##### `with_sssd_support`
+##### <a name="with_sssd_support"></a>`with_sssd_support`
 
 Data type: `Boolean`
 
@@ -697,7 +802,7 @@ Boolean that determines if SSSD user provider support should be available
 
 Default value: ``false``
 
-##### `libunix_dbus_java_source`
+##### <a name="libunix_dbus_java_source"></a>`libunix_dbus_java_source`
 
 Data type: `Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]`
 
@@ -705,7 +810,7 @@ Source URL of libunix-dbus-java
 
 Default value: `'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz'`
 
-##### `install_libunix_dbus_java_build_dependencies`
+##### <a name="install_libunix_dbus_java_build_dependencies"></a>`install_libunix_dbus_java_build_dependencies`
 
 Data type: `Boolean`
 
@@ -713,7 +818,7 @@ Boolean that determines of libunix-dbus-java build dependencies are managed by t
 
 Default value: ``true``
 
-##### `libunix_dbus_java_build_dependencies`
+##### <a name="libunix_dbus_java_build_dependencies"></a>`libunix_dbus_java_build_dependencies`
 
 Data type: `Array`
 
@@ -721,7 +826,7 @@ Packages needed to build libunix-dbus-java
 
 Default value: `[]`
 
-##### `libunix_dbus_java_libdir`
+##### <a name="libunix_dbus_java_libdir"></a>`libunix_dbus_java_libdir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -729,7 +834,7 @@ Path to directory to install libunix-dbus-java libraries
 
 Default value: `'/usr/lib64'`
 
-##### `jna_package_name`
+##### <a name="jna_package_name"></a>`jna_package_name`
 
 Data type: `String`
 
@@ -737,7 +842,7 @@ Package name for jna
 
 Default value: `'jna'`
 
-##### `manage_sssd_config`
+##### <a name="manage_sssd_config"></a>`manage_sssd_config`
 
 Data type: `Boolean`
 
@@ -745,7 +850,7 @@ Boolean that determines if SSSD ifp config for Keycloak is managed
 
 Default value: ``true``
 
-##### `sssd_ifp_user_attributes`
+##### <a name="sssd_ifp_user_attributes"></a>`sssd_ifp_user_attributes`
 
 Data type: `Array`
 
@@ -753,7 +858,7 @@ user_attributes to define for SSSD ifp service
 
 Default value: `[]`
 
-##### `restart_sssd`
+##### <a name="restart_sssd"></a>`restart_sssd`
 
 Data type: `Boolean`
 
@@ -761,7 +866,7 @@ Boolean that determines if SSSD should be restarted
 
 Default value: ``true``
 
-##### `service_environment_file`
+##### <a name="service_environment_file"></a>`service_environment_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
@@ -769,7 +874,7 @@ Path to the file with environment variables for the systemd service
 
 Default value: ``undef``
 
-##### `operating_mode`
+##### <a name="operating_mode"></a>`operating_mode`
 
 Data type: `Enum['standalone', 'clustered', 'domain']`
 
@@ -777,7 +882,7 @@ Keycloak operating mode deployment
 
 Default value: `'standalone'`
 
-##### `enable_jdbc_ping`
+##### <a name="enable_jdbc_ping"></a>`enable_jdbc_ping`
 
 Data type: `Boolean`
 
@@ -789,7 +894,7 @@ This module does not manage firewall changes
 
 Default value: ``false``
 
-##### `jboss_bind_public_address`
+##### <a name="jboss_bind_public_address"></a>`jboss_bind_public_address`
 
 Data type: `Stdlib::IP::Address`
 
@@ -797,7 +902,7 @@ JBoss bind public IP address
 
 Default value: `$facts['networking']['ip']`
 
-##### `jboss_bind_private_address`
+##### <a name="jboss_bind_private_address"></a>`jboss_bind_private_address`
 
 Data type: `Stdlib::IP::Address`
 
@@ -805,7 +910,7 @@ JBoss bind private IP address
 
 Default value: `$facts['networking']['ip']`
 
-##### `role`
+##### <a name="role"></a>`role`
 
 Data type: `Optional[Enum['master', 'slave']]`
 
@@ -813,7 +918,7 @@ Role when operating mode is domain.
 
 Default value: ``undef``
 
-##### `user_cache`
+##### <a name="user_cache"></a>`user_cache`
 
 Data type: `Boolean`
 
@@ -821,7 +926,7 @@ Boolean that determines if userCache is enabled
 
 Default value: ``true``
 
-##### `tech_preview_features`
+##### <a name="tech_preview_features"></a>`tech_preview_features`
 
 Data type: `Array`
 
@@ -829,7 +934,7 @@ List of technology Preview features to enable
 
 Default value: `[]`
 
-##### `auto_deploy_exploded`
+##### <a name="auto_deploy_exploded"></a>`auto_deploy_exploded`
 
 Data type: `Boolean`
 
@@ -837,7 +942,7 @@ Set if exploded deployements will be auto deployed
 
 Default value: ``false``
 
-##### `auto_deploy_zipped`
+##### <a name="auto_deploy_zipped"></a>`auto_deploy_zipped`
 
 Data type: `Boolean`
 
@@ -845,7 +950,7 @@ Set if zipped deployments will be auto deployed
 
 Default value: ``true``
 
-##### `spi_deployments`
+##### <a name="spi_deployments"></a>`spi_deployments`
 
 Data type: `Hash`
 
@@ -853,7 +958,7 @@ Hash used to define keycloak::spi_deployment resources
 
 Default value: `{}`
 
-##### `custom_config_content`
+##### <a name="custom_config_content"></a>`custom_config_content`
 
 Data type: `Optional[String]`
 
@@ -861,7 +966,7 @@ Custom configuration content to be added to config.cli
 
 Default value: ``undef``
 
-##### `custom_config_source`
+##### <a name="custom_config_source"></a>`custom_config_source`
 
 Data type: `Optional[Variant[String, Array]]`
 
@@ -869,7 +974,7 @@ Custom configuration source file to be added to config.cli
 
 Default value: ``undef``
 
-##### `master_address`
+##### <a name="master_address"></a>`master_address`
 
 Data type: `Optional[Stdlib::Host]`
 
@@ -877,7 +982,7 @@ IP address of the master in domain mode
 
 Default value: ``undef``
 
-##### `server_name`
+##### <a name="server_name"></a>`server_name`
 
 Data type: `String`
 
@@ -885,7 +990,7 @@ Server name in domain mode. Defaults to hostname.
 
 Default value: `$facts['hostname']`
 
-##### `syslog`
+##### <a name="syslog"></a>`syslog`
 
 Data type: `Boolean`
 
@@ -893,7 +998,7 @@ Enable syslog. Default false.
 
 Default value: ``false``
 
-##### `syslog_app_name`
+##### <a name="syslog_app_name"></a>`syslog_app_name`
 
 Data type: `String`
 
@@ -901,7 +1006,7 @@ Syslog app name. Default 'keycloak'.
 
 Default value: `'keycloak'`
 
-##### `syslog_facility`
+##### <a name="syslog_facility"></a>`syslog_facility`
 
 Data type: `String`
 
@@ -909,7 +1014,7 @@ Syslog facility. Default 'user-level'. See https://docs.jboss.org/author/display
 
 Default value: `'user-level'`
 
-##### `syslog_hostname`
+##### <a name="syslog_hostname"></a>`syslog_hostname`
 
 Data type: `Stdlib::Host`
 
@@ -917,7 +1022,7 @@ Syslog hostname of the server. Default $facts['fqdn'].
 
 Default value: `$facts['fqdn']`
 
-##### `syslog_level`
+##### <a name="syslog_level"></a>`syslog_level`
 
 Data type: `String`
 
@@ -925,7 +1030,7 @@ Syslog level. Default 'INFO'. See https://docs.jboss.org/author/display/AS72/Log
 
 Default value: `'INFO'`
 
-##### `syslog_port`
+##### <a name="syslog_port"></a>`syslog_port`
 
 Data type: `Stdlib::Port`
 
@@ -933,7 +1038,7 @@ The port the syslog server is listening on. Default '514'.
 
 Default value: `514`
 
-##### `syslog_server_address`
+##### <a name="syslog_server_address"></a>`syslog_server_address`
 
 Data type: `Stdlib::Host`
 
@@ -941,7 +1046,7 @@ The address of the syslog server. Default 'localhost'.
 
 Default value: `'localhost'`
 
-##### `syslog_format`
+##### <a name="syslog_format"></a>`syslog_format`
 
 Data type: `Enum['RFC3164', 'RFC5424']`
 
@@ -949,29 +1054,29 @@ Syslog format. Either 'RFC3164' or 'RFC5424' Default 'RFC3164'.
 
 Default value: `'RFC3164'`
 
-### `keycloak::config`
+### <a name="keycloakconfig"></a>`keycloak::config`
 
 Private class.
 
-### `keycloak::datasource::h2`
+### <a name="keycloakdatasourceh2"></a>`keycloak::datasource::h2`
 
 Private class.
 
-### `keycloak::install`
+### <a name="keycloakinstall"></a>`keycloak::install`
 
 Private class.
 
-### `keycloak::service`
+### <a name="keycloakservice"></a>`keycloak::service`
 
 Private class.
 
-### `keycloak::sssd`
+### <a name="keycloaksssd"></a>`keycloak::sssd`
 
 Private class.
 
 ## Defined types
 
-### `keycloak::client_scope::oidc`
+### <a name="keycloakclient_scopeoidc"></a>`keycloak::client_scope::oidc`
 
 Manage Keycloak OpenID Connect client scope using built-in mappers
 
@@ -987,15 +1092,18 @@ keycloak::client_scope::oidc { 'oidc-clients':
 
 #### Parameters
 
-The following parameters are available in the `keycloak::client_scope::oidc` defined type.
+The following parameters are available in the `keycloak::client_scope::oidc` defined type:
 
-##### `realm`
+* [`realm`](#realm)
+* [`resource_name`](#resource_name)
+
+##### <a name="realm"></a>`realm`
 
 Data type: `String`
 
 Realm of the client scope.
 
-##### `resource_name`
+##### <a name="resource_name"></a>`resource_name`
 
 Data type: `String`
 
@@ -1003,7 +1111,7 @@ Name of the client scope resource
 
 Default value: `$name`
 
-### `keycloak::client_scope::saml`
+### <a name="keycloakclient_scopesaml"></a>`keycloak::client_scope::saml`
 
 Manage Keycloak SAML client scope using built-in mappers
 
@@ -1019,15 +1127,18 @@ keycloak::client_scope::saml { 'saml-clients':
 
 #### Parameters
 
-The following parameters are available in the `keycloak::client_scope::saml` defined type.
+The following parameters are available in the `keycloak::client_scope::saml` defined type:
 
-##### `realm`
+* [`realm`](#realm)
+* [`resource_name`](#resource_name)
+
+##### <a name="realm"></a>`realm`
 
 Data type: `String`
 
 Realm of the client scope.
 
-##### `resource_name`
+##### <a name="resource_name"></a>`resource_name`
 
 Data type: `String`
 
@@ -1035,7 +1146,7 @@ Name of the client scope resource
 
 Default value: `$name`
 
-### `keycloak::freeipa_ldap_mappers`
+### <a name="keycloakfreeipa_ldap_mappers"></a>`keycloak::freeipa_ldap_mappers`
 
 setup FreeIPA LDAP mappers for Keycloak
 
@@ -1053,27 +1164,32 @@ keycloak::freeipa_ldap_mappers { 'ipa.example.org':
 
 #### Parameters
 
-The following parameters are available in the `keycloak::freeipa_ldap_mappers` defined type.
+The following parameters are available in the `keycloak::freeipa_ldap_mappers` defined type:
 
-##### `realm`
+* [`realm`](#realm)
+* [`groups_dn`](#groups_dn)
+* [`roles_dn`](#roles_dn)
+* [`parent_id`](#parent_id)
+
+##### <a name="realm"></a>`realm`
 
 Data type: `String`
 
 Keycloak realm
 
-##### `groups_dn`
+##### <a name="groups_dn"></a>`groups_dn`
 
 Data type: `String`
 
 Groups DN
 
-##### `roles_dn`
+##### <a name="roles_dn"></a>`roles_dn`
 
 Data type: `String`
 
 Roles DN
 
-##### `parent_id`
+##### <a name="parent_id"></a>`parent_id`
 
 Data type: `Optional[String]`
 
@@ -1082,7 +1198,7 @@ Will be passed to the $ldap parameter in keycloak_ldap_mapper.
 
 Default value: ``undef``
 
-### `keycloak::freeipa_user_provider`
+### <a name="keycloakfreeipa_user_provider"></a>`keycloak::freeipa_user_provider`
 
 setup IPA as an LDAP user provider for Keycloak
 
@@ -1103,9 +1219,20 @@ keycloak::freeipa_user_provider { 'ipa.example.org':
 
 #### Parameters
 
-The following parameters are available in the `keycloak::freeipa_user_provider` defined type.
+The following parameters are available in the `keycloak::freeipa_user_provider` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+* [`ipa_host`](#ipa_host)
+* [`realm`](#realm)
+* [`bind_dn`](#bind_dn)
+* [`bind_credential`](#bind_credential)
+* [`users_dn`](#users_dn)
+* [`priority`](#priority)
+* [`ldaps`](#ldaps)
+* [`full_sync_period`](#full_sync_period)
+* [`changed_sync_period`](#changed_sync_period)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -1113,7 +1240,7 @@ LDAP user provider status
 
 Default value: `'present'`
 
-##### `ipa_host`
+##### <a name="ipa_host"></a>`ipa_host`
 
 Data type: `Stdlib::Host`
 
@@ -1121,31 +1248,31 @@ Hostname of the FreeIPA server (e.g. ipa.example.org)
 
 Default value: `$title`
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 Data type: `String`
 
 Keycloak realm
 
-##### `bind_dn`
+##### <a name="bind_dn"></a>`bind_dn`
 
 Data type: `String`
 
 LDAP bind dn
 
-##### `bind_credential`
+##### <a name="bind_credential"></a>`bind_credential`
 
 Data type: `String`
 
 LDAP bind password
 
-##### `users_dn`
+##### <a name="users_dn"></a>`users_dn`
 
 Data type: `String`
 
 The DN for user search
 
-##### `priority`
+##### <a name="priority"></a>`priority`
 
 Data type: `Integer`
 
@@ -1153,7 +1280,7 @@ Priority for this user provider
 
 Default value: `10`
 
-##### `ldaps`
+##### <a name="ldaps"></a>`ldaps`
 
 Data type: `Boolean`
 
@@ -1161,7 +1288,7 @@ Use LDAPS protocol instead of LDAP
 
 Default value: ``false``
 
-##### `full_sync_period`
+##### <a name="full_sync_period"></a>`full_sync_period`
 
 Data type: `Optional[Integer]`
 
@@ -1169,7 +1296,7 @@ Synchronize all users this often (fullSyncPeriod)
 
 Default value: ``undef``
 
-##### `changed_sync_period`
+##### <a name="changed_sync_period"></a>`changed_sync_period`
 
 Data type: `Optional[Integer]`
 
@@ -1177,7 +1304,7 @@ Synchronize changed users this often (changedSyncPeriod)
 
 Default value: ``undef``
 
-### `keycloak::spi_deployment`
+### <a name="keycloakspi_deployment"></a>`keycloak::spi_deployment`
 
 }
 
@@ -1208,9 +1335,18 @@ keycloak::spi_deployment { 'duo-spi':
 
 #### Parameters
 
-The following parameters are available in the `keycloak::spi_deployment` defined type.
+The following parameters are available in the `keycloak::spi_deployment` defined type:
 
-##### `ensure`
+* [`ensure`](#ensure)
+* [`deployed_name`](#deployed_name)
+* [`source`](#source)
+* [`test_url`](#test_url)
+* [`test_key`](#test_key)
+* [`test_value`](#test_value)
+* [`test_realm`](#test_realm)
+* [`test_before`](#test_before)
+
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['present', 'absent']`
 
@@ -1218,7 +1354,7 @@ State of the deployment
 
 Default value: `'present'`
 
-##### `deployed_name`
+##### <a name="deployed_name"></a>`deployed_name`
 
 Data type: `String[1]`
 
@@ -1226,13 +1362,13 @@ Name of the file to be deployed. Defaults to `$name`.
 
 Default value: `$name`
 
-##### `source`
+##### <a name="source"></a>`source`
 
 Data type: `Variant[Stdlib::Filesource, Stdlib::HTTPSUrl]`
 
 Source of the deployment, supports 'file://', 'puppet://', 'https://' or 'http://'
 
-##### `test_url`
+##### <a name="test_url"></a>`test_url`
 
 Data type: `Optional[String]`
 
@@ -1240,7 +1376,7 @@ URL to test for existance of resources created by this SPI
 
 Default value: ``undef``
 
-##### `test_key`
+##### <a name="test_key"></a>`test_key`
 
 Data type: `Optional[String]`
 
@@ -1248,7 +1384,7 @@ Key of resource when testing for resource created by this SPI
 
 Default value: ``undef``
 
-##### `test_value`
+##### <a name="test_value"></a>`test_value`
 
 Data type: `Optional[String]`
 
@@ -1256,7 +1392,7 @@ Value of the `test_key` when testing for resources created by this SPI
 
 Default value: ``undef``
 
-##### `test_realm`
+##### <a name="test_realm"></a>`test_realm`
 
 Data type: `Optional[String]`
 
@@ -1264,7 +1400,7 @@ Realm to query when looking for resources created by this SPI
 
 Default value: ``undef``
 
-##### `test_before`
+##### <a name="test_before"></a>`test_before`
 
 Data type: `Optional[Array]`
 
@@ -1272,7 +1408,7 @@ Setup autorequires for validator dependent resources
 
 Default value: ``undef``
 
-### `keycloak::truststore::host`
+### <a name="keycloaktruststorehost"></a>`keycloak::truststore::host`
 
 Add host to Keycloak truststore
 
@@ -1288,15 +1424,18 @@ keycloak::truststore::host { 'ldap1.example.com':
 
 #### Parameters
 
-The following parameters are available in the `keycloak::truststore::host` defined type.
+The following parameters are available in the `keycloak::truststore::host` defined type:
 
-##### `certificate`
+* [`certificate`](#certificate)
+* [`ensure`](#ensure)
+
+##### <a name="certificate"></a>`certificate`
 
 Data type: `String`
 
 Path to host certificate
 
-##### `ensure`
+##### <a name="ensure"></a>`ensure`
 
 Data type: `Enum['latest', 'present', 'absent']`
 
@@ -1306,7 +1445,7 @@ Default value: `'latest'`
 
 ## Resource types
 
-### `keycloak_api`
+### <a name="keycloak_api"></a>`keycloak_api`
 
 Type that configures API connection parameters for other keycloak types that use the Keycloak API.
 
@@ -1328,37 +1467,45 @@ keycloak_api { 'keycloak'
 
 The following parameters are available in the `keycloak_api` type.
 
-##### `install_dir`
+* [`install_dir`](#install_dir)
+* [`name`](#name)
+* [`password`](#password)
+* [`realm`](#realm)
+* [`server`](#server)
+* [`use_wrapper`](#use_wrapper)
+* [`user`](#user)
+
+##### <a name="install_dir"></a>`install_dir`
 
 Install location of Keycloak
 
 Default value: `/opt/keycloak`
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 Keycloak API config
 
-##### `password`
+##### <a name="password"></a>`password`
 
 Password for authentication
 
 Default value: `changeme`
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 Realm for authentication
 
 Default value: `master`
 
-##### `server`
+##### <a name="server"></a>`server`
 
 Auth URL for Keycloak server
 
 Default value: `http://localhost:8080/auth`
 
-##### `use_wrapper`
+##### <a name="use_wrapper"></a>`use_wrapper`
 
 Valid values: ``true``, ``false``
 
@@ -1366,13 +1513,13 @@ Boolean that determines if kcadm_wrapper.sh should be used
 
 Default value: ``false``
 
-##### `user`
+##### <a name="user"></a>`user`
 
 User for authentication
 
 Default value: `admin`
 
-### `keycloak_client`
+### <a name="keycloak_client"></a>`keycloak_client`
 
 Manage Keycloak clients
 
@@ -1551,30 +1698,36 @@ Default value: `[]`
 
 The following parameters are available in the `keycloak_client` type.
 
-##### `client_id`
+* [`client_id`](#client_id)
+* [`id`](#id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+
+##### <a name="client_id"></a>`client_id`
 
 clientId. Defaults to `name`.
 
-##### `id`
+##### <a name="id"></a>`id`
 
 Id. Defaults to `client_id`
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The client name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_client` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-### `keycloak_client_protocol_mapper`
+### <a name="keycloak_client_protocol_mapper"></a>`keycloak_client_protocol_mapper`
 
 Manage Keycloak protocol mappers
 
@@ -1677,34 +1830,42 @@ userinfo.token.claim. Default to `true` for `protocol` `openid-connect` except `
 
 The following parameters are available in the `keycloak_client_protocol_mapper` type.
 
-##### `client`
+* [`client`](#client)
+* [`id`](#id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+* [`resource_name`](#resource_name)
+* [`type`](#type)
+
+##### <a name="client"></a>`client`
 
 client
 
-##### `id`
+##### <a name="id"></a>`id`
 
 Id.
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The protocol mapper name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_client_protocol_mapper` resource. You will seldom need to specify this
 --- Puppet will usually discover the appropriate provider for your platform.
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-##### `resource_name`
+##### <a name="resource_name"></a>`resource_name`
 
 The protocol mapper name. Defaults to `name`.
 
-##### `type`
+##### <a name="type"></a>`type`
 
 Valid values: `oidc-usermodel-client-role-mapper`, `oidc-usermodel-property-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-user-property-mapper`, `saml-role-list-mapper`
 
@@ -1713,7 +1874,7 @@ protocolMapper.
 Default is `oidc-usermodel-property-mapper` for `protocol` `openid-connect` and
 `saml-user-property-mapper` for `protocol` `saml`.
 
-### `keycloak_client_scope`
+### <a name="keycloak_client_scope"></a>`keycloak_client_scope`
 
 Manage Keycloak client scopes
 
@@ -1763,30 +1924,36 @@ Default value: `openid-connect`
 
 The following parameters are available in the `keycloak_client_scope` type.
 
-##### `id`
+* [`id`](#id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+* [`resource_name`](#resource_name)
+
+##### <a name="id"></a>`id`
 
 Id. Defaults to `resource_name`.
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The client scope name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_client_scope` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-##### `resource_name`
+##### <a name="resource_name"></a>`resource_name`
 
 The client scope name. Defaults to `name`.
 
-### `keycloak_conn_validator`
+### <a name="keycloak_conn_validator"></a>`keycloak_conn_validator`
 
 Verify that a connection can be successfully established between a node
 and the keycloak server.  Its primary use is as a precondition to
@@ -1810,49 +1977,57 @@ Default value: `present`
 
 The following parameters are available in the `keycloak_conn_validator` type.
 
-##### `keycloak_port`
+* [`keycloak_port`](#keycloak_port)
+* [`keycloak_server`](#keycloak_server)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`test_url`](#test_url)
+* [`timeout`](#timeout)
+* [`use_ssl`](#use_ssl)
+
+##### <a name="keycloak_port"></a>`keycloak_port`
 
 The port that the keycloak server should be listening on.
 
 Default value: `8080`
 
-##### `keycloak_server`
+##### <a name="keycloak_server"></a>`keycloak_server`
 
 The DNS name or IP address of the server where keycloak should be running.
 
 Default value: `localhost`
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 An arbitrary name used as the identity of the resource.
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_conn_validator` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `test_url`
+##### <a name="test_url"></a>`test_url`
 
 URL to use for testing if the Keycloak database is up
 
 Default value: `/auth/admin/serverinfo`
 
-##### `timeout`
+##### <a name="timeout"></a>`timeout`
 
 The max number of seconds that the validator should wait before giving up and deciding that keycloak is not running;
 defaults to 15 seconds.
 
 Default value: `30`
 
-##### `use_ssl`
+##### <a name="use_ssl"></a>`use_ssl`
 
 Whether the connection will be attemped using https
 
 Default value: ``false``
 
-### `keycloak_flow`
+### <a name="keycloak_flow"></a>`keycloak_flow`
 
 Manage a Keycloak flow
 **Autorequires**
@@ -1913,30 +2088,40 @@ requirement, only applied to top_level=false and defaults to DISABLED
 
 The following parameters are available in the `keycloak_flow` type.
 
-##### `alias`
+* [`alias`](#alias)
+* [`flow_alias`](#flow_alias)
+* [`id`](#id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`provider_id`](#provider_id)
+* [`realm`](#realm)
+* [`top_level`](#top_level)
+* [`type`](#type)
+
+##### <a name="alias"></a>`alias`
 
 Alias. Default to `name`.
 
-##### `flow_alias`
+##### <a name="flow_alias"></a>`flow_alias`
 
 flowAlias, required for top_level=false
 
-##### `id`
+##### <a name="id"></a>`id`
 
 Id. Default to `$alias-$realm` when top_level is true. Only applies to top_level=true
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The flow name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_flow` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### `provider_id`
+##### <a name="provider_id"></a>`provider_id`
 
 Valid values: `basic-flow`, `form-flow`
 
@@ -1944,11 +2129,11 @@ providerId
 
 Default value: `basic-flow`
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-##### `top_level`
+##### <a name="top_level"></a>`top_level`
 
 Valid values: ``true``, ``false``
 
@@ -1956,12 +2141,12 @@ topLevel
 
 Default value: ``true``
 
-##### `type`
+##### <a name="type"></a>`type`
 
 sub-flow execution provider, default to `registration-page-form` for top_level=false and does not apply to
 top_level=true
 
-### `keycloak_flow_execution`
+### <a name="keycloak_flow_execution"></a>`keycloak_flow_execution`
 
 Manage a Keycloak flow
 **Autorequires**
@@ -2054,46 +2239,56 @@ Default value: `DISABLED`
 
 The following parameters are available in the `keycloak_flow_execution` type.
 
-##### `alias`
+* [`alias`](#alias)
+* [`config_id`](#config_id)
+* [`display_name`](#display_name)
+* [`flow_alias`](#flow_alias)
+* [`id`](#id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`provider_id`](#provider_id)
+* [`realm`](#realm)
+
+##### <a name="alias"></a>`alias`
 
 alias
 
-##### `config_id`
+##### <a name="config_id"></a>`config_id`
 
 read-only config ID
 
-##### `display_name`
+##### <a name="display_name"></a>`display_name`
 
 displayName
 
-##### `flow_alias`
+##### <a name="flow_alias"></a>`flow_alias`
 
 flowAlias
 
-##### `id`
+##### <a name="id"></a>`id`
 
 read-only Id
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The flow execution name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_flow_execution` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `provider_id`
+##### <a name="provider_id"></a>`provider_id`
 
 provider
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-### `keycloak_identity_provider`
+### <a name="keycloak_identity_provider"></a>`keycloak_identity_provider`
 
 Manage Keycloak identity providers
 
@@ -2327,26 +2522,33 @@ Default value: `false`
 
 The following parameters are available in the `keycloak_identity_provider` type.
 
-##### `alias`
+* [`alias`](#alias)
+* [`internal_id`](#internal_id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`provider_id`](#provider_id)
+* [`realm`](#realm)
+
+##### <a name="alias"></a>`alias`
 
 The identity provider name. Defaults to `name`.
 
-##### `internal_id`
+##### <a name="internal_id"></a>`internal_id`
 
 internalId. Defaults to "`alias`-`realm`"
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The identity provider name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_identity_provider` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
 
-##### `provider_id`
+##### <a name="provider_id"></a>`provider_id`
 
 Valid values: `oidc`, `keycloak-oidc`
 
@@ -2354,11 +2556,11 @@ providerId
 
 Default value: `oidc`
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-### `keycloak_ldap_mapper`
+### <a name="keycloak_ldap_mapper"></a>`keycloak_ldap_mapper`
 
 Manage Keycloak LDAP attribute mappers
 
@@ -2514,34 +2716,42 @@ write.only.  Defaults to `false` if `type` is `full-name-ldap-mapper`.
 
 The following parameters are available in the `keycloak_ldap_mapper` type.
 
-##### `id`
+* [`id`](#id)
+* [`ldap`](#ldap)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+* [`resource_name`](#resource_name)
+* [`type`](#type)
+
+##### <a name="id"></a>`id`
 
 Id.
 
-##### `ldap`
+##### <a name="ldap"></a>`ldap`
 
 parentId
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The LDAP mapper name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_ldap_mapper` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-##### `resource_name`
+##### <a name="resource_name"></a>`resource_name`
 
 The LDAP mapper name. Defaults to `name`
 
-##### `type`
+##### <a name="type"></a>`type`
 
 Valid values: `user-attribute-ldap-mapper`, `full-name-ldap-mapper`, `group-ldap-mapper`, `role-ldap-mapper`
 
@@ -2549,7 +2759,7 @@ providerId
 
 Default value: `user-attribute-ldap-mapper`
 
-### `keycloak_ldap_user_provider`
+### <a name="keycloak_ldap_user_provider"></a>`keycloak_ldap_user_provider`
 
 Manage Keycloak LDAP user providers
 
@@ -2723,30 +2933,36 @@ Default value: `other`
 
 The following parameters are available in the `keycloak_ldap_user_provider` type.
 
-##### `id`
+* [`id`](#id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+* [`resource_name`](#resource_name)
+
+##### <a name="id"></a>`id`
 
 Id. Defaults to "`resource_name`-`realm`"
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The LDAP user provider name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_ldap_user_provider` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 parentId
 
-##### `resource_name`
+##### <a name="resource_name"></a>`resource_name`
 
 The LDAP user provider name. Defaults to `name`.
 
-### `keycloak_protocol_mapper`
+### <a name="keycloak_protocol_mapper"></a>`keycloak_protocol_mapper`
 
 Manage Keycloak client scope protocol mappers
 
@@ -2849,34 +3065,42 @@ userinfo.token.claim. Default to `true` for `protocol` `openid-connect` except `
 
 The following parameters are available in the `keycloak_protocol_mapper` type.
 
-##### `client_scope`
+* [`client_scope`](#client_scope)
+* [`id`](#id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+* [`resource_name`](#resource_name)
+* [`type`](#type)
+
+##### <a name="client_scope"></a>`client_scope`
 
 client scope
 
-##### `id`
+##### <a name="id"></a>`id`
 
 Id.
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The protocol mapper name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_protocol_mapper` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-##### `resource_name`
+##### <a name="resource_name"></a>`resource_name`
 
 The protocol mapper name. Defaults to `name`.
 
-##### `type`
+##### <a name="type"></a>`type`
 
 Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-role-list-mapper`
 
@@ -2885,7 +3109,7 @@ protocolMapper.
 Default is `oidc-usermodel-property-mapper` for `protocol` `openid-connect` and
 `saml-user-property-mapper` for `protocol` `saml`.
 
-### `keycloak_realm`
+### <a name="keycloak_realm"></a>`keycloak_realm`
 
 Manage Keycloak realms
 
@@ -3192,11 +3416,16 @@ Default value: `false`
 
 The following parameters are available in the `keycloak_realm` type.
 
-##### `id`
+* [`id`](#id)
+* [`manage_roles`](#manage_roles)
+* [`name`](#name)
+* [`provider`](#provider)
+
+##### <a name="id"></a>`id`
 
 Id. Default to `name`.
 
-##### `manage_roles`
+##### <a name="manage_roles"></a>`manage_roles`
 
 Valid values: ``true``, ``false``
 
@@ -3204,18 +3433,18 @@ Manage realm roles
 
 Default value: ``true``
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The realm name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_realm` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-### `keycloak_required_action`
+### <a name="keycloak_required_action"></a>`keycloak_required_action`
 
 Manage Keycloak required actions
 
@@ -3293,26 +3522,31 @@ Required action priority
 
 The following parameters are available in the `keycloak_required_action` type.
 
-##### `name`
+* [`name`](#name)
+* [`provider`](#provider)
+* [`provider_id`](#provider_id)
+* [`realm`](#realm)
+
+##### <a name="name"></a>`name`
 
 namevar
 
 The required action name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_required_action` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
 
-##### `provider_id`
+##### <a name="provider_id"></a>`provider_id`
 
 providerId of the required action
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 realm
 
-### `keycloak_resource_validator`
+### <a name="keycloak_resource_validator"></a>`keycloak_resource_validator`
 
 Verify that a specific Keycloak resource is available
 
@@ -3332,45 +3566,54 @@ Default value: `present`
 
 The following parameters are available in the `keycloak_resource_validator` type.
 
-##### `dependent_resources`
+* [`dependent_resources`](#dependent_resources)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+* [`test_key`](#test_key)
+* [`test_url`](#test_url)
+* [`test_value`](#test_value)
+* [`timeout`](#timeout)
+
+##### <a name="dependent_resources"></a>`dependent_resources`
 
 Resources that should autorequire this validator, eg: Keycloak_flow_execution[foobar]
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 An arbitrary name used as the identity of the resource.
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_resource_validator` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 Realm to query
 
-##### `test_key`
+##### <a name="test_key"></a>`test_key`
 
 Key to lookup
 
-##### `test_url`
+##### <a name="test_url"></a>`test_url`
 
 URL to use for testing if the Keycloak database is up
 
-##### `test_value`
+##### <a name="test_value"></a>`test_value`
 
 Value to lookup
 
-##### `timeout`
+##### <a name="timeout"></a>`timeout`
 
 The max number of seconds that the validator should wait before giving up and deciding that keycloak is not running;
 defaults to 15 seconds.
 
 Default value: `30`
 
-### `keycloak_sssd_user_provider`
+### <a name="keycloak_sssd_user_provider"></a>`keycloak_sssd_user_provider`
 
 Manage Keycloak SSSD user providers
 
@@ -3438,26 +3681,32 @@ Default value: `0`
 
 The following parameters are available in the `keycloak_sssd_user_provider` type.
 
-##### `id`
+* [`id`](#id)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+* [`resource_name`](#resource_name)
+
+##### <a name="id"></a>`id`
 
 Id. Defaults to "`resource_name`-`realm`"
 
-##### `name`
+##### <a name="name"></a>`name`
 
 namevar
 
 The SSSD user provider name
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `keycloak_sssd_user_provider` resource. You will seldom need to specify this ---
 Puppet will usually discover the appropriate provider for your platform.
 
-##### `realm`
+##### <a name="realm"></a>`realm`
 
 parentId
 
-##### `resource_name`
+##### <a name="resource_name"></a>`resource_name`
 
 The SSSD user provider name. Defaults to `name`.
 
