@@ -799,6 +799,24 @@ keycloak. This parameter is only working at the moment if
   
     <li>
       
+        <span class='name'>mysql_database_charset</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;utf8&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>MySQL database charset</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>proxy_https</span>
       
       
@@ -2023,8 +2041,6 @@ href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">d
         <pre class="lines">
 
 
-264
-265
 266
 267
 268
@@ -2253,10 +2269,13 @@ href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">d
 491
 492
 493
-494</pre>
+494
+495
+496
+497</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 264</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 266</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -2298,6 +2317,7 @@ class keycloak (
   Optional[String] $datasource_jar_source = undef,
   Optional[String] $datasource_jar_filename = undef,
   Optional[String] $datasource_module_source = undef,
+  String $mysql_database_charset = &#39;utf8&#39;,
   Boolean $proxy_https = false,
   Boolean $truststore = false,
   Hash $truststore_hosts = {},

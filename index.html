@@ -67,52 +67,52 @@ src="https://github.com/treydock/puppet-module-keycloak/workflows/CI/badge.svg?b
 
 <h4 id="label-Table+of+Contents">Table of Contents</h4>
 <ol><li>
-<p><a href="#label-Overview">Overview</a></p>
+<p><a href="#overview">Overview</a></p>
 <ul><li>
-<p><a href="#label-Supported+versions+of+keycloak">Supported Versions of
+<p><a href="#supported-versions-of-keycloak">Supported Versions of
 Keycloak</a></p>
 </li></ul>
 </li><li>
-<p><a href="#label-Usage">Usage - Configuration options</a></p>
+<p><a href="#usage">Usage - Configuration options</a></p>
 <ul><li>
-<p><a href="#label-Keycloak">Keycloak</a></p>
+<p><a href="#keycloak">Keycloak</a></p>
 </li><li>
-<p><a href="#label-Deploy+spi">Deploy SPI</a></p>
+<p><a href="#deploy-spi">Deploy SPI</a></p>
 </li><li>
-<p><a href="#label-Keycloak_realm">keycloak_realm</a></p>
+<p><a href="#keycloak_realm">keycloak_realm</a></p>
 </li><li>
-<p><a href="#label-Keycloak_ldap_user_provider">keycloak_ldap_user_provider</a></p>
+<p><a href="#keycloak_ldap_user_provider">keycloak_ldap_user_provider</a></p>
 </li><li>
-<p><a href="#label-Keycloak_ldap_mapper">keycloak_ldap_mapper</a></p>
+<p><a href="#keycloak_ldap_mapper">keycloak_ldap_mapper</a></p>
 </li><li>
-<p><a href="#label-Keycloak_sssd_user_provider">keycloak_sssd_user_provider</a></p>
+<p><a href="#keycloak_sssd_user_provider">keycloak_sssd_user_provider</a></p>
 </li><li>
-<p><a href="#label-Keycloak_client">keycloak_client</a></p>
+<p><a href="#keycloak_client">keycloak_client</a></p>
 </li><li>
-<p><a href="#label-Keycloakclient_scopeoidc">keycloak::client_scope::oidc</a></p>
+<p><a href="#keycloakclient_scopeoidc">keycloak::client_scope::oidc</a></p>
 </li><li>
-<p><a href="#label-Keycloakclient_scopesaml">keycloak::client_scope::saml</a></p>
+<p><a href="#keycloakclient_scopesaml">keycloak::client_scope::saml</a></p>
 </li><li>
-<p><a href="#label-Keycloak_client_scope">keycloak_client_scope</a></p>
+<p><a href="#keycloak_client_scope">keycloak_client_scope</a></p>
 </li><li>
-<p><a href="#label-Keycloak_protocol_mapper">keycloak_protocol_mapper</a></p>
+<p><a href="#keycloak_protocol_mapper">keycloak_protocol_mapper</a></p>
 </li><li>
 <p><a
-href="#label-Keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</a></p>
+href="#keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</a></p>
 </li><li>
-<p><a href="#label-Keycloak_identity_provider">keycloak_identity_provider</a></p>
+<p><a href="#keycloak_identity_provider">keycloak_identity_provider</a></p>
 </li><li>
-<p><a href="#label-Keycloak+flows">Keycloak Flows</a></p>
+<p><a href="#keycloak-flows">Keycloak Flows</a></p>
 </li><li>
-<p><a href="#label-Keycloak_api">keycloak_api</a></p>
+<p><a href="#keycloak_api">keycloak_api</a></p>
 </li><li>
-<p><a href="#label-Keycloak_required_action">keycloak_required_action</a></p>
+<p><a href="#keycloak_required_action">keycloak_required_action</a></p>
 </li></ul>
 </li><li>
-<p><a href="#label-Reference">Reference - Parameter and detailed reference to all
+<p><a href="#reference">Reference - Parameter and detailed reference to all
 options</a></p>
 </li><li>
-<p><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></p>
+<p><a href="#limitations">Limitations - OS compatibility, etc.</a></p>
 </li></ol>
 
 <h2 id="label-Overview">Overview</h2>
@@ -126,7 +126,7 @@ on earlier versions but this is the only version tested.</p>
 
 <p>| Keycloak Version | Keycloak Puppet module versions | | —————- |
 ——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x - 8.x | 4.x - 5.x | |
-8.x - 12.x | 6.x | | 12.x - 13.x | 7.x |</p>
+8.x - 12.x | 6.x | | 12.x - 14.x | 7.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 

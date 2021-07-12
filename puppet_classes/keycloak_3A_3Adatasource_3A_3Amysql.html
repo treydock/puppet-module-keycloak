@@ -146,7 +146,8 @@
 54
 55
 56
-57</pre>
+57
+58</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/datasource/mysql.pp', line 4</span>
@@ -201,6 +202,7 @@ class keycloak::datasource::mysql {
       password =&gt; $keycloak::datasource_password,
       host     =&gt; $keycloak::db_host,
       grant    =&gt; &#39;ALL&#39;,
+      charset  =&gt; $keycloak::mysql_database_charset,
     }
   }
 
