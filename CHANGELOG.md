@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.5.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.5.0) (2021-07-12)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.4.1...v7.5.0)
+
+### Added
+
+- Update dependency version ranges [\#200](https://github.com/treydock/puppet-module-keycloak/pull/200) ([treydock](https://github.com/treydock))
+- Support Keycloak 14 [\#199](https://github.com/treydock/puppet-module-keycloak/pull/199) ([treydock](https://github.com/treydock))
+- Fix Ubuntu acceptance tests [\#198](https://github.com/treydock/puppet-module-keycloak/pull/198) ([treydock](https://github.com/treydock))
+
 ## [v7.4.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.4.1) (2021-07-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.4.0...v7.4.1)

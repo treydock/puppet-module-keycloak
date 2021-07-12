@@ -105,6 +105,7 @@ The following parameters are available in the `keycloak` class:
 * [`datasource_jar_filename`](#datasource_jar_filename)
 * [`datasource_module_source`](#datasource_module_source)
 * [`datasource_xa_class`](#datasource_xa_class)
+* [`mysql_database_charset`](#mysql_database_charset)
 * [`proxy_https`](#proxy_https)
 * [`truststore`](#truststore)
 * [`truststore_hosts`](#truststore_hosts)
@@ -508,6 +509,14 @@ Data type: `Optional[String]`
 MySQL Connector/J JDBC driver xa-datasource class name
 
 Default value: ``undef``
+
+##### <a name="mysql_database_charset"></a>`mysql_database_charset`
+
+Data type: `String`
+
+MySQL database charset
+
+Default value: `'utf8'`
 
 ##### <a name="proxy_https"></a>`proxy_https`
 
