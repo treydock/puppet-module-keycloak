@@ -39,6 +39,14 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         requirement  => 'REQUIRED',
         index        => 1,
       }
+      keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo2 on test':
+        ensure       => 'present',
+        configurable => true,
+        display_name => 'Duo MFA',
+        alias        => 'Duo2',
+        requirement  => 'REQUIRED',
+        index        => 0,
+      }
       keycloak_flow_execution { 'auth-username-password-form under form-browser-with-duo on test':
         ensure       => 'present',
         configurable => false,
@@ -50,6 +58,12 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         ensure      => 'present',
         index       => 2,
         requirement => 'ALTERNATIVE',
+        top_level   => false,
+      }
+      keycloak_flow { 'form-browser-with-duo2 under browser-with-duo on test':
+        ensure      => 'present',
+        index       => 3,
+        requirement => 'REQUIRED',
         top_level   => false,
       }
       keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
@@ -136,6 +150,21 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         requirement  => 'REQUIRED',
         index        => 0,
       }
+      keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo2 on test':
+        ensure       => 'present',
+        configurable => true,
+        display_name => 'Duo MFA',
+        alias        => 'Duo2',
+        config       => {
+          "duomfa.akey"    => "foo-akey2",
+          "duomfa.apihost" => "api-foo.duosecurity.com",
+          "duomfa.skey"    => "secret2",
+          "duomfa.ikey"    => "foo-ikey2",
+          "duomfa.groups"  => "duo,duo2"
+        },
+        requirement  => 'REQUIRED',
+        index        => 0,
+      }
       keycloak_flow_execution { 'auth-username-password-form under form-browser-with-duo on test':
         ensure       => 'present',
         configurable => false,
@@ -146,6 +175,12 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
       keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
         ensure      => 'present',
         index       => 2,
+        requirement => 'REQUIRED',
+        top_level   => false,
+      }
+      keycloak_flow { 'form-browser-with-duo2 under browser-with-duo on test':
+        ensure      => 'present',
+        index       => 3,
         requirement => 'REQUIRED',
         top_level   => false,
       }

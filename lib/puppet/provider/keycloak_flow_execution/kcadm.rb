@@ -202,15 +202,23 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
       end
       if @property_flush[:config]
         config_data = {}
-        config_data[:id] = config_id
         config_data[:alias] = resource[:alias] if resource[:alias]
         config_data[:config] = resource[:config]
+        if !config_id.nil? && config_id.to_s != 'absent'
+          config_data[:id] = config_id
+        end
         t = Tempfile.new('keycloak_flow_execution_config')
         t.write(JSON.pretty_generate(config_data))
         t.close
         Puppet.debug(IO.read(t.path))
         begin
-          kcadm('update', "authentication/config/#{config_id}", resource[:realm], t.path)
+          if config_id.nil? || config_id.to_s == 'absent'
+            output = kcadm('create', "authentication/executions/#{id}/config", resource[:realm], t.path)
+            Puppet.debug("create flow execution config output: #{output}")
+          else
+            kcadm('update', "authentication/config/#{config_id}", resource[:realm], t.path)
+            Puppet.debug("update flow execution config output: #{output}")
+          end
         rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update flow execution config failed\nError message: #{e.message}"
         end
