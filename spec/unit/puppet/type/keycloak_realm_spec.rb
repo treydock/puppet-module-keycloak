@@ -49,7 +49,7 @@ describe Puppet::Type.type(:keycloak_realm) do
     events_listeners: ['jboss-logging'],
     admin_events_enabled: :false,
     admin_events_details_enabled: :false,
-    offline_session_max_lifespan_enabled: false,
+    offline_session_max_lifespan_enabled: :false,
   }
 
   describe 'basic properties' do
