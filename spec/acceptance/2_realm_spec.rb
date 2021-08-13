@@ -9,20 +9,34 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         datasource_driver => 'mysql',
       }
       keycloak_realm { 'test':
-        ensure                            => 'present',
-        smtp_server_host                  => 'smtp.example.org',
-        smtp_server_port                  => 587,
-        smtp_server_starttls              => false,
-        smtp_server_auth                  => false,
-        smtp_server_user                  => 'john',
-        smtp_server_password              => 'secret',
-        smtp_server_envelope_from         => 'keycloak@id.example.org',
-        smtp_server_from                  => 'keycloak@id.example.org',
-        smtp_server_from_display_name     => 'Keycloak',
-        smtp_server_reply_to              => 'webmaster@example.org',
-        smtp_server_reply_to_display_name => 'Webmaster',
-        brute_force_protected             => false,
-        roles                             => ['offline_access', 'uma_authorization', 'new_role'],
+        ensure                                   => 'present',
+        smtp_server_host                         => 'smtp.example.org',
+        smtp_server_port                         => 587,
+        smtp_server_starttls                     => false,
+        smtp_server_auth                         => false,
+        smtp_server_user                         => 'john',
+        smtp_server_password                     => 'secret',
+        smtp_server_envelope_from                => 'keycloak@id.example.org',
+        smtp_server_from                         => 'keycloak@id.example.org',
+        smtp_server_from_display_name            => 'Keycloak',
+        smtp_server_reply_to                     => 'webmaster@example.org',
+        smtp_server_reply_to_display_name        => 'Webmaster',
+        brute_force_protected                    => false,
+        roles                                    => ['offline_access', 'uma_authorization', 'new_role'],
+        access_code_lifespan                     => 60,
+        access_code_lifespan_login               => 1800,
+        access_code_lifespan_user_action         => 300,
+        access_token_lifespan                    => 60,
+        access_token_lifespan_for_implicit_flow  => 900,
+        action_token_generated_by_admin_lifespan => 43200,
+        action_token_generated_by_user_lifespan  => 300,
+        sso_session_idle_timeout_remember_me     => 0,
+        sso_session_max_lifespan_remember_me     => 0,
+        sso_session_idle_timeout                 => 1800,
+        sso_session_max_lifespan                 => 36000,
+        offline_session_idle_timeout             => 2592000,
+        offline_session_max_lifespan             => 5184000,
+        offline_session_max_lifespan_enabled     => true,
       }
       EOS
 
@@ -88,6 +102,26 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
       end
     end
 
+    it 'has correct token settings' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
+        data = JSON.parse(stdout)
+        expect(data['accessCodeLifespan']).to eq(60)
+        expect(data['accessCodeLifespanLogin']).to eq(1800)
+        expect(data['accessCodeLifespanUserAction']).to eq(300)
+        expect(data['accessTokenLifespan']).to eq(60)
+        expect(data['accessTokenLifespanForImplicitFlow']).to eq(900)
+        expect(data['actionTokenGeneratedByAdminLifespan']).to eq(43_200)
+        expect(data['actionTokenGeneratedByUserLifespan']).to eq(300)
+        expect(data['ssoSessionIdleTimeoutRememberMe']).to eq(0)
+        expect(data['ssoSessionMaxLifespanRememberMe']).to eq(0)
+        expect(data['ssoSessionIdleTimeout']).to eq(1800)
+        expect(data['ssoSessionMaxLifespan']).to eq(36_000)
+        expect(data['offlineSessionIdleTimeout']).to eq(2_592_000)
+        expect(data['offlineSessionMaxLifespan']).to eq(5_184_000)
+        expect(data['offlineSessionMaxLifespanEnabled']).to eq(true)
+      end
+    end
+
     it 'has correct roles settings' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r test' do
         data = JSON.parse(stdout)
@@ -118,8 +152,16 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         verify_email => true,
         access_code_lifespan => 3600,
         access_token_lifespan => 3600,
+        access_code_lifespan_login => 3600,
+        access_code_lifespan_user_action => 600,
         sso_session_idle_timeout => 3600,
         sso_session_max_lifespan => 72000,
+        access_token_lifespan_for_implicit_flow  => 3600,
+        action_token_generated_by_admin_lifespan => 21600,
+        action_token_generated_by_user_lifespan  => 600,
+        offline_session_idle_timeout             => 1296000,
+        offline_session_max_lifespan             => 2592000,
+        offline_session_max_lifespan_enabled     => false,
         default_client_scopes => ['profile'],
         content_security_policy => "frame-src https://*.duosecurity.com/ 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
         events_enabled => true,
@@ -154,9 +196,17 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['resetPasswordAllowed']).to eq(true)
         expect(data['verifyEmail']).to eq(true)
         expect(data['accessCodeLifespan']).to eq(3600)
+        expect(data['accessCodeLifespanLogin']).to eq(3600)
+        expect(data['accessCodeLifespanUserAction']).to eq(600)
         expect(data['accessTokenLifespan']).to eq(3600)
+        expect(data['accessTokenLifespanForImplicitFlow']).to eq(3600)
+        expect(data['actionTokenGeneratedByAdminLifespan']).to eq(21_600)
+        expect(data['actionTokenGeneratedByUserLifespan']).to eq(600)
         expect(data['ssoSessionIdleTimeout']).to eq(3600)
         expect(data['ssoSessionMaxLifespan']).to eq(72_000)
+        expect(data['offlineSessionIdleTimeout']).to eq(1_296_000)
+        expect(data['offlineSessionMaxLifespan']).to eq(2_592_000)
+        expect(data['offlineSessionMaxLifespanEnabled']).to eq(false)
         expect(data['browserSecurityHeaders']['contentSecurityPolicy']).to eq("frame-src https://*.duosecurity.com/ 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none';")
         expect(data['smtpServer']['host']).to eq('smtp.example.org')
         expect(data['smtpServer']['port']).to eq('587')

@@ -49,6 +49,7 @@ describe Puppet::Type.type(:keycloak_realm) do
     events_listeners: ['jboss-logging'],
     admin_events_enabled: :false,
     admin_events_details_enabled: :false,
+    offline_session_max_lifespan_enabled: :false,
   }
 
   describe 'basic properties' do
@@ -96,9 +97,14 @@ describe Puppet::Type.type(:keycloak_realm) do
       :sso_session_idle_timeout,
       :sso_session_max_lifespan,
       :access_code_lifespan,
+      :access_code_lifespan_login,
       :access_code_lifespan_user_action,
       :access_token_lifespan,
       :access_token_lifespan_for_implicit_flow,
+      :action_token_generated_by_admin_lifespan,
+      :action_token_generated_by_user_lifespan,
+      :offline_session_idle_timeout,
+      :offline_session_max_lifespan,
       :smtp_server_port,
     ].each do |p|
       it "should accept a #{p}" do
@@ -129,6 +135,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       :smtp_server_starttls,
       :smtp_server_ssl,
       :brute_force_protected,
+      :offline_session_max_lifespan_enabled,
     ].each do |p|
       it "should accept true for #{p}" do
         config[p] = true

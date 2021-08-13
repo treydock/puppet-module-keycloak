@@ -84,6 +84,10 @@ Manage Keycloak realms
     desc 'accessCodeLifespan'
   end
 
+  newproperty(:access_code_lifespan_login, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'accessCodeLifespanLogin'
+  end
+
   newproperty(:access_code_lifespan_user_action, parent: PuppetX::Keycloak::IntegerProperty) do
     desc 'accessCodeLifespanUserAction'
   end
@@ -94,6 +98,22 @@ Manage Keycloak realms
 
   newproperty(:access_token_lifespan_for_implicit_flow, parent: PuppetX::Keycloak::IntegerProperty) do
     desc 'accessTokenLifespanForImplicitFlow'
+  end
+
+  newproperty(:action_token_generated_by_admin_lifespan, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'actionTokenGeneratedByAdminLifespan'
+  end
+
+  newproperty(:action_token_generated_by_user_lifespan, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'actionTokenGeneratedByUserLifespan'
+  end
+
+  newproperty(:offline_session_idle_timeout, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'offlineSessionIdleTimeout'
+  end
+
+  newproperty(:offline_session_max_lifespan, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'offlineSessionMaxLifespan'
   end
 
   newproperty(:enabled, boolean: true) do
@@ -118,6 +138,12 @@ Manage Keycloak realms
     desc 'loginWithEmailAllowed'
     newvalues(:true, :false)
     defaultto :true
+  end
+
+  newproperty(:offline_session_max_lifespan_enabled, boolean: true) do
+    desc 'offlineSessionMaxLifespanEnabled'
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:reset_password_allowed, boolean: true) do

@@ -3143,6 +3143,12 @@ The following properties are available in the `keycloak_realm` type.
 
 accessCodeLifespan
 
+##### `access_code_lifespan_login`
+
+Unit : minutes
+
+accessCodeLifespanLogin
+
 ##### `access_code_lifespan_user_action`
 
 accessCodeLifespanUserAction
@@ -3182,6 +3188,18 @@ Default value: `false`
 adminTheme
 
 Default value: `keycloak`
+
+##### `action_token_generated_by_admin_lifespan`
+
+Unit : minutes
+
+actionTokenGeneratedByAdminLifespan
+
+##### `action_token_generated_by_user_lifespan`
+
+Unit : minutes
+
+actionTokenGeneratedByUserLifespan
 
 ##### `browser_flow`
 
@@ -3292,6 +3310,26 @@ Valid values: ``true``, ``false``
 loginWithEmailAllowed
 
 Default value: `true`
+
+##### `offline_session_idle_timeout`
+
+Unit : seconds
+
+offlineSessionIdleTimeout
+
+##### `offline_session_max_lifespan`
+
+Unit : seconds
+
+offlineSessionMaxLifespan
+
+##### `offline_session_max_lifespan_enabled`
+
+Valid values: ``true``, ``false``
+
+offlineSessionMaxLifespanEnabled
+
+Default value: `false`
 
 ##### `optional_client_scopes`
 
