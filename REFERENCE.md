@@ -3145,8 +3145,6 @@ accessCodeLifespan
 
 ##### `access_code_lifespan_login`
 
-Unit : minutes
-
 accessCodeLifespanLogin
 
 ##### `access_code_lifespan_user_action`
@@ -3166,6 +3164,14 @@ accessTokenLifespanForImplicitFlow
 accountTheme
 
 Default value: `keycloak`
+
+##### `action_token_generated_by_admin_lifespan`
+
+actionTokenGeneratedByAdminLifespan
+
+##### `action_token_generated_by_user_lifespan`
+
+actionTokenGeneratedByUserLifespan
 
 ##### `admin_events_details_enabled`
 
@@ -3188,18 +3194,6 @@ Default value: `false`
 adminTheme
 
 Default value: `keycloak`
-
-##### `action_token_generated_by_admin_lifespan`
-
-Unit : minutes
-
-actionTokenGeneratedByAdminLifespan
-
-##### `action_token_generated_by_user_lifespan`
-
-Unit : minutes
-
-actionTokenGeneratedByUserLifespan
 
 ##### `browser_flow`
 
@@ -3313,13 +3307,9 @@ Default value: `true`
 
 ##### `offline_session_idle_timeout`
 
-Unit : seconds
-
 offlineSessionIdleTimeout
 
 ##### `offline_session_max_lifespan`
-
-Unit : seconds
 
 offlineSessionMaxLifespan
 

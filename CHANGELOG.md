@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.6.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.6.0) (2021-08-13)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.5.1...v7.6.0)
+
+### UNCATEGORIZED PRS; GO LABEL THEM
+
+- Add extra configurations to keycloak realm [\#203](https://github.com/treydock/puppet-module-keycloak/pull/203) ([qboileau](https://github.com/qboileau))
+
 ## [v7.5.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.5.1) (2021-08-03)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.5.0...v7.5.1)
