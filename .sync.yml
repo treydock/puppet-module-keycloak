@@ -26,6 +26,7 @@
       - '12.0.4'
       - '13.0.1'
       - '14.0.0'
+      - '15.0.1'
     keycloak_full: ['no']
     keycloak_domain_mode_cluster: ['no']
   acceptance_includes:
@@ -45,6 +46,10 @@
       puppet: puppet7
       keycloak_version: 14.0.0
       keycloak_full: 'yes'
+    - set: centos-7
+      puppet: puppet7
+      keycloak_version: 15.0.1
+      keycloak_full: 'yes'
     - set: centos-7-domain-mode-cluster
       puppet: puppet7
       keycloak_version: 12.0.4
@@ -56,6 +61,10 @@
     - set: centos-7-domain-mode-cluster
       puppet: puppet7
       keycloak_version: 14.0.0
+      keycloak_domain_mode_cluster: 'yes'
+    - set: centos-7-domain-mode-cluster
+      puppet: puppet7
+      keycloak_version: 15.0.1
       keycloak_domain_mode_cluster: 'yes'
 .gitignore:
   paths:
