@@ -310,12 +310,14 @@ class keycloak::config {
       }
 
       # Assing management interfaces to logical interfaces
-      augeas { 'assign-management-interaces-master':
+      augeas { 'assign-management-interfaces-master':
         incl      => "${keycloak::install_base}/domain/configuration/host-master.xml",
         context   => "/files${keycloak::install_base}/domain/configuration/host-master.xml/host/management/management-interfaces",
         load_path => '/opt/puppetlabs/puppet/share/augeas/lenses/dist',
         lens      => 'Xml.lns',
         changes   => [
+          'set native-interface/#attribute/security-realm ManagementRealm',
+          'set native-interface/socket/#attribute/port ${jboss.management.native.port:9999}',
           'set native-interface/socket/#attribute/interface management',
           'set http-interface/socket/#attribute/interface private',
         ],
