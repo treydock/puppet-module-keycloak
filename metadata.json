@@ -1,6 +1,6 @@
 {
   "name": "treydock-keycloak",
-  "version": "7.7.0",
+  "version": "7.7.1",
   "author": "treydock",
   "summary": "Keycloak Puppet module",
   "license": "Apache-2.0",
