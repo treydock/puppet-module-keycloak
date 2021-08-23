@@ -486,7 +486,11 @@
 393
 394
 395
-396</pre>
+396
+397
+398
+399
+400</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 2</span>
@@ -802,14 +806,18 @@ class keycloak::config {
       }
 
       # Assing management interfaces to logical interfaces
-      augeas { &#39;assign-management-interaces-master&#39;:
+      augeas { &#39;assign-management-interfaces-master&#39;:
         incl      =&gt; &quot;${keycloak::install_base}/domain/configuration/host-master.xml&quot;,
         context   =&gt; &quot;/files${keycloak::install_base}/domain/configuration/host-master.xml/host/management/management-interfaces&quot;,
         load_path =&gt; &#39;/opt/puppetlabs/puppet/share/augeas/lenses/dist&#39;,
         lens      =&gt; &#39;Xml.lns&#39;,
         changes   =&gt; [
+          # lint:ignore:single_quote_string_with_variables
+          &#39;set native-interface/#attribute/security-realm ManagementRealm&#39;,
           &#39;set native-interface/socket/#attribute/interface management&#39;,
+          &#39;set native-interface/socket/#attribute/port ${jboss.management.native.port:9999}&#39;,
           &#39;set http-interface/socket/#attribute/interface private&#39;,
+          # lint:endignore
         ],
         notify    =&gt; Class[&#39;keycloak::service&#39;],
       }
