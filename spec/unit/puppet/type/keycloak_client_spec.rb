@@ -66,6 +66,7 @@ describe Puppet::Type.type(:keycloak_client) do
     direct_access_grants_enabled: :true,
     service_accounts_enabled: :false,
     public_client: :false,
+    bearer_only: :false,
     full_scope_allowed: :true,
     default_client_scopes: [],
     optional_client_scopes: [],
@@ -106,6 +107,7 @@ describe Puppet::Type.type(:keycloak_client) do
       :direct_access_grants_enabled,
       :service_accounts_enabled,
       :public_client,
+      :bearer_only,
       :full_scope_allowed,
     ].each do |p|
       it "should accept true for #{p}" do
