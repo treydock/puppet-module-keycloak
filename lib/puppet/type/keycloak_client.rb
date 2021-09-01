@@ -149,7 +149,7 @@ Manage Keycloak clients
   end
 
   newproperty(:bearer_only, boolean: true) do
-    desc 'enabled'
+    desc 'bearerOnly'
     newvalues(:true, :false)
     defaultto :false
   end

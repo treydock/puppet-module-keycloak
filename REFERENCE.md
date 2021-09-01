@@ -1665,7 +1665,7 @@ Default value: `false`
 
 Valid values: ``true``, ``false``
 
-enabled
+bearerOnly
 
 Default value: `false`
 
