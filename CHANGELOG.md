@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.8.0) (2021-09-01)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.7.1...v7.8.0)
+
+### Added
+
+- Added support for bearer-only configuration of keycloak\_client [\#207](https://github.com/treydock/puppet-module-keycloak/pull/207) ([verrydtj](https://github.com/verrydtj))
+
 ## [v7.7.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.7.1) (2021-08-23)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.7.0...v7.7.1)

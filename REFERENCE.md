@@ -1569,6 +1569,14 @@ Default value: `false`
 
 baseUrl
 
+##### `bearer_only`
+
+Valid values: ``true``, ``false``
+
+bearerOnly
+
+Default value: `false`
+
 ##### `browser_flow`
 
 authenticationFlowBindingOverrides.browser (Use flow alias, not ID)
@@ -1658,14 +1666,6 @@ Default value: `openid-connect`
 Valid values: ``true``, ``false``
 
 enabled
-
-Default value: `false`
-
-##### `bearer_only`
-
-Valid values: ``true``, ``false``
-
-bearerOnly
 
 Default value: `false`
 
