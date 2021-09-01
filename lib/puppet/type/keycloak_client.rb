@@ -148,6 +148,12 @@ Manage Keycloak clients
     defaultto :false
   end
 
+  newproperty(:bearer_only, boolean: true) do
+    desc 'bearerOnly'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:root_url) do
     desc 'rootUrl'
   end

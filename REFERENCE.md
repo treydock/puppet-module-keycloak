@@ -1661,6 +1661,14 @@ enabled
 
 Default value: `false`
 
+##### `bearer_only`
+
+Valid values: ``true``, ``false``
+
+bearerOnly
+
+Default value: `false`
+
 ##### `redirect_uris`
 
 redirectUris
