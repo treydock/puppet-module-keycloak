@@ -6,6 +6,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "keycloak", primary: true, autostart: true do |ood|
     ood.vm.box = "centos/7"
+    ood.vbguest.installer_options = { allow_kernel_upgrade: true }
     ood.vm.network "forwarded_port", guest: 8080, host: 8080, auto_correct: true
     ood.vm.provision "shell", inline: <<-SHELL
       rpm -Uvh https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
