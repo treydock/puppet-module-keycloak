@@ -39,7 +39,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
           protocol_mapper[:protocol] = d['protocol']
           protocol_mapper[:name] = "#{protocol_mapper[:resource_name]} for #{protocol_mapper[:client_scope]} on #{protocol_mapper[:realm]}"
           protocol_mapper[:type] = d['protocolMapper']
-          if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'oidc-usermodel-attribute-mapper'].include?(protocol_mapper[:type])
+          if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'oidc-usermodel-attribute-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:user_attribute] = d['config']['user.attribute']
           end
           if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper', 'oidc-usermodel-attribute-mapper'].include?(protocol_mapper[:type])
@@ -49,7 +49,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
           if ['oidc-group-membership-mapper', 'saml-group-membership-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:full_path] = d['config']['full.path']
           end
-          if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
+          if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:friendly_name] = d['config']['friendly.name']
           end
           if protocol_mapper[:type] == 'saml-javascript-mapper'
@@ -102,7 +102,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
     data[:protocol] = resource[:protocol]
     data[:protocolMapper] = resource[:type]
     data[:config] = {}
-    if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
+    if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
       data[:config][:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
     end
     if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
@@ -112,7 +112,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
     if ['oidc-group-membership-mapper', 'saml-group-membership-mapper'].include?(resource[:type])
       data[:config][:'full.path'] = resource[:full_path] if resource[:full_path]
     end
-    if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+    if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-javascript-mapper'].include?(resource[:type])
       data[:config][:'friendly.name'] = resource[:friendly_name] if resource[:friendly_name]
     end
     if resource[:type] == 'saml-javascript-mapper'
@@ -186,7 +186,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
       config = {}
-      if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
+      if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
         config[:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
       end
       if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
@@ -196,7 +196,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       if ['oidc-group-membership-mapper', 'saml-group-membership-mapper'].include?(resource[:type])
         config[:'full.path'] = resource[:full_path] if resource[:full_path]
       end
-      if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+      if ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-javascript-mapper'].include?(resource[:type])
         config[:'friendly.name'] = resource[:friendly_name] if resource[:friendly_name]
       end
       if resource[:type] == 'saml-javascript-mapper'

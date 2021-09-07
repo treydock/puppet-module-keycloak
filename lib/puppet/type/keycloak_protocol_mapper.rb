@@ -62,6 +62,7 @@ Manage Keycloak client scope protocol mappers
       'oidc-audience-mapper',
       'saml-group-membership-mapper',
       'saml-user-property-mapper',
+      'saml-user-attribute-mapper',
       'saml-role-list-mapper',
       'saml-javascript-mapper',
     )
@@ -80,7 +81,7 @@ Manage Keycloak client scope protocol mappers
   newproperty(:user_attribute) do
     desc 'user.attribute. Default to `resource_name` for `type` `oidc-usermodel-property-mapper` or `saml-user-property-mapper`'
     defaultto do
-      if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'oidc-usermodel-attribute-mapper'].include?(@resource[:type])
+      if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'oidc-usermodel-attribute-mapper'].include?(@resource[:type])
         @resource[:resource_name]
       else
         nil
@@ -114,7 +115,7 @@ Manage Keycloak client scope protocol mappers
   newproperty(:friendly_name) do
     desc 'friendly.name. Default to `resource_name` for `type` `saml-user-property-mapper`.'
     defaultto do
-      if @resource[:type] == 'saml-user-property-mapper'
+      if ['saml-user-property-mapper', 'saml-user-attribute-mapper'].include?(@resource[:type])
         @resource[:resource_name]
       else
         nil
@@ -125,7 +126,7 @@ Manage Keycloak client scope protocol mappers
   newproperty(:attribute_name) do
     desc 'attribute.name Default to `resource_name` for `type` `saml-user-property-mapper`.'
     defaultto do
-      if @resource[:type] == 'saml-user-property-mapper'
+      if ['saml-user-property-mapper', 'saml-user-attribute-mapper'].include?(@resource[:type])
         @resource[:resource_name]
       else
         nil
@@ -251,10 +252,11 @@ Manage Keycloak client scope protocol mappers
     if self[:protocol] == 'openid-connect' && !openid_connect_types.include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
-    if self[:protocol] == 'saml' && !['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
+    saml_mapper = ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper']
+    if self[:protocol] == 'saml' && !saml_mapper.include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol saml"
     end
-    if self[:friendly_name] && !['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-javascript-mapper'].include?(self[:type])
+    if self[:friendly_name] && !['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-javascript-mapper'].include?(self[:type])
       raise Puppet::Error, "friendly_name is not valid for type #{self[:type]}"
     end
     if self[:attribute_name] && self[:protocol] != 'saml'
