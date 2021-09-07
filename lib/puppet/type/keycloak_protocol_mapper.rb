@@ -252,8 +252,8 @@ Manage Keycloak client scope protocol mappers
     if self[:protocol] == 'openid-connect' && !openid_connect_types.include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
-    if self[:protocol] == 'saml' && !['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper']
-      .include?(self[:type])
+    if self[:protocol] == 'saml' && !['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper',
+    'saml-javascript-mapper'].include?(self[:type])
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol saml"
     end
     if self[:friendly_name] && !['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-javascript-mapper'].include?(self[:type])
