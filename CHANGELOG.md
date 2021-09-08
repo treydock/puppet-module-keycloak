@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.9.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.9.0) (2021-09-08)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.8.0...v7.9.0)
+
+### Added
+
+- Remove Scientific Linux from metadata.json, still supported [\#213](https://github.com/treydock/puppet-module-keycloak/pull/213) ([treydock](https://github.com/treydock))
+- add saml-user-attribute-mapper support [\#212](https://github.com/treydock/puppet-module-keycloak/pull/212) ([aba-rechsteiner](https://github.com/aba-rechsteiner))
+
+### Fixed
+
+- Fix centos/7 in Vagrant failing [\#210](https://github.com/treydock/puppet-module-keycloak/pull/210) ([rdcuzins](https://github.com/rdcuzins))
+- Fix invalid module dependency versions [\#209](https://github.com/treydock/puppet-module-keycloak/pull/209) ([rdcuzins](https://github.com/rdcuzins))
+
 ## [v7.8.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.8.0) (2021-09-01)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.7.1...v7.8.0)
@@ -30,7 +44,7 @@ All notable changes to this project will be documented in this file. The format 
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.5.1...v7.6.0)
 
-### UNCATEGORIZED PRS; GO LABEL THEM
+### Added
 
 - Add extra configurations to keycloak realm [\#203](https://github.com/treydock/puppet-module-keycloak/pull/203) ([qboileau](https://github.com/qboileau))
 
@@ -75,9 +89,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - Support Keycloak 13.x [\#195](https://github.com/treydock/puppet-module-keycloak/pull/195) ([treydock](https://github.com/treydock))
-
-### UNCATEGORIZED PRS; GO LABEL THEM
-
 - Vagrant: install puppetlabs-postgresql [\#193](https://github.com/treydock/puppet-module-keycloak/pull/193) ([mattock](https://github.com/mattock))
 
 ## [v7.2.2](https://github.com/treydock/puppet-module-keycloak/tree/v7.2.2) (2021-04-23)
