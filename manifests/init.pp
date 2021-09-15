@@ -484,7 +484,7 @@ class keycloak (
   }
 
   keycloak_conn_validator { 'keycloak':
-    keycloak_server => 'localhost',
+    keycloak_server => $service_bind_address,
     keycloak_port   => $http_port,
     use_ssl         => false,
     timeout         => 60,
