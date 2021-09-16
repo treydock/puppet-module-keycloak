@@ -2272,7 +2272,13 @@ href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">d
 494
 495
 496
-497</pre>
+497
+498
+499
+500
+501
+502
+503</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 266</span>
@@ -2497,8 +2503,14 @@ class keycloak (
     Class[&#39;keycloak::sssd&#39;] ~&gt; Class[&#39;keycloak::service&#39;]
   }
 
+  if $service_bind_address == &#39;0.0.0.0&#39; {
+    $validator_keycloak_server = &#39;127.0.0.1&#39;
+  } else {
+    $validator_keycloak_server = $service_bind_address
+  }
+
   keycloak_conn_validator { &#39;keycloak&#39;:
-    keycloak_server =&gt; &#39;localhost&#39;,
+    keycloak_server =&gt; $validator_keycloak_server,
     keycloak_port   =&gt; $http_port,
     use_ssl         =&gt; false,
     timeout         =&gt; 60,
