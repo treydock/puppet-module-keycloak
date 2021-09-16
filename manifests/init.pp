@@ -483,8 +483,14 @@ class keycloak (
     Class['keycloak::sssd'] ~> Class['keycloak::service']
   }
 
+  if $service_bind_address == '0.0.0.0' {
+    $validator_keycloak_server = '127.0.0.1'
+  } else {
+    $validator_keycloak_server = $service_bind_address
+  }
+
   keycloak_conn_validator { 'keycloak':
-    keycloak_server => $service_bind_address,
+    keycloak_server => $validator_keycloak_server,
     keycloak_port   => $http_port,
     use_ssl         => false,
     timeout         => 60,
