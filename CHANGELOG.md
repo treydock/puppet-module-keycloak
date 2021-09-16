@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.9.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.9.1) (2021-09-16)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.9.0...v7.9.1)
+
+### Fixed
+
+- set keycloak\_server in keycloak\_conn\_validator from 'localhost' to $service\_bind\_address [\#216](https://github.com/treydock/puppet-module-keycloak/pull/216) ([hugendudel](https://github.com/hugendudel))
+
 ## [v7.9.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.9.0) (2021-09-08)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.8.0...v7.9.0)
