@@ -318,9 +318,11 @@ class keycloak::config {
         changes   => [
           # lint:ignore:single_quote_string_with_variables
           'set native-interface/#attribute/security-realm ManagementRealm',
-          'set native-interface/socket/#attribute/interface management',
+          'set native-interface/socket/#attribute/interface private',
           'set native-interface/socket/#attribute/port ${jboss.management.native.port:9999}',
-          'set http-interface/socket/#attribute/interface private',
+          'set http-interface/#attribute/security-realm ManagementRealm',
+          'set http-interface/socket/#attribute/interface management',
+          'set http-interface/socket/#attribute/port ${jboss.management.http.port:9990}',
           # lint:endignore
         ],
         notify    => Class['keycloak::service'],
@@ -390,8 +392,14 @@ class keycloak::config {
         load_path => '/opt/puppetlabs/puppet/share/augeas/lenses/dist',
         lens      => 'Xml.lns',
         changes   => [
-          'set native-interface/socket/#attribute/interface management',
-          'set http-interface/socket/#attribute/interface private',
+          # lint:ignore:single_quote_string_with_variables
+          'set native-interface/#attribute/security-realm ManagementRealm',
+          'set native-interface/socket/#attribute/interface private',
+          'set native-interface/socket/#attribute/port ${jboss.management.native.port:9999}',
+          'set http-interface/#attribute/security-realm ManagementRealm',
+          'set http-interface/socket/#attribute/interface management',
+          'set http-interface/socket/#attribute/port ${jboss.management.http.port:9990}',
+          # lint:endignore
         ],
         notify    => Class['keycloak::service'],
       }
