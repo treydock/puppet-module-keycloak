@@ -38,6 +38,12 @@ Manage Keycloak realms
     desc 'displayNameHtml'
   end
 
+  newproperty(:user_managed_access_allowed, boolean: true) do
+    desc 'userManagedAccessAllowed'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:login_theme) do
     desc 'loginTheme'
     defaultto 'keycloak'
