@@ -318,7 +318,7 @@ class keycloak::config {
         changes   => [
           # lint:ignore:single_quote_string_with_variables
           'set native-interface/#attribute/security-realm ManagementRealm',
-          'set native-interface/socket/#attribute/interface private',
+          'set native-interface/socket/#attribute/interface management',
           'set native-interface/socket/#attribute/port ${jboss.management.native.port:9999}',
           'set http-interface/#attribute/security-realm ManagementRealm',
           'set http-interface/socket/#attribute/interface management',
@@ -394,7 +394,7 @@ class keycloak::config {
         changes   => [
           # lint:ignore:single_quote_string_with_variables
           'set native-interface/#attribute/security-realm ManagementRealm',
-          'set native-interface/socket/#attribute/interface private',
+          'set native-interface/socket/#attribute/interface management',
           'set native-interface/socket/#attribute/port ${jboss.management.native.port:9999}',
           'set http-interface/#attribute/security-realm ManagementRealm',
           'set http-interface/socket/#attribute/interface management',
