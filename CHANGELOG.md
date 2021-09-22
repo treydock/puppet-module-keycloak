@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.10.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.10.0) (2021-09-22)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.9.1...v7.10.0)
+
+### Added
+
+- Add feature `user_managed_access_allowed` property [\#211](https://github.com/treydock/puppet-module-keycloak/pull/211) ([rdcuzins](https://github.com/rdcuzins))
+
+### Fixed
+
+- Fix and tune mangement interface definitions for both master and slave [\#217](https://github.com/treydock/puppet-module-keycloak/pull/217) ([kibahop](https://github.com/kibahop))
+
 ## [v7.9.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.9.1) (2021-09-16)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.9.0...v7.9.1)
