@@ -33,6 +33,7 @@ describe Puppet::Type.type(:keycloak_realm) do
     account_theme: 'keycloak',
     admin_theme: 'keycloak',
     email_theme: 'keycloak',
+    user_managed_access_allowed: :false,
     access_code_lifespan_user_action: nil,
     access_token_lifespan_for_implicit_flow: nil,
     enabled: :true,
@@ -121,6 +122,7 @@ describe Puppet::Type.type(:keycloak_realm) do
   describe 'boolean properties' do
     # Test boolean properties
     [
+      :user_managed_access_allowed,
       :remember_me,
       :registration_allowed,
       :reset_password_allowed,

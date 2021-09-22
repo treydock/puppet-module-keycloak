@@ -150,6 +150,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         registration_allowed => true,
         reset_password_allowed => true,
         verify_email => true,
+        user_managed_access_allowed => true,
         access_code_lifespan => 3600,
         access_token_lifespan => 3600,
         access_code_lifespan_login => 3600,
@@ -195,6 +196,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['registrationAllowed']).to eq(true)
         expect(data['resetPasswordAllowed']).to eq(true)
         expect(data['verifyEmail']).to eq(true)
+        expect(data['userManagedAccessAllowed']).to eq(true)
         expect(data['accessCodeLifespan']).to eq(3600)
         expect(data['accessCodeLifespanLogin']).to eq(3600)
         expect(data['accessCodeLifespanUserAction']).to eq(600)

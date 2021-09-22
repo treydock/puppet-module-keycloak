@@ -3465,6 +3465,7 @@ The following parameters are available in the `keycloak_realm` type.
 * [`manage_roles`](#manage_roles)
 * [`name`](#name)
 * [`provider`](#provider)
+* [`user_managed_access_allowed`](#user_managed_access_allowed)
 
 ##### <a name="id"></a>`id`
 
@@ -3488,6 +3489,10 @@ The realm name
 
 The specific backend to use for this `keycloak_realm` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
+
+##### <a name="user_managed_access_allowed"></a>`user_managed_access`
+
+Specifies if a user is able to manage their resources and permissions using the Account Management Console. Defaults to false.
 
 ### <a name="keycloak_required_action"></a>`keycloak_required_action`
 
