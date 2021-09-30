@@ -15,6 +15,7 @@ Attach realm roles to users and groups
   extend PuppetX::Keycloak::Type
   add_autorequires
 
+  # FIXME: use a separate namevar, this alone won't do
   newparam(:name, namevar: true) do
     desc '--uusername/--gname'
   end
