@@ -5,7 +5,7 @@ describe 'keycloak::freeipa_user_provider' do
     context "on #{os}" do
       let(:version) { '12.0.4' }
       let(:title) { 'ipa.example.org' }
-      let(:params) do
+      let(:default_params) do
         {
           realm: 'EXAMPLE.ORG',
           bind_dn: 'uid=ldapproxy,cn=sysaccounts,cn=etc,dc=example,dc=org',
@@ -14,10 +14,12 @@ describe 'keycloak::freeipa_user_provider' do
           priority: 20,
         }
       end
+      let(:params) { default_params }
 
       it do
         is_expected.to contain_keycloak_ldap_user_provider('ipa.example.org on EXAMPLE.ORG').with(
           ensure: 'present',
+          id: nil,
           auth_type: 'simple',
           bind_credential: 'secret',
           bind_dn: 'uid=ldapproxy,cn=sysaccounts,cn=etc,dc=example,dc=org',
@@ -35,6 +37,12 @@ describe 'keycloak::freeipa_user_provider' do
           uuid_ldap_attribute: 'ipaUniqueID',
           vendor: 'rhds',
         )
+      end
+
+      context 'when id is defined' do
+        let(:params) { default_params.merge(id: 'foobar') }
+
+        it { is_expected.to contain_keycloak_ldap_user_provider('ipa.example.org on EXAMPLE.ORG').with_id('foobar') }
       end
     end
   end

@@ -13,6 +13,8 @@
 #
 # @param ensure
 #   LDAP user provider status
+# @param id
+#    ID to use for user provider
 # @param ipa_host
 #   Hostname of the FreeIPA server (e.g. ipa.example.org)
 # @param realm
@@ -39,6 +41,7 @@ define keycloak::freeipa_user_provider
   String                    $bind_credential,
   String                    $users_dn,
   Enum['present', 'absent'] $ensure = 'present',
+  Optional[String]          $id = undef,
   Stdlib::Host              $ipa_host = $title,
   Integer                   $priority = 10,
   Boolean                   $ldaps = false,
@@ -55,6 +58,7 @@ define keycloak::freeipa_user_provider
 
   keycloak_ldap_user_provider { "${ipa_host} on ${realm}":
     ensure                                   => 'present',
+    id                                       => $id,
     auth_type                                => 'simple',
     bind_credential                          => $bind_credential,
     bind_dn                                  => $bind_dn,
