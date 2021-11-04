@@ -22,7 +22,7 @@
     },
     {
       "name": "puppetlabs/java",
-      "version_requirement": ">= 6.3.0 <8.0.0"
+      "version_requirement": ">= 7.3.0 <8.0.0"
     },
     {
       "name": "puppetlabs/java_ks",
