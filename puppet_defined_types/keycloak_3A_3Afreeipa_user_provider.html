@@ -123,6 +123,24 @@
   
     <li>
       
+        <span class='name'>id</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>ID to use for user provider</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>ipa_host</span>
       
       
@@ -286,8 +304,6 @@
         <pre class="lines">
 
 
-35
-36
 37
 38
 39
@@ -328,10 +344,14 @@
 74
 75
 76
-77</pre>
+77
+78
+79
+80
+81</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/freeipa_user_provider.pp', line 35</span>
+        <pre class="code"><span class="info file"># File 'manifests/freeipa_user_provider.pp', line 37</span>
 
 define keycloak::freeipa_user_provider
 (
@@ -340,6 +360,7 @@ define keycloak::freeipa_user_provider
   String                    $bind_credential,
   String                    $users_dn,
   Enum[&#39;present&#39;, &#39;absent&#39;] $ensure = &#39;present&#39;,
+  Optional[String]          $id = undef,
   Stdlib::Host              $ipa_host = $title,
   Integer                   $priority = 10,
   Boolean                   $ldaps = false,
@@ -356,6 +377,7 @@ define keycloak::freeipa_user_provider
 
   keycloak_ldap_user_provider { &quot;${ipa_host} on ${realm}&quot;:
     ensure                                   =&gt; &#39;present&#39;,
+    id                                       =&gt; $id,
     auth_type                                =&gt; &#39;simple&#39;,
     bind_credential                          =&gt; $bind_credential,
     bind_dn                                  =&gt; $bind_dn,
