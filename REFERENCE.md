@@ -1231,6 +1231,7 @@ keycloak::freeipa_user_provider { 'ipa.example.org':
 The following parameters are available in the `keycloak::freeipa_user_provider` defined type:
 
 * [`ensure`](#ensure)
+* [`id`](#id)
 * [`ipa_host`](#ipa_host)
 * [`realm`](#realm)
 * [`bind_dn`](#bind_dn)
@@ -1248,6 +1249,14 @@ Data type: `Enum['present', 'absent']`
 LDAP user provider status
 
 Default value: `'present'`
+
+##### <a name="id"></a>`id`
+
+Data type: `Optional[String]`
+
+ID to use for user provider
+
+Default value: ``undef``
 
 ##### <a name="ipa_host"></a>`ipa_host`
 

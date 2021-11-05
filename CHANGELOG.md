@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.11.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.11.0) (2021-11-05)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.10.0...v7.11.0)
+
+### Added
+
+- Replace CentOS 8 support with Rocky 8 [\#221](https://github.com/treydock/puppet-module-keycloak/pull/221) ([treydock](https://github.com/treydock))
+- Support stdlib 8.x, mysql 12.x and use puppet/systemd [\#220](https://github.com/treydock/puppet-module-keycloak/pull/220) ([treydock](https://github.com/treydock))
+- Add id parameter to keycloak::freeipa\_user\_provider [\#219](https://github.com/treydock/puppet-module-keycloak/pull/219) ([treydock](https://github.com/treydock))
+
 ## [v7.10.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.10.0) (2021-09-22)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.9.1...v7.10.0)
