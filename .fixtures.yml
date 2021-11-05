@@ -11,7 +11,7 @@ fixtures:
       ref: v6.6.0
     java:
       repo: https://github.com/puppetlabs/puppetlabs-java.git
-      ref: v6.3.0
+      ref: v7.3.0
     java_ks:
       repo: https://github.com/puppetlabs/puppetlabs-java_ks.git
       ref: 1.4.1
