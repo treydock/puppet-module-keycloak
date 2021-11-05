@@ -19,15 +19,13 @@ fixtures:
       repo: https://github.com/voxpupuli/puppet-archive.git
       ref: v0.5.1
     systemd:
-      repo: https://github.com/camptocamp/puppet-systemd.git
+      repo: https://github.com/voxpupuli/puppet-systemd.git
       ref: 0.4.0
     augeas_core:
       repo: https://github.com/puppetlabs/puppetlabs-augeas_core.git
-      puppet_version: ">= 6.0.0"
       ref: 1.1.1
     yumrepo_core:
       repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
-      puppet_version: ">= 6.0.0"
       ref: 1.0.7
     apt:
       repo: https://github.com/puppetlabs/puppetlabs-apt.git
