@@ -100,6 +100,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
       url = 'authentication/flows'
     else
       data[:provider] = resource[:type]
+      data[:description] = resource[:description]
       data[:type] = resource[:provider_id]
       url = "authentication/flows/#{resource[:flow_alias]}/executions/flow"
     end
@@ -201,6 +202,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
         url = "authentication/flows/#{id}"
       elsif @property_flush[:requirement]
         data[:id] = id
+        data[:description] = resource[:description]
         data[:requirement] = resource[:requirement]
         url = "authentication/flows/#{resource[:flow_alias]}/executions"
       end
