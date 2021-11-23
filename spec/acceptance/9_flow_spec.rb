@@ -24,7 +24,8 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'browser-with-duo on test':
-        ensure => 'present',
+        ensure      => 'present',
+        description => 'Browser with DUO',
       }
       keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on test':
         ensure       => 'present',
@@ -61,6 +62,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         index       => 2,
         requirement => 'ALTERNATIVE',
         top_level   => false,
+        description => 'Form Browser with DUO',
       }
       keycloak_flow { 'form-browser-with-duo2 under browser-with-duo on test':
         ensure      => 'present',
@@ -92,6 +94,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo-test -r test' do
         data = JSON.parse(stdout)
         expect(data['alias']).to eq('browser-with-duo')
+        expect(data['description']).to eq('Browser with DUO')
         expect(data['topLevel']).to eq(true)
       end
     end
@@ -105,6 +108,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         expect(idp['index']).to eq(1)
         form = data.find { |d| d['displayName'] == 'form-browser-with-duo' }
         expect(form['index']).to eq(2)
+        expect(form['description']).to eq('Form Browser with DUO')
         auth_form = data.find { |d| d['providerId'] == 'auth-username-password-form' }
         expect(auth_form['index']).to eq(0)
         duo = data.find { |d| d['providerId'] == 'duo-mfa-authenticator' }
