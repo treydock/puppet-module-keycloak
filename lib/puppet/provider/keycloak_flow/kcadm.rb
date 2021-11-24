@@ -59,6 +59,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
           flow[:configurable] = e['configurable'] if e.key?('configurable')
           flow[:flow_alias] = d['alias']
           flow[:realm] = realm
+          flow[:description] = e['description']
           flow[:index] = e['index']
           flow[:display_name] = e['displayName']
           flow[:alias] = e['displayName']
