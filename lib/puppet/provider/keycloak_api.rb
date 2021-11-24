@@ -25,7 +25,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   end
 
   def self.type_properties
-    resource_type.validproperties.reject { |p| p.to_sym == :ensure }
+    resource_type.validproperties.reject { |p| [:ensure, :custom_properties].include? p.to_sym }
   end
 
   def type_properties
