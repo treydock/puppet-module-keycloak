@@ -3236,6 +3236,10 @@ contentSecurityPolicy
 
 Default value: `frame-src 'self'; frame-ancestors 'self'; object-src 'none';`
 
+##### `custom_properties`
+
+custom properties to pass as realm configurations
+
 ##### `default_client_scopes`
 
 Default Client Scopes
@@ -3259,6 +3263,14 @@ displayNameHtml
 dockerAuthenticationFlow
 
 Default value: `docker auth`
+
+##### `edit_username_allowed`
+
+Valid values: ``true``, ``false``
+
+editUsernameAllowed
+
+Default value: `false`
 
 ##### `email_theme`
 
@@ -3437,6 +3449,14 @@ smtpServer starttls
 ##### `smtp_server_user`
 
 smtpServer user
+
+##### `ssl_required`
+
+Valid values: `none`, `all`, `external`
+
+sslRequired
+
+Default value: `external`
 
 ##### `sso_session_idle_timeout`
 
