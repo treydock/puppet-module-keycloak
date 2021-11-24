@@ -39,6 +39,9 @@ describe Puppet::Type.type(:keycloak_realm) do
     enabled: :true,
     remember_me: :false,
     login_with_email_allowed: :true,
+    ssl_required: 'external',
+    registration_allowed: :false,
+    edit_username_allowed: :false,
     browser_flow: 'browser',
     registration_flow: 'registration',
     direct_grant_flow: 'direct grant',
@@ -128,6 +131,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       :reset_password_allowed,
       :verify_email,
       :login_with_email_allowed,
+      :edit_username_allowed,
       :internationalization_enabled,
       :manage_roles,
       :events_enabled,
@@ -185,6 +189,23 @@ describe Puppet::Type.type(:keycloak_realm) do
       it "should have default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
+    end
+  end
+
+  describe 'custom_properties' do
+    it 'allow custom properties' do
+      config[:custom_properties] = { 'foo' => 'bar' }
+      expect(resource[:custom_properties]).to eq('foo' => 'bar')
+    end
+
+    it 'is in sync with default' do
+      config[:custom_properties] = {}
+      expect(resource.property(:custom_properties).insync?('foo' => 'bar')).to eq(true)
+    end
+
+    it 'is in sync with defined properties' do
+      config[:custom_properties] = { 'foo' => 'bar' }
+      expect(resource.property(:custom_properties).insync?('foo' => 'bar', 'bar' => 'baz')).to eq(true)
     end
   end
 

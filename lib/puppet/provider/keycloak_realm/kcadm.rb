@@ -136,6 +136,10 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       optional_scopes = get_client_scopes(realm[:name], 'optional')
       realm[:optional_client_scopes] = optional_scopes.keys.map { |k| k.to_s }
       realm[:roles] = get_realm_roles(realm[:name])
+      realm[:custom_properties] = {}
+      d.each_pair do |k, v|
+        realm[:custom_properties][k] = v unless type_properties.include?(k.to_sym)
+      end
       realms << new(realm)
     end
     realms
@@ -156,6 +160,9 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     events_config = {}
     data[:id] = resource[:id]
     data[:realm] = resource[:name]
+    (resource[:custom_properties] || {}).each_pair do |k, v|
+      data[k] = v unless type_properties.include?(k.to_sym)
+    end
     type_properties.each do |property|
       next if flow_properties.include?(property)
       next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
@@ -316,6 +323,9 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     unless @property_flush.empty?
       data = {}
       events_config = {}
+      (@property_flush[:custom_properties] || resource[:custom_properties] || {}).each_pair do |k, v|
+        data[k] = v unless type_properties.include?(k.to_sym)
+      end
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
         if flow_properties.include?(property) && !available_flows(resource[:name]).include?(resource[property.to_sym])

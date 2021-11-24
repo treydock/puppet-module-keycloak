@@ -52,6 +52,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['registrationAllowed']).to eq(false)
         expect(data['resetPasswordAllowed']).to eq(false)
         expect(data['verifyEmail']).to eq(false)
+        expect(data['sslRequired']).to eq('external')
+        expect(data['editUsernameAllowed']).to eq(false)
       end
     end
 
@@ -182,6 +184,10 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         smtp_server_reply_to_display_name => 'Hostmaster',
         brute_force_protected             => true,
         roles                             => ['uma_authorization', 'new_role', 'other_new_role'],
+        custom_properties                 => {
+          'failureFactor'      => 60,
+          'revokeRefreshToken' => true,
+        },
       }
       EOS
 
@@ -221,6 +227,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['smtpServer']['replyTo']).to eq('webmaster@example.org')
         expect(data['smtpServer']['replyToDisplayName']).to eq('Hostmaster')
         expect(data['bruteForceProtected']).to eq(true)
+        expect(data['failureFactor']).to eq(60)
+        expect(data['revokeRefreshToken']).to eq(true)
       end
     end
 
