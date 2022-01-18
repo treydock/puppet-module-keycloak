@@ -2,9 +2,11 @@
 class keycloak::config {
   assert_private()
 
-  file { '/opt/keycloak':
-    ensure => 'link',
-    target => $keycloak::install_base,
+  if $keycloak::install_base != '/opt/keycloak' {
+    file { '/opt/keycloak':
+      ensure => 'link',
+      target => $keycloak::install_base,
+    }
   }
 
   # Template uses:
