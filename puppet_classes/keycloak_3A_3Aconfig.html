@@ -498,7 +498,9 @@
 405
 406
 407
-408</pre>
+408
+409
+410</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 2</span>
@@ -506,9 +508,11 @@
 class keycloak::config {
   assert_private()
 
-  file { &#39;/opt/keycloak&#39;:
-    ensure =&gt; &#39;link&#39;,
-    target =&gt; $keycloak::install_base,
+  if $keycloak::install_base != &#39;/opt/keycloak&#39; {
+    file { &#39;/opt/keycloak&#39;:
+      ensure =&gt; &#39;link&#39;,
+      target =&gt; $keycloak::install_base,
+    }
   }
 
   # Template uses:
