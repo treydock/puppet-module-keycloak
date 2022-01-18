@@ -9,8 +9,8 @@ String $prefix
 <%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=driver-name, value=<%= $datasource_driver %>)
 <%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=connection-url, value="<%= $datasource_connection_url %>")
 <%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=jndi-name, value=java:jboss/datasources/KeycloakDS)
-<%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=user-name, value=<%= $datasource_username %>)
-<%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=password, value=<%= $datasource_password %>)
+<%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=user-name, value="<%= $datasource_username %>")
+<%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=password, value="<%= $datasource_password %>")
 <%- if $datasource_driver == 'mysql' { -%>
 <%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=background-validation, value=true)
 <%= $prefix -%>/subsystem=datasources/data-source=KeycloakDS:write-attribute(name=check-valid-connection-sql, value="SELECT 1")
