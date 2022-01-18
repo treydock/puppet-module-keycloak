@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.12.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.12.1) (2022-01-18)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.12.0...v7.12.1)
+
+### Fixed
+
+- Quota datasource username and password [\#235](https://github.com/treydock/puppet-module-keycloak/pull/235) ([treydock](https://github.com/treydock))
+- Fix issues with install\_base /opt/keycloak [\#232](https://github.com/treydock/puppet-module-keycloak/pull/232) ([dmaes](https://github.com/dmaes))
+
 ## [v7.12.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.12.0) (2021-11-24)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.11.1...v7.12.0)
