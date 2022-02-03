@@ -192,5 +192,35 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(expected_roles - client_roles).to eq([])
       end
     end
+
+    it 'manages authorization services properly' do
+      pp = <<-EOS
+      include mysql::server
+      class { 'keycloak':
+        datasource_driver => 'mysql',
+      }
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_client { 'test.foo.bar':
+        realm                          => 'test',
+        root_url                       => 'https://test.foo.bar/test/authorization',
+        redirect_uris                  => ['https://test.foo.bar/test2'],
+        default_client_scopes          => ['profile', 'email'],
+        secret                         => 'foobar2',
+        authorization_services_enabled => true,
+        service_accounts_enabled       => true,
+        roles                          => ['bar_role'],
+      }
+      EOS
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    it 'has not disabled authorization services due to unrelated property change' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do
+        data = JSON.parse(stdout)
+        expect(data['authorizationServicesEnabled']).to eq(true)
+      end
+    end
   end
 end

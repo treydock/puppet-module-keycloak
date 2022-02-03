@@ -327,6 +327,10 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
 
       data = {}
       data[:clientId] = resource[:client_id]
+      if resource[:authorization_services_enabled] == :true
+        data[:authorizationServicesEnabled] = true
+        data[:serviceAccountsEnabled] = true
+      end
       data[:authenticationFlowBindingOverrides] = {}
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
