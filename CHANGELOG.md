@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.12.2](https://github.com/treydock/puppet-module-keycloak/tree/v7.12.2) (2022-02-08)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.12.1...v7.12.2)
+
+### Fixed
+
+- Fix authorization services data corruption on unrelated client changes [\#236](https://github.com/treydock/puppet-module-keycloak/pull/236) ([mattock](https://github.com/mattock))
+
 ## [v7.12.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.12.1) (2022-01-18)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.12.0...v7.12.1)
