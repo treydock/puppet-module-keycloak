@@ -47,6 +47,7 @@
 * [`keycloak_realm`](#keycloak_realm): Manage Keycloak realms
 * [`keycloak_required_action`](#keycloak_required_action): Manage Keycloak required actions
 * [`keycloak_resource_validator`](#keycloak_resource_validator): Verify that a specific Keycloak resource is available
+* [`keycloak_role_mapping`](#keycloak_role_mapping): Attach realm roles to users and groups
 * [`keycloak_sssd_user_provider`](#keycloak_sssd_user_provider): Manage Keycloak SSSD user providers
 
 ## Classes
@@ -3694,6 +3695,64 @@ The max number of seconds that the validator should wait before giving up and de
 defaults to 15 seconds.
 
 Default value: `30`
+
+### <a name="keycloak_role_mapping"></a>`keycloak_role_mapping`
+
+Attach realm roles to users and groups
+
+#### Examples
+
+##### Ensure that a user has the defined realm roles
+
+```puppet
+keycloak_role_mapping { 'john-offline_access':
+  realm       => 'test',
+  name        => 'john',
+  realm_roles => ['offline_access'],
+}
+```
+
+#### Properties
+
+The following properties are available in the `keycloak_role_mapping` type.
+
+##### `realm_roles`
+
+realm roles
+
+Default value: `[]`
+
+#### Parameters
+
+The following parameters are available in the `keycloak_role_mapping` type.
+
+* [`group`](#group)
+* [`name`](#name)
+* [`provider`](#provider)
+* [`realm`](#realm)
+
+##### <a name="group"></a>`group`
+
+Valid values: ``true``, ``false``
+
+is this a group instead of a user
+
+Default value: ``false``
+
+##### <a name="name"></a>`name`
+
+namevar
+
+--uusername/--gname
+
+##### <a name="provider"></a>`provider`
+
+The specific backend to use for this `keycloak_role_mapping` resource. You will seldom need to specify this --- Puppet
+will usually discover the appropriate provider for your platform.
+
+##### <a name="realm"></a>`realm`
+
+realm
 
 ### <a name="keycloak_sssd_user_provider"></a>`keycloak_sssd_user_provider`
 
