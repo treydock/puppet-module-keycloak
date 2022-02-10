@@ -81,6 +81,8 @@ Keycloak</a></p>
 </li><li>
 <p><a href="#keycloak_realm">keycloak_realm</a></p>
 </li><li>
+<p><a href="#keycloak_role_mapping">keycloak_role_mapping</a></p>
+</li><li>
 <p><a href="#keycloak_ldap_user_provider">keycloak_ldap_user_provider</a></p>
 </li><li>
 <p><a href="#keycloak_ldap_mapper">keycloak_ldap_mapper</a></p>
@@ -382,6 +384,24 @@ use a local branded theme.</p>
 will not be set when a realm is first created. The value will also not be
 updated if the flow does not exist. For new realms you will have to run
 Puppet twice in order to create the flows then update the realm setting.</p>
+
+<h3 id="label-keycloak_role_mapping">keycloak_role_mapping</h3>
+
+<p>Manage realm role mappings for users and groups. Example:</p>
+
+<pre class="code ruby"><code class="ruby">keycloak_role_mapping { &#39;roles for john on master&#39;:
+  realm       =&gt; &#39;master&#39;,
+  name        =&gt; &#39;john&#39;,
+  realm_roles =&gt; [&#39;role1&#39;, &#39;role2&#39;],
+}
+
+keycloak_role_mapping { &#39;roles for mygroup on master&#39;:
+  realm        =&gt; &#39;master&#39;,
+  name         =&gt; &#39;mygroup&#39;,
+  group        =&gt; true,
+  realm_roles  =&gt; [&#39;role1&#39;],
+}
+</code></pre>
 
 <h3 id="label-keycloak_ldap_user_provider">keycloak_ldap_user_provider</h3>
 
