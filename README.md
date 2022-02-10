@@ -11,6 +11,7 @@
     * [Keycloak](#keycloak)
     * [Deploy SPI](#deploy-spi)
     * [keycloak_realm](#keycloak_realm)
+    * [keycloak_role_mapping](#keycloak_role_mapping)
     * [keycloak_ldap_user_provider](#keycloak_ldap_user_provider)
     * [keycloak_ldap_mapper](#keycloak_ldap_mapper)
     * [keycloak_sssd_user_provider](#keycloak_sssd_user_provider)
@@ -281,6 +282,23 @@ keycloak_realm { 'test':
 ```
 
 **NOTE:** If the flow properties such as `browser_flow` are changed from their defaults then this value will not be set when a realm is first created. The value will also not be updated if the flow does not exist. For new realms you will have to run Puppet twice in order to create the flows then update the realm setting.
+
+### keycloak\_role\_mapping
+
+Manage realm role mappings for users and groups. Example:
+
+    keycloak_role_mapping { 'roles for john on master':
+      realm       => 'master',
+      name        => 'john',
+      realm_roles => ['role1', 'role2'],
+    }
+    
+    keycloak_role_mapping { 'roles for mygroup on master':
+      realm        => 'master',
+      name         => 'mygroup',
+      group        => true,
+      realm_roles  => ['role1'],
+    }
 
 ### keycloak\_ldap\_user_provider
 
