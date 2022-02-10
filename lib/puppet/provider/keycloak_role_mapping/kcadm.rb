@@ -8,7 +8,7 @@ Puppet::Type.type(:keycloak_role_mapping).provide(:kcadm, parent: Puppet::Provid
   end
 
   def realm_roles
-    @active_realm_roles = []
+    active_realm_roles = []
 
     output = kcadm('get-roles', nil, resource[:realm], nil, nil, false, opt => resource[:name])
     begin
@@ -18,16 +18,16 @@ Puppet::Type.type(:keycloak_role_mapping).provide(:kcadm, parent: Puppet::Provid
     end
 
     data.each do |d|
-      @active_realm_roles << d['name']
+      active_realm_roles << d['name']
     end
-    @active_realm_roles
+    active_realm_roles
   end
 
   def realm_roles=(_value)
-    removed_roles = @active_realm_roles.reject { |role| resource[:realm_roles].include?(role) }
+    removed_roles = realm_roles.reject { |role| resource[:realm_roles].include?(role) }
     remove_roles(removed_roles)
 
-    new_roles = resource[:realm_roles].reject { |role| @active_realm_roles.include?(role) }
+    new_roles = resource[:realm_roles].reject { |role| realm_roles.include?(role) }
     add_roles(new_roles)
   end
 
