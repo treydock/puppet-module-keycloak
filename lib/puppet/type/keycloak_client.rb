@@ -158,6 +158,10 @@ Manage Keycloak clients
     desc 'rootUrl'
   end
 
+  newproperty(:attributes) do
+    desc 'attributes'
+  end 
+        
   newproperty(:redirect_uris, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'redirectUris'
     defaultto []
