@@ -158,8 +158,8 @@ Manage Keycloak clients
     desc 'rootUrl'
   end
 
-  newproperty(:attributes) do
-    desc 'attributes'
+  newproperty(:backchannel_logout_url) do
+    desc 'backchannel.logout.url'
   end 
         
   newproperty(:redirect_uris, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
