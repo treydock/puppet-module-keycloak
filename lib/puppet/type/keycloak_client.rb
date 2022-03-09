@@ -158,7 +158,7 @@ Manage Keycloak clients
     desc 'rootUrl'
   end
 
-  newproperty(:attributes.'backchannel.logout.url') do
+  newproperty(:attributes."backchannel.logout.url") do
     desc 'attributes'
   end 
         
