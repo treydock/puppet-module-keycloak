@@ -9,12 +9,14 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
     [
       :login_theme,
       :access_token_lifespan,
+      :backchannel_logout_url,
     ]
   end
 
   def dot_attributes_properties
     [
       :access_token_lifespan,
+      :backchannel_logout_url,
     ]
   end
 
