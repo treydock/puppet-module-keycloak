@@ -1575,6 +1575,10 @@ authorizationServicesEnabled
 
 Default value: `false`
 
+##### `backchannel_logout_url`
+
+backchannel.logout.url
+
 ##### `base_url`
 
 baseUrl
