@@ -10,6 +10,15 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :login_theme,
       :access_token_lifespan,
       :backchannel_logout_url,
+      :saml_name_id_format,
+      :saml_artifact_binding_url,
+      :saml_single_logout_service_url_redirect,
+      :saml_assertion_consumer_url_post,
+      :saml_encrypt,
+      :saml_assertion_signature,
+      :saml_signing_certificate,
+      :saml_encryption_certificate,
+      :saml_signing_private_key,
     ]
   end
 
@@ -17,6 +26,11 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
     [
       :access_token_lifespan,
       :backchannel_logout_url,
+      :saml_encrypt,
+      :saml_assertion_signature,
+      :saml_signing_certificate,
+      :saml_encryption_certificate,
+      :saml_signing_private_key,
     ]
   end
 
