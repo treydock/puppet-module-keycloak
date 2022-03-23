@@ -1735,6 +1735,10 @@ Default value: `[]`
 
 rootUrl
 
+##### `admin_url`
+
+adminUrl
+
 ##### `secret`
 
 secret

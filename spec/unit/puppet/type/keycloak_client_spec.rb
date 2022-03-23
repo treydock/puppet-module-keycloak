@@ -84,6 +84,7 @@ describe Puppet::Type.type(:keycloak_client) do
       :login_theme,
       :backchannel_logout_url,
       :root_url,
+      :admin_url,
       :base_url,
       :browser_flow,
       :direct_grant_flow,

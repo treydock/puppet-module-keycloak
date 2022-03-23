@@ -13,6 +13,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
       keycloak_client { 'test.foo.bar':
         realm                                   => 'test',
         root_url                                => 'https://test.foo.bar',
+        admin_url                               => 'https://test.foo.bar/admin',
         redirect_uris                           => ['https://test.foo.bar/test1'],
         default_client_scopes                   => ['address'],
         secret                                  => 'foobar',
@@ -35,6 +36,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
       keycloak_client { 'test.foo.baz':
         realm                                   => 'test',
         root_url                                => 'https://test.foo.bar',
+        admin_url                               => 'https://test.foo.baz/admin',
         redirect_uris                           => ['https://test.foo.bar/test1'],
         default_client_scopes                   => ['address'],
         secret                                  => 'foobar',

@@ -158,6 +158,10 @@ Manage Keycloak clients
     desc 'rootUrl'
   end
 
+  newproperty(:admin_url) do
+    desc 'adminUrl'
+  end
+
   newproperty(:backchannel_logout_url) do
     desc 'backchannel.logout.url'
   end
