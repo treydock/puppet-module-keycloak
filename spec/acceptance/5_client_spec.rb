@@ -125,7 +125,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         expect(data['attributes']['saml_assertion_consumer_url_post']).to eq('https://saml.foo.bar/mellon/postResponse')
         expect(data['attributes']['saml.encrypt']).to eq('true')
         expect(data['attributes']['saml.assertion.signature']).to eq('true')
-        expect(data['attributes']['saml.signing.certificate']).to
+        expect(data['attributes']['saml.signing.certificate']).to \
         eq('MIIDQzCCAiugAwIBAgIUNALBnAmwcPKLdBer4e0i22JiEd0wDQYJKoZIhvcNAQELB' \
         'QAwMDEuMCwGA1UEAwwlc2FtbF9zaWduaW5nX2NlcnRpZmljYXRlLXRlc3QuZm9vLmJhc' \
         'jAgFw0yMjAzMTgyMjU1MTNaGA8yMTIyMDIyMjIyNTUxM1owMDEuMCwGA1UEAwwlc2Ftb' \
@@ -143,7 +143,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         'umiluJyedbQw9yj/NsYouALGWWQeHDwNJGcAxDxiLvIZjXkAo6IXRQ85n29TiLFCbF5h' \
         'PmiBlUNfo5reuobvhd+qDZOssiJ4q4VrSkHZ/u4Ri623+dgyZbDqwQ20NigfuoRaxbFW' \
         'xbjl5T/lg30r7sqy/YOW2wevA0wSqyxMfw=')
-        expect(data['attributes']['saml.encryption.certificate']).to
+        expect(data['attributes']['saml.encryption.certificate']).to \
         eq('MIIDSTCCAjGgAwIBAgIUbJ6dLiM4/T9uLT4gd13tuD469lkwDQYJKoZIhvcNAQELB' \
         'QAwMzExMC8GA1UEAwwoc2FtbF9lbmNyeXB0aW9uX2NlcnRpZmljYXRlLXRlc3QuZm9vL' \
         'mJhcjAgFw0yMjAzMTgyMjU1NDlaGA8yMTIyMDIyMjIyNTU0OVowMzExMC8GA1UEAwwoc' \
@@ -161,7 +161,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         'SFXu0sp0NRBnbqvz5cB8jSRb40v67tGmFVadYhomIpFsES2FuM3bY6YbD0hJ4ozLczgp' \
         'fPOYw41xIAGSgbB6rwRsu+VwV7L2DW3wtq6CHksLYoiNDmdZXz0HDqmfHcMKlpUPpAkY' \
         '/8q6xaO/QNEzohI60TfMRklpCLP/25n4ao3VqrHdZo=')
-        expect(data['attributes']['saml.signing.private.key']).to
+        expect(data['attributes']['saml.signing.private.key']).to \
         eq('MIIEpAIBAAKCAQEAtzXe4xaXsz5KdSQdz/4+jMdO1HiBNBuL2dIQ4b+DSP5IhSU+V' \
         'PQP26G49fBWkN2ZSGMhOfvfxbcGjudIl7RRKRN1XqTgada/irqhU80Z8FTYWgl6A5px8' \
         '7nL1peCm8f2w6N220KLdoYI/KapdNP1CUXR6iBJOrEZ3lV3CtZR5DkeOvdMEsmyhP5aj' \
