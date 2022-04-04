@@ -1579,6 +1579,42 @@ Default value: `false`
 
 backchannel.logout.url
 
+##### `saml_name_id_format`
+
+saml_name_id_format
+
+##### `saml_artifact_binding_url`
+
+saml_artifact_binding_url
+
+##### `saml_single_logout_service_url_redirect`
+
+saml_single_logout_service_url_redirect
+
+##### `saml_assertion_consumer_url_post`
+
+saml_assertion_consumer_url_post
+
+##### `saml_encrypt`
+
+saml.encrypt
+
+##### `saml_assertion_signature`
+
+saml.assertion.signature
+
+##### `saml_signing_certificate`
+
+saml.signing.certificate
+
+##### `saml_encryption_certificate`
+
+saml.encryption.certificate
+
+##### `saml_signing_private_key`
+
+saml.signing.private.key
+
 ##### `base_url`
 
 baseUrl
@@ -1698,6 +1734,10 @@ Default value: `[]`
 ##### `root_url`
 
 rootUrl
+
+##### `admin_url`
+
+adminUrl
 
 ##### `secret`
 

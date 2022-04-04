@@ -158,8 +158,48 @@ Manage Keycloak clients
     desc 'rootUrl'
   end
 
+  newproperty(:admin_url) do
+    desc 'adminUrl'
+  end
+
   newproperty(:backchannel_logout_url) do
     desc 'backchannel.logout.url'
+  end
+
+  newproperty(:saml_name_id_format) do
+    desc 'saml_name_id_format'
+  end
+
+  newproperty(:saml_artifact_binding_url) do
+    desc 'saml_artifact_binding_url'
+  end
+
+  newproperty(:saml_single_logout_service_url_redirect) do
+    desc 'saml_single_logout_service_url_redirect'
+  end
+
+  newproperty(:saml_assertion_consumer_url_post) do
+    desc 'saml_assertion_consumer_url_post'
+  end
+
+  newproperty(:saml_encrypt) do
+    desc 'saml.encrypt'
+  end
+
+  newproperty(:saml_assertion_signature) do
+    desc 'saml.assertion.signature'
+  end
+
+  newproperty(:saml_signing_certificate) do
+    desc 'saml.signing.certificate'
+  end
+
+  newproperty(:saml_encryption_certificate) do
+    desc 'saml.encryption.certificate'
+  end
+
+  newproperty(:saml_signing_private_key) do
+    desc 'saml.signing.private.key'
   end
 
   newproperty(:redirect_uris, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do

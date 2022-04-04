@@ -84,9 +84,19 @@ describe Puppet::Type.type(:keycloak_client) do
       :login_theme,
       :backchannel_logout_url,
       :root_url,
+      :admin_url,
       :base_url,
       :browser_flow,
       :direct_grant_flow,
+      :saml_name_id_format,
+      :saml_artifact_binding_url,
+      :saml_single_logout_service_url_redirect,
+      :saml_assertion_consumer_url_post,
+      :saml_encrypt,
+      :saml_assertion_signature,
+      :saml_signing_certificate,
+      :saml_encryption_certificate,
+      :saml_signing_private_key,
     ].each do |p|
       it "should accept a #{p}" do
         config[p] = 'foo'
