@@ -43,7 +43,7 @@ This module may work on earlier versions but this is the only version tested.
 | 4.x - 6.x        | 3.x                             |
 | 6.x - 8.x        | 4.x - 5.x                       |
 | 8.x - 12.x       | 6.x                             |
-| 12.x - 15.x      | 7.x                             |
+| 12.x - 16.x      | 7.x                             |
 
 ## Usage
 
