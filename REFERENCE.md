@@ -1567,6 +1567,10 @@ The following properties are available in the `keycloak_client` type.
 
 access.token.lifespan
 
+##### `admin_url`
+
+adminUrl
+
 ##### `authorization_services_enabled`
 
 Valid values: ``true``, ``false``
@@ -1578,42 +1582,6 @@ Default value: `false`
 ##### `backchannel_logout_url`
 
 backchannel.logout.url
-
-##### `saml_name_id_format`
-
-saml_name_id_format
-
-##### `saml_artifact_binding_url`
-
-saml_artifact_binding_url
-
-##### `saml_single_logout_service_url_redirect`
-
-saml_single_logout_service_url_redirect
-
-##### `saml_assertion_consumer_url_post`
-
-saml_assertion_consumer_url_post
-
-##### `saml_encrypt`
-
-saml.encrypt
-
-##### `saml_assertion_signature`
-
-saml.assertion.signature
-
-##### `saml_signing_certificate`
-
-saml.signing.certificate
-
-##### `saml_encryption_certificate`
-
-saml.encryption.certificate
-
-##### `saml_signing_private_key`
-
-saml.signing.private.key
 
 ##### `base_url`
 
@@ -1735,9 +1703,41 @@ Default value: `[]`
 
 rootUrl
 
-##### `admin_url`
+##### `saml_artifact_binding_url`
 
-adminUrl
+saml_artifact_binding_url
+
+##### `saml_assertion_consumer_url_post`
+
+saml_assertion_consumer_url_post
+
+##### `saml_assertion_signature`
+
+saml.assertion.signature
+
+##### `saml_encrypt`
+
+saml.encrypt
+
+##### `saml_encryption_certificate`
+
+saml.encryption.certificate
+
+##### `saml_name_id_format`
+
+saml_name_id_format
+
+##### `saml_signing_certificate`
+
+saml.signing.certificate
+
+##### `saml_signing_private_key`
+
+saml.signing.private.key
+
+##### `saml_single_logout_service_url_redirect`
+
+saml_single_logout_service_url_redirect
 
 ##### `secret`
 

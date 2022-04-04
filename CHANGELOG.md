@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.15.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.15.0) (2022-04-04)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.14.0...v7.15.0)
+
+### Added
+
+- New saml attrs [\#238](https://github.com/treydock/puppet-module-keycloak/pull/238) ([wolfaba](https://github.com/wolfaba))
+
 ## [v7.14.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.14.0) (2022-03-14)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.13.0...v7.14.0)
 
-### UNCATEGORIZED PRS; GO LABEL THEM
+### Added
 
 - add backchannel logout url attribute [\#237](https://github.com/treydock/puppet-module-keycloak/pull/237) ([wolfaba](https://github.com/wolfaba))
 
