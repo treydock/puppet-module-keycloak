@@ -63,10 +63,10 @@ class keycloak::resources {
   } else {
     $ldap_user_providers = $keycloak::ldap_user_providers
   }
-  if $keycloak::role_mappers_merge {
-    $role_mappers = lookup('keycloak::ldap_mappers', Hash, 'deep', {})
+  if $keycloak::role_mapping_merge {
+    $role_mappings = lookup('keycloak::role_mappings', Hash, 'deep', {})
   } else {
-    $role_mappers = $keycloak::ldap_mappers
+    $role_mappings = $keycloak::role_mappings
   }
 
   $realms.each |$name, $realm| {
