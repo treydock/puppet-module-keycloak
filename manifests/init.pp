@@ -340,6 +340,8 @@ class keycloak (
   Hash $ldap_mappers = {},
   Boolean $ldap_mappers_merge = false,
   Hash $ldap_user_providers = {},
+  Hash $role_mappings = {},
+  Boolean $role_mapping_merge = false,
   Boolean $ldap_user_providers_merge = false,
   Boolean $flow_executions_merge = false,
   Boolean $with_sssd_support = false,
