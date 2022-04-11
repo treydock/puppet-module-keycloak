@@ -195,6 +195,10 @@
 #   Hash that is used to define keycloak_ldap_user_provider resources.
 # @param ldap_user_providers_merge
 #   Boolean that sets if `ldap_user_providers` should be merged from Hiera.
+# @param role_mappings
+#   Hash that is used to define keycloak_role_mapping resources.
+# @param role_mappers_merge
+#   Boolean that sets if `role_mappers` should be merged from Hiera.
 # @param with_sssd_support
 #   Boolean that determines if SSSD user provider support should be available
 # @param libunix_dbus_java_source
