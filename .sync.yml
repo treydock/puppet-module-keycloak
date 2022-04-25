@@ -17,6 +17,7 @@
       - rocky-8
       - debian-9
       - debian-10
+      - debian-11
       - ubuntu-1804
       - ubuntu-2004
     puppet:
@@ -84,6 +85,9 @@
 appveyor.yml:
   delete: true
 spec/acceptance/nodesets/debian-10.yml:
+  packages:
+    - iproute2
+spec/acceptance/nodesets/debian-11.yml:
   packages:
     - iproute2
 spec/acceptance/nodesets/ubuntu-1804.yml:
