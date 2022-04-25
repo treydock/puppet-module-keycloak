@@ -1,10 +1,9 @@
 ---
 require:
 - rubocop-rspec
-- rubocop-i18n
 AllCops:
   DisplayCopNames: true
-  TargetRubyVersion: '2.1'
+  TargetRubyVersion: '2.5'
   Include:
   - "./**/*.rb"
   Exclude:
@@ -21,13 +20,6 @@ AllCops:
 Metrics/LineLength:
   Description: People have wide screens, use them.
   Max: 200
-GetText:
-  Enabled: false
-GetText/DecorateString:
-  Description: We don't want to decorate test output.
-  Exclude:
-  - spec/**/*
-  Enabled: false
 RSpec/BeforeAfterAll:
   Description: Beware of using after(:all) as it may cause state to leak between tests.
     A necessary evil in acceptance testing.
@@ -40,10 +32,6 @@ Style/BlockDelimiters:
   Description: Prefer braces for chaining. Mostly an aesthetical choice. Better to
     be consistent then.
   EnforcedStyle: braces_for_chaining
-Style/BracesAroundHashParameters:
-  Description: Braces are required by Ruby 2.7. Cop removed from RuboCop v0.80.0.
-    See https://github.com/rubocop-hq/rubocop/pull/7643
-  Enabled: true
 Style/ClassAndModuleChildren:
   Description: Compact style reduces the required amount of indentation.
   EnforcedStyle: compact
@@ -72,10 +60,6 @@ Style/TrailingCommaInArguments:
   Description: Prefer always trailing comma on multiline argument lists. This makes
     diffs, and re-ordering nicer.
   EnforcedStyleForMultiline: comma
-Style/TrailingCommaInLiteral:
-  Description: Prefer always trailing comma on multiline literals. This makes diffs,
-    and re-ordering nicer.
-  EnforcedStyleForMultiline: comma
 Style/SymbolArray:
   Description: Using percent style obscures symbolic intent of array's contents.
   EnforcedStyle: brackets
@@ -93,15 +77,9 @@ Style/MethodCalledOnDoEndBlock:
   Enabled: true
 Style/StringMethods:
   Enabled: true
-GetText/DecorateFunctionMessage:
-  Enabled: false
-GetText/DecorateStringFormattingUsingInterpolation:
-  Enabled: false
-GetText/DecorateStringFormattingUsingPercent:
-  Enabled: false
 Layout/EndOfLine:
   Enabled: false
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
