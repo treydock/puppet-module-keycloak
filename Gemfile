@@ -41,6 +41,8 @@ group :system_tests do
   gem "beaker-rspec"
   gem "beaker-docker", *location_for(ENV['BEAKER_DOCKER_VERSION'] || '~> 0.7.0')
   gem "beaker-puppet"
+  gem "beaker-puppet_install_helper",                                            require: false
+  gem "beaker-module_install_helper",                                            require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']

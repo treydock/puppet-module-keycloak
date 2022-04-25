@@ -2,11 +2,11 @@
 .github/workflows/ci.yaml:
   unit_name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }} fixtures=${{ matrix.fixtures }})
   unit_includes:
-    - ruby: '2.5.7'
+    - ruby: '2.5.9'
       puppet: '6'
       fixtures: .fixtures-latest.yml
       allow_failure: true
-    - ruby: '2.7.0'
+    - ruby: '2.7.6'
       puppet: '7'
       fixtures: .fixtures-latest.yml
       allow_failure: true
