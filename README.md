@@ -565,5 +565,6 @@ This module has been tested on:
 * RedHat/CentOS 8 x86_64
 * Debian 9 x86_64
 * Debian 10 x86_64
+* Debian 11 x86_64
 * Ubuntu 18.04 x86_64
 * Ubuntu 20.04 x86_64
