@@ -24,23 +24,25 @@ group :development do
   gem "json", '= 2.0.4',                                         require: false if Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "json", '= 2.1.0',                                         require: false if Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   gem "rb-readline", '= 0.5.5',                                  require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "puppet-module-posix-default-r#{minor_version}", '~> 0.4', require: false, platforms: [:ruby]
-  gem "puppet-module-posix-dev-r#{minor_version}", '~> 0.4',     require: false, platforms: [:ruby]
-  gem "puppet-module-win-default-r#{minor_version}", '~> 0.4',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "puppet-module-win-dev-r#{minor_version}", '~> 0.4',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-posix-default-r#{minor_version}", '~> 1.0', require: false, platforms: [:ruby]
+  gem "puppet-module-posix-dev-r#{minor_version}", '~> 1.0',     require: false, platforms: [:ruby]
+  gem "puppet-module-win-default-r#{minor_version}", '~> 1.0',   require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "puppet-module-win-dev-r#{minor_version}", '~> 1.0',       require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-lint-param-docs",                                  require: false
   gem "github_changelog_generator",                              require: false
 end
 group :system_tests do
-  gem "puppet-module-posix-system-r#{minor_version}", '~> 0.5',                  require: false, platforms: [:ruby]
-  gem "puppet-module-win-system-r#{minor_version}", '~> 0.5',                    require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "beaker", *location_for(ENV['BEAKER_VERSION'] || '~> 4.0')
+  gem "puppet-module-posix-system-r#{minor_version}", '~> 1.0',                  require: false, platforms: [:ruby]
+  gem "puppet-module-win-system-r#{minor_version}", '~> 1.0',                    require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "beaker", *location_for(ENV['BEAKER_VERSION'] || '~> 4.29')
   gem "beaker-abs", *location_for(ENV['BEAKER_ABS_VERSION'] || '~> 0.1')
   gem "beaker-pe",                                                               require: false
   gem "beaker-hostgenerator"
   gem "beaker-rspec"
   gem "beaker-docker", *location_for(ENV['BEAKER_DOCKER_VERSION'] || '~> 0.7.0')
   gem "beaker-puppet"
+  gem "beaker-puppet_install_helper",                                            require: false
+  gem "beaker-module_install_helper",                                            require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']
