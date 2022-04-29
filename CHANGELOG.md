@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.18.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.18.0) (2022-04-29)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.17.0...v7.18.0)
+
+### Added
+
+- Allow postgresql \< 9.0.0 [\#242](https://github.com/treydock/puppet-module-keycloak/pull/242) ([saz](https://github.com/saz))
+
 ## [v7.17.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.17.0) (2022-04-25)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.16.0...v7.17.0)
