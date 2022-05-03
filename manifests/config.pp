@@ -40,7 +40,6 @@ class keycloak::config {
   } else {
     $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
-    $_subdir = 'domain'
     $_java_opts_path = "${keycloak::install_base}/bin/domain.conf"
 
     $_dirs = [
@@ -245,14 +244,14 @@ class keycloak::config {
     notify => Class['keycloak::service'],
   }
 
-  file { "${keycloak::install_base}/${_subdir}/configuration":
+  file { ${_server_conf_dir}:
     ensure => 'directory',
     owner  => $keycloak::user,
     group  => $keycloak::group,
     mode   => '0750',
   }
 
-  file { "${keycloak::install_base}/${_subdir}/configuration/profile.properties":
+  file { "${_server_conf_dir}/profile.properties":
     ensure  => 'file',
     owner   => $keycloak::user,
     group   => $keycloak::group,
