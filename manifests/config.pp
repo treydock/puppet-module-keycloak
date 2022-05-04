@@ -34,8 +34,8 @@ class keycloak::config {
   $_add_user_keycloak_state = "${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}"
 
   if $::keycloak::operating_mode != 'domain' {
+    $_server_conf_dir = "${keycloak::install_base}/standalone/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
-    $_subdir = 'standalone'
     $_java_opts_path = "${keycloak::install_base}/bin/standalone.conf"
   } else {
     $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
@@ -244,7 +244,7 @@ class keycloak::config {
     notify => Class['keycloak::service'],
   }
 
-  file { ${_server_conf_dir}:
+  file { $_server_conf_dir:
     ensure => 'directory',
     owner  => $keycloak::user,
     group  => $keycloak::group,
