@@ -263,6 +263,8 @@
 #  The address of the syslog server. Default 'localhost'.
 # @param syslog_format
 #  Syslog format. Either 'RFC3164' or 'RFC5424' Default 'RFC3164'.
+# @param auth_url_path
+#  The URL path for /auth
 class keycloak (
   Boolean $manage_install       = true,
   String $version               = '12.0.4',
@@ -371,6 +373,7 @@ class keycloak (
   Stdlib::Port $syslog_port = 514,
   Stdlib::Host $syslog_server_address = 'localhost',
   Enum['RFC3164', 'RFC5424'] $syslog_format = 'RFC3164',
+  String $auth_url_path = '/auth',
 ) {
 
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {
@@ -494,7 +497,7 @@ class keycloak (
     keycloak_port   => $http_port,
     use_ssl         => false,
     timeout         => 60,
-    test_url        => '/auth/realms/master/.well-known/openid-configuration',
+    test_url        => "${auth_url_path}/realms/master/.well-known/openid-configuration",
     require         => Class['keycloak::service'],
   }
 
