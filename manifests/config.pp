@@ -37,6 +37,10 @@ class keycloak::config {
     $_server_conf_dir = "${keycloak::install_base}/standalone/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
     $_java_opts_path = "${keycloak::install_base}/bin/standalone.conf"
+
+    $_dirs = [
+      $_server_conf_dir
+    ]
   } else {
     $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
@@ -45,15 +49,16 @@ class keycloak::config {
     $_dirs = [
       "${keycloak::install_base}/domain/servers",
       "${keycloak::install_base}/domain/servers/${keycloak::server_name}",
-      "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration",
+      $_server_conf_dir
     ]
 
-    file { $_dirs:
-      ensure => 'directory',
-      owner  => $keycloak::user,
-      group  => $keycloak::group,
-      mode   => '0755',
-    }
+  }
+
+  file { $_dirs:
+    ensure => 'directory',
+    owner  => $keycloak::user,
+    group  => $keycloak::group,
+    mode   => '0755',
   }
 
   exec { 'create-keycloak-admin':
@@ -242,13 +247,6 @@ class keycloak::config {
     line   => "JAVA_OPTS=\"${_java_opts}\"",
     match  => '^JAVA_OPTS=',
     notify => Class['keycloak::service'],
-  }
-
-  file { $_server_conf_dir:
-    ensure => 'directory',
-    owner  => $keycloak::user,
-    group  => $keycloak::group,
-    mode   => '0750',
   }
 
   file { "${_server_conf_dir}/profile.properties":
