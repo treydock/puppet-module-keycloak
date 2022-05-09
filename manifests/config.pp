@@ -45,8 +45,7 @@ class keycloak::config {
 
     $_dirs = [
       dirname(dirname($_server_conf_dir)),
-      dirname($_server_conf_dir),
-      $_server_conf_dir
+      dirname($_server_conf_dir)
     ]
 
   }
