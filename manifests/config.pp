@@ -47,8 +47,8 @@ class keycloak::config {
     $_java_opts_path = "${keycloak::install_base}/bin/domain.conf"
 
     $_dirs = [
-      "${keycloak::install_base}/domain/servers",
-      "${keycloak::install_base}/domain/servers/${keycloak::server_name}",
+      dirname(dirname($_server_conf_dir)),
+      dirname($_server_conf_dir),
       $_server_conf_dir
     ]
 
