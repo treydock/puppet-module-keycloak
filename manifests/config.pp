@@ -38,9 +38,6 @@ class keycloak::config {
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master"
     $_java_opts_path = "${keycloak::install_base}/bin/standalone.conf"
 
-    $_dirs = [
-      $_server_conf_dir
-    ]
   } else {
     $_server_conf_dir = "${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration"
     $_add_user_keycloak_args = "--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/" # lint:ignore:140chars
