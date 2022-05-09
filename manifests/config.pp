@@ -245,6 +245,13 @@ class keycloak::config {
     notify => Class['keycloak::service'],
   }
 
+  file { $_server_conf_dir:
+    ensure => 'directory',
+    owner  => $keycloak::user,
+    group  => $keycloak::group,
+    mode   => '0750',
+  }
+
   file { "${_server_conf_dir}/profile.properties":
     ensure  => 'file',
     owner   => $keycloak::user,
