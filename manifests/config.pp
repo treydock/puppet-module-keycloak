@@ -48,13 +48,12 @@ class keycloak::config {
       dirname($_server_conf_dir)
     ]
 
-  }
-
-  file { $_dirs:
-    ensure => 'directory',
-    owner  => $keycloak::user,
-    group  => $keycloak::group,
-    mode   => '0755',
+    file { $_dirs:
+      ensure => 'directory',
+      owner  => $keycloak::user,
+      group  => $keycloak::group,
+      mode   => '0755',
+    }
   }
 
   exec { 'create-keycloak-admin':
