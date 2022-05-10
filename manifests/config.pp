@@ -61,6 +61,7 @@ class keycloak::config {
     creates => $_add_user_keycloak_state,
     notify  => Class['keycloak::service'],
     user    => $keycloak::user,
+    require => File[$_server_conf_dir],
   }
 
   if $keycloak::operating_mode == 'domain' {
