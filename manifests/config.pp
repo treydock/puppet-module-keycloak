@@ -56,12 +56,18 @@ class keycloak::config {
     }
   }
 
+  file { $_server_conf_dir:
+    ensure => 'directory',
+    owner  => $keycloak::user,
+    group  => $keycloak::group,
+    mode   => '0750',
+  }
+
   exec { 'create-keycloak-admin':
     command => "${_add_user_keycloak_cmd} ${_add_user_keycloak_args} && touch ${_add_user_keycloak_state}",
     creates => $_add_user_keycloak_state,
     notify  => Class['keycloak::service'],
     user    => $keycloak::user,
-    require => File[$_server_conf_dir],
   }
 
   if $keycloak::operating_mode == 'domain' {
@@ -243,13 +249,6 @@ class keycloak::config {
     line   => "JAVA_OPTS=\"${_java_opts}\"",
     match  => '^JAVA_OPTS=',
     notify => Class['keycloak::service'],
-  }
-
-  file { $_server_conf_dir:
-    ensure => 'directory',
-    owner  => $keycloak::user,
-    group  => $keycloak::group,
-    mode   => '0750',
   }
 
   file { "${_server_conf_dir}/profile.properties":
