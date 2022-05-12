@@ -2,4 +2,4 @@
 
 KCADM="<%= scope['keycloak::install_base'] %>/bin/kcadm.sh"
 
-${KCADM} "$@" --no-config --server http://localhost:<%= scope['keycloak::http_port'] %>/auth --realm master --user <%= scope['keycloak::admin_user'] %> --password <%= scope['keycloak::admin_user_password'] %>
+${KCADM} "$@" --no-config --server http://localhost:<%= scope['keycloak::http_port'] %><%= scope['keycloak::auth_url_path'] %> --realm master --user <%= scope['keycloak::admin_user'] %> --password <%= scope['keycloak::admin_user_password'] %>
