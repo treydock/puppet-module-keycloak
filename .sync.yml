@@ -1,7 +1,7 @@
 ---
 Rakefile:
   changelog_since_tag: v6.26.0
-  changelog_max_issues: 50
+  changelog_max_issues: 1
 .github/workflows/ci.yaml:
   unit_name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }} fixtures=${{ matrix.fixtures }})
   unit_includes:

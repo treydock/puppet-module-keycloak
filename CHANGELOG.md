@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.19.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.19.0) (2022-05-13)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.18.0...v7.19.0)
+
+### Added
+
+- Allow changing auth URL via auth\_url\_path parameter [\#245](https://github.com/treydock/puppet-module-keycloak/pull/245) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- fix profile.properties file path in domain mode [\#244](https://github.com/treydock/puppet-module-keycloak/pull/244) ([surcouf](https://github.com/surcouf))
+
 ## [v7.18.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.18.0) (2022-04-29)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.17.0...v7.18.0)

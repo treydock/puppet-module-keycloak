@@ -173,6 +173,7 @@ The following parameters are available in the `keycloak` class:
 * [`syslog_port`](#syslog_port)
 * [`syslog_server_address`](#syslog_server_address)
 * [`syslog_format`](#syslog_format)
+* [`auth_url_path`](#auth_url_path)
 
 ##### <a name="manage_install"></a>`manage_install`
 
@@ -1063,6 +1064,14 @@ Data type: `Enum['RFC3164', 'RFC5424']`
 Syslog format. Either 'RFC3164' or 'RFC5424' Default 'RFC3164'.
 
 Default value: `'RFC3164'`
+
+##### <a name="auth_url_path"></a>`auth_url_path`
+
+Data type: `String`
+
+The URL path for /auth
+
+Default value: `'/auth'`
 
 ### <a name="keycloakconfig"></a>`keycloak::config`
 
