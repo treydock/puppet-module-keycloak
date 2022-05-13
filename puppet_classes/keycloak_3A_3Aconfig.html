@@ -540,19 +540,18 @@ class keycloak::config {
   $_add_user_keycloak_state = &quot;${keycloak::install_base}/.create-keycloak-admin-${keycloak::datasource_driver}&quot;
 
   if $::keycloak::operating_mode != &#39;domain&#39; {
+    $_server_conf_dir = &quot;${keycloak::install_base}/standalone/configuration&quot;
     $_add_user_keycloak_args = &quot;--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master&quot;
-    $_subdir = &#39;standalone&#39;
     $_java_opts_path = &quot;${keycloak::install_base}/bin/standalone.conf&quot;
+
   } else {
     $_server_conf_dir = &quot;${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration&quot;
     $_add_user_keycloak_args = &quot;--user ${keycloak::admin_user} --password ${keycloak::admin_user_password} --realm master --sc ${_server_conf_dir}/&quot; # lint:ignore:140chars
-    $_subdir = &#39;domain&#39;
     $_java_opts_path = &quot;${keycloak::install_base}/bin/domain.conf&quot;
 
     $_dirs = [
-      &quot;${keycloak::install_base}/domain/servers&quot;,
-      &quot;${keycloak::install_base}/domain/servers/${keycloak::server_name}&quot;,
-      &quot;${keycloak::install_base}/domain/servers/${keycloak::server_name}/configuration&quot;,
+      dirname(dirname($_server_conf_dir)),
+      dirname($_server_conf_dir)
     ]
 
     file { $_dirs:
@@ -568,6 +567,7 @@ class keycloak::config {
     creates =&gt; $_add_user_keycloak_state,
     notify  =&gt; Class[&#39;keycloak::service&#39;],
     user    =&gt; $keycloak::user,
+    require =&gt; File[$_server_conf_dir],
   }
 
   if $keycloak::operating_mode == &#39;domain&#39; {
@@ -751,14 +751,14 @@ class keycloak::config {
     notify =&gt; Class[&#39;keycloak::service&#39;],
   }
 
-  file { &quot;${keycloak::install_base}/${_subdir}/configuration&quot;:
+  file { $_server_conf_dir:
     ensure =&gt; &#39;directory&#39;,
     owner  =&gt; $keycloak::user,
     group  =&gt; $keycloak::group,
     mode   =&gt; &#39;0750&#39;,
   }
 
-  file { &quot;${keycloak::install_base}/${_subdir}/configuration/profile.properties&quot;:
+  file { &quot;${_server_conf_dir}/profile.properties&quot;:
     ensure  =&gt; &#39;file&#39;,
     owner   =&gt; $keycloak::user,
     group   =&gt; $keycloak::group,

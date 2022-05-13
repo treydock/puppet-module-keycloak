@@ -2030,6 +2030,24 @@ href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">d
       
     </li>
   
+    <li>
+      
+        <span class='name'>auth_url_path</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/auth&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The URL path for /auth</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -2041,8 +2059,6 @@ href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">d
         <pre class="lines">
 
 
-266
-267
 268
 269
 270
@@ -2278,10 +2294,13 @@ href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">d
 500
 501
 502
-503</pre>
+503
+504
+505
+506</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 266</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 268</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -2391,6 +2410,7 @@ class keycloak (
   Stdlib::Port $syslog_port = 514,
   Stdlib::Host $syslog_server_address = &#39;localhost&#39;,
   Enum[&#39;RFC3164&#39;, &#39;RFC5424&#39;] $syslog_format = &#39;RFC3164&#39;,
+  String $auth_url_path = &#39;/auth&#39;,
 ) {
 
   if ! ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;]) {
@@ -2514,7 +2534,7 @@ class keycloak (
     keycloak_port   =&gt; $http_port,
     use_ssl         =&gt; false,
     timeout         =&gt; 60,
-    test_url        =&gt; &#39;/auth/realms/master/.well-known/openid-configuration&#39;,
+    test_url        =&gt; &quot;${auth_url_path}/realms/master/.well-known/openid-configuration&quot;,
     require         =&gt; Class[&#39;keycloak::service&#39;],
   }
 
