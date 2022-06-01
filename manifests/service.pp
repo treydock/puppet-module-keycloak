@@ -11,8 +11,8 @@ class keycloak::service {
     ensure     => $keycloak::service_ensure,
     enable     => $keycloak::service_enable,
     name       => $keycloak::service_name,
-    hasstatus  => $keycloak::service_hasstatus,
-    hasrestart => $keycloak::service_hasrestart,
+    hasstatus  => true,
+    hasrestart => true,
   }
 
 }

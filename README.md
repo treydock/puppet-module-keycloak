@@ -6,6 +6,7 @@
 #### Table of Contents
 
 1. [Overview](#overview)
+    * [Upgrade to 8.x](#upgrade-to-8x)
     * [Supported Versions of Keycloak](#supported-versions-of-keycloak)
 2. [Usage - Configuration options](#usage)
     * [Keycloak](#keycloak)
@@ -32,6 +33,68 @@
 
 The keycloak module allows easy installation and management of Keycloak.
 
+### Upgrade to 8.x
+
+This module underwent major changes in the 8.0.0 release to support Keycloak that uses Quarkus.
+The initial 8.0.0 release of this module only supports Keycloak 18.x.
+
+Numerous parameters were changed or removed. Below is a list of the changes to parameters as well as some behavior changes.
+
+**Parameters removed**
+
+* `service_hasstatus`, `service_hasrestart`
+* `management_bind_address`
+* `java_opts_append`
+* `wildfly_user`, `wildfly_user_password`
+* `datasource_package`, `datasource_jar_source`, `datasource_jar_filename`, `datasource_module_source`, `datasource_xa_class`
+* `proxy_https`
+* `truststore_hostname_verification_policy`
+* `theme_static_max_age`, `theme_cache_themes`, `theme_cache_templates`
+* `operating_mode`, `enable_jdbc_ping`, `jboss_bind_public_address`, `jboss_bind_private_address`
+* `master_address`, `server_name`, `role`, `user_cache`
+* `tech_preview_features`
+* `auto_deploy_exploded`, `auto_deploy_zipped`
+* `syslog`, `syslog_app_name`, `syslog_facility`, `syslog_hostname`, `syslog_level`
+* `syslog_port`, `syslog_server_address`, `syslog_format`
+
+**Parameters renamed**
+
+* `service_bind_address` renamed to `http_host` and now defined in keycloak.conf instead of the systemd unit file
+* `manage_datasource` renamed to `manage_db`
+* `datasource_driver` renamed to `db`
+* `datasource_host` renamed to `db_url_host`
+* `datasource_port` renamed to `db_url_port`
+* `datasource_url` renamed to `db_url`
+* `datasource_dbname` renamed to `db_url_database`
+* `datasource_username` renamed to `db_username`
+* `datasource_password` renamed to `db_password`
+* `mysql_database_charset` renamed to `db_charset`
+* `auth_url_path` renamed to `validator_test_url` and default value changed
+
+**Parameters added**
+
+* `java_declare_method` to make it easier for EL platforms to deploy working Keycloak with correct Java
+* `java_package`, `java_home`, `java_alternative_path`, `java_alternative`
+* `start_command`
+* `configs`
+* `hostname`, `http_enabled`, `http_host`, `https_port`, `proxy`
+* `manage_db_server`
+* `features`
+* `features_disabled`
+* `providers_purge`
+
+**Behavior changes**
+
+This module no longer makes copies for DB driver jar files or install Java bindings, they are not necessary.
+
+When `db` is set to `mariadb`, `mysql` or `postgres` this module will by default install the database server to the Keycloak host. If you run a remote DB server for Keycloak, set `manage_db_server` and `manage_db` to `false`.
+
+There is no longer a need to define cluster or domain modes in the Quarkus deployment, all related functionality is removed.
+
+Some basic configuration options are exposed using parameters but most configuration options for Keycloak will need to be passed into the `configs` parameter.
+
+Drop Debian 9 support due to OS repos not having Java 11.
+
 ### Supported Versions of Keycloak
 
 Currently this module supports Keycloak version 12.x.
@@ -44,12 +107,13 @@ This module may work on earlier versions but this is the only version tested.
 | 6.x - 8.x        | 4.x - 5.x                       |
 | 8.x - 12.x       | 6.x                             |
 | 12.x - 16.x      | 7.x                             |
+| 18.x             | 8.x                             |
 
 ## Usage
 
 ### keycloak
 
-Install Keycloak using default `h2` database storage.
+Install Keycloak using default `dev-file` database.
 
 ```puppet
 class { 'keycloak': }
@@ -59,19 +123,19 @@ Install a specific version of Keycloak.
 
 ```puppet
 class { 'keycloak':
-  version           => '6.0.1',
-  datasource_driver => 'mysql',
+  version => '18.0.0',
+  db      => 'mysql',
 }
 ```
 
-Upgrading Keycloak version works by changing `version` parameter as long as the `datasource_driver` is not the default of `h2`. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to `/opt/keycloak`, applying all changes to new version and then restarting the `keycloak` service.
+Upgrading Keycloak version works by changing `version` parameter as long as the `db` parameter is not the default of `dev-file`. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to `/opt/keycloak`, applying all changes to new version and then restarting the `keycloak` service.
 
-If the previous `version` was `6.0.1` using the following will upgrade to `7.0.0`:
+If the previous `version` was `18.0.0` using the following will upgrade to `19.0.0`:
 
 ```puppet
 class { 'keycloak':
-  version           => '7.0.0',
-  datasource_driver => 'mysql',
+  version => '19.0.0',
+  db      => 'mysql',
 }
 ```
 
@@ -80,12 +144,12 @@ Install keycloak and use a local MySQL server for database storage
 ```puppet
 include mysql::server
 class { 'keycloak':
-  datasource_driver   => 'mysql',
-  datasource_host     => 'localhost',
-  datasource_port     => 3306,
-  datasource_dbname   => 'keycloak',
-  datasource_username => 'keycloak',
-  datasource_password => 'foobar',
+  db              => 'mysql',
+  db_url_host     => 'localhost',
+  db_url_port     => 3306,
+  db_url_database => 'keycloak',
+  db_username     => 'keycloak',
+  db_password     => 'foobar',
 }
 ```
 
@@ -94,33 +158,12 @@ The following example can be used to configure keycloak with a local PostgreSQL 
 ```puppet
 include postgresql::server
 class { 'keycloak':
-    datasource_driver     => 'postgresql',
-    datasource_host       => 'localhost',
-    datasource_port       => 5432,
-    datasource_dbname     => 'keycloak',
-    datasource_username   => 'keycloak',
-    datasource_password   => 'foobar',
-}
-```
-
-Configure keycloak to use a remote Oracle database.
-
-The parameter `datasource_jar_source` is always required with Oracle database.
-The jar is downloaded to the keycloak module dir and renamed to `datasource_jar_filename` or `'ojdbc8.jar'` as default value.
-
-With a special database configuration it may be more suitable to give the complete database url `'jdbc:oracle:thin:@[...]'` using the parameter `database_url` instead of `database_host`, `database_port` and `database_dbname`.
-The default value with Oracle database for `database_host` is `'localhost'` and the default value for `database_port` is here `1521`.
-
-```puppet
-class { 'keycloak':
-    datasource_driver       => 'oracle',
-    datasource_host         => 'oracleserver.mydomain.de',
-    datasource_port         => 1521,
-    datasource_dbname       => 'keycloak',
-    datasource_username     => 'keycloak',
-    datasource_password     => 'foobar',
-    datasource_jar_source   => 'https://oracle.com/path/to/driver.jar',
-    datasource_jar_filename => 'ojdbc8.jar',
+    db              => 'postgresql',
+    db_url_host     => 'localhost',
+    db_url_port     => 5432,
+    db_url_database => 'keycloak',
+    db_username     => 'keycloak',
+    db_password     => 'foobar',
 }
 ```
 
@@ -128,9 +171,8 @@ Configure a SSL certificate truststore and add a LDAP server's certificate to th
 
 ```puppet
 class { 'keycloak':
-  truststore                              => true,
-  truststore_password                     => 'supersecret',
-  truststore_hostname_verification_policy => 'STRICT',
+  truststore          => true,
+  truststore_password => 'supersecret',
 }
 keycloak::truststore::host { 'ldap1.example.com':
   certificate => '/etc/openldap/certs/0a00000.0',
@@ -141,7 +183,8 @@ Setup Keycloak to proxy through Apache HTTPS.
 
 ```puppet
 class { 'keycloak':
-  proxy_https => true
+  http_host => '127.0.0.1',
+  proxy     => 'edge',
 }
 apache::vhost { 'idp.example.com':
   servername => 'idp.example.com',
@@ -150,6 +193,7 @@ apache::vhost { 'idp.example.com':
   manage_docroot  => false,
   docroot         => '/var/www/html',
   proxy_preserve_host => true,
+  proxy_add_headers   => true,
   proxy_pass          => [
     {'path' => '/', 'url' => 'http://localhost:8080/'}
   ],
@@ -160,80 +204,6 @@ apache::vhost { 'idp.example.com':
   ssl_cert            => '/etc/pki/tls/certs/idp.example.com/crt',
   ssl_key             => '/etc/pki/tls/private/idp.example.com.key',
 }
-```
-Setup a domain master. (This needs a shared database, here '1.2.3.4').
-
-```puppet
-class { '::keycloak':
-  operating_mode        => 'domain',
-  role                  => 'master',
-  wildfly_user          => 'wildfly,
-  wildfly_user_password => 'changeme,
-  manage_datasource     => false,
-  datasource_driver     => 'postgresql',
-  datasource_host       => '1.2.3.4,
-  datasource_dbname     => 'keycloak,
-  datasource_username   => 'keycloak,
-  datasource_password   => 'changeme,
-  admin_user            => 'admin,
-  admin_user_password   => 'changeme,
-}
-```
-
-Setup a domain slave. (This needs a shared database, here '1.2.3.4').
-
-```puppet
-class { '::keycloak':
-  operating_mode        => 'domain',
-  role                  => 'slave',
-  wildfly_user          => 'wildfly,
-  wildfly_user_password => 'changeme,
-  manage_datasource     => false,
-  datasource_driver     => 'postgresql',
-  datasource_host       => '1.2.3.4,
-  datasource_dbname     => 'keycloak,
-  datasource_username   => 'keycloak,
-  datasource_password   => 'changeme,
-  admin_user            => 'admin,
-  admin_user_password   => 'changeme,
-}
-```
-**NOTE:** The wilfdly user and password need to match those in domain master. These are required for authentication in a cluster.
-
-Setup a host for theme development so that theme changes don't require a service restart, not recommended for production.
-
-```puppet
-class { 'keycloak':
-  theme_static_max_age  => -1,
-  theme_cache_themes    => false,
-  theme_cache_templates => false,
-}
-```
-
-Run Keycloak using standalone clustered mode (multicast):
-
-```puppet
-class { 'keycloak':
-  operating_mode => 'clustered',
-}
-```
-
-Run Keycloak using standalone clustered mode (JDBC_PING):
-
-> [JDBC_PING](http://jgroups.org/manual/#_jdbc_ping) uses port **7600** to ensure cluster members are discoverable by each other. This module **does NOT manage firewall changes**.
-
-```puppet
-class { 'keycloak':
-  operating_mode             => 'clustered',
-  datasource_driver          => 'postgresql',
-  enable_jdbc_ping           => true,
-  jboss_bind_private_address => $facts['networking']['ip'],
-  jboss_bind_public_address  => $facts['networking']['ip'],
-}
-
-# your puppet code to open port 7600
-# ...
-# ...
 ```
 
 ### Deploy SPI
@@ -562,8 +532,7 @@ keycloak_required_action { 'webauthn-register on master':
 This module has been tested on:
 
 * RedHat/CentOS 7 x86_64
-* RedHat/CentOS 8 x86_64
-* Debian 9 x86_64
+* RedHat/Rocky 8 x86_64
 * Debian 10 x86_64
 * Debian 11 x86_64
 * Ubuntu 18.04 x86_64

@@ -38,8 +38,8 @@ Puppet::Type.type(:keycloak_conn_validator).provide(:puppet_https) do
       # especially on the first install.  Therefore, our first connection attempt
       # may fail.  Here we have somewhat arbitrarily chosen to retry every 2
       # seconds until the configurable timeout has expired.
-      Puppet.notice('Failed to connect to keycloak; sleeping 2 seconds before retry')
-      sleep 2
+      Puppet.notice('Failed to connect to keycloak; sleeping 5 seconds before retry')
+      sleep 5
       success = validator.attempt_connection
     end
 

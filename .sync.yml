@@ -18,7 +18,6 @@ Rakefile:
     set:
       - centos-7
       - rocky-8
-      - debian-9
       - debian-10
       - debian-11
       - ubuntu-1804
@@ -27,58 +26,17 @@ Rakefile:
       - puppet6
       - puppet7
     keycloak_version:
-      - '12.0.4'
-      - '13.0.1'
-      - '14.0.0'
-      - '15.0.1'
-      - '16.1.1'
+      - '18.0.0'
     keycloak_full: ['no']
-    keycloak_domain_mode_cluster: ['no']
   acceptance_includes:
     - set: centos-7
       puppet: puppet6
-      keycloak_version: 12.0.4
+      keycloak_version: 18.0.0
       keycloak_full: 'yes'
     - set: centos-7
       puppet: puppet7
-      keycloak_version: 12.0.4
+      keycloak_version: 18.0.0
       keycloak_full: 'yes'
-    - set: centos-7
-      puppet: puppet7
-      keycloak_version: 13.0.1
-      keycloak_full: 'yes'
-    - set: centos-7
-      puppet: puppet7
-      keycloak_version: 14.0.0
-      keycloak_full: 'yes'
-    - set: centos-7
-      puppet: puppet7
-      keycloak_version: 15.0.1
-      keycloak_full: 'yes'
-    - set: centos-7
-      puppet: puppet7
-      keycloak_version: 16.1.1
-      keycloak_full: 'yes'
-    - set: centos-7-domain-mode-cluster
-      puppet: puppet7
-      keycloak_version: 12.0.4
-      keycloak_domain_mode_cluster: 'yes'
-    - set: centos-7-domain-mode-cluster
-      puppet: puppet7
-      keycloak_version: 13.0.1
-      keycloak_domain_mode_cluster: 'yes'
-    - set: centos-7-domain-mode-cluster
-      puppet: puppet7
-      keycloak_version: 14.0.0
-      keycloak_domain_mode_cluster: 'yes'
-    - set: centos-7-domain-mode-cluster
-      puppet: puppet7
-      keycloak_version: 15.0.1
-      keycloak_domain_mode_cluster: 'yes'
-    - set: centos-7-domain-mode-cluster
-      puppet: puppet7
-      keycloak_version: 16.1.1
-      keycloak_domain_mode_cluster: 'yes'
 .gitignore:
   paths:
     - /vagrant/.vagrant/
@@ -86,6 +44,8 @@ Rakefile:
 .gitlab-ci.yml:
   delete: true
 appveyor.yml:
+  delete: true
+spec/acceptance/nodesets/debian-9.yml:
   delete: true
 spec/acceptance/nodesets/debian-10.yml:
   packages:

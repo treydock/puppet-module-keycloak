@@ -4,10 +4,7 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
   context 'creates protocol_mapper' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'oidc on test':
         ensure => 'present',
@@ -89,10 +86,7 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
   context 'updates protocol_mapper' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'oidc on test':
         ensure => 'present',
@@ -169,10 +163,7 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
   context 'creates saml protocol_mapper' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'saml on test':
         ensure => 'present',

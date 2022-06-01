@@ -4,10 +4,7 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
   context 'bootstraps' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       EOS
 
       apply_manifest(pp, catch_failures: true)
@@ -29,7 +26,7 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
     end
 
     it 'has created a realm' do
-      on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://localhost:8080/auth --realm master --user admin --password changeme' do
+      on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://127.0.0.1:8080 --realm master --user admin --password changeme' do
         data = JSON.parse(stdout)
         expect(data['id']).to eq('test2')
       end
@@ -54,7 +51,7 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
     end
 
     it 'has updated a realm' do
-      on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://localhost:8080/auth --realm master --user admin --password changeme' do
+      on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://127.0.0.1:8080 --realm master --user admin --password changeme' do
         data = JSON.parse(stdout)
         expect(data['rememberMe']).to eq(true)
       end

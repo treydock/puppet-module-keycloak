@@ -4,10 +4,7 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
   context 'creates required action' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
 
       -> keycloak_realm { 'test': ensure => 'present' }
 
@@ -46,10 +43,7 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
   context 'updates required action' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
 
       -> keycloak_realm { 'test': ensure => 'present' }
 
@@ -79,10 +73,7 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
   context 'ensure => absent' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       -> keycloak_required_action { 'custom-alias on test':
         ensure   => 'absent'
       }

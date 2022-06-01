@@ -29,9 +29,7 @@ services = ifp
     it 'runs successfully' do
       pp = <<-EOS
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -59,9 +57,7 @@ services = ifp
     it 'runs successfully' do
       pp = <<-EOS
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -90,9 +86,7 @@ services = ifp
     it 'runs successfully' do
       pp = <<-EOS
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }

@@ -4,10 +4,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
   context 'creates client' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'foo on test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
@@ -172,10 +169,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
   context 'updates client' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
         realm                          => 'test',
@@ -274,10 +268,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
 
     it 'manages authorization services properly' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
         realm                          => 'test',

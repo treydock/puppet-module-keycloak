@@ -177,6 +177,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   end
 
   def check_theme_exists(theme, res)
+    return true if theme == 'keycloak'
     install_dir = self.class.install_dir || '/opt/keycloak'
     path = File.join(install_dir, 'themes', theme)
     return if File.exist?(path)

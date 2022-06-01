@@ -4,10 +4,7 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
   context 'creates client scopes' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak::client_scope::oidc { 'openid-connect-clients':
         realm => 'test',
@@ -75,10 +72,7 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
   context 'creates saml client scope' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak::client_scope::saml { 'saml-clients':
         realm => 'test',

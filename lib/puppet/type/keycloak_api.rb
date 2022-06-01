@@ -10,7 +10,7 @@ Puppet::Type.newtype(:keycloak_api) do
   @example Define API access
     keycloak_api { 'keycloak'
       install_dir  => '/opt/keycloak',
-      server       => 'http://localhost:8080/auth',
+      server       => 'http://localhost:8080',
       realm        => 'master',
       user         => 'admin',
       password     => 'changeme',
@@ -27,7 +27,7 @@ Puppet::Type.newtype(:keycloak_api) do
 
   newparam(:server) do
     desc 'Auth URL for Keycloak server'
-    defaultto('http://localhost:8080/auth')
+    defaultto('http://localhost:8080')
   end
 
   newparam(:realm) do

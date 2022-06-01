@@ -1,35 +1,21 @@
 fixtures:
-  repositories:
+  forge_modules:
     stdlib:
-      repo: https://github.com/puppetlabs/puppetlabs-stdlib.git
-      ref: 4.25.0
+      repo: puppetlabs/stdlib
     mysql:
-      repo: https://github.com/puppetlabs/puppetlabs-mysql.git
-      ref: v10.3.0
+      repo: puppetlabs/mysql
     postgresql:
-      repo: https://github.com/puppetlabs/puppetlabs-postgresql.git
-      ref: v7.4.0
+      repo: puppetlabs/postgresql
     java:
-      repo: https://github.com/puppetlabs/puppetlabs-java.git
-      ref: v7.3.0
+      repo: puppetlabs/java
     java_ks:
-      repo: https://github.com/puppetlabs/puppetlabs-java_ks.git
-      ref: 1.4.1
-    archive:
-      repo: https://github.com/voxpupuli/puppet-archive.git
-      ref: v0.5.1
-    systemd:
-      repo: https://github.com/voxpupuli/puppet-systemd.git
-      ref: 0.4.0
-    augeas_core:
-      repo: https://github.com/puppetlabs/puppetlabs-augeas_core.git
-      ref: 1.1.1
-    yumrepo_core:
-      repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
-      ref: 1.0.7
-    apt:
-      repo: https://github.com/puppetlabs/puppetlabs-apt.git
+      repo: puppetlabs/java_ks
+    # Dependency of other modules
     concat:
-      repo: https://github.com/puppetlabs/puppetlabs-concat.git
+      repo: puppetlabs/concat
+    archive:
+      repo: puppet/archive
+    systemd:
+      repo: puppet/systemd
   symlinks:
     keycloak: "#{source_dir}"
