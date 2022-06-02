@@ -126,7 +126,7 @@ Install a specific version of Keycloak.
 ```puppet
 class { 'keycloak':
   version => '18.0.0',
-  db      => 'mysql',
+  db      => 'mariadb',
 }
 ```
 
@@ -137,16 +137,16 @@ If the previous `version` was `18.0.0` using the following will upgrade to `19.0
 ```puppet
 class { 'keycloak':
   version => '19.0.0',
-  db      => 'mysql',
+  db      => 'mariadb',
 }
 ```
 
-Install keycloak and use a local MySQL server for database storage
+Install keycloak and use a local MariaDB server for database storage
 
 ```puppet
 include mysql::server
 class { 'keycloak':
-  db              => 'mysql',
+  db              => 'mariadb',
   db_url_host     => 'localhost',
   db_url_port     => 3306,
   db_url_database => 'keycloak',
@@ -160,7 +160,7 @@ The following example can be used to configure keycloak with a local PostgreSQL 
 ```puppet
 include postgresql::server
 class { 'keycloak':
-    db              => 'postgresql',
+    db              => 'postgres',
     db_url_host     => 'localhost',
     db_url_port     => 5432,
     db_url_database => 'keycloak',
