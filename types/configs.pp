@@ -24,6 +24,7 @@ type Keycloak::Configs = Struct[
     Optional['hostname-port'] => Stdlib::Port,
     Optional['hostname-strict'] => Boolean,
     Optional['hostname-strict-backchannel'] => Boolean,
+    Optional['hostname-strict-https'] => Boolean,
     Optional['http-enabled'] => Boolean,
     Optional['http-host'] => Stdlib::Host,
     Optional['http-port'] => Stdlib::Port,

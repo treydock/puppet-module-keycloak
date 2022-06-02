@@ -189,11 +189,11 @@ class { 'keycloak':
   proxy     => 'edge',
 }
 apache::vhost { 'idp.example.com':
-  servername => 'idp.example.com',
-  port        => '443',
-  ssl         => true,
-  manage_docroot  => false,
-  docroot         => '/var/www/html',
+  servername          => 'idp.example.com',
+  port                => '443',
+  ssl                 => true,
+  manage_docroot      => false,
+  docroot             => '/var/www/html',
   proxy_preserve_host => true,
   proxy_add_headers   => true,
   proxy_pass          => [
