@@ -85,6 +85,8 @@ Numerous parameters were changed or removed. Below is a list of the changes to p
 
 **Behavior changes**
 
+The SSSD parameters are no longer tested and likely won't work.  If you use the SSSD user provider and SSSD related parameters, please open an issue on this repo.
+
 This module no longer makes copies for DB driver jar files or install Java bindings, they are not necessary.
 
 When `db` is set to `mariadb`, `mysql` or `postgres` this module will by default install the database server to the Keycloak host. If you run a remote DB server for Keycloak, set `manage_db_server` and `manage_db` to `false`.
