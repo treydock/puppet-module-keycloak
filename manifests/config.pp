@@ -49,6 +49,7 @@ class keycloak::config {
     show_diff => false,
     content   => $config_content,
     source    => $keycloak::custom_config_source,
+    notify    => Class['keycloak::service'],
   }
 
   create_resources('keycloak::truststore::host', $keycloak::truststore_hosts)
@@ -68,5 +69,6 @@ class keycloak::config {
     purge   => $keycloak::providers_purge,
     force   => $keycloak::providers_purge,
     recurse => $keycloak::providers_purge,
+    notify  => Class['keycloak::service'],
   }
 }
