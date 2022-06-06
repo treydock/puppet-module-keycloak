@@ -387,6 +387,8 @@ keycloak::freeipa_ldap_mappers { 'ipa.example.org':
 
 ### keycloak\_sssd\_user\_provider
 
+**WARNING** This feature is no longer tested and likely stopped working when Keycloak began requiring Java 11+. If you rely on this feature, please open an issue or pull request. Likely need to build jna from source.
+
 Define SSSD user provider.  **NOTE** This type requires that SSSD be properly configured and Keycloak service restarted after SSSD ifp service is setup.  Also requires `keycloak` class be called with `with_sssd_support` set to `true`.
 
 ```puppet
