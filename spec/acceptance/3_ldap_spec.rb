@@ -4,10 +4,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
   context 'creates ldap' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'LDAP':
         realm => 'test',
@@ -98,10 +95,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
   context 'updates ldap' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'LDAP':
         realm => 'test',
@@ -180,10 +174,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
   context 'creates ldap with simple auth' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'LDAP2':
         realm => 'test',
@@ -219,10 +210,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
   context 'updates ldap auth' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'LDAP':
         realm => 'test',
@@ -258,10 +246,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
   context 'ensure => absent' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_ldap_mapper { 'full-name':
         ensure => 'absent',
         realm  => 'test',
@@ -285,10 +270,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
   context 'creates freeipa user provider' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak::freeipa_user_provider { 'ipa.example.org':
         ensure => 'present',
@@ -309,10 +291,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
   context 'creates freeipa ldap mappers' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak::freeipa_user_provider { 'ipa.example.org':
         ensure => 'present',

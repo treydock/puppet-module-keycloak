@@ -4,10 +4,7 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
   context 'creates protocol_mapper' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
         realm         => 'test',
@@ -83,10 +80,7 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
   context 'updates protocol_mapper' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
         realm         => 'test',

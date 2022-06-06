@@ -4,10 +4,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
   context 'creates flow' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak::spi_deployment { 'duo-spi':
         deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
         source        => 'file:///tmp/keycloak-duo-spi-jar-with-dependencies.jar',
@@ -120,10 +117,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
   context 'updates flow' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak::spi_deployment { 'duo-spi':
         deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
         source        => 'file:///tmp/keycloak-duo-spi-jar-with-dependencies.jar',
@@ -239,10 +233,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
   context 'ensure => absent' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_flow { 'browser-with-duo on test':
         ensure => 'absent',
       }

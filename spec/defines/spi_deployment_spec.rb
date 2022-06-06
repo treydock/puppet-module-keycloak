@@ -6,7 +6,7 @@ describe 'keycloak::spi_deployment' do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
-      let(:version) { '12.0.4' }
+      let(:version) { '18.0.0' }
       let(:title) { 'duo-spi' }
       let(:params) { { deployed_name: 'keycloak-duo-spi-jar-with-dependencies.jar', source: 'https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar' } }
 
@@ -20,29 +20,19 @@ describe 'keycloak::spi_deployment' do
           user: 'keycloak',
           group: 'keycloak',
           require: "File[/opt/keycloak-#{version}/tmp]",
-          before: "File[/opt/keycloak-#{version}/standalone/deployments/keycloak-duo-spi-jar-with-dependencies.jar]",
+          before: "File[/opt/keycloak-#{version}/providers/keycloak-duo-spi-jar-with-dependencies.jar]",
         )
       end
 
       it do
-        is_expected.to contain_file("/opt/keycloak-#{version}/standalone/deployments/keycloak-duo-spi-jar-with-dependencies.jar").with(
+        is_expected.to contain_file("/opt/keycloak-#{version}/providers/keycloak-duo-spi-jar-with-dependencies.jar").with(
           ensure: 'file',
           source: "/opt/keycloak-#{version}/tmp/keycloak-duo-spi-jar-with-dependencies.jar",
           owner: 'keycloak',
           group: 'keycloak',
           mode: '0644',
           require: 'Class[Keycloak::Install]',
-          notify: 'Exec[duo-spi-dodeploy]',
-        )
-      end
-
-      it do
-        is_expected.to contain_exec('duo-spi-dodeploy').with(
-          path: '/usr/bin:/bin:/usr/sbin:/sbin',
-          command: "touch /opt/keycloak-#{version}/standalone/deployments/keycloak-duo-spi-jar-with-dependencies.jar.dodeploy",
-          refreshonly: 'true',
-          user: 'keycloak',
-          group: 'keycloak',
+          notify: 'Class[Keycloak::Service]',
         )
       end
     end

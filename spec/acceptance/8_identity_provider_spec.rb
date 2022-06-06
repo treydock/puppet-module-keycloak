@@ -4,10 +4,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
   context 'creates identity provider' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_identity_provider { 'cilogon on test':
         ensure                         => 'present',
@@ -69,10 +66,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
   context 'updates identity provider' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_identity_provider { 'cilogon on test':
         ensure                         => 'present',
@@ -136,10 +130,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
   context 'ensure => absent' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_identity_provider { 'cilogon on test':
         ensure => 'absent',
       }

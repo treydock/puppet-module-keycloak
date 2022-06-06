@@ -17,18 +17,13 @@ define keycloak::truststore::host (
 
   include keycloak
 
-  if $keycloak::operating_mode == 'domain' {
-    $_path = "${keycloak::install_base}/domain/configuration/truststore.jks"
-  } else {
-    $_path = "${keycloak::install_base}/standalone/configuration/truststore.jks"
-  }
-
   java_ks { $name:
     ensure       => $ensure,
     certificate  => $certificate,
-    target       => $_path,
+    target       => $keycloak::truststore_file,
     password     => $keycloak::truststore_password,
     trustcacerts => true,
+    require      => Class['keycloak::install'],
     notify       => Class['keycloak::service'],
   }
 

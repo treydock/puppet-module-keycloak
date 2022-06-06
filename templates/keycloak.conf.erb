@@ -1,0 +1,12 @@
+# File managed by Puppet, do not edit
+<% scope['keycloak::config'].each_pair do |k,v| -%>
+  <%- next if [:undef, nil].include?(v) -%>
+  <%-
+  if v.is_a?(Array)
+    value = v.join(',')
+  else
+    value = v
+  end
+  -%>
+<%= k %>=<%= value %>
+<% end -%>

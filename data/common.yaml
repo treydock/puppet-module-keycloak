@@ -1,5 +1,3 @@
 ---
 keycloak::libunix_dbus_java_source: 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz'
 keycloak::service_name: 'keycloak'
-keycloak::service_hasstatus: true
-keycloak::service_hasrestart: true

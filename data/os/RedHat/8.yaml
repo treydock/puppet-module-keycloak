@@ -1,2 +1,0 @@
----
-keycloak::datasource_package: mariadb-java-client

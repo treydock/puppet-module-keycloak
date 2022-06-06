@@ -4,10 +4,7 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
   context 'removes role mappings for admin' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_role_mapping { 'admin':
         realm       => 'master',
 	name        => 'admin',
@@ -33,10 +30,7 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
   context 'adds role mappings for admin' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_role_mapping { 'admin':
         realm       => 'master',
 	name        => 'admin',
@@ -66,10 +60,7 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
 
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_role_mapping { 'testgroup':
         realm       => 'master',
 	name        => 'testgroup',

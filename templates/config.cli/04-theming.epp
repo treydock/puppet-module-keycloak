@@ -1,9 +1,0 @@
-<%- |
-Integer $theme_static_max_age,
-Boolean $theme_cache_themes,
-Boolean $theme_cache_templates,
-String $prefix
-| -%>
-<%= $prefix -%>/subsystem=keycloak-server/theme=defaults/:write-attribute(name=staticMaxAge, value=<%= $theme_static_max_age %>)
-<%= $prefix -%>/subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheThemes, value=<%= $theme_cache_themes %>)
-<%= $prefix -%>/subsystem=keycloak-server/theme=defaults/:write-attribute(name=cacheTemplates, value=<%= $theme_cache_templates %>)

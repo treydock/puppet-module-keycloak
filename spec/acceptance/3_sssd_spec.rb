@@ -1,6 +1,7 @@
 require 'spec_helper_acceptance'
 
-describe 'keycloak_sssd_user_provider:', if: RSpec.configuration.keycloak_full do
+# TODO: Figure out how to support SSSD user provider on latest Keycloak and Java 11
+describe 'keycloak_sssd_user_provider:', if: false do
   context 'bootstrap sssd' do
     it 'is successful' do
       on hosts, 'puppet resource package sssd-dbus ensure=installed'
@@ -29,9 +30,7 @@ services = ifp
     it 'runs successfully' do
       pp = <<-EOS
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -59,9 +58,7 @@ services = ifp
     it 'runs successfully' do
       pp = <<-EOS
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -90,9 +87,7 @@ services = ifp
     it 'runs successfully' do
       pp = <<-EOS
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }

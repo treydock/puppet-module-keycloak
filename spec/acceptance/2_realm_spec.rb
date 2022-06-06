@@ -4,10 +4,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
   context 'creates realm' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test':
         ensure                                   => 'present',
         smtp_server_host                         => 'smtp.example.org',
@@ -142,10 +139,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
   context 'updates realm' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test':
         ensure => 'present',
         remember_me => true,
@@ -269,10 +263,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
   context 'creates realm with invalid browser flow' do
     it 'runs successfully' do
       pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      class { 'keycloak': }
       keycloak_realm { 'test2':
         ensure       => 'present',
         browser_flow => 'Copy of browser',
