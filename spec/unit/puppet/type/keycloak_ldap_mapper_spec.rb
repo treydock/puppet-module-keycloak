@@ -5,7 +5,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     {
       name: 'foo',
       realm: 'test',
-      ldap: 'ldap-test',
+      ldap: 'ldap',
     }
   end
   let(:config) do
