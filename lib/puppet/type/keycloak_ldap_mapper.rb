@@ -45,6 +45,10 @@ Manage Keycloak LDAP attribute mappers
   end
 
   newparam(:ldap, namevar: true) do
+    desc 'Name of parent `keycloak_ldap_user_provider` resource'
+  end
+
+  newparam(:parent_id) do
     desc 'parentId'
   end
 
@@ -300,7 +304,7 @@ Manage Keycloak LDAP attribute mappers
     requires = []
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_ldap_user_provider'
-      if self[:ldap] == "#{resource[:resource_name]}-#{resource[:realm]}"
+      if self[:ldap] == resource[:resource_name] && self[:realm] == resource[:realm]
         requires << resource.name
       end
     end

@@ -11,7 +11,7 @@
   "name" : "full name",
   "providerId" : "full-name-ldap-mapper",
   "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-  "parentId" : "LDAP-test",
+  "parentId" : "bc7bc27f-39b8-5152-91c3-915d710fba35",
   "config" : {
     "read.only" : [ "true" ],
     "write.only" : [ "false" ],
@@ -22,7 +22,7 @@
   "name" : "modify date",
   "providerId" : "user-attribute-ldap-mapper",
   "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-  "parentId" : "LDAP-test",
+  "parentId" : "bc7bc27f-39b8-5152-91c3-915d710fba35",
   "config" : {
     "ldap.attribute" : [ "modifyTimestamp" ],
     "is.mandatory.in.ldap" : [ "false" ],
@@ -31,7 +31,7 @@
     "user.model.attribute" : [ "modifyTimestamp" ]
   }
 }, {
-  "id" : "LDAP-test",
+  "id" : "bc7bc27f-39b8-5152-91c3-915d710fba35",
   "name" : "LDAP",
   "providerId" : "ldap",
   "providerType" : "org.keycloak.storage.UserStorageProvider",
@@ -115,7 +115,7 @@
   "name" : "creation date",
   "providerId" : "user-attribute-ldap-mapper",
   "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-  "parentId" : "LDAP-test",
+  "parentId" : "bc7bc27f-39b8-5152-91c3-915d710fba35",
   "config" : {
     "ldap.attribute" : [ "createTimestamp" ],
     "is.mandatory.in.ldap" : [ "false" ],
@@ -128,7 +128,7 @@
   "name" : "username",
   "providerId" : "user-attribute-ldap-mapper",
   "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-  "parentId" : "LDAP-test",
+  "parentId" : "bc7bc27f-39b8-5152-91c3-915d710fba35",
   "config" : {
     "ldap.attribute" : [ "uid" ],
     "is.mandatory.in.ldap" : [ "true" ],
@@ -141,7 +141,7 @@
   "name" : "email",
   "providerId" : "user-attribute-ldap-mapper",
   "providerType" : "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
-  "parentId" : "LDAP-test",
+  "parentId" : "bc7bc27f-39b8-5152-91c3-915d710fba35",
   "config" : {
     "ldap.attribute" : [ "mail" ],
     "is.mandatory.in.ldap" : [ "false" ],

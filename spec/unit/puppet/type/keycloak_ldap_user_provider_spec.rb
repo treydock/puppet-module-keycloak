@@ -29,8 +29,8 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     expect(resource[:resource_name]).to eq('foo')
   end
 
-  it 'has id default to resource_name-realm' do
-    expect(resource[:id]).to eq('foo-test')
+  it 'id does not have default' do
+    expect(resource[:id]).to eq('b84ed8ed-a7b1-502f-83f6-90132e68adef')
   end
 
   it 'has realm' do
