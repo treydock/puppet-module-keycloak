@@ -41,6 +41,10 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     self.class.camelize(*args)
   end
 
+  def self.escape(str)
+    str.gsub(' ', '%20')
+  end
+
   def convert_property_value(value)
     case value
     when :true
@@ -58,7 +62,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     arguments = [action]
 
     # get-roles does not accept a resource as its parameter
-    arguments << CGI.escape(resource) if resource
+    arguments << self.escape(resource) if resource
 
     if ['create', 'update'].include?(action) && !print_id
       arguments << '-o'
@@ -66,7 +70,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
     if realm
       arguments << '-r'
-      arguments << CGI.escape(realm)
+      arguments << self.escape(realm)
     end
     if file
       arguments << '-f'
@@ -96,7 +100,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
       auth_arguments = [
         '--no-config',
         '--server', server,
-        '--realm', CGI.escape(self.realm),
+        '--realm', self.escape(self.realm),
         '--user', user,
         '--password', password
       ]
