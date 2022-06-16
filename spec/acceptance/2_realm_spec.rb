@@ -35,6 +35,9 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         offline_session_max_lifespan             => 5184000,
         offline_session_max_lifespan_enabled     => true,
       }
+      keycloak_realm { 'test realm':
+        ensure => 'present',
+      }
       EOS
 
       apply_manifest(pp, catch_failures: true)
@@ -51,6 +54,13 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['verifyEmail']).to eq(false)
         expect(data['sslRequired']).to eq('external')
         expect(data['editUsernameAllowed']).to eq(false)
+      end
+    end
+
+    it 'created a realm with space in name' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test%20realm' do
+        data = JSON.parse(stdout)
+        expect(data['id']).to eq('test realm')
       end
     end
 

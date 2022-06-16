@@ -58,7 +58,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     arguments = [action]
 
     # get-roles does not accept a resource as its parameter
-    arguments << resource if resource
+    arguments << CGI.escape(resource) if resource
 
     if ['create', 'update'].include?(action) && !print_id
       arguments << '-o'
@@ -66,7 +66,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
     if realm
       arguments << '-r'
-      arguments << realm
+      arguments << CGI.escape(realm)
     end
     if file
       arguments << '-f'
@@ -96,7 +96,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
       auth_arguments = [
         '--no-config',
         '--server', server,
-        '--realm', self.realm,
+        '--realm', CGI.escape(self.realm),
         '--user', user,
         '--password', password
       ]
