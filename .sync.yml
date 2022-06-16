@@ -15,8 +15,9 @@ Rakefile:
   acceptance_name: '${{ matrix.puppet }} ${{ matrix.set }} (keycloak=${{ matrix.keycloak_version }} full=${{ matrix.keycloak_full }})'
   acceptance_matrix:
     set:
-      - centos-7
-      - rocky-8
+      - el7
+      - el8
+      - el9
       - debian-10
       - debian-11
       - ubuntu-1804
@@ -28,11 +29,11 @@ Rakefile:
       - '18.0.0'
     keycloak_full: ['no']
   acceptance_includes:
-    - set: centos-7
+    - set: el7
       puppet: puppet6
       keycloak_version: 18.0.0
       keycloak_full: 'yes'
-    - set: centos-7
+    - set: el7
       puppet: puppet7
       keycloak_version: 18.0.0
       keycloak_full: 'yes'

@@ -56,8 +56,9 @@ jobs:
       fail-fast: false
       matrix:
         set:
-          - "centos-7"
-          - "rocky-8"
+          - "el7"
+          - "el8"
+          - "el9"
           - "debian-10"
           - "debian-11"
           - "ubuntu-1804"
@@ -70,11 +71,11 @@ jobs:
         keycloak_full:
           - "no"
         include:
-          - set: "centos-7"
+          - set: "el7"
             puppet: "puppet6"
             keycloak_version: "18.0.0"
             keycloak_full: "yes"
-          - set: "centos-7"
+          - set: "el7"
             puppet: "puppet7"
             keycloak_version: "18.0.0"
             keycloak_full: "yes"
