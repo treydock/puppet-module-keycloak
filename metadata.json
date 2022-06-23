@@ -1,6 +1,6 @@
 {
   "name": "treydock-keycloak",
-  "version": "7.19.0",
+  "version": "8.0.0",
   "author": "treydock",
   "summary": "Keycloak Puppet module",
   "license": "Apache-2.0",
@@ -80,5 +80,5 @@
   ],
   "pdk-version": "2.1.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g3ff6177"
+  "template-ref": "heads/master-0-gc7a5ca2"
 }

@@ -10,16 +10,15 @@
 
 * [`keycloak`](#keycloak): Manage Keycloak
 * [`keycloak::config`](#keycloakconfig): Private class.
-* [`keycloak::datasource::h2`](#keycloakdatasourceh2): Private class.
 * [`keycloak::install`](#keycloakinstall): Private class.
 * [`keycloak::service`](#keycloakservice): Private class.
 * [`keycloak::sssd`](#keycloaksssd): Private class.
 
 #### Private Classes
 
-* `keycloak::datasource::mysql`: Manage MySQL datasource
-* `keycloak::datasource::oracle`: Manage Oracle datasource
-* `keycloak::datasource::postgresql`: Manage postgresql datasource
+* `keycloak::db::mariadb`: Manage MySQL DB
+* `keycloak::db::mysql`: Manage MySQL DB
+* `keycloak::db::postgres`: Manage postgres DB
 * `keycloak::resources`: Define Keycloak resources
 
 ### Defined types
@@ -50,6 +49,10 @@
 * [`keycloak_role_mapping`](#keycloak_role_mapping): Attach realm roles to users and groups
 * [`keycloak_sssd_user_provider`](#keycloak_sssd_user_provider): Manage Keycloak SSSD user providers
 
+### Data types
+
+* [`Keycloak::Configs`](#keycloakconfigs): https://www.keycloak.org/server/all-config
+
 ## Classes
 
 ### <a name="keycloak"></a>`keycloak`
@@ -72,16 +75,24 @@ The following parameters are available in the `keycloak` class:
 * [`version`](#version)
 * [`package_url`](#package_url)
 * [`install_dir`](#install_dir)
+* [`java_declare_method`](#java_declare_method)
+* [`java_package`](#java_package)
+* [`java_home`](#java_home)
+* [`java_alternative_path`](#java_alternative_path)
+* [`java_alternative`](#java_alternative)
 * [`service_name`](#service_name)
 * [`service_ensure`](#service_ensure)
 * [`service_enable`](#service_enable)
-* [`service_hasstatus`](#service_hasstatus)
-* [`service_hasrestart`](#service_hasrestart)
-* [`service_bind_address`](#service_bind_address)
-* [`management_bind_address`](#management_bind_address)
 * [`java_opts`](#java_opts)
-* [`java_opts_append`](#java_opts_append)
+* [`start_command`](#start_command)
 * [`service_extra_opts`](#service_extra_opts)
+* [`service_environment_file`](#service_environment_file)
+* [`configs`](#configs)
+* [`hostname`](#hostname)
+* [`http_enabled`](#http_enabled)
+* [`http_host`](#http_host)
+* [`http_port`](#http_port)
+* [`https_port`](#https_port)
 * [`manage_user`](#manage_user)
 * [`user`](#user)
 * [`user_shell`](#user_shell)
@@ -91,31 +102,22 @@ The following parameters are available in the `keycloak` class:
 * [`system_user`](#system_user)
 * [`admin_user`](#admin_user)
 * [`admin_user_password`](#admin_user_password)
-* [`wildfly_user`](#wildfly_user)
-* [`wildfly_user_password`](#wildfly_user_password)
-* [`manage_datasource`](#manage_datasource)
-* [`datasource_driver`](#datasource_driver)
-* [`datasource_host`](#datasource_host)
-* [`datasource_port`](#datasource_port)
-* [`datasource_url`](#datasource_url)
-* [`datasource_dbname`](#datasource_dbname)
-* [`datasource_username`](#datasource_username)
-* [`datasource_password`](#datasource_password)
-* [`datasource_package`](#datasource_package)
-* [`datasource_jar_source`](#datasource_jar_source)
-* [`datasource_jar_filename`](#datasource_jar_filename)
-* [`datasource_module_source`](#datasource_module_source)
-* [`datasource_xa_class`](#datasource_xa_class)
-* [`mysql_database_charset`](#mysql_database_charset)
-* [`proxy_https`](#proxy_https)
+* [`manage_db`](#manage_db)
+* [`manage_db_server`](#manage_db_server)
+* [`db`](#db)
+* [`db_url_host`](#db_url_host)
+* [`db_url_port`](#db_url_port)
+* [`db_url`](#db_url)
+* [`db_url_database`](#db_url_database)
+* [`db_username`](#db_username)
+* [`db_password`](#db_password)
+* [`db_charset`](#db_charset)
+* [`features`](#features)
+* [`features_disabled`](#features_disabled)
 * [`truststore`](#truststore)
 * [`truststore_hosts`](#truststore_hosts)
 * [`truststore_password`](#truststore_password)
-* [`truststore_hostname_verification_policy`](#truststore_hostname_verification_policy)
-* [`http_port`](#http_port)
-* [`theme_static_max_age`](#theme_static_max_age)
-* [`theme_cache_themes`](#theme_cache_themes)
-* [`theme_cache_templates`](#theme_cache_templates)
+* [`proxy`](#proxy)
 * [`realms`](#realms)
 * [`realms_merge`](#realms_merge)
 * [`oidc_client_scopes`](#oidc_client_scopes)
@@ -150,30 +152,11 @@ The following parameters are available in the `keycloak` class:
 * [`manage_sssd_config`](#manage_sssd_config)
 * [`sssd_ifp_user_attributes`](#sssd_ifp_user_attributes)
 * [`restart_sssd`](#restart_sssd)
-* [`service_environment_file`](#service_environment_file)
-* [`operating_mode`](#operating_mode)
-* [`enable_jdbc_ping`](#enable_jdbc_ping)
-* [`jboss_bind_public_address`](#jboss_bind_public_address)
-* [`jboss_bind_private_address`](#jboss_bind_private_address)
-* [`role`](#role)
-* [`user_cache`](#user_cache)
-* [`tech_preview_features`](#tech_preview_features)
-* [`auto_deploy_exploded`](#auto_deploy_exploded)
-* [`auto_deploy_zipped`](#auto_deploy_zipped)
 * [`spi_deployments`](#spi_deployments)
+* [`providers_purge`](#providers_purge)
 * [`custom_config_content`](#custom_config_content)
 * [`custom_config_source`](#custom_config_source)
-* [`master_address`](#master_address)
-* [`server_name`](#server_name)
-* [`syslog`](#syslog)
-* [`syslog_app_name`](#syslog_app_name)
-* [`syslog_facility`](#syslog_facility)
-* [`syslog_hostname`](#syslog_hostname)
-* [`syslog_level`](#syslog_level)
-* [`syslog_port`](#syslog_port)
-* [`syslog_server_address`](#syslog_server_address)
-* [`syslog_format`](#syslog_format)
-* [`auth_url_path`](#auth_url_path)
+* [`validator_test_url`](#validator_test_url)
 
 ##### <a name="manage_install"></a>`manage_install`
 
@@ -192,7 +175,7 @@ Data type: `String`
 
 Version of Keycloak to install and manage.
 
-Default value: `'12.0.4'`
+Default value: `'18.0.0'`
 
 ##### <a name="package_url"></a>`package_url`
 
@@ -211,6 +194,49 @@ The directory of where to install Keycloak.
 Default is `/opt/keycloak-${version}`.
 
 Default value: ``undef``
+
+##### <a name="java_declare_method"></a>`java_declare_method`
+
+Data type: `Enum['include','class']`
+
+How to declare the Java class within this module
+The `include` value only includes the java class
+The `class` method defines the Java class and passes necessary parameters
+For RedHat base systems this defaults to `class`, other OSes default to `include`
+
+Default value: `'class'`
+
+##### <a name="java_package"></a>`java_package`
+
+Data type: `String[1]`
+
+Java package name, only used when `java_declare_method` is `class`
+
+Default value: `'java-11-openjdk-devel'`
+
+##### <a name="java_home"></a>`java_home`
+
+Data type: `Stdlib::Absolutepath`
+
+Java home path, only used when `java_declare_method` is `class`
+
+Default value: `'/usr/lib/jvm/java-11-openjdk'`
+
+##### <a name="java_alternative_path"></a>`java_alternative_path`
+
+Data type: `Stdlib::Absolutepath`
+
+Java alternative path, only used when `java_declare_method` is `class`
+
+Default value: `'/usr/lib/jvm/java-11-openjdk/bin/java'`
+
+##### <a name="java_alternative"></a>`java_alternative`
+
+Data type: `String[1]`
+
+Java alternative, only used when `java_declare_method` is `class`
+
+Default value: `'/usr/lib/jvm/java-11-openjdk/bin/java'`
 
 ##### <a name="service_name"></a>`service_name`
 
@@ -239,42 +265,6 @@ Default is `true`.
 
 Default value: ``true``
 
-##### <a name="service_hasstatus"></a>`service_hasstatus`
-
-Data type: `Boolean`
-
-Keycloak service hasstatus parameter.
-Default is `true`.
-
-Default value: ``true``
-
-##### <a name="service_hasrestart"></a>`service_hasrestart`
-
-Data type: `Boolean`
-
-Keycloak service hasrestart parameter.
-Default is `true`.
-
-Default value: ``true``
-
-##### <a name="service_bind_address"></a>`service_bind_address`
-
-Data type: `Stdlib::IP::Address`
-
-Bind address for Keycloak service.
-Default is '0.0.0.0'.
-
-Default value: `'0.0.0.0'`
-
-##### <a name="management_bind_address"></a>`management_bind_address`
-
-Data type: `Stdlib::IP::Address`
-
-Bind address for Keycloak management.
-Default is '0.0.0.0'.
-
-Default value: `'0.0.0.0'`
-
 ##### <a name="java_opts"></a>`java_opts`
 
 Data type: `Optional[Variant[String, Array]]`
@@ -283,13 +273,13 @@ Sets additional options to Java virtual machine environment variable.
 
 Default value: ``undef``
 
-##### <a name="java_opts_append"></a>`java_opts_append`
+##### <a name="start_command"></a>`start_command`
 
-Data type: `Boolean`
+Data type: `Enum['start','start-dev']`
 
-Determine if $JAVA_OPTS should be appended to when setting `java_opts` parameter
+The start command to use to run Keycloak
 
-Default value: ``true``
+Default value: `'start'`
 
 ##### <a name="service_extra_opts"></a>`service_extra_opts`
 
@@ -298,6 +288,62 @@ Data type: `Optional[String]`
 Additional options added to the end of the service command-line.
 
 Default value: ``undef``
+
+##### <a name="service_environment_file"></a>`service_environment_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+Path to the file with environment variables for the systemd service
+
+Default value: ``undef``
+
+##### <a name="configs"></a>`configs`
+
+Data type: `Keycloak::Configs`
+
+Define additional configs for keycloak.conf
+
+Default value: `{}`
+
+##### <a name="hostname"></a>`hostname`
+
+Data type: `Stdlib::Host`
+
+hostname to set in keycloak.conf
+
+Default value: `$facts['networking']['fqdn']`
+
+##### <a name="http_enabled"></a>`http_enabled`
+
+Data type: `Boolean`
+
+Whether to enable HTTP
+
+Default value: ``true``
+
+##### <a name="http_host"></a>`http_host`
+
+Data type: `Stdlib::IP::Address`
+
+HTTP host
+
+Default value: `'0.0.0.0'`
+
+##### <a name="http_port"></a>`http_port`
+
+Data type: `Stdlib::Port`
+
+HTTP port
+
+Default value: `8080`
+
+##### <a name="https_port"></a>`https_port`
+
+Data type: `Stdlib::Port`
+
+HTTPS port
+
+Default value: `8443`
 
 ##### <a name="manage_user"></a>`manage_user`
 
@@ -378,157 +424,101 @@ Default is `changeme`.
 
 Default value: `'changeme'`
 
-##### <a name="wildfly_user"></a>`wildfly_user`
-
-Data type: `Optional[String]`
-
-Wildfly user. Required for domain mode.
-
-Default value: ``undef``
-
-##### <a name="wildfly_user_password"></a>`wildfly_user_password`
-
-Data type: `Optional[String]`
-
-Wildfly user password. Required for domain mode.
-
-Default value: ``undef``
-
-##### <a name="manage_datasource"></a>`manage_datasource`
+##### <a name="manage_db"></a>`manage_db`
 
 Data type: `Boolean`
 
-Boolean that determines if configured datasource will be managed.
-Default is `true`.
+Boolean that determines if configured database will be managed.
 
 Default value: ``true``
 
-##### <a name="datasource_driver"></a>`datasource_driver`
-
-Data type: `Enum['h2', 'mysql', 'oracle', 'postgresql']`
-
-Datasource driver to use for Keycloak.
-Valid values are `h2`, `mysql`, 'oracle' and 'postgresql'
-Default is `h2`.
-
-Default value: `'h2'`
-
-##### <a name="datasource_host"></a>`datasource_host`
-
-Data type: `Optional[String]`
-
-Datasource host.
-Only used when datasource_driver is `mysql`, 'oracle' or 'postgresql'
-Default is `localhost` for MySQL.
-
-Default value: ``undef``
-
-##### <a name="datasource_port"></a>`datasource_port`
-
-Data type: `Optional[Integer]`
-
-Datasource port.
-Only used when datasource_driver is `mysql`, 'oracle' or 'postgresql'
-Default is `3306` for MySQL.
-
-Default value: ``undef``
-
-##### <a name="datasource_url"></a>`datasource_url`
-
-Data type: `Optional[String]`
-
-Datasource url.
-Default datasource URLs are defined in init class.
-
-Default value: ``undef``
-
-##### <a name="datasource_dbname"></a>`datasource_dbname`
-
-Data type: `String`
-
-Datasource database name.
-Default is `keycloak`.
-
-Default value: `'keycloak'`
-
-##### <a name="datasource_username"></a>`datasource_username`
-
-Data type: `String`
-
-Datasource user name.
-Default is `sa`.
-
-Default value: `'sa'`
-
-##### <a name="datasource_password"></a>`datasource_password`
-
-Data type: `String`
-
-Datasource user password.
-Default is `sa`.
-
-Default value: `'sa'`
-
-##### <a name="datasource_package"></a>`datasource_package`
-
-Data type: `Optional[String]`
-
-Package to add specified datasource support
-
-Default value: ``undef``
-
-##### <a name="datasource_jar_source"></a>`datasource_jar_source`
-
-Data type: `Optional[String]`
-
-Source for datasource JDBC driver - could be puppet link or local file on the node.
-Default is dependent on value for `datasource_driver`.
-This parameter is required if `datasource_driver` is `oracle`.
-
-Default value: ``undef``
-
-##### <a name="datasource_jar_filename"></a>`datasource_jar_filename`
-
-Data type: `Optional[String]`
-
-Specify the filename of the destination datasource jar in the module dir of keycloak.
-This parameter is only working at the moment if `datasource_driver` is `oracle`.
-
-Default value: ``undef``
-
-##### <a name="datasource_module_source"></a>`datasource_module_source`
-
-Data type: `Optional[String]`
-
-Source for datasource module.xml. Default depends on `datasource_driver`.
-
-Default value: ``undef``
-
-##### <a name="datasource_xa_class"></a>`datasource_xa_class`
-
-Data type: `Optional[String]`
-
-MySQL Connector/J JDBC driver xa-datasource class name
-
-Default value: ``undef``
-
-##### <a name="mysql_database_charset"></a>`mysql_database_charset`
-
-Data type: `String`
-
-MySQL database charset
-
-Default value: `'utf8'`
-
-##### <a name="proxy_https"></a>`proxy_https`
+##### <a name="manage_db_server"></a>`manage_db_server`
 
 Data type: `Boolean`
 
-Boolean that sets if HTTPS proxy should be enabled.
-Set to `true` if proxying traffic through Apache.
-Default is `false`.
+Include the DB server class for postgres, mariadb or mysql
 
-Default value: ``false``
+Default value: ``true``
+
+##### <a name="db"></a>`db`
+
+Data type: `Enum['dev-file', 'dev-mem', 'mariadb', 'mysql', 'oracle', 'postgres']`
+
+Database driver to use for Keycloak.
+
+Default value: `'dev-file'`
+
+##### <a name="db_url_host"></a>`db_url_host`
+
+Data type: `Optional[Stdlib::Host]`
+
+Database host.
+
+Default value: ``undef``
+
+##### <a name="db_url_port"></a>`db_url_port`
+
+Data type: `Optional[Stdlib::Port]`
+
+Database port.
+
+Default value: ``undef``
+
+##### <a name="db_url"></a>`db_url`
+
+Data type: `Optional[String[1]]`
+
+Database url.
+
+Default value: ``undef``
+
+##### <a name="db_url_database"></a>`db_url_database`
+
+Data type: `String[1]`
+
+Database name.
+
+Default value: `'keycloak'`
+
+##### <a name="db_username"></a>`db_username`
+
+Data type: `String[1]`
+
+Database user name.
+
+Default value: `'keycloak'`
+
+##### <a name="db_password"></a>`db_password`
+
+Data type: `String[1]`
+
+Database user password.
+
+Default value: `'changeme'`
+
+##### <a name="db_charset"></a>`db_charset`
+
+Data type: `String`
+
+MySQL and MariaDB database charset
+
+Default value: `'utf8'`
+
+##### <a name="features"></a>`features`
+
+Data type: `Optional[Array[String[1]]]`
+
+Keycloak features to enable
+
+Default value: ``undef``
+
+##### <a name="features_disabled"></a>`features_disabled`
+
+Data type: `Optional[Array[String[1]]]`
+
+Keycloak features to disable
+
+Default value: ``undef``
 
 ##### <a name="truststore"></a>`truststore`
 
@@ -557,50 +547,13 @@ Default is `keycloak`.
 
 Default value: `'keycloak'`
 
-##### <a name="truststore_hostname_verification_policy"></a>`truststore_hostname_verification_policy`
+##### <a name="proxy"></a>`proxy`
 
-Data type: `Enum['WILDCARD', 'STRICT', 'ANY']`
+Data type: `Enum['edge','reencrypt','passthrough','none']`
 
-Valid values are `WILDCARD`, `STRICT`, and `ANY`.
-Default is `WILDCARD`.
+Type of proxy to use for Keycloak
 
-Default value: `'WILDCARD'`
-
-##### <a name="http_port"></a>`http_port`
-
-Data type: `Integer`
-
-HTTP port used by Keycloak.
-Default is `8080`.
-
-Default value: `8080`
-
-##### <a name="theme_static_max_age"></a>`theme_static_max_age`
-
-Data type: `Integer`
-
-Max cache age in seconds of static content.
-Default is `2592000`.
-
-Default value: `2592000`
-
-##### <a name="theme_cache_themes"></a>`theme_cache_themes`
-
-Data type: `Boolean`
-
-Boolean that sets if themes should be cached.
-Default is `true`.
-
-Default value: ``true``
-
-##### <a name="theme_cache_templates"></a>`theme_cache_templates`
-
-Data type: `Boolean`
-
-Boolean that sets if templates should be cached.
-Default is `true`.
-
-Default value: ``true``
+Default value: `'none'`
 
 ##### <a name="realms"></a>`realms`
 
@@ -877,90 +830,6 @@ Boolean that determines if SSSD should be restarted
 
 Default value: ``true``
 
-##### <a name="service_environment_file"></a>`service_environment_file`
-
-Data type: `Optional[Stdlib::Absolutepath]`
-
-Path to the file with environment variables for the systemd service
-
-Default value: ``undef``
-
-##### <a name="operating_mode"></a>`operating_mode`
-
-Data type: `Enum['standalone', 'clustered', 'domain']`
-
-Keycloak operating mode deployment
-
-Default value: `'standalone'`
-
-##### <a name="enable_jdbc_ping"></a>`enable_jdbc_ping`
-
-Data type: `Boolean`
-
-Use JDBC_PING to discover the nodes and manage the replication of data
-  More info: http://jgroups.org/manual/#_jdbc_ping
-Only applies when `operating_mode` is either `clustered` or `domain`
-JDBC_PING uses port 7600 to ensure cluster members are discoverable by each other
-This module does not manage firewall changes
-
-Default value: ``false``
-
-##### <a name="jboss_bind_public_address"></a>`jboss_bind_public_address`
-
-Data type: `Stdlib::IP::Address`
-
-JBoss bind public IP address
-
-Default value: `$facts['networking']['ip']`
-
-##### <a name="jboss_bind_private_address"></a>`jboss_bind_private_address`
-
-Data type: `Stdlib::IP::Address`
-
-JBoss bind private IP address
-
-Default value: `$facts['networking']['ip']`
-
-##### <a name="role"></a>`role`
-
-Data type: `Optional[Enum['master', 'slave']]`
-
-Role when operating mode is domain.
-
-Default value: ``undef``
-
-##### <a name="user_cache"></a>`user_cache`
-
-Data type: `Boolean`
-
-Boolean that determines if userCache is enabled
-
-Default value: ``true``
-
-##### <a name="tech_preview_features"></a>`tech_preview_features`
-
-Data type: `Array`
-
-List of technology Preview features to enable
-
-Default value: `[]`
-
-##### <a name="auto_deploy_exploded"></a>`auto_deploy_exploded`
-
-Data type: `Boolean`
-
-Set if exploded deployements will be auto deployed
-
-Default value: ``false``
-
-##### <a name="auto_deploy_zipped"></a>`auto_deploy_zipped`
-
-Data type: `Boolean`
-
-Set if zipped deployments will be auto deployed
-
-Default value: ``true``
-
 ##### <a name="spi_deployments"></a>`spi_deployments`
 
 Data type: `Hash`
@@ -969,11 +838,19 @@ Hash used to define keycloak::spi_deployment resources
 
 Default value: `{}`
 
+##### <a name="providers_purge"></a>`providers_purge`
+
+Data type: `Boolean`
+
+Purge the providers directory of unmanaged SPIs
+
+Default value: ``true``
+
 ##### <a name="custom_config_content"></a>`custom_config_content`
 
 Data type: `Optional[String]`
 
-Custom configuration content to be added to config.cli
+Custom configuration content to be added to keycloak.conf
 
 Default value: ``undef``
 
@@ -981,103 +858,20 @@ Default value: ``undef``
 
 Data type: `Optional[Variant[String, Array]]`
 
-Custom configuration source file to be added to config.cli
+Custom configuration source file to be added to keycloak.conf
 
 Default value: ``undef``
 
-##### <a name="master_address"></a>`master_address`
-
-Data type: `Optional[Stdlib::Host]`
-
-IP address of the master in domain mode
-
-Default value: ``undef``
-
-##### <a name="server_name"></a>`server_name`
+##### <a name="validator_test_url"></a>`validator_test_url`
 
 Data type: `String`
 
-Server name in domain mode. Defaults to hostname.
+The URL path for validator testing
+Only necessary to set if the URL path to Keycloak is modified
 
-Default value: `$facts['hostname']`
-
-##### <a name="syslog"></a>`syslog`
-
-Data type: `Boolean`
-
-Enable syslog. Default false.
-
-Default value: ``false``
-
-##### <a name="syslog_app_name"></a>`syslog_app_name`
-
-Data type: `String`
-
-Syslog app name. Default 'keycloak'.
-
-Default value: `'keycloak'`
-
-##### <a name="syslog_facility"></a>`syslog_facility`
-
-Data type: `String`
-
-Syslog facility. Default 'user-level'. See https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html
-
-Default value: `'user-level'`
-
-##### <a name="syslog_hostname"></a>`syslog_hostname`
-
-Data type: `Stdlib::Host`
-
-Syslog hostname of the server. Default $facts['fqdn'].
-
-Default value: `$facts['fqdn']`
-
-##### <a name="syslog_level"></a>`syslog_level`
-
-Data type: `String`
-
-Syslog level. Default 'INFO'. See https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html
-
-Default value: `'INFO'`
-
-##### <a name="syslog_port"></a>`syslog_port`
-
-Data type: `Stdlib::Port`
-
-The port the syslog server is listening on. Default '514'.
-
-Default value: `514`
-
-##### <a name="syslog_server_address"></a>`syslog_server_address`
-
-Data type: `Stdlib::Host`
-
-The address of the syslog server. Default 'localhost'.
-
-Default value: `'localhost'`
-
-##### <a name="syslog_format"></a>`syslog_format`
-
-Data type: `Enum['RFC3164', 'RFC5424']`
-
-Syslog format. Either 'RFC3164' or 'RFC5424' Default 'RFC3164'.
-
-Default value: `'RFC3164'`
-
-##### <a name="auth_url_path"></a>`auth_url_path`
-
-Data type: `String`
-
-The URL path for /auth
-
-Default value: `'/auth'`
+Default value: `'/realms/master/.well-known/openid-configuration'`
 
 ### <a name="keycloakconfig"></a>`keycloak::config`
-
-Private class.
-
-### <a name="keycloakdatasourceh2"></a>`keycloak::datasource::h2`
 
 Private class.
 
@@ -1210,12 +1004,11 @@ Roles DN
 
 ##### <a name="parent_id"></a>`parent_id`
 
-Data type: `Optional[String]`
+Data type: `String`
 
-Identifier (parentId) for the LDAP provider to add this mapper to.
-Will be passed to the $ldap parameter in keycloak_ldap_mapper.
+Used to identify the parent LDAP user provider, name used with keycloak::freeipa_user_provider
 
-Default value: ``undef``
+Default value: `$title`
 
 ### <a name="keycloakfreeipa_user_provider"></a>`keycloak::freeipa_user_provider`
 
@@ -1484,7 +1277,7 @@ Type that configures API connection parameters for other keycloak types that use
 ```puppet
 keycloak_api { 'keycloak'
   install_dir  => '/opt/keycloak',
-  server       => 'http://localhost:8080/auth',
+  server       => 'http://localhost:8080',
   realm        => 'master',
   user         => 'admin',
   password     => 'changeme',
@@ -1531,7 +1324,7 @@ Default value: `master`
 
 Auth URL for Keycloak server
 
-Default value: `http://localhost:8080/auth`
+Default value: `http://localhost:8080`
 
 ##### <a name="use_wrapper"></a>`use_wrapper`
 
@@ -2799,6 +2592,7 @@ The following parameters are available in the `keycloak_ldap_mapper` type.
 * [`id`](#id)
 * [`ldap`](#ldap)
 * [`name`](#name)
+* [`parent_id`](#parent_id)
 * [`provider`](#provider)
 * [`realm`](#realm)
 * [`resource_name`](#resource_name)
@@ -2810,13 +2604,17 @@ Id.
 
 ##### <a name="ldap"></a>`ldap`
 
-parentId
+Name of parent `keycloak_ldap_user_provider` resource
 
 ##### <a name="name"></a>`name`
 
 namevar
 
 The LDAP mapper name
+
+##### <a name="parent_id"></a>`parent_id`
+
+parentId
 
 ##### <a name="provider"></a>`provider`
 
@@ -3021,7 +2819,7 @@ The following parameters are available in the `keycloak_ldap_user_provider` type
 
 ##### <a name="id"></a>`id`
 
-Id. Defaults to "`resource_name`-`realm`"
+Id
 
 ##### <a name="name"></a>`name`
 
@@ -3903,4 +3701,68 @@ parentId
 ##### <a name="resource_name"></a>`resource_name`
 
 The SSSD user provider name. Defaults to `name`.
+
+## Data types
+
+### <a name="keycloakconfigs"></a>`Keycloak::Configs`
+
+https://www.keycloak.org/server/all-config
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['cache'] => Enum['local', 'ispn'],
+    Optional['cache-config-file'] => Stdlib::Absolutepath,
+    Optional['cache-stack'] => Enum['tcp','udp','kubernetes','ec2','azure','google'],
+    Optional['db'] => Enum['dev-file','dev-mem','mariadb','mysql','oracle','postgres'],
+    Optional['db-password'] => String[1],
+    Optional['db-pool-initial-size'] => Integer,
+    Optional['db-pool-max-size'] => Integer,
+    Optional['db-pool-min-size'] => Integer,
+    Optional['db-schema'] => String[1],
+    Optional['db-url'] => String[1],
+    Optional['db-url-database'] => String[1],
+    Optional['db-url-host'] => Stdlib::Host,
+    Optional['db-url-port'] => Stdlib::Port,
+    Optional['db-url-properties'] => String[1],
+    Optional['db-username'] => String[1],
+    Optional['transaction-xa-enabled'] => Boolean,
+    Optional['features'] => Array[String[1]],
+    Optional['features-disabled'] => Array[String[1]],
+    Optional['hostname'] => Stdlib::Host,
+    Optional['hostname-path'] => String[1],
+    Optional['hostname-port'] => Stdlib::Port,
+    Optional['hostname-strict'] => Boolean,
+    Optional['hostname-strict-backchannel'] => Boolean,
+    Optional['hostname-strict-https'] => Boolean,
+    Optional['http-enabled'] => Boolean,
+    Optional['http-host'] => Stdlib::Host,
+    Optional['http-port'] => Stdlib::Port,
+    Optional['http-relative-path'] => String[1],
+    Optional['https-certificate-file'] => Stdlib::Absolutepath,
+    Optional['https-certificate-key-file'] => Stdlib::Absolutepath,
+    Optional['https-cipher-suites'] => Array[String[1]],
+    Optional['https-client-auth'] => Enum['none','request','required'],
+    Optional['https-key-store-file'] => Stdlib::Absolutepath,
+    Optional['https-key-store-password'] => String[1],
+    Optional['https-key-store-type'] => String[1],
+    Optional['https-port'] => Stdlib::Port,
+    Optional['https-protocols'] => Array[String[1]],
+    Optional['https-trust-store-file'] => Stdlib::Absolutepath,
+    Optional['https-trust-store-password'] => String[1],
+    Optional['https-trust-store-type'] => String[1],
+    Optional['health-enabled'] => Boolean,
+    Optional['metrics-enabled'] => Boolean,
+    Optional['proxy'] => Enum['edge','reencrypt','passthrough','none'],
+    Optional['vault'] => Enum['vault','vault-dir'],
+    Optional['log'] => Array[Enum['console','file']],
+    Optional['log-console-color'] => Boolean,
+    Optional['log-console-format'] => String[1],
+    Optional['log-console-output'] => Enum['default','json'],
+    Optional['log-file'] => Stdlib::Absolutepath,
+    Optional['log-file-format'] => String[1],
+    Optional['log-level'] => String[1],
+  }]
+```
 

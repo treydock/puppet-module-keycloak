@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.0.0) (2022-06-24)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.19.0...v8.0.0)
+
+### Changed
+
+- Major rewrite to support Keycloak 18+ using Quarkus \(see README for breaking changes\) [\#247](https://github.com/treydock/puppet-module-keycloak/pull/247) ([treydock](https://github.com/treydock))
+- BREAKING: Change how id is set for keycloak\_ldap\_user\_provider \(See README\) [\#76](https://github.com/treydock/puppet-module-keycloak/pull/76) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Fix realm and other resources to handle names with spaces [\#249](https://github.com/treydock/puppet-module-keycloak/pull/249) ([treydock](https://github.com/treydock))
+
 ## [v7.19.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.19.0) (2022-05-13)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.18.0...v7.19.0)
@@ -246,20 +259,6 @@ All notable changes to this project will be documented in this file. The format 
 ### Added
 
 - FreeIPA/LDAP provider related regression fixes [\#189](https://github.com/treydock/puppet-module-keycloak/pull/189) ([mattock](https://github.com/mattock))
-
-## [v7.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v7.0.0) (2021-03-10)
-
-[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v6.26.0...v7.0.0)
-
-### Changed
-
-- Change default Keycloak version to 12.0.4 [\#188](https://github.com/treydock/puppet-module-keycloak/pull/188) ([treydock](https://github.com/treydock))
-- Drop Puppet 5, support Puppet 7 [\#184](https://github.com/treydock/puppet-module-keycloak/pull/184) ([treydock](https://github.com/treydock))
-
-### Added
-
-- Split config.cli templates into smaller files, use epp templates [\#187](https://github.com/treydock/puppet-module-keycloak/pull/187) ([treydock](https://github.com/treydock))
-- Support Ubuntu 20.04, bump dependency requirements [\#186](https://github.com/treydock/puppet-module-keycloak/pull/186) ([treydock](https://github.com/treydock))
 
 
 
