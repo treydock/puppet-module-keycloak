@@ -2755,6 +2755,14 @@ Valid values: `one`, `one_level`, `subtree`, `1`, `2`, `1`, `2`
 
 searchScope
 
+##### `sync_registrations`
+
+Valid values: ``true``, ``false``
+
+syncRegistrations
+
+Default value: `false`
+
 ##### `trust_email`
 
 Valid values: ``true``, ``false``

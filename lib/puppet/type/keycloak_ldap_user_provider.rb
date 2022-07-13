@@ -84,6 +84,12 @@ Manage Keycloak LDAP user providers
     desc 'connectionUrl'
   end
 
+  newproperty(:sync_registrations, boolean: true) do
+    desc 'syncRegistrations'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:priority) do
     desc 'priority'
     defaultto '0'
