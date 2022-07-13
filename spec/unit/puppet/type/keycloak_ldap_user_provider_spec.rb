@@ -180,6 +180,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     trust_email: :false,
     full_sync_period: '-1',
     changed_sync_period: '-1',
+    sync_registrations: :false,
   }
 
   describe 'basic properties' do
@@ -227,6 +228,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
       :enabled,
       :import_enabled,
       :trust_email,
+      :sync_registrations,
     ].each do |p|
       it "should accept true for #{p}" do
         config[p] = true
