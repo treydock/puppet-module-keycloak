@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Provider: kcadm
+  Puppet Class: keycloak::db::mariadb
   
     &mdash; Documentation by YARD 0.9.28
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
 <script type="text/javascript">
-  pathId = "puppet_providers_keycloak_flow_execution::kcadm";
+  pathId = "puppet_classes::keycloak::db::mariadb";
   relpath = '../';
 </script>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../puppet_provider_list.html?1"></iframe>
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -37,9 +37,9 @@
         <div id="menu">
   
     <a href="../_index.html">Index (k)</a> &raquo;
-    <span class='title'><span class='object_link'>Providers</span></span>
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
      &raquo; 
-    <span class="title">kcadm</span>
+    <span class="title">keycloak::db::mariadb</span>
   
 </div>
 
@@ -59,36 +59,58 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Provider: kcadm</h1>
+      <div id="content"><h1>Puppet Class: keycloak::db::mariadb</h1>
 <div class="box_info">
+  
+  
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      lib/puppet/provider/keycloak_flow_execution/kcadm.rb
+      manifests/db/mariadb.pp
     </dd>
   </dl>
-  <dl>
-    <dt>Resource type:</dt>
-    <dd><span class='object_link'><a href="../puppet_types/keycloak_flow_execution.html" title="puppet_types::keycloak_flow_execution (puppet_type)">keycloak_flow_execution</a></span></dd>
-  </dl>
 </div>
+
+  <h2>Summary</h2>
+  Manage MySQL DB
 
 <h2>Overview</h2>
 <div class="docstring">
   <div class="discussion">
     
-<p>&#39;&#39;</p>
-
   </div>
 </div>
+
+
 <div class="tags">
   
 
 
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+4
+5
+6
+7
+8</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/db/mariadb.pp', line 4</span>
+
+class keycloak::db::mariadb {
+  assert_private()
+
+  contain &#39;keycloak::db::mysql&#39;
+}</pre>
+      </td>
+    </tr>
+  </table>
 </div>
-
-
-
 </div>
 
       <div id="footer">

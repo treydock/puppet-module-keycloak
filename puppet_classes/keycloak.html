@@ -6,7 +6,7 @@
 <title>
   Puppet Class: keycloak
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -122,7 +122,7 @@ Defaults to true.</p>
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;12.0.4&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;18.0.0&#39;</tt>)</em>
       
       
         &mdash;
@@ -165,6 +165,103 @@ Defaults to true.</p>
         <div class='inline'>
 <p>The directory of where to install Keycloak. Default is
 <code>/opt/keycloak-${version}</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>java_declare_method</span>
+      
+      
+        <span class='type'>(<tt>Enum['include','class']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;class&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>How to declare the Java class within this module The <code>include</code>
+value only includes the java class The <code>class</code> method defines
+the Java class and passes necessary parameters For RedHat base systems this
+defaults to <code>class</code>, other OSes default to <code>include</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>java_package</span>
+      
+      
+        <span class='type'>(<tt>String[1]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;java-11-openjdk-devel&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Java package name, only used when <code>java_declare_method</code> is
+<code>class</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>java_home</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-11-openjdk&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Java home path, only used when <code>java_declare_method</code> is
+<code>class</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>java_alternative_path</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-11-openjdk/bin/java&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Java alternative path, only used when <code>java_declare_method</code> is
+<code>class</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>java_alternative</span>
+      
+      
+        <span class='type'>(<tt>String[1]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-11-openjdk/bin/java&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Java alternative, only used when <code>java_declare_method</code> is
+<code>class</code></p>
 </div>
       
     </li>
@@ -225,78 +322,6 @@ Defaults to true.</p>
   
     <li>
       
-        <span class='name'>service_hasstatus</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>true</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Keycloak service hasstatus parameter. Default is <code>true</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>service_hasrestart</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>true</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Keycloak service hasrestart parameter. Default is <code>true</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>service_bind_address</span>
-      
-      
-        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;0.0.0.0&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Bind address for Keycloak service. Default is &#39;0.0.0.0&#39;.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>management_bind_address</span>
-      
-      
-        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;0.0.0.0&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Bind address for Keycloak management. Default is &#39;0.0.0.0&#39;.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>java_opts</span>
       
       
@@ -315,19 +340,18 @@ Defaults to true.</p>
   
     <li>
       
-        <span class='name'>java_opts_append</span>
+        <span class='name'>start_command</span>
       
       
-        <span class='type'>(<tt>Boolean</tt>)</span>
+        <span class='type'>(<tt>Enum['start','start-dev']</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>true</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;start&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Determine if $JAVA_OPTS should be appended to when setting
-<code>java_opts</code> parameter</p>
+<p>The start command to use to run Keycloak</p>
 </div>
       
     </li>
@@ -346,6 +370,132 @@ Defaults to true.</p>
         &mdash;
         <div class='inline'>
 <p>Additional options added to the end of the service command-line.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>service_environment_file</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to the file with environment variables for the systemd service</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>configs</span>
+      
+      
+        <span class='type'>(<tt>Keycloak::Configs</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Define additional configs for keycloak.conf</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hostname</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Host</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$facts[&#39;networking&#39;][&#39;fqdn&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>hostname to set in keycloak.conf</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_enabled</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Whether to enable HTTP</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_host</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;0.0.0.0&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>HTTP host</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>http_port</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Port</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>8080</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>HTTP port</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>https_port</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Port</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>8443</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>HTTPS port</p>
 </div>
       
     </li>
@@ -516,43 +666,7 @@ installation</p>
   
     <li>
       
-        <span class='name'>wildfly_user</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Wildfly user. Required for domain mode.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>wildfly_user_password</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Wildfly user password. Required for domain mode.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>manage_datasource</span>
+        <span class='name'>manage_db</span>
       
       
         <span class='type'>(<tt>Boolean</tt>)</span>
@@ -563,38 +677,53 @@ installation</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that determines if configured datasource will be managed. Default
-is <code>true</code>.</p>
+<p>Boolean that determines if configured database will be managed.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>datasource_driver</span>
+        <span class='name'>manage_db_server</span>
       
       
-        <span class='type'>(<tt>Enum['h2', 'mysql', 'oracle', 'postgresql']</tt>)</span>
+        <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;h2&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>true</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Datasource driver to use for Keycloak. Valid values are <code>h2</code>,
-<code>mysql</code>, &#39;oracle&#39; and &#39;postgresql&#39; Default is
-<code>h2</code>.</p>
+<p>Include the DB server class for postgres, mariadb or mysql</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>datasource_host</span>
+        <span class='name'>db</span>
       
       
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
+        <span class='type'>(<tt>Enum['dev-file', 'dev-mem', 'mariadb', 'mysql', 'oracle', 'postgres']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;dev-file&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Database driver to use for Keycloak.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>db_url_host</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Host]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -602,19 +731,17 @@ is <code>true</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource host. Only used when datasource_driver is <code>mysql</code>,
-&#39;oracle&#39; or &#39;postgresql&#39; Default is <code>localhost</code>
-for MySQL.</p>
+<p>Database host.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>datasource_port</span>
+        <span class='name'>db_url_port</span>
       
       
-        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+        <span class='type'>(<tt>Optional[Stdlib::Port]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -622,19 +749,17 @@ for MySQL.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource port. Only used when datasource_driver is <code>mysql</code>,
-&#39;oracle&#39; or &#39;postgresql&#39; Default is <code>3306</code> for
-MySQL.</p>
+<p>Database port.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>datasource_url</span>
+        <span class='name'>db_url</span>
       
       
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
+        <span class='type'>(<tt>Optional[String[1]]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -642,17 +767,17 @@ MySQL.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource url. Default datasource URLs are defined in init class.</p>
+<p>Database url.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>datasource_dbname</span>
+        <span class='name'>db_url_database</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String[1]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
@@ -660,146 +785,50 @@ MySQL.</p>
       
         &mdash;
         <div class='inline'>
-<p>Datasource database name. Default is <code>keycloak</code>.</p>
+<p>Database name.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>datasource_username</span>
+        <span class='name'>db_username</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String[1]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;sa&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Datasource user name. Default is <code>sa</code>.</p>
+<p>Database user name.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>datasource_password</span>
+        <span class='name'>db_password</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>String[1]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;sa&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;changeme&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Datasource user password. Default is <code>sa</code>.</p>
+<p>Database user password.</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>datasource_package</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Package to add specified datasource support</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>datasource_jar_source</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Source for datasource JDBC driver - could be puppet link or local file on
-the node. Default is dependent on value for <code>datasource_driver</code>.
-This parameter is required if <code>datasource_driver</code> is
-<code>oracle</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>datasource_jar_filename</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Specify the filename of the destination datasource jar in the module dir of
-keycloak. This parameter is only working at the moment if
-<code>datasource_driver</code> is <code>oracle</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>datasource_module_source</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Source for datasource module.xml. Default depends on
-<code>datasource_driver</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>datasource_xa_class</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>MySQL Connector/J JDBC driver xa-datasource class name</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>mysql_database_charset</span>
+        <span class='name'>db_charset</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -810,27 +839,43 @@ keycloak. This parameter is only working at the moment if
       
         &mdash;
         <div class='inline'>
-<p>MySQL database charset</p>
+<p>MySQL and MariaDB database charset</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>proxy_https</span>
+        <span class='name'>features</span>
       
       
-        <span class='type'>(<tt>Boolean</tt>)</span>
+        <span class='type'>(<tt>Optional[Array[String[1]]]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>false</tt>)</em>
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if HTTPS proxy should be enabled. Set to
-<code>true</code> if proxying traffic through Apache. Default is
-<code>false</code>.</p>
+<p>Keycloak features to enable</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>features_disabled</span>
+      
+      
+        <span class='type'>(<tt>Optional[Array[String[1]]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Keycloak features to disable</p>
 </div>
       
     </li>
@@ -893,93 +938,18 @@ resources. Default is <code>{}</code>.</p>
   
     <li>
       
-        <span class='name'>truststore_hostname_verification_policy</span>
+        <span class='name'>proxy</span>
       
       
-        <span class='type'>(<tt>Enum['WILDCARD', 'STRICT', 'ANY']</tt>)</span>
+        <span class='type'>(<tt>Enum['edge','reencrypt','passthrough','none']</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;WILDCARD&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Valid values are <code>WILDCARD</code>, <code>STRICT</code>, and
-<code>ANY</code>. Default is <code>WILDCARD</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>http_port</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>8080</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;none&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>HTTP port used by Keycloak. Default is <code>8080</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>theme_static_max_age</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>2592000</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Max cache age in seconds of static content. Default is
-<code>2592000</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>theme_cache_themes</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>true</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Boolean that sets if themes should be cached. Default is <code>true</code>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>theme_cache_templates</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>true</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Boolean that sets if templates should be cached. Default is
-<code>true</code>.</p>
+<p>Type of proxy to use for Keycloak</p>
 </div>
       
     </li>
@@ -1609,192 +1579,6 @@ by this module</p>
   
     <li>
       
-        <span class='name'>service_environment_file</span>
-      
-      
-        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Path to the file with environment variables for the systemd service</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>operating_mode</span>
-      
-      
-        <span class='type'>(<tt>Enum['standalone', 'clustered', 'domain']</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;standalone&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Keycloak operating mode deployment</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>enable_jdbc_ping</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>false</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Use JDBC_PING to discover the nodes and manage the replication of data 
-More info: <a
-href="http://jgroups.org/manual/#_jdbc_ping">jgroups.org/manual/#_jdbc_ping</a>
-Only applies when <code>operating_mode</code> is either
-<code>clustered</code> or <code>domain</code> JDBC_PING uses port 7600 to
-ensure cluster members are discoverable by each other This module does not
-manage firewall changes</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>jboss_bind_public_address</span>
-      
-      
-        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$facts[&#39;networking&#39;][&#39;ip&#39;]</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>JBoss bind public IP address</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>jboss_bind_private_address</span>
-      
-      
-        <span class='type'>(<tt>Stdlib::IP::Address</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$facts[&#39;networking&#39;][&#39;ip&#39;]</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>JBoss bind private IP address</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>role</span>
-      
-      
-        <span class='type'>(<tt>Optional[Enum['master', 'slave']]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Role when operating mode is domain.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>user_cache</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>true</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Boolean that determines if userCache is enabled</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>tech_preview_features</span>
-      
-      
-        <span class='type'>(<tt>Array</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>[]</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>List of technology Preview features to enable</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>auto_deploy_exploded</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>false</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Set if exploded deployements will be auto deployed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>auto_deploy_zipped</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>true</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Set if zipped deployments will be auto deployed</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>spi_deployments</span>
       
       
@@ -1813,6 +1597,24 @@ manage firewall changes</p>
   
     <li>
       
+        <span class='name'>providers_purge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Purge the providers directory of unmanaged SPIs</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>custom_config_content</span>
       
       
@@ -1824,7 +1626,7 @@ manage firewall changes</p>
       
         &mdash;
         <div class='inline'>
-<p>Custom configuration content to be added to config.cli</p>
+<p>Custom configuration content to be added to keycloak.conf</p>
 </div>
       
     </li>
@@ -1842,208 +1644,26 @@ manage firewall changes</p>
       
         &mdash;
         <div class='inline'>
-<p>Custom configuration source file to be added to config.cli</p>
+<p>Custom configuration source file to be added to keycloak.conf</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>master_address</span>
-      
-      
-        <span class='type'>(<tt>Optional[Stdlib::Host]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>IP address of the master in domain mode</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>server_name</span>
+        <span class='name'>validator_test_url</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>$facts[&#39;hostname&#39;]</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;/realms/master/.well-known/openid-configuration&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Server name in domain mode. Defaults to hostname.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>syslog</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>false</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Enable syslog. Default false.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>syslog_app_name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;keycloak&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Syslog app name. Default &#39;keycloak&#39;.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>syslog_facility</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;user-level&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Syslog facility. Default &#39;user-level&#39;. See <a
-href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">docs.jboss.org/author/display/AS72/Logging%20Configuration.html</a></p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>syslog_hostname</span>
-      
-      
-        <span class='type'>(<tt>Stdlib::Host</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$facts[&#39;fqdn&#39;]</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Syslog hostname of the server. Default $<a href="'fqdn'">facts</a>.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>syslog_level</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;INFO&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Syslog level. Default &#39;INFO&#39;. See <a
-href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">docs.jboss.org/author/display/AS72/Logging%20Configuration.html</a></p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>syslog_port</span>
-      
-      
-        <span class='type'>(<tt>Stdlib::Port</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>514</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>The port the syslog server is listening on. Default &#39;514&#39;.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>syslog_server_address</span>
-      
-      
-        <span class='type'>(<tt>Stdlib::Host</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;localhost&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>The address of the syslog server. Default &#39;localhost&#39;.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>syslog_format</span>
-      
-      
-        <span class='type'>(<tt>Enum['RFC3164', 'RFC5424']</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;RFC3164&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Syslog format. Either &#39;RFC3164&#39; or &#39;RFC5424&#39; Default
-&#39;RFC3164&#39;.</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>auth_url_path</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;/auth&#39;</tt>)</em>
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>The URL path for /auth</p>
+<p>The URL path for validator testing Only necessary to set if the URL path to
+Keycloak is modified</p>
 </div>
       
     </li>
@@ -2059,6 +1679,71 @@ href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">d
         <pre class="lines">
 
 
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
 268
 269
 270
@@ -2187,137 +1872,35 @@ href="https://docs.jboss.org/author/display/AS72/Logging%20Configuration.html">d
 393
 394
 395
-396
-397
-398
-399
-400
-401
-402
-403
-404
-405
-406
-407
-408
-409
-410
-411
-412
-413
-414
-415
-416
-417
-418
-419
-420
-421
-422
-423
-424
-425
-426
-427
-428
-429
-430
-431
-432
-433
-434
-435
-436
-437
-438
-439
-440
-441
-442
-443
-444
-445
-446
-447
-448
-449
-450
-451
-452
-453
-454
-455
-456
-457
-458
-459
-460
-461
-462
-463
-464
-465
-466
-467
-468
-469
-470
-471
-472
-473
-474
-475
-476
-477
-478
-479
-480
-481
-482
-483
-484
-485
-486
-487
-488
-489
-490
-491
-492
-493
-494
-495
-496
-497
-498
-499
-500
-501
-502
-503
-504
-505
-506</pre>
+396</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 268</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 203</span>
 
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = &#39;12.0.4&#39;,
+  String $version               = &#39;18.0.0&#39;,
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
+  Enum[&#39;include&#39;,&#39;class&#39;] $java_declare_method = &#39;class&#39;,
+  String[1] $java_package = &#39;java-11-openjdk-devel&#39;,
+  Stdlib::Absolutepath $java_home = &#39;/usr/lib/jvm/java-11-openjdk&#39;,
+  Stdlib::Absolutepath $java_alternative_path = &#39;/usr/lib/jvm/java-11-openjdk/bin/java&#39;,
+  String[1] $java_alternative = &#39;/usr/lib/jvm/java-11-openjdk/bin/java&#39;,
   String $service_name          = &#39;keycloak&#39;,
   String $service_ensure        = &#39;running&#39;,
   Boolean $service_enable       = true,
-  Boolean $service_hasstatus    = true,
-  Boolean $service_hasrestart   = true,
-  Stdlib::IP::Address $service_bind_address = &#39;0.0.0.0&#39;,
-  Stdlib::IP::Address $management_bind_address = &#39;0.0.0.0&#39;,
   Optional[Variant[String, Array]] $java_opts = undef,
-  Boolean $java_opts_append = true,
+  Enum[&#39;start&#39;,&#39;start-dev&#39;] $start_command = &#39;start&#39;,
   Optional[String] $service_extra_opts = undef,
+  Optional[Stdlib::Absolutepath] $service_environment_file = undef,
+  Keycloak::Configs $configs = {},
+  Stdlib::Host $hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;],
+  Boolean $http_enabled = true,
+  Stdlib::IP::Address $http_host = &#39;0.0.0.0&#39;,
+  Stdlib::Port $http_port = 8080,
+  Stdlib::Port $https_port = 8443,
   Boolean $manage_user = true,
   String $user                  = &#39;keycloak&#39;,
   Stdlib::Absolutepath $user_shell = &#39;/sbin/nologin&#39;,
@@ -2327,31 +1910,22 @@ class keycloak (
   Optional[Integer] $group_gid  = undef,
   String $admin_user            = &#39;admin&#39;,
   String $admin_user_password   = &#39;changeme&#39;,
-  Optional[String] $wildfly_user = undef,
-  Optional[String] $wildfly_user_password = undef,
-  Boolean $manage_datasource = true,
-  Enum[&#39;h2&#39;, &#39;mysql&#39;, &#39;oracle&#39;, &#39;postgresql&#39;] $datasource_driver = &#39;h2&#39;,
-  Optional[String] $datasource_host = undef,
-  Optional[Integer] $datasource_port = undef,
-  Optional[String] $datasource_url = undef,
-  Optional[String] $datasource_xa_class = undef,
-  String $datasource_dbname = &#39;keycloak&#39;,
-  String $datasource_username = &#39;sa&#39;,
-  String $datasource_password = &#39;sa&#39;,
-  Optional[String] $datasource_package = undef,
-  Optional[String] $datasource_jar_source = undef,
-  Optional[String] $datasource_jar_filename = undef,
-  Optional[String] $datasource_module_source = undef,
-  String $mysql_database_charset = &#39;utf8&#39;,
-  Boolean $proxy_https = false,
+  Boolean $manage_db = true,
+  Boolean $manage_db_server = true,
+  Enum[&#39;dev-file&#39;, &#39;dev-mem&#39;, &#39;mariadb&#39;, &#39;mysql&#39;, &#39;oracle&#39;, &#39;postgres&#39;] $db = &#39;dev-file&#39;,
+  Optional[Stdlib::Host] $db_url_host = undef,
+  Optional[Stdlib::Port] $db_url_port = undef,
+  Optional[String[1]] $db_url = undef,
+  String[1] $db_url_database = &#39;keycloak&#39;,
+  String[1] $db_username = &#39;keycloak&#39;,
+  String[1] $db_password = &#39;changeme&#39;,
+  String $db_charset = &#39;utf8&#39;,
+  Optional[Array[String[1]]] $features = undef,
+  Optional[Array[String[1]]] $features_disabled = undef,
   Boolean $truststore = false,
   Hash $truststore_hosts = {},
   String $truststore_password = &#39;keycloak&#39;,
-  Enum[&#39;WILDCARD&#39;, &#39;STRICT&#39;, &#39;ANY&#39;] $truststore_hostname_verification_policy = &#39;WILDCARD&#39;,
-  Integer $http_port = 8080,
-  Integer $theme_static_max_age = 2592000,
-  Boolean $theme_cache_themes = true,
-  Boolean $theme_cache_templates = true,
+  Enum[&#39;edge&#39;,&#39;reencrypt&#39;,&#39;passthrough&#39;,&#39;none&#39;] $proxy = &#39;none&#39;,
   Hash $realms = {},
   Boolean $realms_merge = false,
   Hash $oidc_client_scopes = {},
@@ -2387,154 +1961,110 @@ class keycloak (
   Boolean $manage_sssd_config = true,
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
-  Optional[Stdlib::Absolutepath] $service_environment_file = undef,
-  Enum[&#39;standalone&#39;, &#39;clustered&#39;, &#39;domain&#39;] $operating_mode = &#39;standalone&#39;,
-  Boolean $enable_jdbc_ping = false,
-  Stdlib::IP::Address $jboss_bind_public_address = $facts[&#39;networking&#39;][&#39;ip&#39;],
-  Stdlib::IP::Address $jboss_bind_private_address = $facts[&#39;networking&#39;][&#39;ip&#39;],
-  Optional[Enum[&#39;master&#39;, &#39;slave&#39;]] $role = undef,
-  Boolean $user_cache = true,
-  Array $tech_preview_features = [],
-  Boolean $auto_deploy_exploded = false,
-  Boolean $auto_deploy_zipped = true,
   Hash $spi_deployments = {},
+  Boolean $providers_purge = true,
   Optional[String] $custom_config_content = undef,
   Optional[Variant[String, Array]] $custom_config_source = undef,
-  Optional[Stdlib::Host] $master_address = undef,
-  String $server_name = $facts[&#39;hostname&#39;],
-  Boolean $syslog = false,
-  String $syslog_app_name = &#39;keycloak&#39;,
-  String $syslog_facility = &#39;user-level&#39;,
-  Stdlib::Host $syslog_hostname = $facts[&#39;fqdn&#39;],
-  String $syslog_level = &#39;INFO&#39;,
-  Stdlib::Port $syslog_port = 514,
-  Stdlib::Host $syslog_server_address = &#39;localhost&#39;,
-  Enum[&#39;RFC3164&#39;, &#39;RFC5424&#39;] $syslog_format = &#39;RFC3164&#39;,
-  String $auth_url_path = &#39;/auth&#39;,
+  String $validator_test_url = &#39;/realms/master/.well-known/openid-configuration&#39;,
 ) {
 
   if ! ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;]) {
     fail(&quot;Unsupported osfamily: ${facts[&#39;os&#39;][&#39;family&#39;]}, module ${module_name} only support osfamilies Debian and Redhat&quot;)
   }
 
-  if $role and ! ($operating_mode == &#39;domain&#39;) {
-    fail(&#39;Role can only be specified in domain operating mode&#39;)
-  }
-
-  if $operating_mode == &#39;domain&#39; {
-    unless $role {
-      fail(&quot;Role not specified: in domain mode role needs to be specified. This needs to be either &#39;master&#39; or &#39;slave&#39;.&quot;)
-    }
-    unless $wildfly_user {
-      fail(&#39;Wildfly user not specified: in domain mode Wildfly user needs to be specified.&#39;)
-    }
-    unless $wildfly_user_password {
-      fail(&#39;Wildfly user password not specified: in domain, mode Wildfly user password needs to be specified.&#39;)
-    }
-
-    if $role == &#39;slave&#39; and ! $master_address {
-      fail(&#39;Master address not specified: in domain mode, master address needs to be specified for a slave.&#39;)
-    }
-
-    if $datasource_driver == &#39;h2&#39; {
-      fail(&quot;Invalid datasource driver for domain mode: ${datasource_driver}&quot;)
-    }
-
-    $wildfly_user_password_base64 = strip(base64(&#39;encode&#39;, $wildfly_user_password))
-  }
-
-  if versioncmp($version, &#39;12.0.0&#39;) &gt;= 0 {
-    $download_url = pick($package_url, &quot;https://github.com/keycloak/keycloak/releases/download/${version}/keycloak-${version}.tar.gz&quot;)
-  } else {
-    $download_url = pick($package_url, &quot;https://downloads.jboss.org/keycloak/${version}/keycloak-${version}.tar.gz&quot;)
-  }
-  case $datasource_driver {
-    &#39;h2&#39;: {
-      $datasource_connection_url = pick($datasource_url, &quot;jdbc:h2:\${jboss.server.data.dir}/${datasource_dbname};AUTO_SERVER=TRUE&quot;)
-      }
-    &#39;mysql&#39;: {
-      $db_host = pick($datasource_host, &#39;localhost&#39;)
-      $db_port = pick($datasource_port, 3306)
-      $datasource_connection_url = pick($datasource_url, &quot;jdbc:mysql://${db_host}:${db_port}/${datasource_dbname}&quot;)
-      }
-    &#39;oracle&#39;: {
-      $db_host = pick($datasource_host, &#39;localhost&#39;)
-      $db_port = pick($datasource_port, 1521)
-      $datasource_connection_url = pick($datasource_url, &quot;jdbc:oracle:thin:@${db_host}:${db_port}:${datasource_dbname}&quot;)
-      }
-    &#39;postgresql&#39;: {
-      $db_host = pick($datasource_host, &#39;localhost&#39;)
-      $db_port = pick($datasource_port, 5432)
-      $datasource_connection_url = pick($datasource_url, &quot;jdbc:postgresql://${db_host}:${db_port}/${datasource_dbname}&quot;)
-      }
-    default: {}
-  }
-
-  if ($datasource_driver == &#39;oracle&#39;) and ($datasource_jar_source == undef) {
-    fail(&#39;Using Oracle RDBMS requires definition datasource_jar_source for Oracle JDBC driver. Refer to module documentation&#39;)
-  }
-
-  case $facts[&#39;os&#39;][&#39;family&#39;] {
-    &#39;RedHat&#39;: {
-      if versioncmp($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;], &#39;8&#39;) &gt;= 0 {
-        $mysql_datasource_class = pick($datasource_xa_class, &#39;org.mariadb.jdbc.MariaDbDataSource&#39;)
-        $mysql_jar_source = &#39;/usr/lib/java/mariadb-java-client.jar&#39;
-        $postgresql_jar_source = &#39;/usr/share/java/postgresql-jdbc/postgresql.jar&#39;
-      } else {
-        $mysql_datasource_class = pick($datasource_xa_class, &#39;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&#39;)
-        $mysql_jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;
-        $postgresql_jar_source = &#39;/usr/share/java/postgresql-jdbc.jar&#39;
-      }
-    }
-    &#39;Debian&#39;: {
-      if ($facts[&#39;os&#39;][&#39;name&#39;] == &#39;Debian&#39; and versioncmp($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;], &#39;10&#39;) &gt;= 0) or
-      ($facts[&#39;os&#39;][&#39;name&#39;] == &#39;Ubuntu&#39; and versioncmp($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;], &#39;20.04&#39;) &gt;= 0) {
-        $mysql_datasource_class = pick($datasource_xa_class, &#39;org.mariadb.jdbc.MariaDbDataSource&#39;)
-        $mysql_jar_source = &#39;/usr/share/java/mariadb-java-client.jar&#39;
-      } else {
-        $mysql_datasource_class = pick($datasource_xa_class, &#39;com.mysql.jdbc.jdbc2.optional.MysqlXADataSource&#39;)
-        $mysql_jar_source = &#39;/usr/share/java/mysql-connector-java.jar&#39;
-      }
-      $postgresql_jar_source = &#39;/usr/share/java/postgresql.jar&#39;
-    }
-    default: {
-      # do nothing
-    }
-  }
+  $download_url = pick($package_url, &quot;https://github.com/keycloak/keycloak/releases/download/${version}/keycloak-${version}.tar.gz&quot;)
 
   $install_base = pick($install_dir, &quot;/opt/keycloak-${keycloak::version}&quot;)
+  $admin_env = &quot;${install_base}/conf/admin.env&quot;
+  $truststore_file = &quot;${install_base}/conf/truststore.jks&quot;
+  $tmp_dir = &quot;${install_base}/tmp&quot;
+  $providers_dir = &quot;${install_base}/providers&quot;
 
-  include ::java
+  $default_config = {
+    &#39;hostname&#39; =&gt; $hostname,
+    &#39;http-enabled&#39; =&gt; $http_enabled,
+    &#39;http-host&#39; =&gt; $http_host,
+    &#39;http-port&#39; =&gt; $http_port,
+    &#39;https-port&#39; =&gt; $https_port,
+    &#39;db&#39; =&gt; $db,
+    &#39;db-url-host&#39; =&gt; $db_url_host,
+    &#39;db-url-port&#39; =&gt; $db_url_port,
+    &#39;db-url&#39; =&gt; $db_url,
+    &#39;db-url-database&#39; =&gt; $db_url_database,
+    &#39;db-username&#39; =&gt; $db_username,
+    &#39;db-password&#39; =&gt; $db_password,
+    &#39;features&#39; =&gt; $features,
+    &#39;features-disabled&#39; =&gt; $features_disabled,
+    &#39;proxy&#39; =&gt; $proxy,
+  }
+  if $truststore {
+    $truststore_configs = {
+      &#39;https-trust-store-file&#39; =&gt; $truststore_file,
+      &#39;https-trust-store-password&#39; =&gt; $truststore_password,
+    }
+  } else {
+    $truststore_configs = {}
+  }
+  $config = $default_config + $truststore_configs + $configs
+
+  if $config[&#39;http-enabled&#39;] {
+    $wrapper_protocol = &#39;http&#39;
+    $wrapper_port = $config[&#39;http-port&#39;]
+    $validator_port = $config[&#39;http-port&#39;]
+    $validator_ssl = false
+    if $config[&#39;http-host&#39;] in [&#39;0.0.0.0&#39;, &#39;127.0.0.1&#39;] {
+      $wrapper_address = &#39;localhost&#39;
+      $validator_server = &#39;localhost&#39;
+    } else {
+      $wrapper_address = $config[&#39;http-host&#39;]
+      $validator_server = $config[&#39;http-host&#39;]
+    }
+  } else {
+    $wrapper_protocol = &#39;https&#39;
+    $wrapper_port = $config[&#39;https-port&#39;]
+    $wrapper_address = $config[&#39;hostname&#39;]
+    $validator_port = $config[&#39;https-port&#39;]
+    $validator_server = $config[&#39;hostname&#39;]
+    $validator_ssl = true
+  }
+  $wrapper_server = &quot;${wrapper_protocol}://${wrapper_address}:${wrapper_port}&quot;
+
+  if $java_declare_method == &#39;include&#39; {
+    contain java
+  } else {
+    class { &#39;java&#39;:
+      package               =&gt; $java_package,
+      java_home             =&gt; $java_home,
+      java_alternative_path =&gt; $java_alternative_path,
+      java_alternative      =&gt; $java_alternative,
+    }
+  }
+
   contain &#39;keycloak::install&#39;
-  contain &quot;keycloak::datasource::${datasource_driver}&quot;
   contain &#39;keycloak::config&#39;
   contain &#39;keycloak::service&#39;
 
-  Class[&#39;::java&#39;]
+  Class[&#39;java&#39;]
   -&gt; Class[&#39;keycloak::install&#39;]
-  -&gt; Class[&quot;keycloak::datasource::${datasource_driver}&quot;]
   -&gt; Class[&#39;keycloak::config&#39;]
   -&gt; Class[&#39;keycloak::service&#39;]
 
-  Class[&quot;keycloak::datasource::${datasource_driver}&quot;]~&gt;Class[&#39;keycloak::service&#39;]
+  if $db in [&#39;mysql&#39;,&#39;mariadb&#39;,&#39;postgres&#39;] {
+    contain &quot;keycloak::db::${db}&quot;
+    Class[&quot;keycloak::db::${db}&quot;]~&gt;Class[&#39;keycloak::service&#39;]
+  }
 
   if $with_sssd_support {
     contain &#39;keycloak::sssd&#39;
     Class[&#39;keycloak::sssd&#39;] ~&gt; Class[&#39;keycloak::service&#39;]
   }
 
-  if $service_bind_address == &#39;0.0.0.0&#39; {
-    $validator_keycloak_server = &#39;127.0.0.1&#39;
-  } else {
-    $validator_keycloak_server = $service_bind_address
-  }
-
   keycloak_conn_validator { &#39;keycloak&#39;:
-    keycloak_server =&gt; $validator_keycloak_server,
-    keycloak_port   =&gt; $http_port,
-    use_ssl         =&gt; false,
+    keycloak_server =&gt; $validator_server,
+    keycloak_port   =&gt; $validator_port,
+    use_ssl         =&gt; $validator_ssl,
     timeout         =&gt; 60,
-    test_url        =&gt; &quot;${auth_url_path}/realms/master/.well-known/openid-configuration&quot;,
+    test_url        =&gt; $validator_test_url,
     require         =&gt; Class[&#39;keycloak::service&#39;],
   }
 

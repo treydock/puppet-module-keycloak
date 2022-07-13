@@ -6,7 +6,7 @@
 <title>
   Defined Type: keycloak::spi_deployment
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -334,17 +334,7 @@ this SPI</p>
 97
 98
 99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110</pre>
+100</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/spi_deployment.pp', line 38</span>
@@ -361,12 +351,9 @@ define keycloak::spi_deployment (
 ) {
   include keycloak
 
-  $dir = &quot;${keycloak::install_base}/standalone/deployments&quot;
   $basename = basename($source)
-  $dest = &quot;${dir}/${deployed_name}&quot;
-  $tmp = &quot;${keycloak::install_base}/tmp/${basename}&quot;
-  $dodeploy = &quot;${dest}.dodeploy&quot;
-  $deployed = &quot;${dest}.deployed&quot;
+  $dest = &quot;${keycloak::providers_dir}/${deployed_name}&quot;
+  $tmp = &quot;${keycloak::tmp_dir}/${basename}&quot;
 
   if $ensure == &#39;present&#39; {
     if $source =~ Stdlib::HTTPUrl or $source =~ Stdlib::HTTPSUrl {
@@ -380,7 +367,7 @@ define keycloak::spi_deployment (
         cleanup =&gt; false,
         user    =&gt; $keycloak::user,
         group   =&gt; $keycloak::group,
-        require =&gt; File[&quot;${keycloak::install_base}/tmp&quot;],
+        require =&gt; File[$keycloak::tmp_dir],
         before  =&gt; File[$dest],
       }
     } else {
@@ -393,14 +380,7 @@ define keycloak::spi_deployment (
       group   =&gt; $keycloak::group,
       mode    =&gt; &#39;0644&#39;,
       require =&gt; Class[&#39;keycloak::install&#39;],
-      notify  =&gt; Exec[&quot;${name}-dodeploy&quot;],
-    }
-    exec { &quot;${name}-dodeploy&quot;:
-      path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
-      command     =&gt; &quot;touch ${dodeploy}&quot;,
-      refreshonly =&gt; true,
-      user        =&gt; $keycloak::user,
-      group       =&gt; $keycloak::group,
+      notify  =&gt; Class[&#39;keycloak::service&#39;],
     }
 
     if $test_url and $test_key and $test_value {
@@ -410,13 +390,13 @@ define keycloak::spi_deployment (
         test_value          =&gt; $test_value,
         realm               =&gt; $test_realm,
         dependent_resources =&gt; $test_before,
-        require             =&gt; Exec[&quot;${name}-dodeploy&quot;],
+        require             =&gt; Class[&#39;keycloak::service&#39;],
       }
     }
   }
 
   if $ensure == &#39;absent&#39; {
-    file { $deployed:
+    file { $dest:
       ensure =&gt; &#39;absent&#39;,
     }
   }

@@ -6,7 +6,7 @@
 <title>
   Defined Type: keycloak::freeipa_ldap_mappers
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -149,16 +149,16 @@
         <span class='name'>parent_id</span>
       
       
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
+        <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
+        <em class="default">(defaults to: <tt>$title</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Identifier (parentId) for the LDAP provider to add this mapper to. Will be
-passed to the $ldap parameter in keycloak_ldap_mapper.</p>
+<p>Used to identify the parent LDAP user provider, name used with
+keycloak::freeipa_user_provider</p>
 </div>
       
     </li>
@@ -174,6 +174,7 @@ passed to the $ldap parameter in keycloak_ldap_mapper.</p>
         <pre class="lines">
 
 
+20
 21
 22
 23
@@ -268,23 +269,20 @@ passed to the $ldap parameter in keycloak_ldap_mapper.</p>
 112
 113
 114
-115
-116
-117</pre>
+115</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/freeipa_ldap_mappers.pp', line 21</span>
+        <pre class="code"><span class="info file"># File 'manifests/freeipa_ldap_mappers.pp', line 20</span>
 
 define keycloak::freeipa_ldap_mappers
 (
   String           $realm,
   String           $groups_dn,
   String           $roles_dn,
-  Optional[String] $parent_id = undef,
+  String           $parent_id = $title,
 )
 {
-  $_parent_id = pick($parent_id, &quot;${title}-${realm}&quot;)
-  $title_suffix = &quot;for ${_parent_id}&quot;
+  $title_suffix = &quot;for ${title}&quot;
 
   # This translates to parentId in JSON and must be correct or hard-to-debug
   # issues will ensue.
@@ -293,7 +291,7 @@ define keycloak::freeipa_ldap_mappers
     default:
       ensure                      =&gt; &#39;present&#39;,
       realm                       =&gt; $realm,
-      ldap                        =&gt; $_parent_id,
+      ldap                        =&gt; $parent_id,
       always_read_value_from_ldap =&gt; true,
       read_only                   =&gt; true,
       is_mandatory_in_ldap        =&gt; true,
@@ -338,7 +336,7 @@ define keycloak::freeipa_ldap_mappers
     ensure                         =&gt; &#39;present&#39;,
     realm                          =&gt; $realm,
     type                           =&gt; &#39;role-ldap-mapper&#39;,
-    ldap                           =&gt; $_parent_id,
+    ldap                           =&gt; $parent_id,
     is_mandatory_in_ldap           =&gt; false,
     mode                           =&gt; &#39;READ_ONLY&#39;,
     memberof_ldap_attribute        =&gt; &#39;memberOf&#39;,
@@ -356,7 +354,7 @@ define keycloak::freeipa_ldap_mappers
     ensure                               =&gt; &#39;present&#39;,
     realm                                =&gt; $realm,
     type                                 =&gt; &#39;group-ldap-mapper&#39;,
-    ldap                                 =&gt; $_parent_id,
+    ldap                                 =&gt; $parent_id,
     is_mandatory_in_ldap                 =&gt; false,
     mode                                 =&gt; &#39;READ_ONLY&#39;,
     memberof_ldap_attribute              =&gt; &#39;memberOf&#39;,

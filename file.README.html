@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -69,6 +69,12 @@ src="https://github.com/treydock/puppet-module-keycloak/workflows/CI/badge.svg?b
 <ol><li>
 <p><a href="#overview">Overview</a></p>
 <ul><li>
+<p><a href="#upgrade-to-8x">Upgrade to 8.x</a></p>
+<ul><li>
+<p><a href="#changes-to-ldap-user-provider-ids">Changes to LDAP user provider
+IDs</a></p>
+</li></ul>
+</li><li>
 <p><a href="#supported-versions-of-keycloak">Supported Versions of
 Keycloak</a></p>
 </li></ul>
@@ -121,6 +127,215 @@ options</a></p>
 
 <p>The keycloak module allows easy installation and management of Keycloak.</p>
 
+<h3 id="label-Upgrade+to+8.x">Upgrade to 8.x</h3>
+
+<p>This module underwent major changes in the 8.0.0 release to support
+Keycloak that uses Quarkus. The initial 8.0.0 release of this module only
+supports Keycloak 18.x.</p>
+
+<p>Numerous parameters were changed or removed. Below is a list of the changes
+to parameters as well as some behavior changes.</p>
+
+<p><strong>Parameters removed</strong></p>
+<ul><li>
+<p><code>service_hasstatus</code>, <code>service_hasrestart</code></p>
+</li><li>
+<p><code>management_bind_address</code></p>
+</li><li>
+<p><code>java_opts_append</code></p>
+</li><li>
+<p><code>wildfly_user</code>, <code>wildfly_user_password</code></p>
+</li><li>
+<p><code>datasource_package</code>, <code>datasource_jar_source</code>,
+<code>datasource_jar_filename</code>,
+<code>datasource_module_source</code>, <code>datasource_xa_class</code></p>
+</li><li>
+<p><code>proxy_https</code></p>
+</li><li>
+<p><code>truststore_hostname_verification_policy</code></p>
+</li><li>
+<p><code>theme_static_max_age</code>, <code>theme_cache_themes</code>,
+<code>theme_cache_templates</code></p>
+</li><li>
+<p><code>operating_mode</code>, <code>enable_jdbc_ping</code>,
+<code>jboss_bind_public_address</code>,
+<code>jboss_bind_private_address</code></p>
+</li><li>
+<p><code>master_address</code>, <code>server_name</code>, <code>role</code>,
+<code>user_cache</code></p>
+</li><li>
+<p><code>tech_preview_features</code></p>
+</li><li>
+<p><code>auto_deploy_exploded</code>, <code>auto_deploy_zipped</code></p>
+</li><li>
+<p><code>syslog</code>, <code>syslog_app_name</code>,
+<code>syslog_facility</code>, <code>syslog_hostname</code>,
+<code>syslog_level</code></p>
+</li><li>
+<p><code>syslog_port</code>, <code>syslog_server_address</code>,
+<code>syslog_format</code></p>
+</li></ul>
+
+<p><strong>Parameters renamed</strong></p>
+<ul><li>
+<p><code>service_bind_address</code> renamed to <code>http_host</code> and now
+defined in keycloak.conf instead of the systemd unit file</p>
+</li><li>
+<p><code>manage_datasource</code> renamed to <code>manage_db</code></p>
+</li><li>
+<p><code>datasource_driver</code> renamed to <code>db</code></p>
+</li><li>
+<p><code>datasource_host</code> renamed to <code>db_url_host</code></p>
+</li><li>
+<p><code>datasource_port</code> renamed to <code>db_url_port</code></p>
+</li><li>
+<p><code>datasource_url</code> renamed to <code>db_url</code></p>
+</li><li>
+<p><code>datasource_dbname</code> renamed to <code>db_url_database</code></p>
+</li><li>
+<p><code>datasource_username</code> renamed to <code>db_username</code></p>
+</li><li>
+<p><code>datasource_password</code> renamed to <code>db_password</code></p>
+</li><li>
+<p><code>mysql_database_charset</code> renamed to <code>db_charset</code></p>
+</li><li>
+<p><code>auth_url_path</code> renamed to <code>validator_test_url</code> and
+default value changed</p>
+</li></ul>
+
+<p><strong>Parameters added</strong></p>
+<ul><li>
+<p><code>java_declare_method</code> to make it easier for EL platforms to
+deploy working Keycloak with correct Java</p>
+</li><li>
+<p><code>java_package</code>, <code>java_home</code>,
+<code>java_alternative_path</code>, <code>java_alternative</code></p>
+</li><li>
+<p><code>start_command</code></p>
+</li><li>
+<p><code>configs</code></p>
+</li><li>
+<p><code>hostname</code>, <code>http_enabled</code>, <code>http_host</code>,
+<code>https_port</code>, <code>proxy</code></p>
+</li><li>
+<p><code>manage_db_server</code></p>
+</li><li>
+<p><code>features</code></p>
+</li><li>
+<p><code>features_disabled</code></p>
+</li><li>
+<p><code>providers_purge</code></p>
+</li></ul>
+
+<p><strong>Behavior changes</strong></p>
+
+<p>The SSSD parameters are no longer tested and likely won&#39;t work. If you
+use the SSSD user provider and SSSD related parameters, please open an
+issue on this repo.</p>
+
+<p>This module no longer makes copies for DB driver jar files or install Java
+bindings, they are not necessary.</p>
+
+<p>When <code>db</code> is set to <code>mariadb</code>, <code>mysql</code> or
+<code>postgres</code> this module will by default install the database
+server to the Keycloak host. If you run a remote DB server for Keycloak,
+set <code>manage_db_server</code> and <code>manage_db</code> to
+<code>false</code>.</p>
+
+<p>There is no longer a need to define cluster or domain modes in the Quarkus
+deployment, all related functionality is removed.</p>
+
+<p>Some basic configuration options are exposed using parameters but most
+configuration options for Keycloak will need to be passed into the
+<code>configs</code> parameter.</p>
+
+<p>Drop Debian 9 support due to OS repos not having Java 11.</p>
+
+<h4 id="label-Changes+to+LDAP+user+provider+IDs">Changes to LDAP user provider IDs</h4>
+
+<p>If you had <code>keycloak_ldap_user_provider</code> resources defined the
+mechanism for defining the ID has changed and requires some migration. Also
+the <code>ldap</code> property for any <code>keycloak_ldap_mapper</code>
+resources will have to be adjusted.</p>
+
+<p><strong>WARNING</strong> The LDAP user provider ID is used to create user
+IDs for LDAP users. These will change if the ID is changed. This is to
+prevent messages such as this: <code>The given key is not a valid key per
+specification, future migration might fail:
+f:OSC-LDAP-osc:tdockendorf</code>. If you wish to keep the old style IDs
+you must provide the <code>id</code> parameter as <code>$ldap-$realm</code>
+to maintain old IDs.</p>
+
+<p>It&#39;s advised to either <a href="#migrate-to-new-ids">Migrate to new
+IDs</a> or <a href="#keep-old-ids">Keep old IDs</a></p>
+
+<h5 id="label-Migrate+to+new+IDs">Migrate to new IDs</h5>
+
+<p><strong>Changes</strong></p>
+<ul><li>
+<p>Define old <code>keycloak_ldap_user_provider</code> resource as absent with
+new name and setting <code>id</code> and <code>resource_name</code>.</p>
+</li><li>
+<p>Define same <code>keycloak_ldap_user_provider</code> resource to get
+created with new ID</p>
+</li><li>
+<p>Update <code>keycloak_ldap_mapper</code> resources to point to just name of
+<code>keycloak_ldap_user_provider</code>.</p>
+</li></ul>
+
+<p><strong>Before:</strong></p>
+
+<pre class="code ruby"><code class="ruby">keycloak_ldap_user_provider { &#39;LDAP on test&#39;:
+  users_dn                  =&gt; &#39;ou=People,dc=test&#39;,
+  connection_url            =&gt; &#39;ldap://localhost:389&#39;,
+  custom_user_search_filter =&gt; &#39;(objectClass=posixAccount)&#39;,
+}
+keycloak_ldap_mapper { &quot;first name for LDAP-test on test&quot;:
+  ensure               =&gt; &#39;present&#39;,
+  type                 =&gt; &#39;user-attribute-ldap-mapper&#39;,
+  user_model_attribute =&gt; &#39;firstName&#39;,
+  ldap_attribute       =&gt; &#39;givenName&#39;,
+}
+</code></pre>
+
+<p><strong>After:</strong></p>
+
+<pre class="code ruby"><code class="ruby">keycloak_ldap_user_provider { &#39;LDAP-remove on test&#39;:
+  ensure        =&gt; &#39;absent&#39;,
+  resource_name =&gt; &#39;LDAP&#39;,
+  id            =&gt; &#39;LDAP-test&#39;,
+}
+keycloak_ldap_user_provider { &#39;LDAP on test&#39;:
+  users_dn                  =&gt; &#39;ou=People,dc=test&#39;,
+  connection_url            =&gt; &#39;ldap://localhost:389&#39;,
+  custom_user_search_filter =&gt; &#39;(objectClass=posixAccount)&#39;,
+}
+keycloak_ldap_mapper { &quot;first name for LDAP on test&quot;:
+  ensure               =&gt; &#39;present&#39;,
+  type                 =&gt; &#39;user-attribute-ldap-mapper&#39;,
+  user_model_attribute =&gt; &#39;firstName&#39;,
+  ldap_attribute       =&gt; &#39;givenName&#39;,
+}
+</code></pre>
+
+<h5 id="label-Keep+old+IDs">Keep old IDs</h5>
+
+<p>If you wish to avoid re-creating <code>keycloak_ldap_user_provider</code>
+and <code>keycloak_ldap_mapper</code> resources then the ID parameters must
+be defined.</p>
+
+<p>For <code>keycloak_ldap_user_provider</code> ensure the <code>id</code>
+property is set to match the old pattern. If name was <code>LDAP</code> and
+realm <code>test</code> or name was componsite <code>LDAP on test</code>
+then set <code>id</code> to <code>LDAP-test</code>.</p>
+
+<p>For <code>keycloak_ldap_mapper</code> ensure the <code>parent_id</code>
+property is set to point to old ID for associated
+<code>keycloak_ldap_user_provider</code>. If the <code>ldap</code> value is
+<code>LDAP</code> and <code>realm</code> is <code>test</code> or composite
+name is <code>first name for LDAP on test</code> then ensure
+<code>parent_id</code> is set to <code>LDAP-test</code>.</p>
+
 <h3 id="label-Supported+Versions+of+Keycloak">Supported Versions of Keycloak</h3>
 
 <p>Currently this module supports Keycloak version 12.x. This module may work
@@ -128,13 +343,13 @@ on earlier versions but this is the only version tested.</p>
 
 <p>| Keycloak Version | Keycloak Puppet module versions | | —————- |
 ——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x - 8.x | 4.x - 5.x | |
-8.x - 12.x | 6.x | | 12.x - 16.x | 7.x |</p>
+8.x - 12.x | 6.x | | 12.x - 16.x | 7.x | | 18.x | 8.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
 <h3 id="label-keycloak">keycloak</h3>
 
-<p>Install Keycloak using default <code>h2</code> database storage.</p>
+<p>Install Keycloak using default <code>dev-file</code> database.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;: }
 </code></pre>
@@ -142,37 +357,37 @@ on earlier versions but this is the only version tested.</p>
 <p>Install a specific version of Keycloak.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  version           =&gt; &#39;6.0.1&#39;,
-  datasource_driver =&gt; &#39;mysql&#39;,
+  version =&gt; &#39;18.0.0&#39;,
+  db      =&gt; &#39;mariadb&#39;,
 }
 </code></pre>
 
 <p>Upgrading Keycloak version works by changing <code>version</code> parameter
-as long as the <code>datasource_driver</code> is not the default of
-<code>h2</code>. An upgrade involves installing the new version without
-touching the old version, updating the symlink which defaults to
+as long as the <code>db</code> parameter is not the default of
+<code>dev-file</code>. An upgrade involves installing the new version
+without touching the old version, updating the symlink which defaults to
 <code>/opt/keycloak</code>, applying all changes to new version and then
 restarting the <code>keycloak</code> service.</p>
 
-<p>If the previous <code>version</code> was <code>6.0.1</code> using the
-following will upgrade to <code>7.0.0</code>:</p>
+<p>If the previous <code>version</code> was <code>18.0.0</code> using the
+following will upgrade to <code>19.0.0</code>:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  version           =&gt; &#39;7.0.0&#39;,
-  datasource_driver =&gt; &#39;mysql&#39;,
+  version =&gt; &#39;19.0.0&#39;,
+  db      =&gt; &#39;mariadb&#39;,
 }
 </code></pre>
 
-<p>Install keycloak and use a local MySQL server for database storage</p>
+<p>Install keycloak and use a local MariaDB server for database storage</p>
 
 <pre class="code ruby"><code class="ruby">include mysql::server
 class { &#39;keycloak&#39;:
-  datasource_driver   =&gt; &#39;mysql&#39;,
-  datasource_host     =&gt; &#39;localhost&#39;,
-  datasource_port     =&gt; 3306,
-  datasource_dbname   =&gt; &#39;keycloak&#39;,
-  datasource_username =&gt; &#39;keycloak&#39;,
-  datasource_password =&gt; &#39;foobar&#39;,
+  db              =&gt; &#39;mariadb&#39;,
+  db_url_host     =&gt; &#39;localhost&#39;,
+  db_url_port     =&gt; 3306,
+  db_url_database =&gt; &#39;keycloak&#39;,
+  db_username     =&gt; &#39;keycloak&#39;,
+  db_password     =&gt; &#39;foobar&#39;,
 }
 </code></pre>
 
@@ -181,39 +396,12 @@ PostgreSQL server.</p>
 
 <pre class="code ruby"><code class="ruby">include postgresql::server
 class { &#39;keycloak&#39;:
-    datasource_driver     =&gt; &#39;postgresql&#39;,
-    datasource_host       =&gt; &#39;localhost&#39;,
-    datasource_port       =&gt; 5432,
-    datasource_dbname     =&gt; &#39;keycloak&#39;,
-    datasource_username   =&gt; &#39;keycloak&#39;,
-    datasource_password   =&gt; &#39;foobar&#39;,
-}
-</code></pre>
-
-<p>Configure keycloak to use a remote Oracle database.</p>
-
-<p>The parameter <code>datasource_jar_source</code> is always required with
-Oracle database. The jar is downloaded to the keycloak module dir and
-renamed to <code>datasource_jar_filename</code> or
-<code>&#39;ojdbc8.jar&#39;</code> as default value.</p>
-
-<p>With a special database configuration it may be more suitable to give the
-complete database url <code>&#39;jdbc:oracle:thin:@[...]&#39;</code> using
-the parameter <code>database_url</code> instead of
-<code>database_host</code>, <code>database_port</code> and
-<code>database_dbname</code>. The default value with Oracle database for
-<code>database_host</code> is <code>&#39;localhost&#39;</code> and the
-default value for <code>database_port</code> is here <code>1521</code>.</p>
-
-<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-    datasource_driver       =&gt; &#39;oracle&#39;,
-    datasource_host         =&gt; &#39;oracleserver.mydomain.de&#39;,
-    datasource_port         =&gt; 1521,
-    datasource_dbname       =&gt; &#39;keycloak&#39;,
-    datasource_username     =&gt; &#39;keycloak&#39;,
-    datasource_password     =&gt; &#39;foobar&#39;,
-    datasource_jar_source   =&gt; &#39;https://oracle.com/path/to/driver.jar&#39;,
-    datasource_jar_filename =&gt; &#39;ojdbc8.jar&#39;,
+    db              =&gt; &#39;postgres&#39;,
+    db_url_host     =&gt; &#39;localhost&#39;,
+    db_url_port     =&gt; 5432,
+    db_url_database =&gt; &#39;keycloak&#39;,
+    db_username     =&gt; &#39;keycloak&#39;,
+    db_password     =&gt; &#39;foobar&#39;,
 }
 </code></pre>
 
@@ -221,9 +409,8 @@ default value for <code>database_port</code> is here <code>1521</code>.</p>
 certificate to the truststore.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  truststore                              =&gt; true,
-  truststore_password                     =&gt; &#39;supersecret&#39;,
-  truststore_hostname_verification_policy =&gt; &#39;STRICT&#39;,
+  truststore          =&gt; true,
+  truststore_password =&gt; &#39;supersecret&#39;,
 }
 keycloak::truststore::host { &#39;ldap1.example.com&#39;:
   certificate =&gt; &#39;/etc/openldap/certs/0a00000.0&#39;,
@@ -233,15 +420,17 @@ keycloak::truststore::host { &#39;ldap1.example.com&#39;:
 <p>Setup Keycloak to proxy through Apache HTTPS.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  proxy_https =&gt; true
+  http_host =&gt; &#39;127.0.0.1&#39;,
+  proxy     =&gt; &#39;edge&#39;,
 }
 apache::vhost { &#39;idp.example.com&#39;:
-  servername =&gt; &#39;idp.example.com&#39;,
-  port        =&gt; &#39;443&#39;,
-  ssl         =&gt; true,
-  manage_docroot  =&gt; false,
-  docroot         =&gt; &#39;/var/www/html&#39;,
+  servername          =&gt; &#39;idp.example.com&#39;,
+  port                =&gt; &#39;443&#39;,
+  ssl                 =&gt; true,
+  manage_docroot      =&gt; false,
+  docroot             =&gt; &#39;/var/www/html&#39;,
   proxy_preserve_host =&gt; true,
+  proxy_add_headers   =&gt; true,
   proxy_pass          =&gt; [
     {&#39;path&#39; =&gt; &#39;/&#39;, &#39;url&#39; =&gt; &#39;http://localhost:8080/&#39;}
   ],
@@ -252,85 +441,6 @@ apache::vhost { &#39;idp.example.com&#39;:
   ssl_cert            =&gt; &#39;/etc/pki/tls/certs/idp.example.com/crt&#39;,
   ssl_key             =&gt; &#39;/etc/pki/tls/private/idp.example.com.key&#39;,
 }
-</code></pre>
-
-<p>Setup a domain master. (This needs a shared database, here
-&#39;1.2.3.4&#39;).</p>
-
-<pre class="code ruby"><code class="ruby">class { &#39;::keycloak&#39;:
-  operating_mode        =&gt; &#39;domain&#39;,
-  role                  =&gt; &#39;master&#39;,
-  wildfly_user          =&gt; &#39;wildfly,
-  wildfly_user_password =&gt; &#39;changeme,
-  manage_datasource     =&gt; false,
-  datasource_driver     =&gt; &#39;postgresql&#39;,
-  datasource_host       =&gt; &#39;1.2.3.4,
-  datasource_dbname     =&gt; &#39;keycloak,
-  datasource_username   =&gt; &#39;keycloak,
-  datasource_password   =&gt; &#39;changeme,
-  admin_user            =&gt; &#39;admin,
-  admin_user_password   =&gt; &#39;changeme,
-}
-</code></pre>
-
-<p>Setup a domain slave. (This needs a shared database, here
-&#39;1.2.3.4&#39;).</p>
-
-<pre class="code ruby"><code class="ruby">class { &#39;::keycloak&#39;:
-  operating_mode        =&gt; &#39;domain&#39;,
-  role                  =&gt; &#39;slave&#39;,
-  wildfly_user          =&gt; &#39;wildfly,
-  wildfly_user_password =&gt; &#39;changeme,
-  manage_datasource     =&gt; false,
-  datasource_driver     =&gt; &#39;postgresql&#39;,
-  datasource_host       =&gt; &#39;1.2.3.4,
-  datasource_dbname     =&gt; &#39;keycloak,
-  datasource_username   =&gt; &#39;keycloak,
-  datasource_password   =&gt; &#39;changeme,
-  admin_user            =&gt; &#39;admin,
-  admin_user_password   =&gt; &#39;changeme,
-}
-</code></pre>
-
-<p><strong>NOTE:</strong> The wilfdly user and password need to match those in
-domain master. These are required for authentication in a cluster.</p>
-
-<p>Setup a host for theme development so that theme changes don&#39;t require
-a service restart, not recommended for production.</p>
-
-<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  theme_static_max_age  =&gt; -1,
-  theme_cache_themes    =&gt; false,
-  theme_cache_templates =&gt; false,
-}
-</code></pre>
-
-<p>Run Keycloak using standalone clustered mode (multicast):</p>
-
-<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  operating_mode =&gt; &#39;clustered&#39;,
-}
-</code></pre>
-
-<p>Run Keycloak using standalone clustered mode (JDBC_PING):</p>
-
-<blockquote>
-<p><a href="http://jgroups.org/manual/#_jdbc_ping">JDBC_PING</a> uses port
-<strong>7600</strong> to ensure cluster members are discoverable by each
-other. This module <strong>does NOT manage firewall changes</strong>.</p>
-</blockquote>
-
-<pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  operating_mode             =&gt; &#39;clustered&#39;,
-  datasource_driver          =&gt; &#39;postgresql&#39;,
-  enable_jdbc_ping           =&gt; true,
-  jboss_bind_private_address =&gt; $facts[&#39;networking&#39;][&#39;ip&#39;],
-  jboss_bind_public_address  =&gt; $facts[&#39;networking&#39;][&#39;ip&#39;],
-}
-
-# your puppet code to open port 7600
-# ...
-# ...
 </code></pre>
 
 <h3 id="label-Deploy+SPI">Deploy SPI</h3>
@@ -417,10 +527,6 @@ the truststore.</p>
 import_enabled     =&gt; false,   use_truststore_spi =&gt; &#39;never&#39;,
 } </code></p>
 
-<p><strong>NOTE</strong> The <code>Id</code> for the above resource would be
-<code>LDAP-test</code> where the format is
-<code>${resource_name}-${realm}</code>.</p>
-
 <p>If you&#39;re using FreeIPA you can use a defined resource that wraps
 keycloak_ldap_user_provider:</p>
 
@@ -457,6 +563,11 @@ the required attribute mappings automatically:</p>
 </code></pre>
 
 <h3 id="label-keycloak_sssd_user_provider">keycloak_sssd_user_provider</h3>
+
+<p><strong>WARNING</strong> This feature is no longer tested and likely
+stopped working when Keycloak began requiring Java 11+. If you rely on this
+feature, please open an issue or pull request. Likely need to build jna
+from source.</p>
 
 <p>Define SSSD user provider. <strong>NOTE</strong> This type requires that
 SSSD be properly configured and Keycloak service restarted after SSSD ifp
@@ -666,9 +777,7 @@ href="http://treydock.github.io/puppet-module-keycloak/">treydock.github.io/pupp
 <ul><li>
 <p>RedHat/CentOS 7 x86_64</p>
 </li><li>
-<p>RedHat/CentOS 8 x86_64</p>
-</li><li>
-<p>Debian 9 x86_64</p>
+<p>RedHat/Rocky 8 x86_64</p>
 </li><li>
 <p>Debian 10 x86_64</p>
 </li><li>
@@ -678,6 +787,15 @@ href="http://treydock.github.io/puppet-module-keycloak/">treydock.github.io/pupp
 </li><li>
 <p>Ubuntu 20.04 x86_64</p>
 </li></ul>
+
+<h2 id="label-UUID+Generation">UUID Generation</h2>
+
+<pre class="code ruby"><code class="ruby">bundle exec irb
+2.5.1 :001 &gt; require File.expand_path(File.join(File.dirname(__FILE__), &#39;lib/puppet/provider/keycloak_api&#39;))
+ =&gt; true 
+2.5.1 :002 &gt; Puppet::Provider::KeycloakAPI.name_uuid(&#39;LDAP&#39;)
+ =&gt; &quot;bc7bc27f-39b8-5152-91c3-915d710fba35&quot;
+</code></pre>
 </div></div>
 
       <div id="footer">

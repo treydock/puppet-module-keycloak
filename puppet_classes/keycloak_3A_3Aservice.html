@@ -6,7 +6,7 @@
 <title>
   Puppet Class: keycloak::service
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.28
   
 </title>
 
@@ -125,8 +125,8 @@ class keycloak::service {
     ensure     =&gt; $keycloak::service_ensure,
     enable     =&gt; $keycloak::service_enable,
     name       =&gt; $keycloak::service_name,
-    hasstatus  =&gt; $keycloak::service_hasstatus,
-    hasrestart =&gt; $keycloak::service_hasrestart,
+    hasstatus  =&gt; true,
+    hasrestart =&gt; true,
   }
 
 }</pre>
