@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.1.0) (2022-07-13)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v8.0.0...v8.1.0)
+
+### Added
+
+- Add support for syncResgistrations [\#252](https://github.com/treydock/puppet-module-keycloak/pull/252) ([NITEMAN](https://github.com/NITEMAN))
+
 ## [v8.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.0.0) (2022-06-24)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v7.19.0...v8.0.0)
