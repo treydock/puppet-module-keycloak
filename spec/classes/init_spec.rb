@@ -128,6 +128,7 @@ describe 'keycloak' do
             'http-host=0.0.0.0',
             'http-port=8080',
             'https-port=8443',
+            'http-relative-path=/',
             'db=dev-file',
             'db-url-database=keycloak',
             'db-username=keycloak',
