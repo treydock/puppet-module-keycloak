@@ -2,7 +2,7 @@
 type Keycloak::Configs = Struct[
   {
     Optional['cache'] => Enum['local', 'ispn'],
-    Optional['cache-config-file'] => Stdlib::Absolutepath,
+    Optional['cache-config-file'] => String[1],
     Optional['cache-stack'] => Enum['tcp','udp','kubernetes','ec2','azure','google'],
     Optional['db'] => Enum['dev-file','dev-mem','mariadb','mysql','oracle','postgres'],
     Optional['db-password'] => String[1],
