@@ -1,4 +1,0 @@
----
-# TODO: Use until this released to force mariadb:
-# https://github.com/puppetlabs/puppetlabs-mysql/commit/8c8c01739f593b2bcd1943297761a09dde994197
-keycloak::db_charset: utf8mb3
