@@ -14,7 +14,7 @@
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">= 11.1.0 <13.0.0"
+      "version_requirement": ">= 11.1.0 <14.0.0"
     },
     {
       "name": "puppetlabs/postgresql",
