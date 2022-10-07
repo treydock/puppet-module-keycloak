@@ -226,7 +226,7 @@ class keycloak (
   Stdlib::IP::Address $http_host = '0.0.0.0',
   Stdlib::Port $http_port = 8080,
   Stdlib::Port $https_port = 8443,
-  Regexp[/^\/.*/] $http_relative_path = '/',
+  Pattern[/^\/.*/] $http_relative_path = '/',
   Boolean $manage_user = true,
   String $user                  = 'keycloak',
   Stdlib::Absolutepath $user_shell = '/sbin/nologin',
