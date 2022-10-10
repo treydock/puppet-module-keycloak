@@ -93,6 +93,7 @@ The following parameters are available in the `keycloak` class:
 * [`http_host`](#http_host)
 * [`http_port`](#http_port)
 * [`https_port`](#https_port)
+* [`http_relative_path`](#http_relative_path)
 * [`manage_user`](#manage_user)
 * [`user`](#user)
 * [`user_shell`](#user_shell)
@@ -344,6 +345,14 @@ Data type: `Stdlib::Port`
 HTTPS port
 
 Default value: `8443`
+
+##### <a name="http_relative_path"></a>`http_relative_path`
+
+Data type: `Pattern[/^\/.*/]`
+
+Set the path relative to '/' for serving resources. The path must start with a '/'.
+
+Default value: `'/'`
 
 ##### <a name="manage_user"></a>`manage_user`
 
@@ -3721,7 +3730,7 @@ Alias of
 ```puppet
 Struct[{
     Optional['cache'] => Enum['local', 'ispn'],
-    Optional['cache-config-file'] => Stdlib::Absolutepath,
+    Optional['cache-config-file'] => String[1],
     Optional['cache-stack'] => Enum['tcp','udp','kubernetes','ec2','azure','google'],
     Optional['db'] => Enum['dev-file','dev-mem','mariadb','mysql','oracle','postgres'],
     Optional['db-password'] => String[1],

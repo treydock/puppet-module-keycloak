@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.2.0) (2022-10-10)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v8.1.0...v8.2.0)
+
+### Added
+
+- Support MySQL module 13.x [\#256](https://github.com/treydock/puppet-module-keycloak/pull/256) ([treydock](https://github.com/treydock))
+- Use http-relative-path for wrapper\_server [\#254](https://github.com/treydock/puppet-module-keycloak/pull/254) ([nblock](https://github.com/nblock))
+
+### Fixed
+
+- Use a regular string for cache-config-file option [\#255](https://github.com/treydock/puppet-module-keycloak/pull/255) ([nblock](https://github.com/nblock))
+
 ## [v8.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.1.0) (2022-07-13)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v8.0.0...v8.1.0)
