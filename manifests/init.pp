@@ -58,6 +58,8 @@
 #   HTTP port
 # @param https_port
 #   HTTPS port
+# @param http_relative_path
+#   Set the path relative to '/' for serving resources. The path must start with a '/'.
 # @param manage_user
 #   Defines if the module should manage the Linux user for Keycloak installation
 # @param user
@@ -224,6 +226,7 @@ class keycloak (
   Stdlib::IP::Address $http_host = '0.0.0.0',
   Stdlib::Port $http_port = 8080,
   Stdlib::Port $https_port = 8443,
+  Pattern[/^\/.*/] $http_relative_path = '/',
   Boolean $manage_user = true,
   String $user                  = 'keycloak',
   Stdlib::Absolutepath $user_shell = '/sbin/nologin',
@@ -309,6 +312,7 @@ class keycloak (
     'http-host' => $http_host,
     'http-port' => $http_port,
     'https-port' => $https_port,
+    'http-relative-path' => $http_relative_path,
     'db' => $db,
     'db-url-host' => $db_url_host,
     'db-url-port' => $db_url_port,
@@ -350,7 +354,7 @@ class keycloak (
     $validator_server = $config['hostname']
     $validator_ssl = true
   }
-  $wrapper_server = "${wrapper_protocol}://${wrapper_address}:${wrapper_port}"
+  $wrapper_server = "${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config['http-relative-path']}"
 
   if $java_declare_method == 'include' {
     contain java
