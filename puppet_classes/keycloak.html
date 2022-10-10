@@ -502,6 +502,25 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
   
     <li>
       
+        <span class='name'>http_relative_path</span>
+      
+      
+        <span class='type'>(<tt>Pattern[/^\/.*/]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Set the path relative to &#39;/&#39; for serving resources. The path must
+start with a &#39;/&#39;.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>manage_user</span>
       
       
@@ -1679,8 +1698,6 @@ Keycloak is modified</p>
         <pre class="lines">
 
 
-203
-204
 205
 206
 207
@@ -1872,10 +1889,14 @@ Keycloak is modified</p>
 393
 394
 395
-396</pre>
+396
+397
+398
+399
+400</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 203</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 205</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1901,6 +1922,7 @@ class keycloak (
   Stdlib::IP::Address $http_host = &#39;0.0.0.0&#39;,
   Stdlib::Port $http_port = 8080,
   Stdlib::Port $https_port = 8443,
+  Pattern[/^\/.*/] $http_relative_path = &#39;/&#39;,
   Boolean $manage_user = true,
   String $user                  = &#39;keycloak&#39;,
   Stdlib::Absolutepath $user_shell = &#39;/sbin/nologin&#39;,
@@ -1986,6 +2008,7 @@ class keycloak (
     &#39;http-host&#39; =&gt; $http_host,
     &#39;http-port&#39; =&gt; $http_port,
     &#39;https-port&#39; =&gt; $https_port,
+    &#39;http-relative-path&#39; =&gt; $http_relative_path,
     &#39;db&#39; =&gt; $db,
     &#39;db-url-host&#39; =&gt; $db_url_host,
     &#39;db-url-port&#39; =&gt; $db_url_port,
@@ -2027,7 +2050,7 @@ class keycloak (
     $validator_server = $config[&#39;hostname&#39;]
     $validator_ssl = true
   }
-  $wrapper_server = &quot;${wrapper_protocol}://${wrapper_address}:${wrapper_port}&quot;
+  $wrapper_server = &quot;${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config[&#39;http-relative-path&#39;]}&quot;
 
   if $java_declare_method == &#39;include&#39; {
     contain java
