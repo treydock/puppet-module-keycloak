@@ -356,6 +356,19 @@ class keycloak (
   }
   $wrapper_server = "${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config['http-relative-path']}"
 
+  if versioncmp($version, '19.0') < 0 {
+    $auto_build_arg = '--auto-build'
+  } else {
+    $auto_build_arg = undef
+  }
+  $service_start = [
+    "${install_base}/bin/kc.sh",
+    $start_command,
+    $auto_build_arg,
+    $service_extra_opts,
+  ].filter |$s| { $s =~ NotUndef }
+  $service_start_cmd = join($service_start, ' ')
+
   if $java_declare_method == 'include' {
     contain java
   } else {
