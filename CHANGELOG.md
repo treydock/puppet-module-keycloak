@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.3.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.3.0) (2022-10-18)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v8.2.0...v8.3.0)
+
+### Added
+
+- Add support for centralized logging via Gelf [\#257](https://github.com/treydock/puppet-module-keycloak/pull/257) ([nblock](https://github.com/nblock))
+- Support EL9 [\#250](https://github.com/treydock/puppet-module-keycloak/pull/250) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Remove --auto-build from start command on Keycloak 19+ [\#259](https://github.com/treydock/puppet-module-keycloak/pull/259) ([treydock](https://github.com/treydock))
+
 ## [v8.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.2.0) (2022-10-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v8.1.0...v8.2.0)
