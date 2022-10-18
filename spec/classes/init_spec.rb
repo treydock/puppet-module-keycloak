@@ -148,6 +148,12 @@ describe 'keycloak' do
 
       context 'keycloak::service' do
         it do
+          is_expected.to contain_systemd__unit_file('keycloak.service').with(
+            content: %r{ExecStart=/opt/keycloak-18.0.0/bin/kc.sh start --auto-build$}
+          )
+        end
+
+        it do
           is_expected.to contain_service('keycloak').only_with(ensure: 'running',
                                                                enable: 'true',
                                                                name: 'keycloak',
@@ -161,6 +167,16 @@ describe 'keycloak' do
           it do
             is_expected.to contain_systemd__unit_file('keycloak.service').with(
               content: %r{Environment='JAVA_OPTS_APPEND=-Xmx512m -Xms64m'}
+            )
+          end
+        end
+
+        context 'with newer version' do
+          let(:params) { { version: '19.0.0' } }
+
+          it do
+            is_expected.to contain_systemd__unit_file('keycloak.service').with(
+              content: %r{ExecStart=/opt/keycloak-19.0.0/bin/kc.sh start$}
             )
           end
         end

@@ -19,7 +19,7 @@ Environment='JAVA_OPTS_APPEND=<%= scope['keycloak::java_opts'] %>'
 <% end -%>
 User=<%= scope['keycloak::user'] %>
 Group=<%= scope['keycloak::group'] %>
-ExecStart=<%= scope['keycloak::install_base'] %>/bin/kc.sh <%= scope['keycloak::start_command']%> --auto-build<% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
+ExecStart=<%= scope['keycloak::service_start_cmd'] %>
 TimeoutStartSec=600
 TimeoutStopSec=600
 SuccessExitStatus=0 143
