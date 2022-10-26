@@ -154,6 +154,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         ensure => 'present',
         remember_me => true,
         registration_allowed => true,
+        login_with_email_allowed => false,
+        duplicate_emails_allowed => true,
         reset_password_allowed => true,
         verify_email => true,
         user_managed_access_allowed => true,
@@ -204,6 +206,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         data = JSON.parse(stdout)
         expect(data['rememberMe']).to eq(true)
         expect(data['registrationAllowed']).to eq(true)
+        expect(data['loginWithEmailAllowed']).to eq(false)
+        expect(data['duplicateEmailsAllowed']).to eq(true)
         expect(data['resetPasswordAllowed']).to eq(true)
         expect(data['verifyEmail']).to eq(true)
         expect(data['userManagedAccessAllowed']).to eq(true)

@@ -146,6 +146,12 @@ Manage Keycloak realms
     defaultto :true
   end
 
+  newproperty(:duplicate_emails_allowed, boolean: true) do
+    desc 'duplicateEmailsAllowed'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:offline_session_max_lifespan_enabled, boolean: true) do
     desc 'offlineSessionMaxLifespanEnabled'
     newvalues(:true, :false)
