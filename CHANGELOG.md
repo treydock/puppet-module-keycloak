@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v8.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.4.0) (2022-10-26)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v8.3.0...v8.4.0)
+
+### Added
+
+- Add duplicate\_emails\_allowed to keycloak\_realm [\#260](https://github.com/treydock/puppet-module-keycloak/pull/260) ([treydock](https://github.com/treydock))
+
 ## [v8.3.0](https://github.com/treydock/puppet-module-keycloak/tree/v8.3.0) (2022-10-18)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v8.2.0...v8.3.0)

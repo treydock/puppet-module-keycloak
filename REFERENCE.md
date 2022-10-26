@@ -3133,6 +3133,14 @@ dockerAuthenticationFlow
 
 Default value: `docker auth`
 
+##### `duplicate_emails_allowed`
+
+Valid values: ``true``, ``false``
+
+duplicateEmailsAllowed
+
+Default value: `false`
+
 ##### `edit_username_allowed`
 
 Valid values: ``true``, ``false``
