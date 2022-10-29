@@ -24,14 +24,15 @@ describe Puppet::Type.type(:keycloak_required_action) do
   end
 
   it 'has alias default to provider_id' do
-    config.delete(:alias)
-    expect(resource[:alias]).to eq('some-provider')
+    config.delete(:provider_id)
+    expect(resource[:provider_id]).to eq('something')
   end
 
   it 'handles componsite name' do
-    component = described_class.new(name: 'foo on test', provider_id: 'provider')
+    component = described_class.new(name: 'foo on test')
     expect(component[:name]).to eq('foo on test')
     expect(component[:alias]).to eq('foo')
+    expect(component[:provider_id]).to eq('foo')
     expect(component[:realm]).to eq('test')
   end
 
@@ -148,11 +149,6 @@ describe Puppet::Type.type(:keycloak_required_action) do
       config.delete(:provider_id)
       config.delete(:alias)
       expect { resource }.to raise_error(%r{must have a alias defined})
-    end
-    it 'requires provider_id when present' do
-      config.delete(:provider_id)
-      config[:ensure] = 'present'
-      expect { resource }.to raise_error(%r{provider_id is required})
     end
     it 'does not require provider_id for absent' do
       config.delete(:provider_id)

@@ -204,7 +204,7 @@
 #   Only necessary to set if the URL path to Keycloak is modified
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = '18.0.0',
+  String $version               = '19.0.3',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
@@ -356,15 +356,9 @@ class keycloak (
   }
   $wrapper_server = "${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config['http-relative-path']}"
 
-  if versioncmp($version, '19.0') < 0 {
-    $auto_build_arg = '--auto-build'
-  } else {
-    $auto_build_arg = undef
-  }
   $service_start = [
     "${install_base}/bin/kc.sh",
     $start_command,
-    $auto_build_arg,
     $service_extra_opts,
   ].filter |$s| { $s =~ NotUndef }
   $service_start_cmd = join($service_start, ' ')

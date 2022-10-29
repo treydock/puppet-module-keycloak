@@ -163,7 +163,13 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
   context 'creates saml protocol_mapper' do
     it 'runs successfully' do
       pp = <<-EOS
-      class { 'keycloak': }
+      class { 'keycloak':
+        features => ['scripts'],
+      }
+      keycloak::spi_deployment { 'mappers':
+        deployed_name => 'mappers.jar',
+        source        => 'file:///tmp/mappers.jar',
+      }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'saml on test':
         ensure => 'present',
@@ -183,12 +189,12 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         friendly_name  => 'firstName',
         attribute_name => 'firstName',
       }
-      keycloak_protocol_mapper { "displayName for saml on test":
-        protocol       => 'saml',
-        type           => 'saml-javascript-mapper',
-        script         => "var foo = 'bar';\\nfoo;",
-        friendly_name  => 'displayName',
-        attribute_name => 'displayName',
+      keycloak_protocol_mapper { 'x500 displayName for saml on test':
+        protocol             => 'saml',
+        type                 => 'script-x500-displayName.js',
+        attribute_nameformat => 'uri',
+        friendly_name        => 'displayName',
+        attribute_name       => 'urn:oid:2.16.840.1.113730.3.1.241',
       }
       EOS
 
@@ -226,14 +232,13 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
       end
     end
 
-    it 'has created protocol mapper displayName' do
+    it 'has created protocol mapper from script' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
-        mapper = data.select { |d| d['name'] == 'displayName' }[0]
-        expect(mapper['protocolMapper']).to eq('saml-javascript-mapper')
-        expect(mapper['config']['attribute.name']).to eq('displayName')
-        expect(mapper['config']['Script']).to match(%r{^var foo = 'bar';$})
-        expect(mapper['config']['Script']).to match(%r{^foo;$})
+        mapper = data.select { |d| d['name'] == 'x500 displayName' }[0]
+        expect(mapper['protocolMapper']).to eq('script-x500-displayName.js')
+        expect(mapper['config']['attribute.name']).to eq('urn:oid:2.16.840.1.113730.3.1.241')
+        expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
         expect(mapper['config']['friendly.name']).to eq('displayName')
       end
     end

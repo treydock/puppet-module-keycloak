@@ -330,18 +330,14 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     }.to raise_error(%r{foo})
   end
 
-  it 'accepts value for script' do
+  it 'accepts script' do
     config[:protocol] = 'saml'
-    config[:type] = 'saml-javascript-mapper'
-    config[:script] = 'foobar'
-    expect(resource[:script]).to eq('foobar')
-  end
-
-  it 'accepts value with newline for script' do
-    config[:protocol] = 'saml'
-    config[:type] = 'saml-javascript-mapper'
-    config[:script] = 'foobar\nbaz'
-    expect(resource[:script]).to eq('foobar\nbaz')
+    config[:type] = 'script-foo.js'
+    config[:single] = true
+    config[:attribute_name] = 'foo'
+    config[:attribute_nameformat] = 'uri'
+    config[:friendly_name] = 'foo'
+    expect(resource[:type]).to eq('script-foo.js')
   end
 
   it 'accepts value for included_client_audience' do

@@ -1,0 +1,1 @@
+user.getFirstName() + ' ' + user.getLastName();

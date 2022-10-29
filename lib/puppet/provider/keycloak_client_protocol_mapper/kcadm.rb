@@ -49,11 +49,8 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
           if protocol_mapper[:type] == 'oidc-group-membership-mapper'
             protocol_mapper[:full_path] = d['config']['full.path']
           end
-          if ['saml-user-property-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
+          if ['saml-user-property-mapper'].include?(protocol_mapper[:type]) || protocol_mapper[:type] =~ /script-.+/
             protocol_mapper[:friendly_name] = d['config']['friendly.name']
-          end
-          if protocol_mapper[:type] == 'saml-javascript-mapper'
-            protocol_mapper[:script] = d['config']['Script']
           end
           if protocol_mapper[:protocol] == 'openid-connect'
             protocol_mapper[:id_token_claim] = d['config']['id.token.claim']
@@ -69,7 +66,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
             protocol_mapper[:attribute_name] = d['config']['attribute.name']
             protocol_mapper[:attribute_nameformat] = get_attribute_nameformat_reverse(d['config']['attribute.nameformat'])
           end
-          if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
+          if ['saml-role-list-mapper'].include?(protocol_mapper[:type]) || protocol_mapper[:type] =~ /script-.+/
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
           end
           protocol_mappers << new(protocol_mapper)
@@ -112,11 +109,8 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
     if resource[:type] == 'oidc-group-membership-mapper'
       data[:config][:'full.path'] = resource[:full_path] if resource[:full_path]
     end
-    if ['saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+    if ['saml-user-property-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ /script-.+/)
       data[:config][:'friendly.name'] = resource[:friendly_name] if resource[:friendly_name]
-    end
-    if resource[:type] == 'saml-javascript-mapper'
-      data[:config][:Script] = resource[:script]
     end
     if resource[:protocol] == 'openid-connect'
       data[:config][:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
@@ -132,7 +126,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
       data[:config][:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
       data[:config][:'attribute.nameformat'] = self.class.get_attribute_nameformat(resource[:attribute_nameformat]) if resource[:attribute_nameformat]
     end
-    if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+    if ['saml-role-list-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ /script-.+/)
       data[:config][:single] = resource[:single].to_s if resource[:single]
     end
 
@@ -196,11 +190,8 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
       if resource[:type] == 'oidc-group-membership-mapper'
         config[:'full.path'] = resource[:full_path] if resource[:full_path]
       end
-      if ['saml-user-property-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+      if ['saml-user-property-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ /script-.+/)
         config[:'friendly.name'] = resource[:friendly_name] if resource[:friendly_name]
-      end
-      if resource[:type] == 'saml-javascript-mapper'
-        config[:Script] = resource[:script]
       end
       if resource[:protocol] == 'openid-connect'
         config[:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
@@ -216,7 +207,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
         config[:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
         config[:'attribute.nameformat'] = self.class.get_attribute_nameformat(resource[:attribute_nameformat]) if resource[:attribute_nameformat]
       end
-      if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(resource[:type])
+      if ['saml-role-list-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ /script-.+/)
         config[:single] = resource[:single].to_s if resource[:single]
       end
       data[:config] = config unless config.empty?
