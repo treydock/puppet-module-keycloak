@@ -110,7 +110,8 @@
 18
 19
 20
-21</pre>
+21
+22</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/db/mysql.pp', line 4</span>
@@ -129,6 +130,7 @@ class keycloak::db::mysql {
       host     =&gt; $keycloak::db_url_host,
       grant    =&gt; &#39;ALL&#39;,
       charset  =&gt; $keycloak::db_charset,
+      collate  =&gt; $keycloak::db_collate,
     }
   }
 

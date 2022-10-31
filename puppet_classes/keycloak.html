@@ -865,6 +865,24 @@ installation</p>
   
     <li>
       
+        <span class='name'>db_collate</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;utf8_general_ci&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>MySQL and MariaDB database collate</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>features</span>
       
       
@@ -1698,8 +1716,6 @@ Keycloak is modified</p>
         <pre class="lines">
 
 
-205
-206
 207
 208
 209
@@ -1906,10 +1922,13 @@ Keycloak is modified</p>
 410
 411
 412
-413</pre>
+413
+414
+415
+416</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 205</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 207</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1955,6 +1974,7 @@ class keycloak (
   String[1] $db_username = &#39;keycloak&#39;,
   String[1] $db_password = &#39;changeme&#39;,
   String $db_charset = &#39;utf8&#39;,
+  String $db_collate = &#39;utf8_general_ci&#39;,
   Optional[Array[String[1]]] $features = undef,
   Optional[Array[String[1]]] $features_disabled = undef,
   Boolean $truststore = false,
