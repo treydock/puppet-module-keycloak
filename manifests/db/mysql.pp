@@ -15,6 +15,7 @@ class keycloak::db::mysql {
       host     => $keycloak::db_url_host,
       grant    => 'ALL',
       charset  => $keycloak::db_charset,
+      collate  => $keycloak::db_collate,
     }
   }
 
