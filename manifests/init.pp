@@ -105,6 +105,8 @@
 #   Database user password.
 # @param db_charset
 #   MySQL and MariaDB database charset
+# @param db_collate
+#   MySQL and MariaDB database collate
 # @param features
 #   Keycloak features to enable
 # @param features_disabled
@@ -246,6 +248,7 @@ class keycloak (
   String[1] $db_username = 'keycloak',
   String[1] $db_password = 'changeme',
   String $db_charset = 'utf8',
+  String $db_collate = 'utf8_general_ci',
   Optional[Array[String[1]]] $features = undef,
   Optional[Array[String[1]]] $features_disabled = undef,
   Boolean $truststore = false,
