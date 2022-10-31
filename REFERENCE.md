@@ -521,6 +521,7 @@ Data type: `String`
 MySQL and MariaDB database collate
 
 Default value: `'utf8_general_ci'`
+
 ##### <a name="features"></a>`features`
 
 Data type: `Optional[Array[String[1]]]`
