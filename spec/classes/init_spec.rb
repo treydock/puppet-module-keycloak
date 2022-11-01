@@ -6,7 +6,7 @@ describe 'keycloak' do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
-      let(:version) { '18.0.0' }
+      let(:version) { '19.0.3' }
 
       case facts[:osfamily]
       when %r{RedHat}
@@ -149,7 +149,7 @@ describe 'keycloak' do
       context 'keycloak::service' do
         it do
           is_expected.to contain_systemd__unit_file('keycloak.service').with(
-            content: %r{ExecStart=/opt/keycloak-18.0.0/bin/kc.sh start --auto-build$}
+            content: %r{ExecStart=/opt/keycloak-#{version}/bin/kc.sh start$}
           )
         end
 
@@ -167,16 +167,6 @@ describe 'keycloak' do
           it do
             is_expected.to contain_systemd__unit_file('keycloak.service').with(
               content: %r{Environment='JAVA_OPTS_APPEND=-Xmx512m -Xms64m'}
-            )
-          end
-        end
-
-        context 'with newer version' do
-          let(:params) { { version: '19.0.0' } }
-
-          it do
-            is_expected.to contain_systemd__unit_file('keycloak.service').with(
-              content: %r{ExecStart=/opt/keycloak-19.0.0/bin/kc.sh start$}
             )
           end
         end

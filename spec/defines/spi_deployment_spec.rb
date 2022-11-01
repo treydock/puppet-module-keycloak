@@ -6,7 +6,7 @@ describe 'keycloak::spi_deployment' do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
-      let(:version) { '18.0.0' }
+      let(:version) { '19.0.3' }
       let(:title) { 'duo-spi' }
       let(:params) { { deployed_name: 'keycloak-duo-spi-jar-with-dependencies.jar', source: 'https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar' } }
 

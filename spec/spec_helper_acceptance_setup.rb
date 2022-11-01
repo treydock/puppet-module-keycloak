@@ -1,7 +1,7 @@
 RSpec.configure do |c|
   c.add_setting :keycloak_version
   keycloak_version = if ENV['BEAKER_keycloak_version'].nil? || ENV['BEAKER_keycloak_version'].empty?
-                       '18.0.0'
+                       '19.0.3'
                      else
                        ENV['BEAKER_keycloak_version']
                      end
@@ -12,6 +12,7 @@ end
 
 proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 scp_to(hosts, File.join(proj_root, 'spec/fixtures/keycloak-duo-spi-jar-with-dependencies.jar'), '/tmp/keycloak-duo-spi-jar-with-dependencies.jar')
+scp_to(hosts, File.join(proj_root, 'spec/fixtures/mappers.jar'), '/tmp/mappers.jar')
 
 hiera_yaml = <<-EOS
 ---
