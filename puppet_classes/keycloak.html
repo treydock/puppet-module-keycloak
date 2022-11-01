@@ -122,7 +122,7 @@ Defaults to true.</p>
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;18.0.0&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;19.0.3&#39;</tt>)</em>
       
       
         &mdash;
@@ -1919,20 +1919,14 @@ Keycloak is modified</p>
 407
 408
 409
-410
-411
-412
-413
-414
-415
-416</pre>
+410</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 207</span>
 
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = &#39;18.0.0&#39;,
+  String $version               = &#39;19.0.3&#39;,
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
     $package_url                = undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
@@ -2085,15 +2079,9 @@ class keycloak (
   }
   $wrapper_server = &quot;${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config[&#39;http-relative-path&#39;]}&quot;
 
-  if versioncmp($version, &#39;19.0&#39;) &lt; 0 {
-    $auto_build_arg = &#39;--auto-build&#39;
-  } else {
-    $auto_build_arg = undef
-  }
   $service_start = [
     &quot;${install_base}/bin/kc.sh&quot;,
     $start_command,
-    $auto_build_arg,
     $service_extra_opts,
   ].filter |$s| { $s =~ NotUndef }
   $service_start_cmd = join($service_start, &#39; &#39;)

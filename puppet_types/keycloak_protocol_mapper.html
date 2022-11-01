@@ -376,24 +376,6 @@
     </li>
     
     <li>
-      <span class="name">script</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>Script, only valid for <code>type</code> of
-<code>saml-javascript-mapper</code>&#39;</p>
-
-<p>Array values will be joined with newlines. Strings will be kept unchanged.</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
-    
-    <li>
       <span class="name">single</span>
       
       
@@ -401,7 +383,7 @@
         <div class="discussion">
           
 <p>single. Default to <code>false</code> for <code>type</code>
-<code>saml-role-list-mapper</code> or <code>saml-javascript-mapper</code>.</p>
+<code>saml-role-list-mapper</code>.</p>
 
         </div>
       </div>
@@ -642,6 +624,11 @@ discover the appropriate provider for your platform.</p>
           <li>
             
             saml-role-list-mapper
+          </li>
+          
+          <li>
+            
+            /script-.+/
           </li>
           
         </ul>

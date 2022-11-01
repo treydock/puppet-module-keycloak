@@ -100,23 +100,22 @@
 </div></p>
       
       <pre class="example code"><code>keycloak_required_action { &#39;webauthn-register on master&#39;:
-  ensure =&gt; present,
-  provider_id =&gt; &#39;webauthn-register&#39;,
+  ensure       =&gt; present,
+  alias        =&gt; &#39;webauthn-register&#39;,
+  provider_id  =&gt; &#39;webauthn-register&#39;,
   display_name =&gt; &#39;Webauthn Register&#39;,
-  default =&gt; true,
-  enabled =&gt; true,
-  priority =&gt; 1,
-  config =&gt; {
+  default      =&gt; true,
+  enabled      =&gt; true,
+  priority     =&gt; 1,
+  config       =&gt; {
     &#39;something&#39; =&gt; &#39;true&#39;, # keep in mind that keycloak only supports strings for both keys and values
     &#39;smth else&#39; =&gt; &#39;1&#39;,
   },
-  alias =&gt; &#39;webauthn&#39;,
 }
 
 @example Minimal example to enable email verification without making it default
 keycloak_required_action { &#39;VERIFY_EMAIL on master&#39;:
   ensure =&gt; present,
-  provider_id =&gt; &#39;webauthn-register&#39;,
 }</code></pre>
     
   </div>
@@ -127,21 +126,6 @@ keycloak_required_action { &#39;VERIFY_EMAIL on master&#39;:
 <div class="tags">
   <p class="tag_title">Properties</p>
   <ul>
-    
-    <li>
-      <span class="name">alias</span>
-      
-      
-      <div class="docstring">
-        <div class="discussion">
-          
-<p>Alias. Default to <code>provider_id</code>.</p>
-
-        </div>
-      </div>
-      
-      
-    </li>
     
     <li>
       <span class="name">config</span>
@@ -199,7 +183,7 @@ keycloak_required_action { &#39;VERIFY_EMAIL on master&#39;:
       <div class="docstring">
         <div class="discussion">
           
-<p>Displayed name. Default to <code>provider_id</code></p>
+<p>Displayed name.</p>
 
         </div>
       </div>
@@ -299,6 +283,21 @@ keycloak_required_action { &#39;VERIFY_EMAIL on master&#39;:
   <ul>
     
     <li>
+      <span class="name">alias</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>Alias.</p>
+
+        </div>
+      </div>
+      
+      
+    </li>
+    
+    <li>
       <span class="name">name (namevar)</span>
       
       
@@ -337,7 +336,7 @@ discover the appropriate provider for your platform.</p>
       <div class="docstring">
         <div class="discussion">
           
-<p>providerId of the required action</p>
+<p>providerId of the required action. Default to <code>alias</code></p>
 
         </div>
       </div>
