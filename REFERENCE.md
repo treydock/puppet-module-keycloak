@@ -177,7 +177,7 @@ Data type: `String`
 
 Version of Keycloak to install and manage.
 
-Default value: `'18.0.0'`
+Default value: `'19.0.3'`
 
 ##### <a name="package_url"></a>`package_url`
 
@@ -1695,12 +1695,6 @@ protocol
 
 Default value: `openid-connect`
 
-##### `script`
-
-Script, only valid for `type` of `saml-javascript-mapper`'
-
-Array values will be joined with newlines. Strings will be kept unchanged.
-
 ##### `single`
 
 Valid values: ``true``, ``false``
@@ -1758,7 +1752,7 @@ The protocol mapper name. Defaults to `name`.
 
 ##### <a name="type"></a>`type`
 
-Valid values: `oidc-usermodel-client-role-mapper`, `oidc-usermodel-property-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-user-property-mapper`, `saml-role-list-mapper`
+Valid values: `oidc-usermodel-client-role-mapper`, `oidc-usermodel-property-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-user-property-mapper`, `saml-role-list-mapper`, `/script-.+/`
 
 protocolMapper.
 
@@ -2943,17 +2937,11 @@ protocol
 
 Default value: `openid-connect`
 
-##### `script`
-
-Script, only valid for `type` of `saml-javascript-mapper`'
-
-Array values will be joined with newlines. Strings will be kept unchanged.
-
 ##### `single`
 
 Valid values: ``true``, ``false``
 
-single. Default to `false` for `type` `saml-role-list-mapper` or `saml-javascript-mapper`.
+single. Default to `false` for `type` `saml-role-list-mapper`.
 
 ##### `user_attribute`
 
@@ -3006,7 +2994,7 @@ The protocol mapper name. Defaults to `name`.
 
 ##### <a name="type"></a>`type`
 
-Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-user-attribute-mapper`, `saml-role-list-mapper`
+Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-user-attribute-mapper`, `saml-role-list-mapper`, `/script-.+/`
 
 protocolMapper.
 
@@ -3422,33 +3410,28 @@ Manage Keycloak required actions
 
 ```puppet
 keycloak_required_action { 'webauthn-register on master':
-  ensure => present,
-  provider_id => 'webauthn-register',
+  ensure       => present,
+  alias        => 'webauthn-register',
+  provider_id  => 'webauthn-register',
   display_name => 'Webauthn Register',
-  default => true,
-  enabled => true,
-  priority => 1,
-  config => {
+  default      => true,
+  enabled      => true,
+  priority     => 1,
+  config       => {
     'something' => 'true', # keep in mind that keycloak only supports strings for both keys and values
     'smth else' => '1',
   },
-  alias => 'webauthn',
 }
 
 @example Minimal example to enable email verification without making it default
 keycloak_required_action { 'VERIFY_EMAIL on master':
   ensure => present,
-  provider_id => 'webauthn-register',
 }
 ```
 
 #### Properties
 
 The following properties are available in the `keycloak_required_action` type.
-
-##### `alias`
-
-Alias. Default to `provider_id`.
 
 ##### `config`
 
@@ -3464,7 +3447,7 @@ Default value: `false`
 
 ##### `display_name`
 
-Displayed name. Default to `provider_id`
+Displayed name.
 
 ##### `enabled`
 
@@ -3490,10 +3473,15 @@ Required action priority
 
 The following parameters are available in the `keycloak_required_action` type.
 
+* [`alias`](#alias)
 * [`name`](#name)
 * [`provider`](#provider)
 * [`provider_id`](#provider_id)
 * [`realm`](#realm)
+
+##### <a name="alias"></a>`alias`
+
+Alias.
 
 ##### <a name="name"></a>`name`
 
@@ -3508,7 +3496,7 @@ Puppet will usually discover the appropriate provider for your platform.
 
 ##### <a name="provider_id"></a>`provider_id`
 
-providerId of the required action
+providerId of the required action. Default to `alias`
 
 ##### <a name="realm"></a>`realm`
 
