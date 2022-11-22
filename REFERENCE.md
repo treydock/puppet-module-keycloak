@@ -1752,7 +1752,7 @@ The protocol mapper name. Defaults to `name`.
 
 ##### <a name="type"></a>`type`
 
-Valid values: `oidc-usermodel-client-role-mapper`, `oidc-usermodel-property-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-user-property-mapper`, `saml-role-list-mapper`, `/script-.+/`
+Valid values: `oidc-usermodel-client-role-mapper`, `oidc-usermodel-property-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-user-property-mapper`, `saml-role-list-mapper`
 
 protocolMapper.
 
@@ -2994,7 +2994,7 @@ The protocol mapper name. Defaults to `name`.
 
 ##### <a name="type"></a>`type`
 
-Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-user-attribute-mapper`, `saml-role-list-mapper`, `/script-.+/`
+Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-user-attribute-mapper`, `saml-role-list-mapper`
 
 protocolMapper.
 
