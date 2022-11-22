@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'flow types:', if: RSpec.configuration.keycloak_full do
-  context 'creates flow' do
+  context 'when creates flow' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak::spi_deployment { 'duo-spi':
         deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
@@ -81,7 +83,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         index        => 1,
         requirement  => 'ALTERNATIVE',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -114,9 +116,9 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'updates flow' do
+  context 'when updates flow' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak::spi_deployment { 'duo-spi':
         deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
@@ -200,7 +202,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         index        => 0,
         requirement  => 'ALTERNATIVE',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -230,9 +232,9 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'ensure => absent' do
+  context 'when ensure => absent' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_flow { 'browser-with-duo on test':
         ensure => 'absent',
@@ -243,7 +245,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
       keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
         ensure => 'absent',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

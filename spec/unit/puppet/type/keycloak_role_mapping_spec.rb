@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_role_mapping) do
   let(:default_config) do
     {
-      name: 'test',
+      name: 'test'
     }
   end
   let(:config) do
@@ -25,21 +27,23 @@ describe Puppet::Type.type(:keycloak_role_mapping) do
   end
 
   defaults = {
-    group: :false,
+    group: :false
   }
 
   describe 'basic properties' do
     # Test basic properties
     [
       :realm,
-      :name,
+      :name
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -48,32 +52,38 @@ describe Puppet::Type.type(:keycloak_role_mapping) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :group,
+      :group
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(:true)
       end
-      it "should accept true for #{p} string" do
+
+      it "accepts true for #{p} string" do
         config[p] = 'true'
         expect(resource[p]).to eq(:true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(:false)
       end
-      it "should accept false for #{p} string" do
+
+      it "accepts false for #{p} string" do
         config[p] = 'false'
         expect(resource[p]).to eq(:false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -82,14 +92,16 @@ describe Puppet::Type.type(:keycloak_role_mapping) do
   describe 'array properties' do
     # Array properties
     [
-      :realm_roles,
+      :realm_roles
     ].each do |p|
-      it "should accept array for #{p}" do
+      it "accepts array for #{p}" do
         config[p] = ['foo', 'bar']
         expect(resource[p]).to eq(['foo', 'bar'])
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end

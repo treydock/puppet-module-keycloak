@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_full do
-  context 'creates client scopes' do
+  context 'when creates client scopes' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak::client_scope::oidc { 'openid-connect-clients':
         realm => 'test',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -69,15 +71,15 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
   end
 
-  context 'creates saml client scope' do
+  context 'when creates saml client scope' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak::client_scope::saml { 'saml-clients':
         realm => 'test',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

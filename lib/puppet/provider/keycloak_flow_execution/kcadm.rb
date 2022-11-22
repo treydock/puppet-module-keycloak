@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -25,7 +27,7 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
         Puppet.debug("Evaluate flow #{f['alias']}")
         begin
           executions_output = kcadm('get', "authentication/flows/#{f['alias']}/executions", realm)
-        rescue
+        rescue StandardError
           Puppet.notice("Unable to query flow #{f['alias']} executions")
           executions_output = '[]'
         end
@@ -86,7 +88,7 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
 
   def self.prefetch(resources)
     executions = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = executions.find do |c|
         c.provider_id == resources[name][:provider_id] && c.flow_alias == resources[name][:flow_alias] && c.realm == resources[name][:realm]
       end
@@ -115,7 +117,7 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
     if resource[:requirement] != 'DISABLED'
       update_data = {
         id: new_id.strip,
-        requirement: resource[:requirement],
+        requirement: resource[:requirement]
       }
       tu = Tempfile.new('keycloak_flow_execution_update')
       tu.write(JSON.pretty_generate(update_data))
@@ -227,7 +229,7 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
         index_difference = current_priority - @property_flush[:index]
         if index_difference.zero?
           Puppet.notice("Index difference for Keycloak_flow_execution[#{resource[:name]}] is unchanged, skipping.")
-        elsif index_difference < 0
+        elsif index_difference.negative?
           incrementer = 1
           action = 'lower-priority'
         else

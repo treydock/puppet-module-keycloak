@@ -1,6 +1,9 @@
-Dir[File.dirname(__FILE__) + '/keycloak*.rb'].each do |file|
+# frozen_string_literal: true
+
+Dir["#{File.dirname(__FILE__)}/keycloak*.rb"].sort.each do |file|
   next if file == __FILE__
   next if File.basename(file) == 'keycloak_conn_validator.rb'
+
   require file
 end
 

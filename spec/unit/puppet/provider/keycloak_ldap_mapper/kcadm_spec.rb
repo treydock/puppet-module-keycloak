@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_ldap_mapper).provider(:kcadm) do
@@ -47,6 +49,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper).provider(:kcadm) do
   #       described_class.prefetch(resources)
   #     end
   #   end
+
   describe 'create' do
     it 'creates a realm' do
       resource[:parent_id] = 'foo-test'

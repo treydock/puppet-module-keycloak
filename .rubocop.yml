@@ -5,7 +5,7 @@ AllCops:
   DisplayCopNames: true
   TargetRubyVersion: '2.5'
   Include:
-  - "./**/*.rb"
+  - "**/*.rb"
   Exclude:
   - bin/*
   - ".vendor/**/*"
@@ -63,6 +63,15 @@ Style/TrailingCommaInArguments:
 Style/SymbolArray:
   Description: Using percent style obscures symbolic intent of array's contents.
   EnforcedStyle: brackets
+RSpec/ImplicitSubject:
+  Enabled: false
+Lint/BooleanSymbol:
+  Enabled: false
+Naming/MethodParameterName:
+  AllowedNames:
+  - is
+Style/OptionalBooleanParameter:
+  Enabled: false
 RSpec/MessageSpies:
   EnforcedStyle: receive
 Style/Documentation:

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full do
-  context 'creates protocol_mapper' do
+  context 'when creates protocol_mapper' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'oidc on test':
@@ -25,7 +27,7 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         type                     => 'oidc-audience-mapper',
         included_client_audience => 'foo',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -83,9 +85,9 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
   end
 
-  context 'updates protocol_mapper' do
+  context 'when updates protocol_mapper' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'oidc on test':
@@ -110,7 +112,7 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         included_client_audience => 'foo',
         id_token_claim           => false,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -160,9 +162,9 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
   end
 
-  context 'creates saml protocol_mapper' do
+  context 'when creates saml protocol_mapper' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak':
         features => ['scripts'],
       }
@@ -196,7 +198,7 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         friendly_name        => 'displayName',
         attribute_name       => 'urn:oid:2.16.840.1.113730.3.1.241',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.newtype(:keycloak_conn_validator) do
   desc <<-DESC
 Verify that a connection can be successfully established between a node

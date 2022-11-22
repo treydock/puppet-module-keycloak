@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -18,7 +20,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :saml_assertion_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
-      :saml_signing_private_key,
+      :saml_signing_private_key
     ]
   end
 
@@ -30,14 +32,14 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :saml_assertion_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
-      :saml_signing_private_key,
+      :saml_signing_private_key
     ]
   end
 
   def self.auth_flow_properties
     {
       browser_flow: 'browser',
-      direct_grant_flow: 'direct_grant',
+      direct_grant_flow: 'direct_grant'
     }
   end
 
@@ -92,7 +94,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
            !d.key?('name')
           begin
             secret_output = kcadm('get', "clients/#{d['id']}/client-secret", realm)
-          rescue
+          rescue StandardError
             Puppet.debug("Unable to get clients/#{d['id']}/client-secret")
             secret_output = '{}'
           end
@@ -109,6 +111,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
         client[:name] = "#{client[:client_id]} on #{client[:realm]}"
         type_properties.each do |property|
           next if [:roles].include?(property)
+
           camel_key = camelize(property)
           dot_key = property.to_s.tr('_', '.')
           key = property.to_s
@@ -142,7 +145,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
 
   def self.prefetch(resources)
     clients = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = clients.find { |c| c.client_id == resources[name][:client_id] && c.realm == resources[name][:realm] }
       if provider
         resources[name].provider = provider
@@ -152,6 +155,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
 
   def scope_map
     return @scope_map if @scope_map
+
     output = kcadm('get', 'client-scopes', resource[:realm], nil, ['id', 'name'])
     begin
       data = JSON.parse(output)
@@ -167,8 +171,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
   end
 
   def self.flow_ids(realm)
-    @flow_ids = {} unless @flow_ids
+    @flow_ids ||= {}
     return @flow_ids[realm] if @flow_ids[realm]
+
     output = kcadm('get', 'authentication/flows', realm, nil, ['id', 'alias'])
     begin
       data = JSON.parse(output)
@@ -185,8 +190,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
   end
 
   def flow_ids
-    @flow_ids = {} unless @flow_ids
+    @flow_ids ||= {}
     return @flow_ids unless @flow_ids.empty?
+
     self.class.instance_variable_set(:@flow_ids, nil)
     @flow_ids = self.class.flow_ids(resource[:realm])
     @flow_ids
@@ -202,8 +208,10 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
     type_properties.each do |property|
       next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
       next unless resource[property.to_sym]
+
       value = convert_property_value(resource[property.to_sym])
       next if value == 'absent' || value == :absent || value.nil?
+
       if attributes_properties.include?(property)
         unless data.key?(:attributes)
           data[:attributes] = {}
@@ -313,6 +321,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
 
   def destroy
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+
     begin
       kcadm('delete', "clients/#{id}", resource[:realm])
     rescue Puppet::ExecutionFailure => e
@@ -351,6 +360,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
         next unless @property_flush[property.to_sym]
+
         value = convert_property_value(@property_flush[property.to_sym])
         value = nil if value.to_s == 'absent'
         if attributes_properties.include?(property)

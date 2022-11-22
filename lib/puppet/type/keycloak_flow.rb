@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
@@ -116,23 +118,23 @@ Manage a Keycloak flow
           [:name],
           [:alias],
           [:flow_alias],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{^((\S+) on (\S+))$},
         [
           [:name],
           [:alias],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
@@ -142,6 +144,7 @@ Manage a Keycloak flow
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
       next if self[:realm] != resource[:realm]
       next if self[:top_level] == :true
+
       if self[:flow_alias] == resource[:alias]
         requires << resource.name
       end
@@ -158,6 +161,7 @@ Manage a Keycloak flow
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow_execution'
       next if self[:realm] != resource[:realm]
       next if self[:top_level] == :true
+
       if self[:flow_alias] == resource[:flow_alias] && !self[:index].nil? && !resource[:index].nil? && self[:index] > resource[:index]
         requires << resource.name
       end
@@ -169,6 +173,7 @@ Manage a Keycloak flow
     requires = []
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_resource_validator'
+
       resource[:dependent_resources].to_a.each do |dep|
         requires << resource if dep == "Keycloak_flow[#{self[:name]}]"
       end
@@ -180,6 +185,7 @@ Manage a Keycloak flow
     if self[:realm].nil?
       raise "Keycloak_flow[#{self[:name]}] must have a realm defined"
     end
+
     if self[:ensure] == :present
       if self[:top_level] == :false && self[:index].nil?
         raise "Keycloak_flow[#{self[:name]}] index is required when top_level is false"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_sssd_user_provider).provider(:kcadm) do
@@ -46,6 +48,7 @@ describe Puppet::Type.type(:keycloak_sssd_user_provider).provider(:kcadm) do
   #       described_class.prefetch(resources)
   #     end
   #   end
+
   describe 'create' do
     it 'creates a realm' do
       temp = Tempfile.new('keycloak_component')

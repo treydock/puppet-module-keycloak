@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'keycloak::freeipa_ldap_mappers' do
@@ -10,7 +12,7 @@ describe 'keycloak::freeipa_ldap_mappers' do
           realm: 'EXAMPLE.ORG',
           groups_dn: 'cn=groups,cn=accounts,dc=example,dc=org',
           roles_dn: 'cn=groups,cn=accounts,dc=example,dc=org',
-          parent_id: 'ipa.example.org',
+          parent_id: 'ipa.example.org'
         }
       end
 
@@ -41,7 +43,7 @@ describe 'keycloak::freeipa_ldap_mappers' do
           ensure: 'present',
           realm: 'EXAMPLE.ORG',
           type: 'role-ldap-mapper',
-          ldap:  'ipa.example.org',
+          ldap: 'ipa.example.org',
           is_mandatory_in_ldap: false,
           mode: 'READ_ONLY',
           memberof_ldap_attribute: 'memberOf',

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
@@ -150,7 +152,7 @@ Manage Keycloak identity providers
     desc 'clientSecret'
 
     def insync?(is)
-      if is =~ %r{^[\*]+$}
+      if is =~ %r{^\*+$}
         Puppet.warning("Parameter 'client_secret' is set and Puppet has no way to check current value")
         true
       else
@@ -260,15 +262,15 @@ Manage Keycloak identity providers
         [
           [:name],
           [:alias],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
@@ -276,6 +278,7 @@ Manage Keycloak identity providers
     if self[:realm].nil?
       raise Puppet::Error, 'realm is required'
     end
+
     if self[:ensure].to_s == 'present' && ['oidc', 'keycloak-oidc'].include?(self[:provider_id])
       if self[:authorization_url].nil?
         raise Puppet::Error, 'authorization_url is required'
@@ -297,6 +300,7 @@ Manage Keycloak identity providers
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
       next if self[:realm] != resource[:realm]
+
       if self[:first_broker_login_flow_alias] == resource[:alias]
         requires << resource.name
       end

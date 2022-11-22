@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'required action types:', if: RSpec.configuration.keycloak_full do
-  context 'creates required action' do
+  context 'when creates required action' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_required_action { 'webauthn-register on test':
@@ -13,7 +15,7 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
         enabled      => true,
         priority     => 200,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -38,9 +40,9 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'updates required action' do
+  context 'when updates required action' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_required_action { 'webauthn-register on test':
@@ -50,7 +52,7 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
         enabled      => true,
         priority     => 100,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -64,14 +66,14 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'ensure => absent' do
+  context 'when ensure => absent' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_required_action { 'webauthn-register on test':
         ensure => 'absent',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

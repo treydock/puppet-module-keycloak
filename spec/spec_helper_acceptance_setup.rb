@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |c|
   c.add_setting :keycloak_version
   keycloak_version = if ENV['BEAKER_keycloak_version'].nil? || ENV['BEAKER_keycloak_version'].empty?
@@ -14,7 +16,7 @@ proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 scp_to(hosts, File.join(proj_root, 'spec/fixtures/keycloak-duo-spi-jar-with-dependencies.jar'), '/tmp/keycloak-duo-spi-jar-with-dependencies.jar')
 scp_to(hosts, File.join(proj_root, 'spec/fixtures/mappers.jar'), '/tmp/mappers.jar')
 
-hiera_yaml = <<-EOS
+hiera_yaml = <<-HIERA_YAML
 ---
 version: 5
 defaults:
@@ -25,21 +27,21 @@ hierarchy:
     path: "os/%{facts.os.name}/%{facts.os.release.major}.yaml"
   - name: "Common"
     path: "common.yaml"
-EOS
-centos7_yaml = <<-EOS
+HIERA_YAML
+centos7_yaml = <<-EL7_YAML
 postgresql::server::service_reload: 'systemctl reload postgresql 2>/dev/null 1>/dev/null'
-EOS
-ubuntu1804_yaml = <<-EOS
+EL7_YAML
+ubuntu1804_yaml = <<-UBUNTU18_YAML
 keycloak::db: mysql
-EOS
-common_yaml = <<-EOS
+UBUNTU18_YAML
+common_yaml = <<-COMMON_YAML
 ---
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
 keycloak::http_host: '127.0.0.1'
 keycloak::db: mariadb
 keycloak::proxy: edge
 postgresql::server::service_status: 'service postgresql status 2>/dev/null 1>/dev/null'
-EOS
+COMMON_YAML
 
 create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
 on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'

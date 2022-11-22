@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_ldap_user_provider) do
   let(:default_config) do
     {
       name: 'foo',
-      realm: 'test',
+      realm: 'test'
     }
   end
   let(:config) do
@@ -180,7 +182,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     trust_email: :false,
     full_sync_period: '-1',
     changed_sync_period: '-1',
-    sync_registrations: :false,
+    sync_registrations: :false
   }
 
   describe 'basic properties' do
@@ -192,14 +194,16 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
       :batch_size_for_sync,
       :username_ldap_attribute,
       :rdn_ldap_attribute,
-      :uuid_ldap_attribute,
+      :uuid_ldap_attribute
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -209,14 +213,16 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     # Test integer properties
     [
       :full_sync_period,
-      :changed_sync_period,
+      :changed_sync_period
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 100
         expect(resource[p]).to eq('100')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -228,28 +234,32 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
       :enabled,
       :import_enabled,
       :trust_email,
-      :sync_registrations,
+      :sync_registrations
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(:true)
         config[p] = 'true'
         expect(resource[p]).to eq(:true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(:false)
         config[p] = 'false'
         expect(resource[p]).to eq(:false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -258,14 +268,16 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
   describe 'array properties' do
     # Array properties
     [
-      :user_object_classes,
+      :user_object_classes
     ].each do |p|
       it 'accepts array' do
         config[p] = ['foo', 'bar']
         expect(resource[p]).to eq(['foo', 'bar'])
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end

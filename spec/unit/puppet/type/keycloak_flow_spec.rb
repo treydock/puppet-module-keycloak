@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_flow) do
@@ -6,7 +8,7 @@ describe Puppet::Type.type(:keycloak_flow) do
       name: 'foo',
       realm: 'test',
       index: 0,
-      flow_alias: 'bar',
+      flow_alias: 'bar'
     }
   end
   let(:config) do
@@ -47,20 +49,22 @@ describe Puppet::Type.type(:keycloak_flow) do
   end
 
   defaults = {
-    top_level: :true,
+    top_level: :true
   }
 
   describe 'basic properties' do
     # Test basic properties
     [
-      :description,
+      :description
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -69,32 +73,38 @@ describe Puppet::Type.type(:keycloak_flow) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :top_level,
+      :top_level
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(:true)
       end
-      it "should accept true for #{p} string" do
+
+      it "accepts true for #{p} string" do
         config[p] = 'true'
         expect(resource[p]).to eq(:true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(:false)
       end
-      it "should accept false for #{p} string" do
+
+      it "accepts false for #{p} string" do
         config[p] = 'false'
         expect(resource[p]).to eq(:false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -103,22 +113,26 @@ describe Puppet::Type.type(:keycloak_flow) do
   describe 'integer properties' do
     # Integer properties
     [
-      :index,
+      :index
     ].each do |p|
-      it "should accept integer for #{p}" do
+      it "accepts integer for #{p}" do
         config[p] = 1
         expect(resource[p]).to eq(1)
       end
-      it "should accept integer string for #{p}" do
+
+      it "accepts integer string for #{p}" do
         config[p] = '1'
         expect(resource[p]).to eq(1)
       end
-      it "should not accept non-integer for #{p}" do
+
+      it "does not accept non-integer for #{p}" do
         config[p] = 'foo'
         expect { resource }.to raise_error(%r{Integer})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -153,10 +167,12 @@ describe Puppet::Type.type(:keycloak_flow) do
       config[:top_level] = false
       expect(resource[:requirement]).to eq('DISABLED')
     end
+
     it 'has no default for top_level=true' do
       config[:top_level] = true
       expect(resource[:requirement]).to be_nil
     end
+
     [
       'DISABLED', 'ALTERNATIVE', 'REQUIRED', 'CONDITIONAL'
     ].each do |v|
@@ -164,6 +180,7 @@ describe Puppet::Type.type(:keycloak_flow) do
         config[:requirement] = v
         expect(resource[:requirement]).to eq(v)
       end
+
       it "accepts lowercase value #{v}" do
         config[:requirement] = v.downcase
         expect(resource[:requirement]).to eq(v)
@@ -276,29 +293,34 @@ describe Puppet::Type.type(:keycloak_flow) do
       config.delete(:realm)
       expect { resource }.to raise_error(%r{must have a realm defined})
     end
+
     it 'requires index when present' do
       config.delete(:index)
       config[:top_level] = false
       config[:ensure] = 'present'
       expect { resource }.to raise_error(%r{index is required})
     end
+
     it 'does not require index for absent' do
       config.delete(:index)
       config[:ensure] = 'absent'
       expect { resource }.not_to raise_error
     end
+
     it 'does not require index for top level' do
       config.delete(:index)
       config[:ensure] = 'present'
       config[:top_level] = true
       expect { resource }.not_to raise_error
     end
+
     it 'requires flow_alias when top_level is false' do
       config.delete(:flow_alias)
       config[:top_level] = false
       config[:ensure] = 'present'
       expect { resource }.to raise_error(%r{flow_alias is required})
     end
+
     it 'does not require flow_alias when top_level' do
       config.delete(:flow_alias)
       config[:top_level] = true

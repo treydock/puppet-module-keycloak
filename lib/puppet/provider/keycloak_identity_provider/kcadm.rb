@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_identity_provider).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -56,7 +58,7 @@ Puppet::Type.type(:keycloak_identity_provider).provide(:kcadm, parent: Puppet::P
 
   def self.prefetch(resources)
     providers = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = providers.find { |c| c.alias == resources[name][:alias] && c.realm == resources[name][:realm] }
       if provider
         resources[name].provider = provider
@@ -74,8 +76,10 @@ Puppet::Type.type(:keycloak_identity_provider).provide(:kcadm, parent: Puppet::P
     data[:config] = {}
     type_properties.each do |property|
       next unless resource[property.to_sym]
+
       value = resource[property.to_sym]
       next if value == :absent
+
       key = camelize(property)
       if top_level_properties.include?(property)
         data[key] = value
@@ -101,6 +105,7 @@ Puppet::Type.type(:keycloak_identity_provider).provide(:kcadm, parent: Puppet::P
 
   def destroy
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+
     begin
       kcadm('delete', "identity-provider/instances/#{resource[:alias]}", resource[:realm])
     rescue Puppet::ExecutionFailure => e
@@ -135,11 +140,7 @@ Puppet::Type.type(:keycloak_identity_provider).provide(:kcadm, parent: Puppet::P
       data[:providerId] = resource[:provider_id]
       data[:config] = {}
       type_properties.each do |property|
-        value = if @property_flush[property.to_sym]
-                  @property_flush[property.to_sym]
-                else
-                  resource[property.to_sym]
-                end
+        value = @property_flush[property.to_sym] || resource[property.to_sym]
         value = '' if value == :absent
         key = camelize(property)
         if top_level_properties.include?(property)

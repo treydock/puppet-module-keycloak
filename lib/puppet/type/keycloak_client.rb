@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
@@ -244,6 +246,7 @@ Manage Keycloak clients
     requires = []
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_client_scope'
+
       if self[:default_client_scopes].include?(resource[:resource_name])
         requires << resource.name
       end
@@ -258,6 +261,7 @@ Manage Keycloak clients
     requires = []
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_protocol_mapper'
+
       if self[:default_client_scopes].include?(resource[:client_scope])
         requires << resource.name
       end
@@ -273,6 +277,7 @@ Manage Keycloak clients
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
       next if self[:realm] != resource[:realm]
+
       if self[:browser_flow] == resource[:alias]
         requires << resource.name
       end
@@ -296,15 +301,15 @@ Manage Keycloak clients
         [
           [:name],
           [:client_id],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 end

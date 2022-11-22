@@ -43,6 +43,12 @@ Rakefile:
     - /vagrant/*.log
 .gitlab-ci.yml:
   delete: true
+.rubocop.yml:
+  profiles:
+    strict:
+      configs:
+        Style/OptionalBooleanParameter:
+          Enabled: false
 appveyor.yml:
   delete: true
 spec/acceptance/nodesets/debian-9.yml:

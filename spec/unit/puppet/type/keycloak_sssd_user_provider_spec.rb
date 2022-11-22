@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_sssd_user_provider) do
   let(:default_config) do
     {
       name: 'foo',
-      realm: 'test',
+      realm: 'test'
     }
   end
   let(:config) do
@@ -57,20 +59,22 @@ describe Puppet::Type.type(:keycloak_sssd_user_provider) do
 
   defaults = {
     enabled: :true,
-    priority: '0',
+    priority: '0'
   }
 
   describe 'basic properties' do
     # Test basic properties
     [
-      :priority,
+      :priority
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -79,28 +83,32 @@ describe Puppet::Type.type(:keycloak_sssd_user_provider) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :enabled,
+      :enabled
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(:true)
         config[p] = 'true'
         expect(resource[p]).to eq(:true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(:false)
         config[p] = 'false'
         expect(resource[p]).to eq(:false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end

@@ -1,24 +1,27 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
-  context 'bootstraps' do
+  context 'when bootstraps' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
   end
-  context 'creates realm' do
+
+  context 'when creates realm' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       keycloak_api { 'keycloak':
         install_dir => '/opt/keycloak',
       }
       keycloak_realm { 'test2': ensure => 'present' }
-      EOS
+      PUPPET_PP
 
       on hosts, 'rm -f /opt/keycloak/bin/kcadm-wrapper.sh'
       apply_manifest(pp, catch_failures: true)
@@ -33,9 +36,9 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'updates realm' do
+  context 'when updates realm' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       keycloak_api { 'keycloak':
         install_dir => '/opt/keycloak',
       }
@@ -43,7 +46,7 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
         ensure => 'present',
         remember_me => true,
       }
-      EOS
+      PUPPET_PP
 
       on hosts, 'rm -f /opt/keycloak/bin/kcadm-wrapper.sh'
       apply_manifest(pp, catch_failures: true)

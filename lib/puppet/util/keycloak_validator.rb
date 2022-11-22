@@ -1,11 +1,10 @@
+# frozen_string_literal: true
+
 require 'net/http'
 
 # Validator class, for testing that Keycloak is alive
 class Puppet::Util::KeycloakValidator
-  attr_reader :keycloak_server
-  attr_reader :keycloak_port
-  attr_reader :use_ssl
-  attr_reader :test_path
+  attr_reader :keycloak_server, :keycloak_port, :use_ssl, :test_path
 
   def initialize(keycloak_server, keycloak_port, use_ssl = false, test_path = '/auth/admin/serverinfo')
     @keycloak_server = keycloak_server
@@ -34,9 +33,9 @@ class Puppet::Util::KeycloakValidator
       Puppet.notice "Unable to connect to keycloak server (http#{use_ssl ? 's' : ''}://#{keycloak_server}:#{keycloak_port}): [#{response.code}] #{response.msg}"
       return false
     end
-    return true
+    true
   rescue Exception => e # rubocop:disable Lint/RescueException
     Puppet.notice "Unable to connect to keycloak server (http#{use_ssl ? 's' : ''}://#{keycloak_server}:#{keycloak_port}): #{e.message}"
-    return false
+    false
   end
 end

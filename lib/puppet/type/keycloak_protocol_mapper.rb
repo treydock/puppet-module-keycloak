@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../provider/keycloak_api'
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
@@ -64,12 +66,13 @@ Manage Keycloak client scope protocol mappers
       'saml-user-property-mapper',
       'saml-user-attribute-mapper',
       'saml-role-list-mapper',
-      /script-.+/
+      %r{script-.+},
     )
     defaultto do
-      if @resource[:protocol] == 'openid-connect'
+      case @resource[:protocol]
+      when 'openid-connect'
         'oidc-usermodel-property-mapper'
-      elsif @resource[:protocol] == 'saml'
+      when 'saml'
         'saml-user-property-mapper'
       else
         nil
@@ -206,6 +209,7 @@ Manage Keycloak client scope protocol mappers
     requires = []
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_client_scope'
+
       if resource[:resource_name] == self[:client_scope]
         requires << resource.name
       end
@@ -221,15 +225,15 @@ Manage Keycloak client scope protocol mappers
           [:name],
           [:resource_name],
           [:client_scope],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
@@ -239,16 +243,17 @@ Manage Keycloak client scope protocol mappers
       'oidc-full-name-mapper',
       'oidc-group-membership-mapper',
       'oidc-audience-mapper',
-      'oidc-usermodel-attribute-mapper',
+      'oidc-usermodel-attribute-mapper'
     ]
-    if self[:protocol] == 'openid-connect' && !openid_connect_types.include?(self[:type]) && self[:type] !~ /script-.+/
+    if self[:protocol] == 'openid-connect' && !openid_connect_types.include?(self[:type]) && self[:type] !~ %r{script-.+}
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
+
     saml_mapper = ['saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper']
-    if self[:protocol] == 'saml' && !saml_mapper.include?(self[:type]) && self[:type] !~ /script-.+/
+    if self[:protocol] == 'saml' && !saml_mapper.include?(self[:type]) && self[:type] !~ %r{script-.+}
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol saml"
     end
-    if self[:friendly_name] && self[:type] !~ /(saml-group-membership-mapper|saml-user-property-mapper|saml-user-attribute-mapper|script-.+)/
+    if self[:friendly_name] && self[:type] !~ %r{(saml-group-membership-mapper|saml-user-property-mapper|saml-user-attribute-mapper|script-.+)}
       raise Puppet::Error, "friendly_name is not valid for type #{self[:type]}"
     end
     if self[:attribute_name] && self[:protocol] != 'saml'
@@ -257,7 +262,7 @@ Manage Keycloak client scope protocol mappers
     if self[:attribute_nameformat] && self[:protocol] != 'saml'
       raise Puppet::Error, "attribute_nameformat is not valid for protocol #{self[:protocol]}"
     end
-    if self[:single] && self[:type] !~ /(saml-group-membership-mapper|saml-role-list-mapper|script-.+)/
+    if self[:single] && self[:type] !~ %r{(saml-group-membership-mapper|saml-role-list-mapper|script-.+)}
       raise Puppet::Error, "single is not valid for type #{self[:type]}"
     end
     if self[:type] == 'oidc-audience-mapper' && self[:included_client_audience].nil?
