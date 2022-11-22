@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
@@ -123,7 +125,7 @@ Manage Keycloak LDAP user providers
     desc 'bindCredential'
 
     def insync?(is)
-      if is =~ %r{^[\*]+$}
+      if is =~ %r{^\*+$}
         Puppet.warning("Parameter 'bind_credential' is set and Puppet has no way to check current value")
         true
       else
@@ -183,10 +185,8 @@ Manage Keycloak LDAP user providers
     newvalues(%r{.*}, :absent)
     defaultto(:absent)
     validate do |v|
-      if v != :absent
-        unless v.start_with?('(') && v.end_with?(')')
-          raise ArgumentError, 'custom_user_search_filter must start with "(" and end with ")"'
-        end
+      if v != :absent && !v.start_with?('(') && !v.end_with?(')')
+        raise ArgumentError, 'custom_user_search_filter must start with "(" and end with ")"'
       end
     end
   end
@@ -198,15 +198,15 @@ Manage Keycloak LDAP user providers
         [
           [:name],
           [:resource_name],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 

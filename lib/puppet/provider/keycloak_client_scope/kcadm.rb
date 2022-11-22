@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -36,7 +38,7 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, parent: Puppet::Provid
 
   def self.prefetch(resources)
     client_scopes = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = client_scopes.find { |c| c.resource_name == resources[name][:resource_name] && c.realm == resources[name][:realm] }
       if provider
         resources[name].provider = provider
@@ -70,6 +72,7 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, parent: Puppet::Provid
 
   def destroy
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+
     begin
       kcadm('delete', "client-scopes/#{id}", resource[:realm])
     rescue Puppet::ExecutionFailure => e

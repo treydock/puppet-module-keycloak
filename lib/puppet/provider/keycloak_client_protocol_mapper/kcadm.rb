@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -9,16 +11,16 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
     {
       uri: 'URI Reference',
       basic: 'Basic',
-      unspecified: 'Unspecified',
+      unspecified: 'Unspecified'
     }
   end
 
-  def self.get_attribute_nameformat(v)
-    attribute_nameformat_map[v.to_sym]
+  def self.get_attribute_nameformat(attribute)
+    attribute_nameformat_map[attribute.to_sym]
   end
 
-  def self.get_attribute_nameformat_reverse(v)
-    attribute_nameformat_map.invert[v]
+  def self.get_attribute_nameformat_reverse(attribute)
+    attribute_nameformat_map.invert[attribute]
   end
 
   def self.instances
@@ -49,7 +51,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
           if protocol_mapper[:type] == 'oidc-group-membership-mapper'
             protocol_mapper[:full_path] = d['config']['full.path']
           end
-          if ['saml-user-property-mapper'].include?(protocol_mapper[:type]) || protocol_mapper[:type] =~ /script-.+/
+          if ['saml-user-property-mapper'].include?(protocol_mapper[:type]) || protocol_mapper[:type] =~ %r{script-.+}
             protocol_mapper[:friendly_name] = d['config']['friendly.name']
           end
           if protocol_mapper[:protocol] == 'openid-connect'
@@ -66,7 +68,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
             protocol_mapper[:attribute_name] = d['config']['attribute.name']
             protocol_mapper[:attribute_nameformat] = get_attribute_nameformat_reverse(d['config']['attribute.nameformat'])
           end
-          if ['saml-role-list-mapper'].include?(protocol_mapper[:type]) || protocol_mapper[:type] =~ /script-.+/
+          if ['saml-role-list-mapper'].include?(protocol_mapper[:type]) || protocol_mapper[:type] =~ %r{script-.+}
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
           end
           protocol_mappers << new(protocol_mapper)
@@ -78,13 +80,14 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
 
   def self.prefetch(resources)
     protocol_mappers = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = protocol_mappers.find do |c|
         c.resource_name == resources[name][:resource_name] &&
           c.realm == resources[name][:realm] &&
           c.client == resources[name][:client]
       end
       next unless provider
+
       resources[name].provider = provider
     end
   end
@@ -99,35 +102,35 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
     data[:protocol] = resource[:protocol]
     data[:protocolMapper] = resource[:type]
     data[:config] = {}
-    if resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper'
-      data[:config][:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
+    if (resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper') && resource[:user_attribute]
+      data[:config][:'user.attribute'] = resource[:user_attribute]
     end
     if ['oidc-usermodel-client-role-mapper', 'oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(resource[:type])
       data[:config][:'claim.name'] = resource[:claim_name] if resource[:claim_name]
       data[:config][:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
     end
-    if resource[:type] == 'oidc-group-membership-mapper'
-      data[:config][:'full.path'] = resource[:full_path] if resource[:full_path]
+    if resource[:type] == 'oidc-group-membership-mapper' && resource[:full_path]
+      data[:config][:'full.path'] = resource[:full_path]
     end
-    if ['saml-user-property-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ /script-.+/)
-      data[:config][:'friendly.name'] = resource[:friendly_name] if resource[:friendly_name]
+    if (['saml-user-property-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:friendly_name]
+      data[:config][:'friendly.name'] = resource[:friendly_name]
     end
     if resource[:protocol] == 'openid-connect'
       data[:config][:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
       data[:config][:'access.token.claim'] = resource[:access_token_claim] if resource[:access_token_claim]
     end
-    unless ['oidc-audience-mapper'].include?(resource[:type])
-      data[:config][:'userinfo.token.claim'] = resource[:userinfo_token_claim] if resource[:userinfo_token_claim]
+    if !['oidc-audience-mapper'].include?(resource[:type]) && resource[:userinfo_token_claim]
+      data[:config][:'userinfo.token.claim'] = resource[:userinfo_token_claim]
     end
-    if resource[:type] == 'oidc-audience-mapper'
-      data[:config][:'included.client.audience'] = resource[:included_client_audience] if resource[:included_client_audience]
+    if resource[:type] == 'oidc-audience-mapper' && resource[:included_client_audience]
+      data[:config][:'included.client.audience'] = resource[:included_client_audience]
     end
     if resource[:protocol] == 'saml'
       data[:config][:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
       data[:config][:'attribute.nameformat'] = self.class.get_attribute_nameformat(resource[:attribute_nameformat]) if resource[:attribute_nameformat]
     end
-    if ['saml-role-list-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ /script-.+/)
-      data[:config][:single] = resource[:single].to_s if resource[:single]
+    if (['saml-role-list-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:single]
+      data[:config][:single] = resource[:single].to_s
     end
 
     t = Tempfile.new('keycloak_protocol_mapper')
@@ -145,6 +148,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
   def destroy
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
     raise(Puppet::Error, "Client is mandatory for #{resource.type} #{resource.name}") if resource[:client].nil?
+
     begin
       kcadm('delete', "clients/#{resource[:client]}/protocol-mappers/models/#{id}", resource[:realm])
     rescue Puppet::ExecutionFailure => e
@@ -180,35 +184,35 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
       config = {}
-      if resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper'
-        config[:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
+      if (resource[:type] == 'oidc-usermodel-property-mapper' || resource[:type] == 'saml-user-property-mapper') && resource[:user_attribute]
+        config[:'user.attribute'] = resource[:user_attribute]
       end
       if ['oidc-usermodel-client-role-mapper', 'oidc-usermodel-property-mapper', 'oidc-group-membership-mapper'].include?(resource[:type])
         config[:'claim.name'] = resource[:claim_name] if resource[:claim_name]
         config[:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
       end
-      if resource[:type] == 'oidc-group-membership-mapper'
-        config[:'full.path'] = resource[:full_path] if resource[:full_path]
+      if resource[:type] == 'oidc-group-membership-mapper' && resource[:full_path]
+        config[:'full.path'] = resource[:full_path]
       end
-      if ['saml-user-property-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ /script-.+/)
-        config[:'friendly.name'] = resource[:friendly_name] if resource[:friendly_name]
+      if (['saml-user-property-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:friendly_name]
+        config[:'friendly.name'] = resource[:friendly_name]
       end
       if resource[:protocol] == 'openid-connect'
         config[:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
         config[:'access.token.claim'] = resource[:access_token_claim] if resource[:access_token_claim]
       end
-      unless ['oidc-audience-mapper'].include?(resource[:type])
-        config[:'userinfo.token.claim'] = resource[:userinfo_token_claim] if resource[:userinfo_token_claim]
+      if !['oidc-audience-mapper'].include?(resource[:type]) && resource[:userinfo_token_claim]
+        config[:'userinfo.token.claim'] = resource[:userinfo_token_claim]
       end
-      if resource[:type] == 'oidc-audience-mapper'
-        config[:'included.client.audience'] = resource[:included_client_audience] if resource[:included_client_audience]
+      if resource[:type] == 'oidc-audience-mapper' && resource[:included_client_audience]
+        config[:'included.client.audience'] = resource[:included_client_audience]
       end
       if resource[:protocol] == 'saml'
         config[:'attribute.name'] = resource[:attribute_name] if resource[:attribute_name]
         config[:'attribute.nameformat'] = self.class.get_attribute_nameformat(resource[:attribute_nameformat]) if resource[:attribute_nameformat]
       end
-      if ['saml-role-list-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ /script-.+/)
-        config[:single] = resource[:single].to_s if resource[:single]
+      if (['saml-role-list-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:single]
+        config[:single] = resource[:single].to_s
       end
       data[:config] = config unless config.empty?
 

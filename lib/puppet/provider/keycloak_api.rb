@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet'
 require 'json'
 
@@ -16,12 +18,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   @use_wrapper = true
 
   class << self
-    attr_accessor :install_dir
-    attr_accessor :server
-    attr_accessor :realm
-    attr_accessor :user
-    attr_accessor :password
-    attr_accessor :use_wrapper
+    attr_accessor :install_dir, :server, :realm, :user, :password, :use_wrapper
   end
 
   def self.type_properties
@@ -62,7 +59,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     arguments = [action]
 
     # get-roles does not accept a resource as its parameter
-    arguments << self.escape(resource) if resource
+    arguments << escape(resource) if resource
 
     if ['create', 'update'].include?(action) && !print_id
       arguments << '-o'
@@ -70,7 +67,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
     if realm
       arguments << '-r'
-      arguments << self.escape(realm)
+      arguments << escape(realm)
     end
     if file
       arguments << '-f'
@@ -80,16 +77,15 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
       arguments << '--fields'
       arguments << fields.join(',')
     end
-    unless params.nil?
-      params.each do |param, value|
-        if value.is_a?(String)
+    params&.each do |param, value|
+      case value
+      when String
+        arguments << "--#{param}"
+        arguments << value
+      when Array
+        value.each do |val|
           arguments << "--#{param}"
-          arguments << value
-        elsif value.is_a?(Array)
-          value.each do |val|
-            arguments << "--#{param}"
-            arguments << val
-          end
+          arguments << val
         end
       end
     end
@@ -100,7 +96,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
       auth_arguments = [
         '--no-config',
         '--server', server,
-        '--realm', self.escape(self.realm),
+        '--realm', escape(self.realm),
         '--user', user,
         '--password', password
       ]
@@ -121,8 +117,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   def self.realms
     output = kcadm('get', 'realms', nil, nil, ['realm'])
     data = JSON.parse(output)
-    realms = data.map { |r| r['realm'] }
-    realms
+    data.map { |r| r['realm'] }
   end
 
   def realms
@@ -182,9 +177,11 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
   def check_theme_exists(theme, res)
     return true if theme == 'keycloak'
+
     install_dir = self.class.install_dir || '/opt/keycloak'
     path = File.join(install_dir, 'themes', theme)
     return if File.exist?(path)
+
     Puppet.warning("#{res}: Theme #{theme} not found at path #{path}.")
   end
 end

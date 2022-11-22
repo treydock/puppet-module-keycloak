@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
@@ -271,7 +273,7 @@ Manage Keycloak realms
     desc 'smtpServer password'
 
     def insync?(is)
-      if is =~ %r{^[\*]+$}
+      if is =~ %r{^\*+$}
         Puppet.warning("Property 'smtp_server_password' is set and Puppet has no way to check current value")
         true
       else
@@ -346,6 +348,7 @@ Manage Keycloak realms
       if resource[:manage_roles].to_s == 'false'
         return true
       end
+
       super(is)
     end
   end
@@ -357,6 +360,7 @@ Manage Keycloak realms
     validate do |value|
       # rubocop:disable Style/SignalException
       fail 'custom_properties should be a Hash' unless value.is_a? ::Hash
+
       value.each_pair do |_k, v|
         fail 'custom_properties does not allow Hash values' if v.is_a? ::Hash
       end
@@ -368,6 +372,7 @@ Manage Keycloak realms
       should = should[0] if should.is_a?(Array)
       should.each_pair do |k, v|
         return false unless is.key?(k)
+
         case v
         when String, TrueClass, FalseClass
           return false if is[k].to_s != v.to_s

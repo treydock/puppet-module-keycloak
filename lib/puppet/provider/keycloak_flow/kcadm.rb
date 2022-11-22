@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -34,7 +36,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
         flows << new(flow)
         begin
           executions_output = kcadm('get', "authentication/flows/#{d['alias']}/executions", realm)
-        rescue
+        rescue StandardError
           Puppet.notice("Unable to query flow #{d['alias']} executions")
           executions_output = '[]'
         end
@@ -79,7 +81,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
 
   def self.prefetch(resources)
     flows = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = flows.find do |c|
         (c.alias == resources[name][:alias] && c.flow_alias == resources[name][:flow_alias] && c.realm == resources[name][:realm]) ||
           (c.alias == resources[name][:alias] && c.realm == resources[name][:realm])
@@ -126,12 +128,13 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
       execution_id = nil
       execution_data.each do |ed|
         next unless ed['flowId'] == new_id.strip
+
         execution_id = ed['id']
       end
       unless execution_id.nil?
         update_data = {
           id: execution_id,
-          requirement: resource[:requirement],
+          requirement: resource[:requirement]
         }
         t = Tempfile.new('keycloak_flow_execution')
         t.write(JSON.pretty_generate(update_data))
@@ -222,7 +225,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
         index_difference = current_priority - @property_flush[:index]
         if index_difference.zero?
           Puppet.notice("Index difference for Keycloak_flow[#{resource[:name]}] is unchanged, skipping.")
-        elsif index_difference < 0
+        elsif index_difference.negative?
           incrementer = 1
           action = 'lower-priority'
         else

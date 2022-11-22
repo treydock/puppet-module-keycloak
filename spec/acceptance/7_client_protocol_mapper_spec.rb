@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keycloak_full do
-  context 'creates protocol_mapper' do
+  context 'when creates protocol_mapper' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
@@ -27,7 +29,7 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
         type                     => 'oidc-audience-mapper',
         included_client_audience => 'foo',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -77,9 +79,9 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
     end
   end
 
-  context 'updates protocol_mapper' do
+  context 'when updates protocol_mapper' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
@@ -106,7 +108,7 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
         included_client_audience => 'foo',
         id_token_claim           => false,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

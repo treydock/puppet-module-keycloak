@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_protocol_mapper) do
@@ -5,7 +7,7 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     {
       name: 'foo',
       realm: 'test',
-      client_scope: 'oidc',
+      client_scope: 'oidc'
     }
   end
   let(:config) do
@@ -254,14 +256,16 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
   describe 'basic properties' do
     # Test basic properties
     [
-      :claim_name,
+      :claim_name
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -271,6 +275,7 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     it 'defaults to nil for non groups' do
       expect(resource[:full_path]).to be_nil
     end
+
     it 'defaults to false for groups' do
       config[:type] = 'oidc-group-membership-mapper'
       expect(resource[:full_path]).to eq(:false)

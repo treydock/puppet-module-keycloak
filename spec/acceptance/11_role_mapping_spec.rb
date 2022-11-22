@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
-  context 'removes role mappings for admin' do
+  context 'when removes role mappings for admin' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_role_mapping { 'admin':
         realm       => 'master',
@@ -11,7 +13,7 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
 	group       => false,
 	realm_roles => ['admin'],
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -27,9 +29,9 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'adds role mappings for admin' do
+  context 'when adding role mappings for admin' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_role_mapping { 'admin':
         realm       => 'master',
@@ -37,7 +39,7 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
 	group       => false,
 	realm_roles => ['admin', 'offline_access'],
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -53,13 +55,13 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'adds role mappings for testgroup' do
+  context 'when adding role mappings for testgroup' do
     it 'has added testgroup' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh create groups -r master -s name=testgroup'
     end
 
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_role_mapping { 'testgroup':
         realm       => 'master',
@@ -67,7 +69,7 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
 	group       => true,
 	realm_roles => ['admin'],
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

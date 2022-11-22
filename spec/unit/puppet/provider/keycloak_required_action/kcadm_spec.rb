@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
@@ -69,6 +71,7 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
 
       resource.provider.flush
     end
+
     it 'configures a required action' do
       resource.provider.instance_variable_set(:@property_hash, resource.to_hash)
       temp = Tempfile.new('keycloak_required_action_configure')

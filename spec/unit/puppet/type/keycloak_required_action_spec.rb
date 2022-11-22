@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_required_action) do
@@ -6,7 +8,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
       name: 'foo',
       realm: 'test',
       alias: 'something',
-      provider_id: 'some-provider',
+      provider_id: 'some-provider'
     }
   end
   let(:config) do
@@ -38,7 +40,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
 
   defaults = {
     enabled: true,
-    default: false,
+    default: false
   }
 
   describe 'basic properties' do
@@ -48,14 +50,16 @@ describe Puppet::Type.type(:keycloak_required_action) do
       :name,
       :display_name,
       :provider_id,
-      :alias,
+      :alias
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -65,32 +69,38 @@ describe Puppet::Type.type(:keycloak_required_action) do
     # Test boolean properties
     [
       :enabled,
-      :default,
+      :default
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(true)
       end
-      it "should accept true for #{p} string" do
+
+      it "accepts true for #{p} string" do
         config[p] = 'true'
         expect(resource[p]).to eq(true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(false)
       end
-      it "should accept false for #{p} string" do
+
+      it "accepts false for #{p} string" do
         config[p] = 'false'
         expect(resource[p]).to eq(false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -99,18 +109,21 @@ describe Puppet::Type.type(:keycloak_required_action) do
   describe 'hash properties' do
     # Hash properties
     [
-      :config,
+      :config
     ].each do |p|
-      it "should accept hash for #{p}" do
+      it "accepts hash for #{p}" do
         config[p] = { foo: 'bar' }
         expect(resource[p]).to eq(foo: 'bar')
       end
+
       it 'requires hash' do
         config[p] = 'foo'
         expect { resource }.to raise_error(%r{must be a Hash})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -119,22 +132,26 @@ describe Puppet::Type.type(:keycloak_required_action) do
   describe 'integer properties' do
     # Integer properties
     [
-      :priority,
+      :priority
     ].each do |p|
-      it "should accept integer for #{p}" do
+      it "accepts integer for #{p}" do
         config[p] = 1
         expect(resource[p]).to eq(1)
       end
-      it "should accept integer string for #{p}" do
+
+      it "accepts integer string for #{p}" do
         config[p] = '1'
         expect(resource[p]).to eq(1)
       end
-      it "should not accept non-integer for #{p}" do
+
+      it "does not accept non-integer for #{p}" do
         config[p] = 'foo'
         expect { resource }.to raise_error(%r{Integer})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -145,11 +162,13 @@ describe Puppet::Type.type(:keycloak_required_action) do
       config.delete(:realm)
       expect { resource }.to raise_error(%r{must have a realm defined})
     end
+
     it 'requires alias' do
       config.delete(:provider_id)
       config.delete(:alias)
       expect { resource }.to raise_error(%r{must have a alias defined})
     end
+
     it 'does not require provider_id for absent' do
       config.delete(:provider_id)
       config[:ensure] = 'absent'

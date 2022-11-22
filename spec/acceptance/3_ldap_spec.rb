@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full do
-  context 'creates ldap' do
+  context 'with creates ldap' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'LDAP':
@@ -34,7 +36,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         groups_dn          => 'ou=Groups,dc=example,dc=com',
         groups_ldap_filter => '(cn=P*)',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -93,9 +95,9 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
     end
   end
 
-  context 'updates ldap' do
+  context 'when updates ldap' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'LDAP':
@@ -123,7 +125,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         groups_dn          => 'ou=Groups,dc=example,dc=com',
         groups_ldap_filter => '(cn=P0*)',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -173,9 +175,9 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
     end
   end
 
-  context 'creates ldap with simple auth' do
+  context 'when creates ldap with simple auth' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'LDAP2':
@@ -187,7 +189,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         bind_dn                   => 'cn=read,ou=People,dc=test',
         bind_credential           => 'test',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -199,7 +201,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         d = data.select { |o| o['name'] == 'LDAP2' }[0]
         expect(d['config']['authType']).to eq(['simple'])
         expect(d['config']['bindDn']).to eq(['cn=read,ou=People,dc=test'])
-        expect(d['config']['bindCredential'][0]).to match(%r{^[\*]+$})
+        expect(d['config']['bindCredential'][0]).to match(%r{^\*+$})
       end
     end
 
@@ -210,9 +212,9 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
     end
   end
 
-  context 'updates ldap auth' do
+  context 'when updates ldap auth' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_ldap_user_provider { 'LDAP':
@@ -224,7 +226,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         bind_dn             => 'cn=read,ou=People,dc=test',
         bind_credential     => 'test',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -236,7 +238,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         d = data.select { |o| o['name'] == 'LDAP' }[0]
         expect(d['config']['authType']).to eq(['simple'])
         expect(d['config']['bindDn']).to eq(['cn=read,ou=People,dc=test'])
-        expect(d['config']['bindCredential'][0]).to match(%r{^[\*]+$})
+        expect(d['config']['bindCredential'][0]).to match(%r{^\*+$})
       end
     end
 
@@ -247,16 +249,16 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
     end
   end
 
-  context 'ensure => absent' do
+  context 'with ensure => absent' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_ldap_mapper { 'full-name':
         ensure => 'absent',
         realm  => 'test',
         ldap   => 'LDAP',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -271,9 +273,9 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
     end
   end
 
-  context 'creates freeipa user provider' do
+  context 'when creates freeipa user provider' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak::freeipa_user_provider { 'ipa.example.org':
@@ -285,16 +287,16 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         priority        => 10,
         ldaps           => false,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
   end
 
-  context 'creates freeipa ldap mappers' do
+  context 'when creates freeipa ldap mappers' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak::freeipa_user_provider { 'ipa.example.org':
@@ -311,21 +313,21 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         groups_dn => 'cn=groups,cn=accounts,dc=example,dc=org',
         roles_dn  => 'cn=groups,cn=accounts,dc=example,dc=org',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
   end
 
-  context 'ID migration' do
+  context 'with ID migration' do
     it 'sets up migration' do
-      clean_pp = <<-EOS
+      clean_pp = <<-CLEAN_PP
       keycloak_realm { 'test':
         ensure => 'absent',
       }
-      EOS
-      before_pp = <<-EOS
+      CLEAN_PP
+      before_pp = <<-BEFORE_PP
       keycloak_realm { 'test':
         ensure => 'present',
       }
@@ -342,7 +344,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         user_model_attribute => 'firstName',
         ldap_attribute       => 'givenName',
       }
-      EOS
+      BEFORE_PP
 
       apply_manifest(clean_pp, catch_failures: true)
       apply_manifest(before_pp, catch_failures: true)
@@ -366,7 +368,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
     end
 
     it 'performs migration' do
-      after_pp = <<-EOS
+      after_pp = <<-PUPPET_PP
       keycloak_realm { 'test':
         ensure => 'present',
       }
@@ -386,7 +388,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         user_model_attribute => 'firstName',
         ldap_attribute       => 'givenName',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(after_pp, catch_failures: true)
       apply_manifest(after_pp, catch_changes: true)

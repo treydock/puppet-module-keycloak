@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/integer_property'
 
@@ -106,32 +108,31 @@ Manage Keycloak required actions
         [
           [:name],
           [:alias],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
   validate do
     required_properties = [
       :alias,
-      :realm,
+      :realm
     ]
     required_properties.each do |property|
       if self[property].nil?
         raise Puppet::Error, "Keycloak_required_action[#{self[:name]}] must have a #{property} defined"
       end
     end
-    if self[:ensure] == :present
-      if self[:provider_id].nil?
-        raise Puppet::Error, "Keycloak_required_action[#{self[:name]}] provider_id is required"
-      end
+    # for whatever reason puppet makes @should an array, so we actually need to compare with first element
+    if self[:ensure] == :present && self[:provider_id].nil?
+      raise Puppet::Error, "Keycloak_required_action[#{self[:name]}] provider_id is required"
     end
   end
 end

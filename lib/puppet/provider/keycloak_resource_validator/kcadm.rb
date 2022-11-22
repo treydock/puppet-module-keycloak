@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_resource_validator).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -47,6 +49,7 @@ Puppet::Type.type(:keycloak_resource_validator).provide(:kcadm, parent: Puppet::
 
   def test_realms
     return @test_realms if @test_realms
+
     @test_realms = if resource[:realm]
                      [resource[:realm]]
                    else

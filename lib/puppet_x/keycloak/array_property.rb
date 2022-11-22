@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Class to share among array properties
 class PuppetX::Keycloak::ArrayProperty < Puppet::Property
   def insync?(is)

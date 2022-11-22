@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
@@ -133,15 +135,15 @@ Manage a Keycloak flow
           [:name],
           [:provider_id],
           [:flow_alias],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
@@ -150,6 +152,7 @@ Manage a Keycloak flow
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
       next if self[:realm] != resource[:realm]
+
       if self[:flow_alias] == resource[:alias]
         requires << resource.name
       end
@@ -165,6 +168,7 @@ Manage a Keycloak flow
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow_execution'
       next if self[:realm] != resource[:realm]
+
       if self[:flow_alias] == resource[:flow_alias] && !resource[:index].nil? && !self[:index].nil? && self[:index] > resource[:index]
         requires << resource.name
       end
@@ -176,6 +180,7 @@ Manage a Keycloak flow
     requires = []
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_resource_validator'
+
       resource[:dependent_resources].to_a.each do |dep|
         requires << resource if dep == "Keycloak_flow_execution[#{self[:name]}]"
       end
@@ -187,6 +192,7 @@ Manage a Keycloak flow
     if self[:realm].nil?
       raise "Keycloak_flow_execution[#{self[:name]}] must have a realm defined"
     end
+
     if self[:ensure] == :present
       if self[:index].nil?
         raise "Keycloak_flow_execution[#{self[:name]}] index is required"

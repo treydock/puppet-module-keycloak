@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
-  context 'default parameters' do
+  context 'with default parameters' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': db => 'dev-file' }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -21,11 +23,11 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'default with mysql/mariadb db' do
+  context 'with default for mysql/mariadb db' do # rubocop:disable RSpec/RepeatedExampleGroupBody
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -41,13 +43,13 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'default with postgresql db' do
+  context 'with default for postgresql db' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak':
         db => 'postgres',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -63,16 +65,16 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'changes to defaults' do
+  context 'with changes to defaults' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak':
         java_opts => '-Xmx512m -Xms64m',
         configs   => {
           'metrics-enabled' => true,
         },
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -88,11 +90,11 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'reset to defaults' do
+  context 'with reset to defaults' do # rubocop:disable RSpec/RepeatedExampleGroupBody
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

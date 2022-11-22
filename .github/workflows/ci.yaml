@@ -45,6 +45,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+          cache-version: 2
           bundler: '2.1.0'
       - name: Validate
         run: bundle exec rake check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint
@@ -101,6 +102,7 @@ jobs:
         with:
           ruby-version: '2.7'
           bundler-cache: true
+          cache-version: 2
           bundler: '2.1.0'
       - name: Run tests
         run: bundle exec rake beaker

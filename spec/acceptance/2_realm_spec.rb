@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
-  context 'creates realm' do
+  context 'when creates realm' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test':
         ensure                                   => 'present',
@@ -38,7 +40,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
       keycloak_realm { 'test realm':
         ensure => 'present',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -146,9 +148,9 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'updates realm' do
+  context 'when updates realm' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test':
         ensure => 'present',
@@ -195,7 +197,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
           'revokeRefreshToken' => true,
         },
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -274,15 +276,15 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'creates realm with invalid browser flow' do
+  context 'when creates realm with invalid browser flow' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test2':
         ensure       => 'present',
         browser_flow => 'Copy of browser',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, expect_changes: true)

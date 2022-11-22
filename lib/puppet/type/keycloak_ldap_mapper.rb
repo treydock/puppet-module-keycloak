@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../provider/keycloak_api'
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
@@ -140,9 +142,10 @@ Manage Keycloak LDAP attribute mappers
     newvalues('LOAD_GROUPS_BY_MEMBER_ATTRIBUTE', 'GET_GROUPS_FROM_USER_MEMBEROF_ATTRIBUTE', 'LOAD_GROUPS_BY_MEMBER_ATTRIBUTE_RECURSIVELY',
               'LOAD_ROLES_BY_MEMBER_ATTRIBUTE', 'GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE', 'LOAD_ROLES_BY_MEMBER_ATTRIBUTE_RECURSIVELY')
     defaultto do
-      if @resource[:type] == 'group-ldap-mapper'
+      case @resource[:type]
+      when 'group-ldap-mapper'
         'LOAD_GROUPS_BY_MEMBER_ATTRIBUTE'
-      elsif @resource[:type] == 'role-ldap-mapper'
+      when 'role-ldap-mapper'
         'LOAD_ROLES_BY_MEMBER_ATTRIBUTE'
       else
         nil
@@ -304,6 +307,7 @@ Manage Keycloak LDAP attribute mappers
     requires = []
     catalog.resources.each do |resource|
       next unless resource.class.to_s == 'Puppet::Type::Keycloak_ldap_user_provider'
+
       if self[:ldap] == resource[:resource_name] && self[:realm] == resource[:realm]
         requires << resource.name
       end
@@ -313,10 +317,9 @@ Manage Keycloak LDAP attribute mappers
 
   autorequire(:keycloak_client) do
     requires = []
-    if self[:type] == 'role-ldap-mapper'
-      if self[:use_realm_roles_mapping].to_sym == :false
-        requires = [self[:client_id]]
-      end
+    # frozen_string_literal: true
+    if self[:type] == 'role-ldap-mapper' && (self[:use_realm_roles_mapping].to_sym == :false)
+      requires = [self[:client_id]]
     end
     requires
   end
@@ -329,22 +332,22 @@ Manage Keycloak LDAP attribute mappers
           [:name],
           [:resource_name],
           [:ldap],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
   validate do
     required_properties = [
       :realm,
-      :ldap,
+      :ldap
     ]
     required_properties.each do |property|
       if self[property].nil?
@@ -352,10 +355,8 @@ Manage Keycloak LDAP attribute mappers
       end
     end
     if self[:ensure] == :present
-      if self[:type] == 'group-ldap-mapper'
-        if self[:groups_dn].nil?
-          raise Puppet::Error, 'Must define groups_dn for type group-ldap-mapper'
-        end
+      if self[:type] == 'group-ldap-mapper' && self[:groups_dn].nil?
+        raise Puppet::Error, 'Must define groups_dn for type group-ldap-mapper'
       end
 
       if self[:type] == 'role-ldap-mapper'

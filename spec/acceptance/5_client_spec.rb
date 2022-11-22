@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
-  context 'creates client' do
+  context 'when creates client' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'foo on test': ensure => 'present' }
@@ -50,7 +52,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         saml_encryption_certificate             => 'MIIDSTCCAjGgAwIBAgIUbJ6dLiM4/T9uLT4gd13tuD469lkwDQYJKoZIhvcNAQELBQAwMzExMC8GA1UEAwwoc2FtbF9lbmNyeXB0aW9uX2NlcnRpZmljYXRlLXRlc3QuZm9vLmJhcjAgFw0yMjAzMTgyMjU1NDlaGA8yMTIyMDIyMjIyNTU0OVowMzExMC8GA1UEAwwoc2FtbF9lbmNyeXB0aW9uX2NlcnRpZmljYXRlLXRlc3QuZm9vLmJhcjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKmzbda8/vwS3vn1OflWhcquzhh+FphTCA4PoRsqT2/AE5cbEPqVdPQxIUVXNL+l4LM7Kl4H0vSoi3gHlH1SQCc/772gXDtByxHP0QYg+FaEIG+LbsFYeB1jJMhGblf+0xOH3uPtN9jzjkz8Xhzpcq/xgTOJDyQPfSamzW0xUtK3iXd8B7K9nNdmOm9uLPZ1p2JLhvOJu6I6dapjLDoWgJnSnaYMgRuxShktTafWU3wolyo6c6+wago/CaoEdlrcwO7VvOd/gdhAuYUhYypD7t+1mWisEBWxLo2omflr2rm2nWQX5EKx4U1lhEPxxlo0AkCCj/7hQyJt5jMzg/4QGNUCAwEAAaNTMFEwHQYDVR0OBBYEFMNcZ9lzmttxhrdVXLm+deYLJyjeMB8GA1UdIwQYMBaAFMNcZ9lzmttxhrdVXLm+deYLJyjeMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAEeYMFSGUGeWkgNKTmPL3l445ai4zMWUi92+vHeta44GlBKUAbNvC8Ab4mdVFCZF0lvKqUVfeKtTDD9wSko5XjjuhblLci7oa/gOFpp3dfb5d5xtNsSoVD9ndPopApYugGlKEJI9qL39FyP9Js+rm13gsHNrMGXIfBE+FSFXu0sp0NRBnbqvz5cB8jSRb40v67tGmFVadYhomIpFsES2FuM3bY6YbD0hJ4ozLczgpfPOYw41xIAGSgbB6rwRsu+VwV7L2DW3wtq6CHksLYoiNDmdZXz0HDqmfHcMKlpUPpAkY/8q6xaO/QNEzohI60TfMRklpCLP/25n4ao3VqrHdZo=',
         saml_signing_private_key                => 'MIIEpAIBAAKCAQEAtzXe4xaXsz5KdSQdz/4+jMdO1HiBNBuL2dIQ4b+DSP5IhSU+VPQP26G49fBWkN2ZSGMhOfvfxbcGjudIl7RRKRN1XqTgada/irqhU80Z8FTYWgl6A5px87nL1peCm8f2w6N220KLdoYI/KapdNP1CUXR6iBJOrEZ3lV3CtZR5DkeOvdMEsmyhP5ajI4PMKU15ANmq8S7vPd2q/OGSQziAj467gDFDTXTWVVo1vV1HWSz9an2wdIU7XdgrzRbuuCvgb5LLpbdyy+3j3RieoQAiDAiabKZqSMhiYc6mx21tD7ppN+H6RqzRulj/7WLdxckEJ736s1xSk8boOQhEqPoIQIDAQABAoIBAQCn3aQrTjgQ87IlQsJOIRYOx09jPkakB9lL6z2sml0gNF0eIdHK5RTimHtwXJX0hhY8TRfUmQOflONdbG0HEyCKElooLcmxMCKwafAHaJWrrxHM7YHua0SdnE84f/ob4kwnVU9B9ubx4j25wLrjYJHTvTVo38w5Cqw5GvXH6DeAc4gg0xtl1kYy53xO+3ybZDZy7EpEKFbgSLNZIryrIk3v1v2uWQWj30Gb2OqppTRt2X+zSSph5MUqPIfKUweL3Ow2MbCBdNESp8QifdUld1RWEgVbZWSvcZmfYpr9w/rU+JVrVydmCBx0k8VWJmBobZydr4niVLhkhuzY8DvfLyJBAoGBAOFijou/Mh2B4mRdycwOxBcJUeL318K5MR6ondidP5SEcHpTavaQjqE9N+I0W0GPsJhzuBiUHq60TjC5GV3OYTp/G+4M4ibVYyR9UG3CrHAlgu9asakVfcOHhOJmyyD1FtI4BlNNI+nv4Ds7nHahv3yFSF/pes9VaAKm9k5ZTzmXAoGBANAYwOW8obHCLmHcrJyHcZX9icJAXP+GvmpsJpZaBSE2bs/K2cwLZnBoiUX1jH+7wWtUV2CfATMAD2UASocaYrSSF91bZAJNe3D9QliRC10IZ6SBn1Pw7u3uYVHb7JE6z4IGIrn503En5ncZcxfoc0JE9bNIM3tyEygetS/EifMHAoGAAp0Z+hTlh+IRtghAZtVlAL9i67bkEaYEI87gxbpNGnPOuhxtiR50CPqkw0LILCJ2cc4lvGM7V9tPbNE4shXKmtsOf9w2YyzmUW4CmMNBLKvCsPPkS4msQ7A2okl+4Yr2EMoFiMHEQNo/R3CRh+6oQdFp3XLfsbfT1PQKty3h9VECgYEAn6euL1R21fO+NDTjdcBww/veelt5Pk65vtq1DDuKnf2uLNxcFzFT6cA6OaN3pPR/JAJ0e1vixqcwKHR9uYPj4NgJWTpp015w67JS+bJmfn0ZT1xnyjYaig+POQe7S31MgVyFvhvPPoy3Q/8Rj3E3JMvVmjQ102slCW3t4vUuRXcCgYAkfbK84PXNvDWXQFR27fWJsLwLzORYxnk0l4oFOOJy926m/WMOfw33pVhsJInHK+iRKwPv33zo5YkB1BeGWedvM/gAgq5eSo+eqSkKn5M+eaDTlvWFrDK5tW21m49wtYOKDGo99tjgfaoJDDhGkX0NdKZ23BEvW1AInhCPNyE5rg==',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -166,9 +168,9 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
     end
   end
 
-  context 'updates client' do
+  context 'when updates client' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
@@ -193,7 +195,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         browser_flow                   => 'browser',
         roles                          => ['baz_role'],
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -267,7 +269,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
     end
 
     it 'manages authorization services properly' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
@@ -280,7 +282,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full do
         service_accounts_enabled       => true,
         roles                          => ['bar_role'],
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
