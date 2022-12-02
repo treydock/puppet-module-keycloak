@@ -412,6 +412,24 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
   
     <li>
       
+        <span class='name'>extra_configs</span>
+      
+      
+        <span class='type'>(<tt>Hash[String, Variant[String[1],Boolean,Array]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Additional configs for keycloak.conf</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>hostname</span>
       
       
@@ -1716,8 +1734,6 @@ Keycloak is modified</p>
         <pre class="lines">
 
 
-207
-208
 209
 210
 211
@@ -1919,10 +1935,13 @@ Keycloak is modified</p>
 407
 408
 409
-410</pre>
+410
+411
+412
+413</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 207</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 209</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1943,6 +1962,7 @@ class keycloak (
   Optional[String] $service_extra_opts = undef,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Keycloak::Configs $configs = {},
+  Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
   Stdlib::Host $hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;],
   Boolean $http_enabled = true,
   Stdlib::IP::Address $http_host = &#39;0.0.0.0&#39;,
@@ -2055,7 +2075,7 @@ class keycloak (
   } else {
     $truststore_configs = {}
   }
-  $config = $default_config + $truststore_configs + $configs
+  $config = $default_config + $truststore_configs + $configs + $extra_configs
 
   if $config[&#39;http-enabled&#39;] {
     $wrapper_protocol = &#39;http&#39;
