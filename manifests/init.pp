@@ -48,6 +48,8 @@
 #   Path to the file with environment variables for the systemd service
 # @param configs
 #   Define additional configs for keycloak.conf
+# @param extra_configs
+#   Additional configs for keycloak.conf
 # @param hostname
 #   hostname to set in keycloak.conf
 # @param http_enabled
@@ -223,6 +225,7 @@ class keycloak (
   Optional[String] $service_extra_opts = undef,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Keycloak::Configs $configs = {},
+  Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
   Stdlib::Host $hostname = $facts['networking']['fqdn'],
   Boolean $http_enabled = true,
   Stdlib::IP::Address $http_host = '0.0.0.0',
@@ -335,7 +338,7 @@ class keycloak (
   } else {
     $truststore_configs = {}
   }
-  $config = $default_config + $truststore_configs + $configs
+  $config = $default_config + $truststore_configs + $configs + $extra_configs
 
   if $config['http-enabled'] {
     $wrapper_protocol = 'http'
