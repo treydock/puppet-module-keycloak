@@ -88,6 +88,7 @@ The following parameters are available in the `keycloak` class:
 * [`service_extra_opts`](#service_extra_opts)
 * [`service_environment_file`](#service_environment_file)
 * [`configs`](#configs)
+* [`extra_configs`](#extra_configs)
 * [`hostname`](#hostname)
 * [`http_enabled`](#http_enabled)
 * [`http_host`](#http_host)
@@ -304,6 +305,14 @@ Default value: ``undef``
 Data type: `Keycloak::Configs`
 
 Define additional configs for keycloak.conf
+
+Default value: `{}`
+
+##### <a name="extra_configs"></a>`extra_configs`
+
+Data type: `Hash[String, Variant[String[1],Boolean,Array]]`
+
+Additional configs for keycloak.conf
 
 Default value: `{}`
 
@@ -3753,11 +3762,14 @@ Struct[{
     Optional['features'] => Array[String[1]],
     Optional['features-disabled'] => Array[String[1]],
     Optional['hostname'] => Stdlib::Host,
+    Optional['hostname-admin'] => Stdlib::Host,
+    Optional['hostname-admin-url'] => String[1],
     Optional['hostname-path'] => String[1],
     Optional['hostname-port'] => Stdlib::Port,
     Optional['hostname-strict'] => Boolean,
     Optional['hostname-strict-backchannel'] => Boolean,
     Optional['hostname-strict-https'] => Boolean,
+    Optional['hostname-url'] => String[1],
     Optional['http-enabled'] => Boolean,
     Optional['http-host'] => Stdlib::Host,
     Optional['http-port'] => Stdlib::Port,
@@ -3777,22 +3789,26 @@ Struct[{
     Optional['health-enabled'] => Boolean,
     Optional['metrics-enabled'] => Boolean,
     Optional['proxy'] => Enum['edge','reencrypt','passthrough','none'],
-    Optional['vault'] => Enum['vault','vault-dir'],
+    Optional['vault'] => Enum['file','hashicorp'],
+    Optional['vault-dir'] => Stdlib::Absolutepath,
     Optional['log'] => Array[Enum['console','file','gelf']],
     Optional['log-console-color'] => Boolean,
     Optional['log-console-format'] => String[1],
     Optional['log-console-output'] => Enum['default','json'],
     Optional['log-file'] => Stdlib::Absolutepath,
     Optional['log-file-format'] => String[1],
+    Optional['log-file-output'] => Enum['default','json'],
     Optional['log-level'] => String[1],
     Optional['log-gelf-facility'] => String[1],
     Optional['log-gelf-host'] => Stdlib::Host,
     Optional['log-gelf-include-location'] => Boolean,
     Optional['log-gelf-include-message-parameters'] => Boolean,
     Optional['log-gelf-include-stack-trace'] => Boolean,
+    Optional['log-gelf-level'] => String[1],
     Optional['log-gelf-max-message-size'] => Integer,
     Optional['log-gelf-port'] => Stdlib::Port,
     Optional['log-gelf-timestamp-format'] => String[1],
+    Optional['log-level'] => String[1],
   }]
 ```
 
