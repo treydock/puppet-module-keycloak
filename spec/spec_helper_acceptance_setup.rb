@@ -34,6 +34,15 @@ EL7_YAML
 ubuntu1804_yaml = <<-UBUNTU18_YAML
 keycloak::db: mysql
 UBUNTU18_YAML
+# TODO: Remove once merged and released:
+# https://github.com/puppetlabs/puppetlabs-mysql/pull/1513
+ubuntu2004_yaml = <<-UBUNTU20_YAML
+mysql::server::override_options:
+  mysqld:
+    ssl-ca: ~
+    ssl-cert: ~
+    ssl-key: ~
+UBUNTU20_YAML
 common_yaml = <<-COMMON_YAML
 ---
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
@@ -50,3 +59,4 @@ on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/CentOS'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/CentOS/7.yaml', centos7_yaml)
 on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Ubuntu'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Ubuntu/18.04.yaml', ubuntu1804_yaml)
+create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Ubuntu/20.04.yaml', ubuntu2004_yaml)
