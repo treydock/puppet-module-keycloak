@@ -161,6 +161,23 @@ Manage Keycloak LDAP user providers
     newvalues(:true, :false)
   end
 
+  newproperty(:allow_kerberos_authentication, boolean: true) do
+    desc 'allowKerberosAuthentication'
+    newvalues(:true, :false)
+  end
+
+  newproperty(:kerberos_realm) do
+    desc 'kerberosRealm'
+  end
+
+  newproperty(:key_tab) do
+    desc 'keyTab'
+  end
+
+  newproperty(:server_principal) do
+    desc 'serverPrincipal'
+  end
+
   newproperty(:user_object_classes, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'userObjectClasses'
     defaultto ['inetOrgPerson', 'organizationalPerson']

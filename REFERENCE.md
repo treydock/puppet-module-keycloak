@@ -2680,6 +2680,12 @@ keycloak_ldap_user_provider { 'LDAP on test':
 
 The following properties are available in the `keycloak_ldap_user_provider` type.
 
+##### `allow_kerberos_authentication`
+
+Valid values: ``true``, ``false``
+
+allowKerberosAuthentication
+
 ##### `auth_type`
 
 Valid values: `none`, `simple`
@@ -2758,6 +2764,14 @@ importEnabled
 
 Default value: `true`
 
+##### `kerberos_realm`
+
+kerberosRealm
+
+##### `key_tab`
+
+keyTab
+
 ##### `priority`
 
 priority
@@ -2775,6 +2789,10 @@ Default value: `uid`
 Valid values: `one`, `one_level`, `subtree`, `1`, `2`, `1`, `2`
 
 searchScope
+
+##### `server_principal`
+
+serverPrincipal
 
 ##### `sync_registrations`
 

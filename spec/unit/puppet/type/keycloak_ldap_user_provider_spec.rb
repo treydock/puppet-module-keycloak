@@ -108,6 +108,18 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     expect(resource[:use_kerberos_for_password_authentication]).to eq(:true)
   end
 
+  it 'allows kerberos configuration' do
+    config[:auth_type] = 'simple'
+    config[:allow_kerberos_authentication] = true
+    config[:kerberos_realm] = 'BAR.COM'
+    config[:key_tab] = '/etc/krb5.keytab'
+    config[:server_principal] = 'host/foo@BAR.COM'
+    expect(resource[:allow_kerberos_authentication]).to eq(:true)
+    expect(resource[:kerberos_realm]).to eq('BAR.COM')
+    expect(resource[:key_tab]).to eq('/etc/krb5.keytab')
+    expect(resource[:server_principal]).to eq('host/foo@BAR.COM')
+  end
+
   it 'does not allow invalid bind_credential' do
     config[:auth_type] = 'simple'
     config[:use_kerberos_for_password_authentication] = 'foo'
