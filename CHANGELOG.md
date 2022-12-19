@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v9.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v9.2.0) (2022-12-19)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.1.0...v9.2.0)
+
+### Added
+
+- Allow to configure LDAP kerberos through the module [\#269](https://github.com/treydock/puppet-module-keycloak/pull/269) ([PopiBrossard](https://github.com/PopiBrossard))
+
 ## [v9.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v9.1.0) (2022-12-02)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.0.1...v9.1.0)
