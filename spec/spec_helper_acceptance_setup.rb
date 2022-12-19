@@ -60,3 +60,5 @@ create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/CentOS/7.yaml', centos
 on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Ubuntu'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Ubuntu/18.04.yaml', ubuntu1804_yaml)
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Ubuntu/20.04.yaml', ubuntu2004_yaml)
+on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Debian'
+create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Debian/11.yaml', ubuntu2004_yaml)
