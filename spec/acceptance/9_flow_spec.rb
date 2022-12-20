@@ -8,17 +8,17 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
       pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak::spi_deployment { 'duo-spi':
-        deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
-        source        => 'file:///tmp/keycloak-duo-spi-jar-with-dependencies.jar',
+        deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
+        source        => 'file:///tmp/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
         test_url      => 'authentication/authenticator-providers',
         test_key      => 'id',
-        test_value    => 'duo-mfa-authenticator',
+        test_value    => 'duo-universal',
         test_realm    => 'test',
         test_before   => [
           'Keycloak_flow[form-browser-with-duo]',
           'Keycloak_flow[form-browser-with-duo2]',
-          'Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo on test]',
-          'Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo2 on test]',
+          'Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]',
+          'Keycloak_flow_execution[duo-universal under form-browser-with-duo2 on test]',
         ],
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -26,26 +26,25 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         ensure      => 'present',
         description => 'Browser with DUO',
       }
-      keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on test':
+      keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
         ensure       => 'present',
         configurable => true,
-        display_name => 'Duo MFA',
-        alias        => 'Duo',
+        display_name => 'Duo Universal MFA',
+        alias        => 'Duo Universal',
         config       => {
-          "duomfa.akey"    => "foo-akey",
-          "duomfa.apihost" => "api-foo.duosecurity.com",
-          "duomfa.skey"    => "secret",
-          "duomfa.ikey"    => "foo-ikey",
-          "duomfa.groups"  => "duo"
+          "duoApiHostname"    => "api-foo.duosecurity.com",
+          "duoSecretKey"      => "secret",
+          "duoIntegrationKey" => "foo-ikey",
+          "duoGroups"         => "duo"
         },
         requirement  => 'REQUIRED',
         index        => 1,
       }
-      keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo2 on test':
+      keycloak_flow_execution { 'duo-universal under form-browser-with-duo2 on test':
         ensure       => 'present',
         configurable => true,
-        display_name => 'Duo MFA',
-        alias        => 'Duo2',
+        display_name => 'Duo Universal MFA',
+        alias        => 'Duo2 Universal',
         requirement  => 'REQUIRED',
         index        => 0,
       }
@@ -110,7 +109,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         expect(form['description']).to eq('Form Browser with DUO')
         auth_form = data.find { |d| d['providerId'] == 'auth-username-password-form' }
         expect(auth_form['index']).to eq(0)
-        duo = data.find { |d| d['providerId'] == 'duo-mfa-authenticator' }
+        duo = data.find { |d| d['providerId'] == 'duo-universal' }
         expect(duo['index']).to eq(1)
       end
     end
@@ -121,17 +120,17 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
       pp = <<-PUPPET_PP
       class { 'keycloak': }
       keycloak::spi_deployment { 'duo-spi':
-        deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
-        source        => 'file:///tmp/keycloak-duo-spi-jar-with-dependencies.jar',
+        deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
+        source        => 'file:///tmp/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
         test_url      => 'authentication/authenticator-providers',
         test_key      => 'id',
-        test_value    => 'duo-mfa-authenticator',
+        test_value    => 'duo-universal',
         test_realm    => 'test',
         test_before   => [
           'Keycloak_flow[form-browser-with-duo]',
           'Keycloak_flow[form-browser-with-duo2]',
-          'Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo on test]',
-          'Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo2 on test]',
+          'Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]',
+          'Keycloak_flow_execution[duo-universal under form-browser-with-duo2 on test]',
         ],
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -139,32 +138,30 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         ensure => 'present',
         description => 'browser with Duo',
       }
-      keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on test':
+      keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
         ensure       => 'present',
         configurable => true,
-        display_name => 'Duo MFA',
-        alias        => 'Duo',
+        display_name => 'Duo Universal MFA',
+        alias        => 'Duo Universal',
         config       => {
-          "duomfa.akey"    => "foo-akey2",
-          "duomfa.apihost" => "api-foo.duosecurity.com",
-          "duomfa.skey"    => "secret2",
-          "duomfa.ikey"    => "foo-ikey2",
-          "duomfa.groups"  => "duo,duo2"
+          "duoApiHostname"    => "api-foo.duosecurity.com",
+          "duoSecretKey"      => "secret2",
+          "duoIntegrationKey" => "foo-ikey2",
+          "duoGroups"         => "duo,duo2"
         },
         requirement  => 'REQUIRED',
         index        => 0,
       }
-      keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo2 on test':
+      keycloak_flow_execution { 'duo-universal under form-browser-with-duo2 on test':
         ensure       => 'present',
         configurable => true,
-        display_name => 'Duo MFA',
-        alias        => 'Duo2',
+        display_name => 'Duo Universal MFA',
+        alias        => 'Duo2 Universal',
         config       => {
-          "duomfa.akey"    => "foo-akey2",
-          "duomfa.apihost" => "api-foo.duosecurity.com",
-          "duomfa.skey"    => "secret2",
-          "duomfa.ikey"    => "foo-ikey2",
-          "duomfa.groups"  => "duo,duo2"
+          "duoApiHostname"    => "api-foo.duosecurity.com",
+          "duoSecretKey"      => "secret2",
+          "duoIntegrationKey" => "foo-ikey2",
+          "duoGroups"         => "duo,duo2"
         },
         requirement  => 'REQUIRED',
         index        => 0,
@@ -226,7 +223,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         expect(form['index']).to eq(2)
         auth_form = data.find { |d| d['providerId'] == 'auth-username-password-form' }
         expect(auth_form['index']).to eq(1)
-        duo = data.find { |d| d['providerId'] == 'duo-mfa-authenticator' }
+        duo = data.find { |d| d['providerId'] == 'duo-universal' }
         expect(duo['index']).to eq(0)
       end
     end

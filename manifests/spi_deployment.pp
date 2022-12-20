@@ -93,7 +93,9 @@ define keycloak::spi_deployment (
 
   if $ensure == 'absent' {
     file { $dest:
-      ensure => 'absent',
+      ensure  => 'absent',
+      require => Class['keycloak::install'],
+      notify  => Class['keycloak::service'],
     }
   }
 
