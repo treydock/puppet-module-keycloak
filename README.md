@@ -278,8 +278,8 @@ A simple example of deploying a custom SPI from a URL:
 ```puppet
 keycloak::spi_deployment { 'duo-spi':
   ensure        => 'present',
-  deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
-  source        => 'https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar',
+  deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
+  source        => 'https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.4/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.4.jar',
 }
 ```
 
@@ -290,15 +290,15 @@ This is useful to ensure SPI is loaded into Keycloak before attempting to add cu
 
 ```puppet
 keycloak::spi_deployment { 'duo-spi':
-  deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
-  source        => 'https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar',
+  deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
+  source        => 'https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.4/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.4.jar',
   test_url      => 'authentication/authenticator-providers',
   test_key      => 'id',
-  test_value    => 'duo-mfa-authenticator',
+  test_value    => 'duo-universal',
   test_realm    => 'test',
   test_before   => [
     'Keycloak_flow[form-browser-with-duo]',
-    'Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo on test]',
+    'Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]',
   ],
 }
 ```
@@ -523,17 +523,16 @@ keycloak_flow_execution { 'auth-username-password-form under form-browser-with-d
   index        => 0,
   requirement  => 'REQUIRED',
 }
-keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on test':
+keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
   ensure       => 'present',
   configurable => true,
-  display_name => 'Duo MFA',
+  display_name => 'Duo Universal MFA',
   alias        => 'Duo',
   config       => {
-    "duomfa.akey"    => "foo-akey",
-    "duomfa.apihost" => "api-foo.duosecurity.com",
-    "duomfa.skey"    => "secret",
-    "duomfa.ikey"    => "foo-ikey",
-    "duomfa.groups"  => "duo"
+    "duoApiHostname"    => "api-foo.duosecurity.com",
+    "duoSecretKey"      => "secret",
+    "duoIntegrationKey" => "foo-ikey",
+    "duoGroups"         => "duo"
   },
   requirement  => 'REQUIRED',
   index        => 1,
