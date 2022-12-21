@@ -449,8 +449,8 @@ apache::vhost { &#39;idp.example.com&#39;:
 
 <pre class="code ruby"><code class="ruby">keycloak::spi_deployment { &#39;duo-spi&#39;:
   ensure        =&gt; &#39;present&#39;,
-  deployed_name =&gt; &#39;keycloak-duo-spi-jar-with-dependencies.jar&#39;,
-  source        =&gt; &#39;https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar&#39;,
+  deployed_name =&gt; &#39;DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar&#39;,
+  source        =&gt; &#39;https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.4/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.4.jar&#39;,
 }
 </code></pre>
 
@@ -463,15 +463,15 @@ for the resource to exist. This is useful to ensure SPI is loaded into
 Keycloak before attempting to add custom resources.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak::spi_deployment { &#39;duo-spi&#39;:
-  deployed_name =&gt; &#39;keycloak-duo-spi-jar-with-dependencies.jar&#39;,
-  source        =&gt; &#39;https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar&#39;,
+  deployed_name =&gt; &#39;DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar&#39;,
+  source        =&gt; &#39;https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.4/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.4.jar&#39;,
   test_url      =&gt; &#39;authentication/authenticator-providers&#39;,
   test_key      =&gt; &#39;id&#39;,
-  test_value    =&gt; &#39;duo-mfa-authenticator&#39;,
+  test_value    =&gt; &#39;duo-universal&#39;,
   test_realm    =&gt; &#39;test&#39;,
   test_before   =&gt; [
     &#39;Keycloak_flow[form-browser-with-duo]&#39;,
-    &#39;Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo on test]&#39;,
+    &#39;Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]&#39;,
   ],
 }
 </code></pre>
@@ -704,17 +704,16 @@ keycloak_flow_execution { &#39;auth-username-password-form under form-browser-wi
   index        =&gt; 0,
   requirement  =&gt; &#39;REQUIRED&#39;,
 }
-keycloak_flow_execution { &#39;duo-mfa-authenticator under form-browser-with-duo on test&#39;:
+keycloak_flow_execution { &#39;duo-universal under form-browser-with-duo on test&#39;:
   ensure       =&gt; &#39;present&#39;,
   configurable =&gt; true,
-  display_name =&gt; &#39;Duo MFA&#39;,
+  display_name =&gt; &#39;Duo Universal MFA&#39;,
   alias        =&gt; &#39;Duo&#39;,
   config       =&gt; {
-    &quot;duomfa.akey&quot;    =&gt; &quot;foo-akey&quot;,
-    &quot;duomfa.apihost&quot; =&gt; &quot;api-foo.duosecurity.com&quot;,
-    &quot;duomfa.skey&quot;    =&gt; &quot;secret&quot;,
-    &quot;duomfa.ikey&quot;    =&gt; &quot;foo-ikey&quot;,
-    &quot;duomfa.groups&quot;  =&gt; &quot;duo&quot;
+    &quot;duoApiHostname&quot;    =&gt; &quot;api-foo.duosecurity.com&quot;,
+    &quot;duoSecretKey&quot;      =&gt; &quot;secret&quot;,
+    &quot;duoIntegrationKey&quot; =&gt; &quot;foo-ikey&quot;,
+    &quot;duoGroups&quot;         =&gt; &quot;duo&quot;
   },
   requirement  =&gt; &#39;REQUIRED&#39;,
   index        =&gt; 1,

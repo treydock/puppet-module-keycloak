@@ -334,7 +334,9 @@ this SPI</p>
 97
 98
 99
-100</pre>
+100
+101
+102</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/spi_deployment.pp', line 38</span>
@@ -397,7 +399,9 @@ define keycloak::spi_deployment (
 
   if $ensure == &#39;absent&#39; {
     file { $dest:
-      ensure =&gt; &#39;absent&#39;,
+      ensure  =&gt; &#39;absent&#39;,
+      require =&gt; Class[&#39;keycloak::install&#39;],
+      notify  =&gt; Class[&#39;keycloak::service&#39;],
     }
   }
 
