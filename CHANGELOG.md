@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v9.3.1](https://github.com/treydock/puppet-module-keycloak/tree/v9.3.1) (2023-01-04)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.3.0...v9.3.1)
+
+### Fixed
+
+- Allow keycloak.v2 theme to be used [\#273](https://github.com/treydock/puppet-module-keycloak/pull/273) ([treydock](https://github.com/treydock))
+
 ## [v9.3.0](https://github.com/treydock/puppet-module-keycloak/tree/v9.3.0) (2022-12-21)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.2.0...v9.3.0)
