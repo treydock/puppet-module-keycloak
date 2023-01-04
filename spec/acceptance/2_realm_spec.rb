@@ -192,6 +192,10 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         smtp_server_reply_to_display_name => 'Hostmaster',
         brute_force_protected             => true,
         roles                             => ['uma_authorization', 'new_role', 'other_new_role'],
+        login_theme                       => 'keycloak.v2',
+        account_theme                     => 'keycloak.v2',
+        admin_theme                       => 'keycloak.v2',
+        email_theme                       => 'keycloak.v2',
         custom_properties                 => {
           'failureFactor'      => 60,
           'revokeRefreshToken' => true,
@@ -237,6 +241,10 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['smtpServer']['replyTo']).to eq('webmaster@example.org')
         expect(data['smtpServer']['replyToDisplayName']).to eq('Hostmaster')
         expect(data['bruteForceProtected']).to eq(true)
+        expect(data['loginTheme']).to eq('keycloak.v2')
+        expect(data['accountTheme']).to eq('keycloak.v2')
+        expect(data['adminTheme']).to eq('keycloak.v2')
+        expect(data['emailTheme']).to eq('keycloak.v2')
         expect(data['failureFactor']).to eq(60)
         expect(data['revokeRefreshToken']).to eq(true)
       end
