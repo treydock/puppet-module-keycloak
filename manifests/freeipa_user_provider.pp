@@ -34,21 +34,19 @@
 # @param changed_sync_period
 #   Synchronize changed users this often (changedSyncPeriod)
 #
-define keycloak::freeipa_user_provider
-(
-  String                    $realm,
-  String                    $bind_dn,
-  String                    $bind_credential,
-  String                    $users_dn,
+define keycloak::freeipa_user_provider (
+  String $realm,
+  String $bind_dn,
+  String $bind_credential,
+  String $users_dn,
   Enum['present', 'absent'] $ensure = 'present',
-  Optional[String]          $id = undef,
-  Stdlib::Host              $ipa_host = $title,
-  Integer                   $priority = 10,
-  Boolean                   $ldaps = false,
-  Optional[Integer]         $full_sync_period = undef,
-  Optional[Integer]         $changed_sync_period = undef
-)
-{
+  Optional[String] $id = undef,
+  Stdlib::Host $ipa_host = $title,
+  Integer $priority = 10,
+  Boolean $ldaps = false,
+  Optional[Integer] $full_sync_period = undef,
+  Optional[Integer] $changed_sync_period = undef
+) {
   if $ldaps {
     $connection_url = "ldaps://${ipa_host}:636"
   }

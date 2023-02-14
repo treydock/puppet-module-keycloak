@@ -14,5 +14,4 @@ class keycloak::service {
     hasstatus  => true,
     hasrestart => true,
   }
-
 }

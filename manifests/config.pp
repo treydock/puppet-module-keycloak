@@ -29,10 +29,10 @@ class keycloak::config {
     group     => $keycloak::group,
     mode      => '0600',
     content   => join([
-      '# File managed by Puppet',
-      "KEYCLOAK_ADMIN=${keycloak::admin_user}",
-      "KEYCLOAK_ADMIN_PASSWORD=${keycloak::admin_user_password}",
-      '',
+        '# File managed by Puppet',
+        "KEYCLOAK_ADMIN=${keycloak::admin_user}",
+        "KEYCLOAK_ADMIN_PASSWORD=${keycloak::admin_user_password}",
+        '',
     ], "\n"),
     show_diff => false,
   }

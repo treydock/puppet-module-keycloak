@@ -23,8 +23,8 @@ class keycloak::install {
     }
   }
 
-  if $::keycloak::manage_install {
-    file { $::keycloak::install_base:
+  if $keycloak::manage_install {
+    file { $keycloak::install_base:
       ensure => 'directory',
       owner  => $keycloak::user,
       group  => $keycloak::group,
@@ -34,10 +34,10 @@ class keycloak::install {
       ensure          => 'present',
       extract         => true,
       path            => "/tmp/keycloak-${keycloak::version}.tar.gz",
-      extract_path    => $::keycloak::install_base,
+      extract_path    => $keycloak::install_base,
       extract_command => 'tar xfz %s --strip-components=1',
       source          => $keycloak::download_url,
-      creates         => "${::keycloak::install_base}/bin",
+      creates         => "${keycloak::install_base}/bin",
       cleanup         => true,
       user            => $keycloak::user,
       group           => $keycloak::group,
@@ -45,8 +45,8 @@ class keycloak::install {
   } else {
     # Set permissions properly when using a package
     exec { 'ensure-keycloak-dir-owner':
-      command => "chown -R ${::keycloak::user}:${::keycloak::group} ${::keycloak::install_base}",
-      unless  => "test `stat -c %U ${::keycloak::install_base}` = ${::keycloak::user}",
+      command => "chown -R ${keycloak::user}:${keycloak::group} ${keycloak::install_base}",
+      unless  => "test `stat -c %U ${keycloak::install_base}` = ${keycloak::user}",
       path    => ['/bin','/usr/bin'],
     }
   }

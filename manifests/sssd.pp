@@ -75,10 +75,10 @@ class keycloak::sssd {
     }
 
     $sssd_config = delete_undef_values([
-      '# File managed by Puppet',
-      '[ifp]',
-      'allowed_uids = root, keycloak',
-      $user_attributes,
+        '# File managed by Puppet',
+        '[ifp]',
+        'allowed_uids = root, keycloak',
+        $user_attributes,
     ])
     if $keycloak::restart_sssd {
       $sssd_notify = Service['sssd']
@@ -94,5 +94,4 @@ class keycloak::sssd {
       notify  => $sssd_notify,
     }
   }
-
 }

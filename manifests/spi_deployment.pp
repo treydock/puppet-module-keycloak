@@ -98,5 +98,4 @@ define keycloak::spi_deployment (
       notify  => Class['keycloak::service'],
     }
   }
-
 }
