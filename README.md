@@ -271,6 +271,8 @@ apache::vhost { 'idp.example.com':
 }
 ```
 
+**NOTE:** Can set `hostname` parameter to `unset` if you wish for that configuration to not be set in the Keycloak configuration if you wish for Keycloak to not use strict hostname checking and respond to multiple hostnames.
+
 ### Deploy SPI
 
 A simple example of deploying a custom SPI from a URL:

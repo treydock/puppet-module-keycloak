@@ -142,6 +142,14 @@ describe 'keycloak' do
                                      ])
         end
 
+        context 'when hostname is unset' do
+          let(:params) { { hostname: 'unset' } }
+
+          it do
+            is_expected.to contain_file("/opt/keycloak-#{version}/conf/keycloak.conf").without_content(%r{^hostname=})
+          end
+        end
+
         context 'when features defined' do
           let(:params) { { features: ['authorization', 'impersonation'] } }
 
