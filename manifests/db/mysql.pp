@@ -18,5 +18,4 @@ class keycloak::db::mysql {
       collate  => $keycloak::db_collate,
     }
   }
-
 }

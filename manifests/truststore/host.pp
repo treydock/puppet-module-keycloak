@@ -14,7 +14,6 @@ define keycloak::truststore::host (
   String $certificate,
   Enum['latest', 'present', 'absent'] $ensure = 'latest',
 ) {
-
   include keycloak
 
   java_ks { $name:
@@ -26,5 +25,4 @@ define keycloak::truststore::host (
     require      => Class['keycloak::install'],
     notify       => Class['keycloak::service'],
   }
-
 }

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module PuppetX # rubocop:disable Style/ClassAndModuleChildren
-  module Keycloak # rubocop:disable Style/ClassAndModuleChildren
+  module Keycloak
     # Module for shared type configs
     module Type
       def add_autorequires(realm = true)

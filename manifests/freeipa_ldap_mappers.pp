@@ -17,62 +17,75 @@
 # @param parent_id
 #   Used to identify the parent LDAP user provider, name used with keycloak::freeipa_user_provider
 #
-define keycloak::freeipa_ldap_mappers
-(
-  String           $realm,
-  String           $groups_dn,
-  String           $roles_dn,
-  String           $parent_id = $title,
-)
-{
+define keycloak::freeipa_ldap_mappers (
+  String $realm,
+  String $groups_dn,
+  String $roles_dn,
+  String $parent_id = $title,
+) {
   $title_suffix = "for ${title}"
+  $defaults = {
+    ensure                      => 'present',
+    realm                       => $realm,
+    ldap                        => $parent_id,
+    always_read_value_from_ldap => true,
+    read_only                   => true,
+  }
 
-  # This translates to parentId in JSON and must be correct or hard-to-debug
-  # issues will ensue.
+  keycloak_ldap_mapper { "cn ${title_suffix}":
+    *                    => $defaults,
+    ldap_attribute       => 'cn',
+    user_model_attribute => 'cn',
+    is_mandatory_in_ldap => true,
+  }
 
-  keycloak_ldap_mapper {
-    default:
-      ensure                      => 'present',
-      realm                       => $realm,
-      ldap                        => $parent_id,
-      always_read_value_from_ldap => true,
-      read_only                   => true,
-      is_mandatory_in_ldap        => true,
-    ;
-    ["cn ${title_suffix}"]:
-      ldap_attribute       => 'cn',
-      user_model_attribute => 'cn',
-    ;
-    ["displayName ${title_suffix}"]:
-      ldap_attribute       => 'displayName',
-      user_model_attribute => 'displayName',
-    ;
-    ["email ${title_suffix}"]:
-      ldap_attribute       => 'mail',
-      user_model_attribute => 'email',
-    ;
-    ["first name ${title_suffix}"]:
-      ldap_attribute       => 'givenName',
-      user_model_attribute => 'firstName',
-    ;
-    ["last name ${title_suffix}"]:
-      ldap_attribute       => 'sn',
-      user_model_attribute => 'lastName',
-    ;
-    ["username ${title_suffix}"]:
-      ldap_attribute       => 'uid',
-      user_model_attribute => 'username',
-    ;
-    ["modify date ${title_suffix}"]:
-      is_mandatory_in_ldap => false,
-      ldap_attribute       => 'modifyTimestamp',
-      user_model_attribute => 'modifyTimestamp',
-    ;
-    ["creation date ${title_suffix}"]:
-      is_mandatory_in_ldap => false,
-      ldap_attribute       => 'createTimestamp',
-      user_model_attribute => 'createTimestamp',
-    ;
+  keycloak_ldap_mapper { "displayName ${title_suffix}":
+    *                    => $defaults,
+    ldap_attribute       => 'displayName',
+    user_model_attribute => 'displayName',
+    is_mandatory_in_ldap => true,
+  }
+
+  keycloak_ldap_mapper { "email ${title_suffix}":
+    *                    => $defaults,
+    ldap_attribute       => 'mail',
+    user_model_attribute => 'email',
+    is_mandatory_in_ldap => true,
+  }
+
+  keycloak_ldap_mapper { "first name ${title_suffix}":
+    *                    => $defaults,
+    ldap_attribute       => 'givenName',
+    user_model_attribute => 'firstName',
+    is_mandatory_in_ldap => true,
+  }
+
+  keycloak_ldap_mapper { "last name ${title_suffix}":
+    *                    => $defaults,
+    ldap_attribute       => 'sn',
+    user_model_attribute => 'lastName',
+    is_mandatory_in_ldap => true,
+  }
+
+  keycloak_ldap_mapper { "username ${title_suffix}":
+    *                    => $defaults,
+    ldap_attribute       => 'uid',
+    user_model_attribute => 'username',
+    is_mandatory_in_ldap => true,
+  }
+
+  keycloak_ldap_mapper { "modify date ${title_suffix}":
+    *                    => $defaults,
+    ldap_attribute       => 'modifyTimestamp',
+    user_model_attribute => 'modifyTimestamp',
+    is_mandatory_in_ldap => false,
+  }
+
+  keycloak_ldap_mapper { "creation date ${title_suffix}":
+    *                    => $defaults,
+    ldap_attribute       => 'createTimestamp',
+    user_model_attribute => 'createTimestamp',
+    is_mandatory_in_ldap => false,
   }
 
   keycloak_ldap_mapper { "roles ${title_suffix}":

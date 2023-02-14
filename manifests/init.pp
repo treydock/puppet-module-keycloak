@@ -209,8 +209,7 @@
 class keycloak (
   Boolean $manage_install       = true,
   String $version               = '19.0.3',
-  Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
-    $package_url                = undef,
+  Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Enum['include','class'] $java_declare_method = 'class',
   String[1] $java_package = 'java-11-openjdk-devel',
@@ -284,8 +283,7 @@ class keycloak (
   Boolean $ldap_user_providers_merge = false,
   Boolean $flow_executions_merge = false,
   Boolean $with_sssd_support = false,
-  Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
-    $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz',
+  Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl] $libunix_dbus_java_source = 'https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz',
   Boolean $install_libunix_dbus_java_build_dependencies = true,
   Array $libunix_dbus_java_build_dependencies = [],
   Stdlib::Absolutepath $libunix_dbus_java_libdir = '/usr/lib64',
@@ -299,7 +297,6 @@ class keycloak (
   Optional[Variant[String, Array]] $custom_config_source = undef,
   String $validator_test_url = '/realms/master/.well-known/openid-configuration',
 ) {
-
   if ! ($facts['os']['family'] in ['RedHat','Debian']) {
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
   }
@@ -391,7 +388,7 @@ class keycloak (
 
   if $db in ['mysql','mariadb','postgres'] {
     contain "keycloak::db::${db}"
-    Class["keycloak::db::${db}"]~>Class['keycloak::service']
+    Class["keycloak::db::${db}"] ~> Class['keycloak::service']
   }
 
   if $with_sssd_support {
@@ -409,5 +406,4 @@ class keycloak (
   }
 
   include keycloak::resources
-
 }
