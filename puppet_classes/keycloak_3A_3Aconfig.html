@@ -199,10 +199,10 @@ class keycloak::config {
     group     =&gt; $keycloak::group,
     mode      =&gt; &#39;0600&#39;,
     content   =&gt; join([
-      &#39;# File managed by Puppet&#39;,
-      &quot;KEYCLOAK_ADMIN=${keycloak::admin_user}&quot;,
-      &quot;KEYCLOAK_ADMIN_PASSWORD=${keycloak::admin_user_password}&quot;,
-      &#39;&#39;,
+        &#39;# File managed by Puppet&#39;,
+        &quot;KEYCLOAK_ADMIN=${keycloak::admin_user}&quot;,
+        &quot;KEYCLOAK_ADMIN_PASSWORD=${keycloak::admin_user_password}&quot;,
+        &#39;&#39;,
     ], &quot;\n&quot;),
     show_diff =&gt; false,
   }

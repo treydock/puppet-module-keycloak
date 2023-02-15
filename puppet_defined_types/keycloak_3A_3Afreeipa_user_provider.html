@@ -346,28 +346,24 @@
 76
 77
 78
-79
-80
-81</pre>
+79</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/freeipa_user_provider.pp', line 37</span>
 
-define keycloak::freeipa_user_provider
-(
-  String                    $realm,
-  String                    $bind_dn,
-  String                    $bind_credential,
-  String                    $users_dn,
+define keycloak::freeipa_user_provider (
+  String $realm,
+  String $bind_dn,
+  String $bind_credential,
+  String $users_dn,
   Enum[&#39;present&#39;, &#39;absent&#39;] $ensure = &#39;present&#39;,
-  Optional[String]          $id = undef,
-  Stdlib::Host              $ipa_host = $title,
-  Integer                   $priority = 10,
-  Boolean                   $ldaps = false,
-  Optional[Integer]         $full_sync_period = undef,
-  Optional[Integer]         $changed_sync_period = undef
-)
-{
+  Optional[String] $id = undef,
+  Stdlib::Host $ipa_host = $title,
+  Integer $priority = 10,
+  Boolean $ldaps = false,
+  Optional[Integer] $full_sync_period = undef,
+  Optional[Integer] $changed_sync_period = undef
+) {
   if $ldaps {
     $connection_url = &quot;ldaps://${ipa_host}:636&quot;
   }

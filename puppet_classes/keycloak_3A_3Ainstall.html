@@ -172,8 +172,8 @@ class keycloak::install {
     }
   }
 
-  if $::keycloak::manage_install {
-    file { $::keycloak::install_base:
+  if $keycloak::manage_install {
+    file { $keycloak::install_base:
       ensure =&gt; &#39;directory&#39;,
       owner  =&gt; $keycloak::user,
       group  =&gt; $keycloak::group,
@@ -183,10 +183,10 @@ class keycloak::install {
       ensure          =&gt; &#39;present&#39;,
       extract         =&gt; true,
       path            =&gt; &quot;/tmp/keycloak-${keycloak::version}.tar.gz&quot;,
-      extract_path    =&gt; $::keycloak::install_base,
+      extract_path    =&gt; $keycloak::install_base,
       extract_command =&gt; &#39;tar xfz %s --strip-components=1&#39;,
       source          =&gt; $keycloak::download_url,
-      creates         =&gt; &quot;${::keycloak::install_base}/bin&quot;,
+      creates         =&gt; &quot;${keycloak::install_base}/bin&quot;,
       cleanup         =&gt; true,
       user            =&gt; $keycloak::user,
       group           =&gt; $keycloak::group,
@@ -194,8 +194,8 @@ class keycloak::install {
   } else {
     # Set permissions properly when using a package
     exec { &#39;ensure-keycloak-dir-owner&#39;:
-      command =&gt; &quot;chown -R ${::keycloak::user}:${::keycloak::group} ${::keycloak::install_base}&quot;,
-      unless  =&gt; &quot;test `stat -c %U ${::keycloak::install_base}` = ${::keycloak::user}&quot;,
+      command =&gt; &quot;chown -R ${keycloak::user}:${keycloak::group} ${keycloak::install_base}&quot;,
+      unless  =&gt; &quot;test `stat -c %U ${keycloak::install_base}` = ${keycloak::user}&quot;,
       path    =&gt; [&#39;/bin&#39;,&#39;/usr/bin&#39;],
     }
   }

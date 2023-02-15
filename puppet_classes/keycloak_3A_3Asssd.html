@@ -187,8 +187,7 @@
 94
 95
 96
-97
-98</pre>
+97</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/sssd.pp', line 2</span>
@@ -269,10 +268,10 @@ class keycloak::sssd {
     }
 
     $sssd_config = delete_undef_values([
-      &#39;# File managed by Puppet&#39;,
-      &#39;[ifp]&#39;,
-      &#39;allowed_uids = root, keycloak&#39;,
-      $user_attributes,
+        &#39;# File managed by Puppet&#39;,
+        &#39;[ifp]&#39;,
+        &#39;allowed_uids = root, keycloak&#39;,
+        $user_attributes,
     ])
     if $keycloak::restart_sssd {
       $sssd_notify = Service[&#39;sssd&#39;]
@@ -288,7 +287,6 @@ class keycloak::sssd {
       notify  =&gt; $sssd_notify,
     }
   }
-
 }</pre>
       </td>
     </tr>

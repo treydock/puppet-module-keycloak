@@ -194,9 +194,7 @@
 65
 66
 67
-68
-69
-70</pre>
+68</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/client_scope/saml.pp', line 13</span>
@@ -205,8 +203,7 @@ define keycloak::client_scope::saml (
   String $realm,
   String $resource_name = $name,
 ) {
-
-  include ::keycloak
+  include keycloak
 
   keycloak_client_scope { $name:
     realm         =&gt; $realm,
@@ -220,7 +217,7 @@ define keycloak::client_scope::saml (
     attribute_nameformat =&gt; &#39;uri&#39;,
     user_attribute       =&gt; &#39;username&#39;,
     friendly_name        =&gt; &#39;userid&#39;,
-    attribute_name       =&gt; &#39;urn:oid:0.9.2342.19200300.100.1.1&#39;
+    attribute_name       =&gt; &#39;urn:oid:0.9.2342.19200300.100.1.1&#39;,
   }
 
   keycloak_protocol_mapper { &quot;X500 email for ${name} on ${realm}&quot;:
@@ -229,7 +226,7 @@ define keycloak::client_scope::saml (
     attribute_nameformat =&gt; &#39;uri&#39;,
     user_attribute       =&gt; &#39;email&#39;,
     friendly_name        =&gt; &#39;email&#39;,
-    attribute_name       =&gt; &#39;urn:oid:1.2.840.113549.1.9.1&#39;
+    attribute_name       =&gt; &#39;urn:oid:1.2.840.113549.1.9.1&#39;,
   }
 
   keycloak_protocol_mapper { &quot;X500 givenName for ${name} on ${realm}&quot;:
@@ -238,7 +235,7 @@ define keycloak::client_scope::saml (
     attribute_nameformat =&gt; &#39;uri&#39;,
     user_attribute       =&gt; &#39;firstName&#39;,
     friendly_name        =&gt; &#39;givenName&#39;,
-    attribute_name       =&gt; &#39;urn:oid:2.5.4.42&#39;
+    attribute_name       =&gt; &#39;urn:oid:2.5.4.42&#39;,
   }
 
   keycloak_protocol_mapper { &quot;X500 surname for ${name} on ${realm}&quot;:
@@ -247,7 +244,7 @@ define keycloak::client_scope::saml (
     attribute_nameformat =&gt; &#39;uri&#39;,
     user_attribute       =&gt; &#39;lastName&#39;,
     friendly_name        =&gt; &#39;surname&#39;,
-    attribute_name       =&gt; &#39;urn:oid:2.5.4.4&#39;
+    attribute_name       =&gt; &#39;urn:oid:2.5.4.4&#39;,
   }
 
   keycloak_protocol_mapper { &quot;role list for ${name} on ${realm}&quot;:
@@ -257,7 +254,6 @@ define keycloak::client_scope::saml (
     attribute_nameformat =&gt; &#39;basic&#39;,
     attribute_name       =&gt; &#39;Role&#39;,
   }
-
 }</pre>
       </td>
     </tr>

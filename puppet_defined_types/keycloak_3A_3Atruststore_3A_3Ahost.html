@@ -154,9 +154,7 @@
 25
 26
 27
-28
-29
-30</pre>
+28</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/truststore/host.pp', line 13</span>
@@ -165,7 +163,6 @@ define keycloak::truststore::host (
   String $certificate,
   Enum[&#39;latest&#39;, &#39;present&#39;, &#39;absent&#39;] $ensure = &#39;latest&#39;,
 ) {
-
   include keycloak
 
   java_ks { $name:
@@ -177,7 +174,6 @@ define keycloak::truststore::host (
     require      =&gt; Class[&#39;keycloak::install&#39;],
     notify       =&gt; Class[&#39;keycloak::service&#39;],
   }
-
 }</pre>
       </td>
     </tr>

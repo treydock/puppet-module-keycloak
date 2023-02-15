@@ -433,7 +433,7 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
         <span class='name'>hostname</span>
       
       
-        <span class='type'>(<tt>Stdlib::Host</tt>)</span>
+        <span class='type'>(<tt>Variant[Stdlib::Host, Enum['unset','UNSET']]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>$facts[&#39;networking&#39;][&#39;fqdn&#39;]</tt>)</em>
@@ -441,7 +441,8 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
       
         &mdash;
         <div class='inline'>
-<p>hostname to set in keycloak.conf</p>
+<p>hostname to set in keycloak.conf Set to <code>unset</code> or
+<code>UNSET</code> to not define this in keycloak.conf</p>
 </div>
       
     </li>
@@ -1734,7 +1735,6 @@ Keycloak is modified</p>
         <pre class="lines">
 
 
-209
 210
 211
 212
@@ -1938,16 +1938,17 @@ Keycloak is modified</p>
 410
 411
 412
-413</pre>
+413
+414
+415</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 209</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 210</span>
 
 class keycloak (
   Boolean $manage_install       = true,
   String $version               = &#39;19.0.3&#39;,
-  Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]
-    $package_url                = undef,
+  Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Enum[&#39;include&#39;,&#39;class&#39;] $java_declare_method = &#39;class&#39;,
   String[1] $java_package = &#39;java-11-openjdk-devel&#39;,
@@ -1963,7 +1964,7 @@ class keycloak (
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Keycloak::Configs $configs = {},
   Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
-  Stdlib::Host $hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;],
+  Variant[Stdlib::Host, Enum[&#39;unset&#39;,&#39;UNSET&#39;]] $hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;],
   Boolean $http_enabled = true,
   Stdlib::IP::Address $http_host = &#39;0.0.0.0&#39;,
   Stdlib::Port $http_port = 8080,
@@ -2021,8 +2022,7 @@ class keycloak (
   Boolean $ldap_user_providers_merge = false,
   Boolean $flow_executions_merge = false,
   Boolean $with_sssd_support = false,
-  Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]
-    $libunix_dbus_java_source = &#39;https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz&#39;,
+  Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl] $libunix_dbus_java_source = &#39;https://github.com/keycloak/libunix-dbus-java/archive/libunix-dbus-java-0.8.0.tar.gz&#39;,
   Boolean $install_libunix_dbus_java_build_dependencies = true,
   Array $libunix_dbus_java_build_dependencies = [],
   Stdlib::Absolutepath $libunix_dbus_java_libdir = &#39;/usr/lib64&#39;,
@@ -2036,7 +2036,6 @@ class keycloak (
   Optional[Variant[String, Array]] $custom_config_source = undef,
   String $validator_test_url = &#39;/realms/master/.well-known/openid-configuration&#39;,
 ) {
-
   if ! ($facts[&#39;os&#39;][&#39;family&#39;] in [&#39;RedHat&#39;,&#39;Debian&#39;]) {
     fail(&quot;Unsupported osfamily: ${facts[&#39;os&#39;][&#39;family&#39;]}, module ${module_name} only support osfamilies Debian and Redhat&quot;)
   }
@@ -2066,7 +2065,7 @@ class keycloak (
     &#39;features&#39; =&gt; $features,
     &#39;features-disabled&#39; =&gt; $features_disabled,
     &#39;proxy&#39; =&gt; $proxy,
-  }
+  }.filter |$key, $value| { $value =~ NotUndef and ! ($value in [&#39;unset&#39;, &#39;UNSET&#39;]) }
   if $truststore {
     $truststore_configs = {
       &#39;https-trust-store-file&#39; =&gt; $truststore_file,
@@ -2090,11 +2089,16 @@ class keycloak (
       $validator_server = $config[&#39;http-host&#39;]
     }
   } else {
+    if $config[&#39;hostname&#39;] in [&#39;unset&#39;, &#39;UNSET&#39;] {
+      $hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;]
+    } else {
+      $hostname = $config[&#39;hostname&#39;]
+    }
     $wrapper_protocol = &#39;https&#39;
     $wrapper_port = $config[&#39;https-port&#39;]
-    $wrapper_address = $config[&#39;hostname&#39;]
+    $wrapper_address = $hostname
     $validator_port = $config[&#39;https-port&#39;]
-    $validator_server = $config[&#39;hostname&#39;]
+    $validator_server = $hostname
     $validator_ssl = true
   }
   $wrapper_server = &quot;${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config[&#39;http-relative-path&#39;]}&quot;
@@ -2128,7 +2132,7 @@ class keycloak (
 
   if $db in [&#39;mysql&#39;,&#39;mariadb&#39;,&#39;postgres&#39;] {
     contain &quot;keycloak::db::${db}&quot;
-    Class[&quot;keycloak::db::${db}&quot;]~&gt;Class[&#39;keycloak::service&#39;]
+    Class[&quot;keycloak::db::${db}&quot;] ~&gt; Class[&#39;keycloak::service&#39;]
   }
 
   if $with_sssd_support {
@@ -2146,7 +2150,6 @@ class keycloak (
   }
 
   include keycloak::resources
-
 }</pre>
       </td>
     </tr>

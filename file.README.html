@@ -443,6 +443,11 @@ apache::vhost { &#39;idp.example.com&#39;:
 }
 </code></pre>
 
+<p><strong>NOTE:</strong> Can set <code>hostname</code> parameter to
+<code>unset</code> if you wish for that configuration to not be set in the
+Keycloak configuration if you wish for Keycloak to not use strict hostname
+checking and respond to multiple hostnames.</p>
+
 <h3 id="label-Deploy+SPI">Deploy SPI</h3>
 
 <p>A simple example of deploying a custom SPI from a URL:</p>
