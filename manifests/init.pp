@@ -52,6 +52,7 @@
 #   Additional configs for keycloak.conf
 # @param hostname
 #   hostname to set in keycloak.conf
+#   Set to `unset` or `UNSET` to not define this in keycloak.conf
 # @param http_enabled
 #   Whether to enable HTTP
 # @param http_host
@@ -225,7 +226,7 @@ class keycloak (
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Keycloak::Configs $configs = {},
   Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
-  Stdlib::Host $hostname = $facts['networking']['fqdn'],
+  Variant[Stdlib::Host, Enum['unset','UNSET']] $hostname = $facts['networking']['fqdn'],
   Boolean $http_enabled = true,
   Stdlib::IP::Address $http_host = '0.0.0.0',
   Stdlib::Port $http_port = 8080,
@@ -326,7 +327,7 @@ class keycloak (
     'features' => $features,
     'features-disabled' => $features_disabled,
     'proxy' => $proxy,
-  }
+  }.filter |$key, $value| { $value =~ NotUndef and ! ($value in ['unset', 'UNSET']) }
   if $truststore {
     $truststore_configs = {
       'https-trust-store-file' => $truststore_file,
@@ -350,11 +351,16 @@ class keycloak (
       $validator_server = $config['http-host']
     }
   } else {
+    if $config['hostname'] in ['unset', 'UNSET'] {
+      $hostname = $facts['networking']['fqdn']
+    } else {
+      $hostname = $config['hostname']
+    }
     $wrapper_protocol = 'https'
     $wrapper_port = $config['https-port']
-    $wrapper_address = $config['hostname']
+    $wrapper_address = $hostname
     $validator_port = $config['https-port']
-    $validator_server = $config['hostname']
+    $validator_server = $hostname
     $validator_ssl = true
   }
   $wrapper_server = "${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config['http-relative-path']}"
