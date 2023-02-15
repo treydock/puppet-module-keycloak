@@ -318,9 +318,10 @@ Default value: `{}`
 
 ##### <a name="hostname"></a>`hostname`
 
-Data type: `Stdlib::Host`
+Data type: `Variant[Stdlib::Host, Enum['unset','UNSET']]`
 
 hostname to set in keycloak.conf
+Set to `unset` or `UNSET` to not define this in keycloak.conf
 
 Default value: `$facts['networking']['fqdn']`
 
