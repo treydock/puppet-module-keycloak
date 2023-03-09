@@ -1876,6 +1876,7 @@ The following parameters are available in the `keycloak_conn_validator` type.
 * [`keycloak_server`](#keycloak_server)
 * [`name`](#name)
 * [`provider`](#provider)
+* [`relative_path`](#relative_path)
 * [`test_url`](#test_url)
 * [`timeout`](#timeout)
 * [`use_ssl`](#use_ssl)
@@ -1903,11 +1904,17 @@ An arbitrary name used as the identity of the resource.
 The specific backend to use for this `keycloak_conn_validator` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
+##### <a name="relative_path"></a>`relative_path`
+
+URL relative path that is used by Keycloak
+
+Default value: `/`
+
 ##### <a name="test_url"></a>`test_url`
 
 URL to use for testing if the Keycloak database is up
 
-Default value: `/auth/admin/serverinfo`
+Default value: `/realms/master/.well-known/openid-configuration`
 
 ##### <a name="timeout"></a>`timeout`
 

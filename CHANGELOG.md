@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v9.3.3](https://github.com/treydock/puppet-module-keycloak/tree/v9.3.3) (2023-03-09)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.3.2...v9.3.3)
+
+### Fixed
+
+- Use http\_relative\_path with keycloak\_conn\_validator [\#278](https://github.com/treydock/puppet-module-keycloak/pull/278) ([treydock](https://github.com/treydock))
+
 ## [v9.3.2](https://github.com/treydock/puppet-module-keycloak/tree/v9.3.2) (2023-02-15)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.3.1...v9.3.2)
