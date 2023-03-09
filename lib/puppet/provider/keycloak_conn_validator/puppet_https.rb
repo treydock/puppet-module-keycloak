@@ -67,6 +67,6 @@ Puppet::Type.type(:keycloak_conn_validator).provide(:puppet_https) do
   #
   # @api private
   def validator
-    @validator ||= Puppet::Util::KeycloakValidator.new(resource[:keycloak_server], resource[:keycloak_port], resource[:use_ssl], resource[:test_url])
+    @validator ||= Puppet::Util::KeycloakValidator.new(resource[:keycloak_server], resource[:keycloak_port], resource[:use_ssl], resource[:test_url], resource[:relative_path])
   end
 end
