@@ -1940,7 +1940,8 @@ Keycloak is modified</p>
 412
 413
 414
-415</pre>
+415
+416</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 210</span>
@@ -2146,6 +2147,7 @@ class keycloak (
     use_ssl         =&gt; $validator_ssl,
     timeout         =&gt; 60,
     test_url        =&gt; $validator_test_url,
+    relative_path   =&gt; $http_relative_path,
     require         =&gt; Class[&#39;keycloak::service&#39;],
   }
 
