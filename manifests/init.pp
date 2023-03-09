@@ -408,6 +408,7 @@ class keycloak (
     use_ssl         => $validator_ssl,
     timeout         => 60,
     test_url        => $validator_test_url,
+    relative_path   => $http_relative_path,
     require         => Class['keycloak::service'],
   }
 

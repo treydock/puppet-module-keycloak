@@ -32,7 +32,12 @@ purposes such as monitoring.
 
   newparam(:test_url) do
     desc 'URL to use for testing if the Keycloak database is up'
-    defaultto '/auth/admin/serverinfo'
+    defaultto '/realms/master/.well-known/openid-configuration'
+  end
+
+  newparam(:relative_path) do
+    desc 'URL relative path that is used by Keycloak'
+    defaultto '/'
   end
 
   newparam(:timeout) do
