@@ -59,7 +59,7 @@ Puppet::Type.type(:keycloak_conn_validator).provide(:puppet_https) do
     # If `#create` is called, that means that `#exists?` returned false, which
     # means that the connection could not be established... so we need to
     # cause a failure here.
-    raise Puppet::Error, "Unable to connect to keycloak server! (#{@validator.keycloak_server}:#{@validator.keycloak_port})"
+    raise Puppet::Error, "Unable to connect to keycloak server! (#{@validator.keycloak_server}:#{@validator.keycloak_port}#{@validator.path})"
   end
 
   # Returns the existing validator, if one exists otherwise creates a new object
