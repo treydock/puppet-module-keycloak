@@ -65,3 +65,5 @@ spec/acceptance/nodesets/ubuntu-1804.yml:
 spec/acceptance/nodesets/ubuntu-2004.yml:
   packages:
     - iproute2
+spec/acceptance/nodesets/ubuntu-2204.yml:
+  delete: true
