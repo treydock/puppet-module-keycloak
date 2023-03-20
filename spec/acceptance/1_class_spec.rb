@@ -69,8 +69,9 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     it 'runs successfully' do
       pp = <<-PUPPET_PP
       class { 'keycloak':
-        java_opts => '-Xmx512m -Xms64m',
-        configs   => {
+        http_relative_path => '/auth',
+        java_opts          => '-Xmx512m -Xms64m',
+        configs            => {
           'metrics-enabled' => true,
         },
       }
