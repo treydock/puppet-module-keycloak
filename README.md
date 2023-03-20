@@ -173,6 +173,7 @@ This module may work on earlier versions but this is the only version tested.
 | 12.x - 16.x      | 7.x                             |
 | 18.x             | 8.x                             |
 | 19.x - 21.x      | 9.x                             |
+| 21.x             | 10.x                            |
 
 ## Usage
 
