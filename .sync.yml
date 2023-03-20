@@ -27,6 +27,7 @@ Rakefile:
       - puppet7
     keycloak_version:
       - '19.0.3'
+      - '21.0.1'
     keycloak_full: ['no']
   acceptance_includes:
     - set: el7
@@ -36,6 +37,14 @@ Rakefile:
     - set: el7
       puppet: puppet7
       keycloak_version: 19.0.3
+      keycloak_full: 'yes'
+    - set: el7
+      puppet: puppet6
+      keycloak_version: 21.0.1
+      keycloak_full: 'yes'
+    - set: el7
+      puppet: puppet7
+      keycloak_version: 21.0.1
       keycloak_full: 'yes'
 .gitignore:
   paths:
