@@ -179,6 +179,64 @@
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#path-instance_method" title="#path (instance method)">#<strong>path</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute path.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#relative_path-instance_method" title="#relative_path (instance method)">#<strong>relative_path</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute relative_path.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#test_path-instance_method" title="#test_path (instance method)">#<strong>test_path</strong>  &#x21d2; Object </a>
     
 
@@ -337,7 +395,12 @@ server.</p>
 12
 13
 14
-15</pre>
+15
+16
+17
+18
+19
+20</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 9</span>
@@ -348,6 +411,11 @@ server.</p>
   <span class='ivar'>@use_ssl</span>         <span class='op'>=</span> <span class='id identifier rubyid_use_ssl'>use_ssl</span>
   <span class='ivar'>@test_path</span>       <span class='op'>=</span> <span class='id identifier rubyid_test_path'>test_path</span>
   <span class='ivar'>@relative_path</span>   <span class='op'>=</span> <span class='id identifier rubyid_relative_path'>relative_path</span>
+  <span class='ivar'>@path</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='ivar'>@relative_path</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span>
+            <span class='ivar'>@test_path</span>
+          <span class='kw'>else</span>
+            <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@relative_path</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='ivar'>@test_path</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+          <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -441,6 +509,94 @@ server.</p>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_keycloak_server'>keycloak_server</span>
   <span class='ivar'>@keycloak_server</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="path-instance_method">
+  
+    #<strong>path</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute path.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+7
+8
+9</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 7</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_path'>path</span>
+  <span class='ivar'>@path</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="relative_path-instance_method">
+  
+    #<strong>relative_path</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute relative_path.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+7
+8
+9</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 7</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_relative_path'>relative_path</span>
+  <span class='ivar'>@relative_path</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -589,11 +745,6 @@ multiple times for retry attempts.</p>
       <pre class="lines">
 
 
-22
-23
-24
-25
-26
 27
 28
 29
@@ -609,30 +760,33 @@ multiple times for retry attempts.</p>
 39
 40
 41
-42</pre>
+42
+43
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'lib/puppet/util/keycloak_validator.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_attempt_connection'>attempt_connection</span>
   <span class='comment'># All that we care about is that we are able to connect successfully via
 </span>  <span class='comment'># http(s), so here we&#39;re simpling hitting a somewhat arbitrary low-impact URL
 </span>  <span class='comment'># on the keycloak server.
-</span>  <span class='id identifier rubyid_path'>path</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@relative_path</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='ivar'>@test_path</span><span class='period'>.</span><span class='id identifier rubyid_sub'>sub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>^/</span><span class='regexp_end'>}</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id identifier rubyid_http'>http</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@keycloak_server</span><span class='comma'>,</span> <span class='ivar'>@keycloak_port</span><span class='rparen'>)</span>
+</span>  <span class='id identifier rubyid_http'>http</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@keycloak_server</span><span class='comma'>,</span> <span class='ivar'>@keycloak_port</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>=</span> <span class='ivar'>@use_ssl</span>
   <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_verify_mode'>verify_mode</span> <span class='op'>=</span> <span class='const'>OpenSSL</span><span class='op'>::</span><span class='const'>SSL</span><span class='op'>::</span><span class='const'>VERIFY_NONE</span>
-  <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='op'>::</span><span class='const'>Get</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='op'>::</span><span class='const'>Get</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@path</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_add_field'>add_field</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Accept</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
   <span class='id identifier rubyid_response'>response</span> <span class='op'>=</span> <span class='id identifier rubyid_http'>http</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
 
   <span class='kw'>unless</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPSuccess</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPUnauthorized</span><span class='rparen'>)</span>
-    <span class='const'>Puppet</span><span class='period'>.</span><span class='id identifier rubyid_notice'>notice</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to connect to keycloak server (http</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>s</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='embexpr_end'>}</span><span class='tstring_content'>): [</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='embexpr_end'>}</span><span class='tstring_content'>] </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_msg'>msg</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='const'>Puppet</span><span class='period'>.</span><span class='id identifier rubyid_notice'>notice</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to connect to keycloak server (http</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>s</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_path'>path</span><span class='embexpr_end'>}</span><span class='tstring_content'>): [</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='embexpr_end'>}</span><span class='tstring_content'>] </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_msg'>msg</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
     <span class='kw'>return</span> <span class='kw'>false</span>
   <span class='kw'>end</span>
   <span class='kw'>true</span>
 <span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span> <span class='comment'># rubocop:disable Lint/RescueException
-</span>  <span class='const'>Puppet</span><span class='period'>.</span><span class='id identifier rubyid_notice'>notice</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to connect to keycloak server (http</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>s</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='embexpr_end'>}</span><span class='tstring_content'>): </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+</span>  <span class='const'>Puppet</span><span class='period'>.</span><span class='id identifier rubyid_notice'>notice</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to connect to keycloak server (http</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_use_ssl'>use_ssl</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>s</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>://</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_server'>keycloak_server</span><span class='embexpr_end'>}</span><span class='tstring_content'>:</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_keycloak_port'>keycloak_port</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_path'>path</span><span class='embexpr_end'>}</span><span class='tstring_content'>): </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_e'>e</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
   <span class='kw'>false</span>
 <span class='kw'>end</span></pre>
     </td>
