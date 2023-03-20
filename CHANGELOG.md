@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v9.3.4](https://github.com/treydock/puppet-module-keycloak/tree/v9.3.4) (2023-03-20)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.3.3...v9.3.4)
+
+### Fixed
+
+- Improve logging of connection validator [\#280](https://github.com/treydock/puppet-module-keycloak/pull/280) ([treydock](https://github.com/treydock))
+
 ## [v9.3.3](https://github.com/treydock/puppet-module-keycloak/tree/v9.3.3) (2023-03-09)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.3.2...v9.3.3)
