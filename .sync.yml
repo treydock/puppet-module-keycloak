@@ -22,6 +22,7 @@ Rakefile:
       - debian-11
       - ubuntu-1804
       - ubuntu-2004
+      - ubuntu-2204
     puppet:
       - puppet6
       - puppet7
@@ -75,4 +76,5 @@ spec/acceptance/nodesets/ubuntu-2004.yml:
   packages:
     - iproute2
 spec/acceptance/nodesets/ubuntu-2204.yml:
-  delete: true
+  packages:
+    - iproute2

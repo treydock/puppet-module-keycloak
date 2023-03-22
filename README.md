@@ -604,6 +604,7 @@ This module has been tested on:
 * Debian 11 x86_64
 * Ubuntu 18.04 x86_64
 * Ubuntu 20.04 x86_64
+* Ubuntu 22.04 x86_64
 
 ## UUID Generation
 
