@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v9.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v9.4.0) (2023-03-22)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.3.4...v9.4.0)
+
+### Added
+
+- Support Ubuntu 22.04 [\#282](https://github.com/treydock/puppet-module-keycloak/pull/282) ([treydock](https://github.com/treydock))
+- Support Keycloak 21.x [\#281](https://github.com/treydock/puppet-module-keycloak/pull/281) ([treydock](https://github.com/treydock))
+
 ## [v9.3.4](https://github.com/treydock/puppet-module-keycloak/tree/v9.3.4) (2023-03-20)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.3.3...v9.3.4)
