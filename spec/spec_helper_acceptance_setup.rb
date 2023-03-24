@@ -14,7 +14,6 @@ end
 
 proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 scp_to(hosts, File.join(proj_root, 'spec/fixtures/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar'), '/tmp/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar')
-scp_to(hosts, File.join(proj_root, 'spec/fixtures/mappers.jar'), '/tmp/mappers.jar')
 
 hiera_yaml = <<-HIERA_YAML
 ---
