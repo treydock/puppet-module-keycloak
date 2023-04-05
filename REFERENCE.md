@@ -178,7 +178,7 @@ Data type: `String`
 
 Version of Keycloak to install and manage.
 
-Default value: `'19.0.3'`
+Default value: `'21.0.1'`
 
 ##### <a name="package_url"></a>`package_url`
 

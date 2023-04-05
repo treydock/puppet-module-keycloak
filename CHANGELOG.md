@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v10.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v10.0.0) (2023-04-05)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.4.0...v10.0.0)
+
+### Changed
+
+- Default to Keycloak 21.0.1 and Use OpenJDK 17 where possible [\#283](https://github.com/treydock/puppet-module-keycloak/pull/283) ([treydock](https://github.com/treydock))
+
 ## [v9.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v9.4.0) (2023-03-22)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.3.4...v9.4.0)
