@@ -168,9 +168,9 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
       class { 'keycloak':
         features => ['scripts'],
       }
-      keycloak::spi_deployment { 'mappers':
-        deployed_name => 'mappers.jar',
-        source        => 'file:///tmp/mappers.jar',
+      keycloak::spi_deployment { 'osc-keycloak-scripts':
+        deployed_name => 'osc-keycloak-scripts-jar-with-dependencies.jar',
+        source        => 'https://github.com/OSC/osc-keycloak-scripts/releases/download/1.0.0/osc-keycloak-scripts-jar-with-dependencies.jar',
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'saml on test':

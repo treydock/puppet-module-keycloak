@@ -209,7 +209,7 @@
 #   Only necessary to set if the URL path to Keycloak is modified
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = '19.0.3',
+  String $version               = '21.0.1',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Enum['include','class'] $java_declare_method = 'class',
