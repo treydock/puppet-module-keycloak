@@ -122,7 +122,7 @@ Defaults to true.</p>
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;19.0.3&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;21.0.1&#39;</tt>)</em>
       
       
         &mdash;
@@ -1948,7 +1948,7 @@ Keycloak is modified</p>
 
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = &#39;19.0.3&#39;,
+  String $version               = &#39;21.0.1&#39;,
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Enum[&#39;include&#39;,&#39;class&#39;] $java_declare_method = &#39;class&#39;,
