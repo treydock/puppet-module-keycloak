@@ -116,6 +116,10 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
   def self.realms
     output = kcadm('get', 'realms', nil, nil, ['realm'])
+  rescue Puppet::ExecutionFailure => e
+    Puppet.notice("Failed to get realms: #{e}")
+    []
+  else
     data = JSON.parse(output)
     data.map { |r| r['realm'] }
   end
