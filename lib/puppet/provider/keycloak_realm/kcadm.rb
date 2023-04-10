@@ -103,10 +103,13 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
 
   def self.instances
     realms = []
-    output = kcadm('get', 'realms')
-    Puppet.debug("Realms: #{output}")
     begin
+      output = kcadm('get', 'realms')
+      Puppet.debug("Realms: #{output}")
       data = JSON.parse(output)
+    rescue Puppet::ExecutionFailure => e
+      Puppet.notice("Failed to get realms: #{e}")
+      data = []
     rescue JSON::ParserError
       Puppet.debug('Unable to parse output from kcadm get realms')
       data = []
