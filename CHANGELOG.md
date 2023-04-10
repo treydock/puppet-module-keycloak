@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v10.0.1](https://github.com/treydock/puppet-module-keycloak/tree/v10.0.1) (2023-04-10)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v10.0.0...v10.0.1)
+
+### Fixed
+
+- Avoid errors when prefetching realms [\#286](https://github.com/treydock/puppet-module-keycloak/pull/286) ([treydock](https://github.com/treydock))
+
 ## [v10.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v10.0.0) (2023-04-05)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v9.4.0...v10.0.0)
