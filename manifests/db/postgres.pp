@@ -12,7 +12,7 @@ class keycloak::db::postgres {
     postgresql::server::db { $keycloak::db_url_database:
       user     => $keycloak::db_username,
       password => postgresql::postgresql_password($keycloak::db_username, $keycloak::db_password),
-      encoding => 'UTF8',
+      encoding => $keycloak::db_encoding,
     }
   }
 }
