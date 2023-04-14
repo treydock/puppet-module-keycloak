@@ -115,6 +115,7 @@ The following parameters are available in the `keycloak` class:
 * [`db_password`](#db_password)
 * [`db_charset`](#db_charset)
 * [`db_collate`](#db_collate)
+* [`db_encoding`](#db_encoding)
 * [`features`](#features)
 * [`features_disabled`](#features_disabled)
 * [`truststore`](#truststore)
@@ -531,6 +532,14 @@ Data type: `String`
 MySQL and MariaDB database collate
 
 Default value: `'utf8_general_ci'`
+
+##### <a name="db_encoding"></a>`db_encoding`
+
+Data type: `String`
+
+PostgreSQL database encoding
+
+Default value: `'UTF8'`
 
 ##### <a name="features"></a>`features`
 
