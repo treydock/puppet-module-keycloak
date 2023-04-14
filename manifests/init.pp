@@ -110,6 +110,8 @@
 #   MySQL and MariaDB database charset
 # @param db_collate
 #   MySQL and MariaDB database collate
+# @param db_encoding
+#   PostgreSQL database encoding
 # @param features
 #   Keycloak features to enable
 # @param features_disabled
@@ -252,6 +254,7 @@ class keycloak (
   String[1] $db_password = 'changeme',
   String $db_charset = 'utf8',
   String $db_collate = 'utf8_general_ci',
+  String $db_encoding = 'UTF8',
   Optional[Array[String[1]]] $features = undef,
   Optional[Array[String[1]]] $features_disabled = undef,
   Boolean $truststore = false,
