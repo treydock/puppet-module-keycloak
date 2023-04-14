@@ -902,6 +902,24 @@ installation</p>
   
     <li>
       
+        <span class='name'>db_encoding</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;UTF8&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>PostgreSQL database encoding</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>features</span>
       
       
@@ -1735,8 +1753,6 @@ Keycloak is modified</p>
         <pre class="lines">
 
 
-210
-211
 212
 213
 214
@@ -1941,10 +1957,13 @@ Keycloak is modified</p>
 413
 414
 415
-416</pre>
+416
+417
+418
+419</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 210</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 212</span>
 
 class keycloak (
   Boolean $manage_install       = true,
@@ -1991,6 +2010,7 @@ class keycloak (
   String[1] $db_password = &#39;changeme&#39;,
   String $db_charset = &#39;utf8&#39;,
   String $db_collate = &#39;utf8_general_ci&#39;,
+  String $db_encoding = &#39;UTF8&#39;,
   Optional[Array[String[1]]] $features = undef,
   Optional[Array[String[1]]] $features_disabled = undef,
   Boolean $truststore = false,
