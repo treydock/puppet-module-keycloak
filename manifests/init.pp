@@ -354,16 +354,16 @@ class keycloak (
       $validator_server = $config['http-host']
     }
   } else {
-    if $config['hostname'] in ['unset', 'UNSET'] {
-      $hostname = $facts['networking']['fqdn']
+    if ! $config['hostname'] {
+      $effective_hostname = $facts['networking']['fqdn']
     } else {
-      $hostname = $config['hostname']
+      $effective_hostname = $config['hostname']
     }
     $wrapper_protocol = 'https'
     $wrapper_port = $config['https-port']
-    $wrapper_address = $hostname
+    $wrapper_address = $effective_hostname
     $validator_port = $config['https-port']
-    $validator_server = $hostname
+    $validator_server = $effective_hostname
     $validator_ssl = true
   }
   $wrapper_server = "${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config['http-relative-path']}"
