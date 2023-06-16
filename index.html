@@ -60,10 +60,7 @@
       <div id="content"><div id='filecontents'>
 <h1 id="label-puppet-module-keycloak">puppet-module-keycloak</h1>
 
-<p><a href="https://forge.puppetlabs.com/treydock/keycloak"><img
-src="http://img.shields.io/puppetforge/v/treydock/keycloak.svg"></a> <a
-href="https://github.com/treydock/puppet-module-keycloak/actions?query=workflow%3ACI"><img
-src="https://github.com/treydock/puppet-module-keycloak/workflows/CI/badge.svg?branch=master"></a></p>
+<p><a href="https://forge.puppetlabs.com/treydock/keycloak"><img src="http://img.shields.io/puppetforge/v/treydock/keycloak.svg"></a> <a href="https://github.com/treydock/puppet-module-keycloak/actions?query=workflow%3ACI"><img src="https://github.com/treydock/puppet-module-keycloak/workflows/CI/badge.svg?branch=master"></a></p>
 
 <h4 id="label-Table+of+Contents">Table of Contents</h4>
 <ol><li>
@@ -71,12 +68,10 @@ src="https://github.com/treydock/puppet-module-keycloak/workflows/CI/badge.svg?b
 <ul><li>
 <p><a href="#upgrade-to-8x">Upgrade to 8.x</a></p>
 <ul><li>
-<p><a href="#changes-to-ldap-user-provider-ids">Changes to LDAP user provider
-IDs</a></p>
+<p><a href="#changes-to-ldap-user-provider-ids">Changes to LDAP user provider IDs</a></p>
 </li></ul>
 </li><li>
-<p><a href="#supported-versions-of-keycloak">Supported Versions of
-Keycloak</a></p>
+<p><a href="#supported-versions-of-keycloak">Supported Versions of Keycloak</a></p>
 </li></ul>
 </li><li>
 <p><a href="#usage">Usage - Configuration options</a></p>
@@ -105,8 +100,7 @@ Keycloak</a></p>
 </li><li>
 <p><a href="#keycloak_protocol_mapper">keycloak_protocol_mapper</a></p>
 </li><li>
-<p><a
-href="#keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</a></p>
+<p><a href="#keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</a></p>
 </li><li>
 <p><a href="#keycloak_identity_provider">keycloak_identity_provider</a></p>
 </li><li>
@@ -117,8 +111,7 @@ href="#keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</a></p>
 <p><a href="#keycloak_required_action">keycloak_required_action</a></p>
 </li></ul>
 </li><li>
-<p><a href="#reference">Reference - Parameter and detailed reference to all
-options</a></p>
+<p><a href="#reference">Reference - Parameter and detailed reference to all options</a></p>
 </li><li>
 <p><a href="#limitations">Limitations - OS compatibility, etc.</a></p>
 </li></ol>
@@ -129,12 +122,9 @@ options</a></p>
 
 <h3 id="label-Upgrade+to+8.x">Upgrade to 8.x</h3>
 
-<p>This module underwent major changes in the 8.0.0 release to support
-Keycloak that uses Quarkus. The initial 8.0.0 release of this module only
-supports Keycloak 18.x.</p>
+<p>This module underwent major changes in the 8.0.0 release to support Keycloak that uses Quarkus. The initial 8.0.0 release of this module only supports Keycloak 18.x.</p>
 
-<p>Numerous parameters were changed or removed. Below is a list of the changes
-to parameters as well as some behavior changes.</p>
+<p>Numerous parameters were changed or removed. Below is a list of the changes to parameters as well as some behavior changes.</p>
 
 <p><strong>Parameters removed</strong></p>
 <ul><li>
@@ -146,40 +136,30 @@ to parameters as well as some behavior changes.</p>
 </li><li>
 <p><code>wildfly_user</code>, <code>wildfly_user_password</code></p>
 </li><li>
-<p><code>datasource_package</code>, <code>datasource_jar_source</code>,
-<code>datasource_jar_filename</code>,
-<code>datasource_module_source</code>, <code>datasource_xa_class</code></p>
+<p><code>datasource_package</code>, <code>datasource_jar_source</code>, <code>datasource_jar_filename</code>, <code>datasource_module_source</code>, <code>datasource_xa_class</code></p>
 </li><li>
 <p><code>proxy_https</code></p>
 </li><li>
 <p><code>truststore_hostname_verification_policy</code></p>
 </li><li>
-<p><code>theme_static_max_age</code>, <code>theme_cache_themes</code>,
-<code>theme_cache_templates</code></p>
+<p><code>theme_static_max_age</code>, <code>theme_cache_themes</code>, <code>theme_cache_templates</code></p>
 </li><li>
-<p><code>operating_mode</code>, <code>enable_jdbc_ping</code>,
-<code>jboss_bind_public_address</code>,
-<code>jboss_bind_private_address</code></p>
+<p><code>operating_mode</code>, <code>enable_jdbc_ping</code>, <code>jboss_bind_public_address</code>, <code>jboss_bind_private_address</code></p>
 </li><li>
-<p><code>master_address</code>, <code>server_name</code>, <code>role</code>,
-<code>user_cache</code></p>
+<p><code>master_address</code>, <code>server_name</code>, <code>role</code>, <code>user_cache</code></p>
 </li><li>
 <p><code>tech_preview_features</code></p>
 </li><li>
 <p><code>auto_deploy_exploded</code>, <code>auto_deploy_zipped</code></p>
 </li><li>
-<p><code>syslog</code>, <code>syslog_app_name</code>,
-<code>syslog_facility</code>, <code>syslog_hostname</code>,
-<code>syslog_level</code></p>
+<p><code>syslog</code>, <code>syslog_app_name</code>, <code>syslog_facility</code>, <code>syslog_hostname</code>, <code>syslog_level</code></p>
 </li><li>
-<p><code>syslog_port</code>, <code>syslog_server_address</code>,
-<code>syslog_format</code></p>
+<p><code>syslog_port</code>, <code>syslog_server_address</code>, <code>syslog_format</code></p>
 </li></ul>
 
 <p><strong>Parameters renamed</strong></p>
 <ul><li>
-<p><code>service_bind_address</code> renamed to <code>http_host</code> and now
-defined in keycloak.conf instead of the systemd unit file</p>
+<p><code>service_bind_address</code> renamed to <code>http_host</code> and now defined in keycloak.conf instead of the systemd unit file</p>
 </li><li>
 <p><code>manage_datasource</code> renamed to <code>manage_db</code></p>
 </li><li>
@@ -199,24 +179,20 @@ defined in keycloak.conf instead of the systemd unit file</p>
 </li><li>
 <p><code>mysql_database_charset</code> renamed to <code>db_charset</code></p>
 </li><li>
-<p><code>auth_url_path</code> renamed to <code>validator_test_url</code> and
-default value changed</p>
+<p><code>auth_url_path</code> renamed to <code>validator_test_url</code> and default value changed</p>
 </li></ul>
 
 <p><strong>Parameters added</strong></p>
 <ul><li>
-<p><code>java_declare_method</code> to make it easier for EL platforms to
-deploy working Keycloak with correct Java</p>
+<p><code>java_declare_method</code> to make it easier for EL platforms to deploy working Keycloak with correct Java</p>
 </li><li>
-<p><code>java_package</code>, <code>java_home</code>,
-<code>java_alternative_path</code>, <code>java_alternative</code></p>
+<p><code>java_package</code>, <code>java_home</code>, <code>java_alternative_path</code>, <code>java_alternative</code></p>
 </li><li>
 <p><code>start_command</code></p>
 </li><li>
 <p><code>configs</code></p>
 </li><li>
-<p><code>hostname</code>, <code>http_enabled</code>, <code>http_host</code>,
-<code>https_port</code>, <code>proxy</code></p>
+<p><code>hostname</code>, <code>http_enabled</code>, <code>http_host</code>, <code>https_port</code>, <code>proxy</code></p>
 </li><li>
 <p><code>manage_db_server</code></p>
 </li><li>
@@ -229,58 +205,35 @@ deploy working Keycloak with correct Java</p>
 
 <p><strong>Behavior changes</strong></p>
 
-<p>The SSSD parameters are no longer tested and likely won&#39;t work. If you
-use the SSSD user provider and SSSD related parameters, please open an
-issue on this repo.</p>
+<p>The SSSD parameters are no longer tested and likely won&#39;t work. If you use the SSSD user provider and SSSD related parameters, please open an issue on this repo.</p>
 
-<p>This module no longer makes copies for DB driver jar files or install Java
-bindings, they are not necessary.</p>
+<p>This module no longer makes copies for DB driver jar files or install Java bindings, they are not necessary.</p>
 
-<p>When <code>db</code> is set to <code>mariadb</code>, <code>mysql</code> or
-<code>postgres</code> this module will by default install the database
-server to the Keycloak host. If you run a remote DB server for Keycloak,
-set <code>manage_db_server</code> and <code>manage_db</code> to
-<code>false</code>.</p>
+<p>When <code>db</code> is set to <code>mariadb</code>, <code>mysql</code> or <code>postgres</code> this module will by default install the database server to the Keycloak host. If you run a remote DB server for Keycloak, set <code>manage_db_server</code> and <code>manage_db</code> to <code>false</code>.</p>
 
-<p>There is no longer a need to define cluster or domain modes in the Quarkus
-deployment, all related functionality is removed.</p>
+<p>There is no longer a need to define cluster or domain modes in the Quarkus deployment, all related functionality is removed.</p>
 
-<p>Some basic configuration options are exposed using parameters but most
-configuration options for Keycloak will need to be passed into the
-<code>configs</code> parameter.</p>
+<p>Some basic configuration options are exposed using parameters but most configuration options for Keycloak will need to be passed into the <code>configs</code> parameter.</p>
 
 <p>Drop Debian 9 support due to OS repos not having Java 11.</p>
 
 <h4 id="label-Changes+to+LDAP+user+provider+IDs">Changes to LDAP user provider IDs</h4>
 
-<p>If you had <code>keycloak_ldap_user_provider</code> resources defined the
-mechanism for defining the ID has changed and requires some migration. Also
-the <code>ldap</code> property for any <code>keycloak_ldap_mapper</code>
-resources will have to be adjusted.</p>
+<p>If you had <code>keycloak_ldap_user_provider</code> resources defined the mechanism for defining the ID has changed and requires some migration. Also the <code>ldap</code> property for any <code>keycloak_ldap_mapper</code> resources will have to be adjusted.</p>
 
-<p><strong>WARNING</strong> The LDAP user provider ID is used to create user
-IDs for LDAP users. These will change if the ID is changed. This is to
-prevent messages such as this: <code>The given key is not a valid key per
-specification, future migration might fail:
-f:OSC-LDAP-osc:tdockendorf</code>. If you wish to keep the old style IDs
-you must provide the <code>id</code> parameter as <code>$ldap-$realm</code>
-to maintain old IDs.</p>
+<p><strong>WARNING</strong> The LDAP user provider ID is used to create user IDs for LDAP users. These will change if the ID is changed. This is to prevent messages such as this: <code>The given key is not a valid key per specification, future migration might fail: f:OSC-LDAP-osc:tdockendorf</code>. If you wish to keep the old style IDs you must provide the <code>id</code> parameter as <code>$ldap-$realm</code> to maintain old IDs.</p>
 
-<p>It&#39;s advised to either <a href="#migrate-to-new-ids">Migrate to new
-IDs</a> or <a href="#keep-old-ids">Keep old IDs</a></p>
+<p>It&#39;s advised to either <a href="#migrate-to-new-ids">Migrate to new IDs</a> or <a href="#keep-old-ids">Keep old IDs</a></p>
 
 <h5 id="label-Migrate+to+new+IDs">Migrate to new IDs</h5>
 
 <p><strong>Changes</strong></p>
 <ul><li>
-<p>Define old <code>keycloak_ldap_user_provider</code> resource as absent with
-new name and setting <code>id</code> and <code>resource_name</code>.</p>
+<p>Define old <code>keycloak_ldap_user_provider</code> resource as absent with new name and setting <code>id</code> and <code>resource_name</code>.</p>
 </li><li>
-<p>Define same <code>keycloak_ldap_user_provider</code> resource to get
-created with new ID</p>
+<p>Define same <code>keycloak_ldap_user_provider</code> resource to get created with new ID</p>
 </li><li>
-<p>Update <code>keycloak_ldap_mapper</code> resources to point to just name of
-<code>keycloak_ldap_user_provider</code>.</p>
+<p>Update <code>keycloak_ldap_mapper</code> resources to point to just name of <code>keycloak_ldap_user_provider</code>.</p>
 </li></ul>
 
 <p><strong>Before:</strong></p>
@@ -320,31 +273,17 @@ keycloak_ldap_mapper { &quot;first name for LDAP on test&quot;:
 
 <h5 id="label-Keep+old+IDs">Keep old IDs</h5>
 
-<p>If you wish to avoid re-creating <code>keycloak_ldap_user_provider</code>
-and <code>keycloak_ldap_mapper</code> resources then the ID parameters must
-be defined.</p>
+<p>If you wish to avoid re-creating <code>keycloak_ldap_user_provider</code> and <code>keycloak_ldap_mapper</code> resources then the ID parameters must be defined.</p>
 
-<p>For <code>keycloak_ldap_user_provider</code> ensure the <code>id</code>
-property is set to match the old pattern. If name was <code>LDAP</code> and
-realm <code>test</code> or name was componsite <code>LDAP on test</code>
-then set <code>id</code> to <code>LDAP-test</code>.</p>
+<p>For <code>keycloak_ldap_user_provider</code> ensure the <code>id</code> property is set to match the old pattern. If name was <code>LDAP</code> and realm <code>test</code> or name was componsite <code>LDAP on test</code> then set <code>id</code> to <code>LDAP-test</code>.</p>
 
-<p>For <code>keycloak_ldap_mapper</code> ensure the <code>parent_id</code>
-property is set to point to old ID for associated
-<code>keycloak_ldap_user_provider</code>. If the <code>ldap</code> value is
-<code>LDAP</code> and <code>realm</code> is <code>test</code> or composite
-name is <code>first name for LDAP on test</code> then ensure
-<code>parent_id</code> is set to <code>LDAP-test</code>.</p>
+<p>For <code>keycloak_ldap_mapper</code> ensure the <code>parent_id</code> property is set to point to old ID for associated <code>keycloak_ldap_user_provider</code>. If the <code>ldap</code> value is <code>LDAP</code> and <code>realm</code> is <code>test</code> or composite name is <code>first name for LDAP on test</code> then ensure <code>parent_id</code> is set to <code>LDAP-test</code>.</p>
 
 <h3 id="label-Supported+Versions+of+Keycloak">Supported Versions of Keycloak</h3>
 
-<p>Currently this module supports Keycloak version 12.x. This module may work
-on earlier versions but this is the only version tested.</p>
+<p>Currently this module supports Keycloak version 12.x. This module may work on earlier versions but this is the only version tested.</p>
 
-<p>| Keycloak Version | Keycloak Puppet module versions | | —————- |
-——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x - 8.x | 4.x - 5.x | |
-8.x - 12.x | 6.x | | 12.x - 16.x | 7.x | | 18.x | 8.x | | 19.x - 21.x | 9.x
-| | 21.x | 10.x |</p>
+<p>| Keycloak Version | Keycloak Puppet module versions | | —————- | ——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x - 8.x | 4.x - 5.x | | 8.x - 12.x | 6.x | | 12.x - 16.x | 7.x | | 18.x | 8.x | | 19.x - 21.x | 9.x | | 21.x | 10.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
@@ -363,15 +302,9 @@ on earlier versions but this is the only version tested.</p>
 }
 </code></pre>
 
-<p>Upgrading Keycloak version works by changing <code>version</code> parameter
-as long as the <code>db</code> parameter is not the default of
-<code>dev-file</code>. An upgrade involves installing the new version
-without touching the old version, updating the symlink which defaults to
-<code>/opt/keycloak</code>, applying all changes to new version and then
-restarting the <code>keycloak</code> service.</p>
+<p>Upgrading Keycloak version works by changing <code>version</code> parameter as long as the <code>db</code> parameter is not the default of <code>dev-file</code>. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to <code>/opt/keycloak</code>, applying all changes to new version and then restarting the <code>keycloak</code> service.</p>
 
-<p>If the previous <code>version</code> was <code>18.0.0</code> using the
-following will upgrade to <code>19.0.0</code>:</p>
+<p>If the previous <code>version</code> was <code>18.0.0</code> using the following will upgrade to <code>19.0.0</code>:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
   version =&gt; &#39;19.0.0&#39;,
@@ -392,8 +325,7 @@ class { &#39;keycloak&#39;:
 }
 </code></pre>
 
-<p>The following example can be used to configure keycloak with a local
-PostgreSQL server.</p>
+<p>The following example can be used to configure keycloak with a local PostgreSQL server.</p>
 
 <pre class="code ruby"><code class="ruby">include postgresql::server
 class { &#39;keycloak&#39;:
@@ -406,8 +338,7 @@ class { &#39;keycloak&#39;:
 }
 </code></pre>
 
-<p>Configure a SSL certificate truststore and add a LDAP server&#39;s
-certificate to the truststore.</p>
+<p>Configure a SSL certificate truststore and add a LDAP server&#39;s certificate to the truststore.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
   truststore          =&gt; true,
@@ -444,10 +375,7 @@ apache::vhost { &#39;idp.example.com&#39;:
 }
 </code></pre>
 
-<p><strong>NOTE:</strong> Can set <code>hostname</code> parameter to
-<code>unset</code> if you wish for that configuration to not be set in the
-Keycloak configuration if you wish for Keycloak to not use strict hostname
-checking and respond to multiple hostnames.</p>
+<p><strong>NOTE:</strong> Can set <code>hostname</code> parameter to <code>unset</code> if you wish for that configuration to not be set in the Keycloak configuration if you wish for Keycloak to not use strict hostname checking and respond to multiple hostnames.</p>
 
 <h3 id="label-Deploy+SPI">Deploy SPI</h3>
 
@@ -460,13 +388,9 @@ checking and respond to multiple hostnames.</p>
 }
 </code></pre>
 
-<p>The <code>source</code> can be a URL or a file path like
-<code>/tmp/foo.jar</code> or prefixed with <code>file://</code> or
-<code>puppet://</code></p>
+<p>The <code>source</code> can be a URL or a file path like <code>/tmp/foo.jar</code> or prefixed with <code>file://</code> or <code>puppet://</code></p>
 
-<p>The following example will deploy a custom SPI then check the Keycloak API
-for the resource to exist. This is useful to ensure SPI is loaded into
-Keycloak before attempting to add custom resources.</p>
+<p>The following example will deploy a custom SPI then check the Keycloak API for the resource to exist. This is useful to ensure SPI is loaded into Keycloak before attempting to add custom resources.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak::spi_deployment { &#39;duo-spi&#39;:
   deployed_name =&gt; &#39;DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar&#39;,
@@ -484,8 +408,7 @@ Keycloak before attempting to add custom resources.</p>
 
 <h3 id="label-keycloak_realm">keycloak_realm</h3>
 
-<p>Define a Keycloak realm that uses username and not email for login and to
-use a local branded theme.</p>
+<p>Define a Keycloak realm that uses username and not email for login and to use a local branded theme.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak_realm { &#39;test&#39;:
   ensure                   =&gt; &#39;present&#39;,
@@ -495,11 +418,7 @@ use a local branded theme.</p>
 }
 </code></pre>
 
-<p><strong>NOTE:</strong> If the flow properties such as
-<code>browser_flow</code> are changed from their defaults then this value
-will not be set when a realm is first created. The value will also not be
-updated if the flow does not exist. For new realms you will have to run
-Puppet twice in order to create the flows then update the realm setting.</p>
+<p><strong>NOTE:</strong> If the flow properties such as <code>browser_flow</code> are changed from their defaults then this value will not be set when a realm is first created. The value will also not be updated if the flow does not exist. For new realms you will have to run Puppet twice in order to create the flows then update the realm setting.</p>
 
 <h3 id="label-keycloak_role_mapping">keycloak_role_mapping</h3>
 
@@ -521,20 +440,11 @@ keycloak_role_mapping { &#39;roles for mygroup on master&#39;:
 
 <h3 id="label-keycloak_ldap_user_provider">keycloak_ldap_user_provider</h3>
 
-<p>Define a LDAP user provider so that authentication can be performed against
-LDAP. The example below uses two LDAP servers, disables importing of users
-and assumes the SSL certificates are trusted and do not require being in
-the truststore.</p>
+<p>Define a LDAP user provider so that authentication can be performed against LDAP. The example below uses two LDAP servers, disables importing of users and assumes the SSL certificates are trusted and do not require being in the truststore.</p>
 
-<p><code>puppet keycloak_ldap_user_provider { &#39;LDAP on test&#39;:   ensure
-=&gt; &#39;present&#39;,   users_dn           =&gt;
-&#39;ou=People,dc=example,dc=com&#39;,   connection_url     =&gt;
-&#39;ldaps://ldap1.example.com:636 ldaps://ldap2.example.com:636&#39;,  
-import_enabled     =&gt; false,   use_truststore_spi =&gt; &#39;never&#39;,
-} </code></p>
+<p><code>puppet keycloak_ldap_user_provider { &#39;LDAP on test&#39;:   ensure             =&gt; &#39;present&#39;,   users_dn           =&gt; &#39;ou=People,dc=example,dc=com&#39;,   connection_url     =&gt; &#39;ldaps://ldap1.example.com:636 ldaps://ldap2.example.com:636&#39;,   import_enabled     =&gt; false,   use_truststore_spi =&gt; &#39;never&#39;, } </code></p>
 
-<p>If you&#39;re using FreeIPA you can use a defined resource that wraps
-keycloak_ldap_user_provider:</p>
+<p>If you&#39;re using FreeIPA you can use a defined resource that wraps keycloak_ldap_user_provider:</p>
 
 <pre class="code ruby"><code class="ruby">keycloak::freeipa_user_provider { &#39;ipa.example.org&#39;:
   ensure          =&gt; &#39;present&#39;,
@@ -558,8 +468,7 @@ keycloak_ldap_user_provider:</p>
 }
 </code></pre>
 
-<p>If you&#39;re using FreeIPA you can use a defined resource that adds all
-the required attribute mappings automatically:</p>
+<p>If you&#39;re using FreeIPA you can use a defined resource that adds all the required attribute mappings automatically:</p>
 
 <pre class="code ruby"><code class="ruby">keycloak::freeipa_ldap_mappers { &#39;ipa.example.org&#39;:
   realm            =&gt; &#39;EXAMPLE.ORG&#39;,
@@ -570,15 +479,9 @@ the required attribute mappings automatically:</p>
 
 <h3 id="label-keycloak_sssd_user_provider">keycloak_sssd_user_provider</h3>
 
-<p><strong>WARNING</strong> This feature is no longer tested and likely
-stopped working when Keycloak began requiring Java 11+. If you rely on this
-feature, please open an issue or pull request. Likely need to build jna
-from source.</p>
+<p><strong>WARNING</strong> This feature is no longer tested and likely stopped working when Keycloak began requiring Java 11+. If you rely on this feature, please open an issue or pull request. Likely need to build jna from source.</p>
 
-<p>Define SSSD user provider. <strong>NOTE</strong> This type requires that
-SSSD be properly configured and Keycloak service restarted after SSSD ifp
-service is setup. Also requires <code>keycloak</code> class be called with
-<code>with_sssd_support</code> set to <code>true</code>.</p>
+<p>Define SSSD user provider. <strong>NOTE</strong> This type requires that SSSD be properly configured and Keycloak service restarted after SSSD ifp service is setup. Also requires <code>keycloak</code> class be called with <code>with_sssd_support</code> set to <code>true</code>.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak_sssd_user_provider { &#39;SSSD on test&#39;:
   ensure =&gt; &#39;present&#39;,
@@ -603,9 +506,7 @@ service is setup. Also requires <code>keycloak</code> class be called with
 
 <h3 id="label-keycloak-3A-3Aclient_scope-3A-3Aoidc">keycloak::client_scope::oidc</h3>
 
-<p>Defined type that can be used to define both
-<code>keycloak_client_scope</code> and
-<code>keycloak_protocol_mapper</code> resources for OpenID Connect.</p>
+<p>Defined type that can be used to define both <code>keycloak_client_scope</code> and <code>keycloak_protocol_mapper</code> resources for OpenID Connect.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak::client_scope::oidc { &#39;oidc-clients&#39;:
   realm =&gt; &#39;test&#39;,
@@ -614,9 +515,7 @@ service is setup. Also requires <code>keycloak</code> class be called with
 
 <h3 id="label-keycloak-3A-3Aclient_scope-3A-3Asaml">keycloak::client_scope::saml</h3>
 
-<p>Defined type that can be used to define both
-<code>keycloak_client_scope</code> and
-<code>keycloak_protocol_mapper</code> resources for SAML.</p>
+<p>Defined type that can be used to define both <code>keycloak_client_scope</code> and <code>keycloak_protocol_mapper</code> resources for SAML.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak::client_scope::saml { &#39;saml-clients&#39;:
   realm =&gt; &#39;test&#39;,
@@ -625,8 +524,7 @@ service is setup. Also requires <code>keycloak</code> class be called with
 
 <h3 id="label-keycloak_client_scope">keycloak_client_scope</h3>
 
-<p>Define a Client Scope of <code>email</code> for realm <code>test</code> in
-Keycloak:</p>
+<p>Define a Client Scope of <code>email</code> for realm <code>test</code> in Keycloak:</p>
 
 <pre class="code ruby"><code class="ruby">keycloak_client_scope { &#39;email on test&#39;:
   protocol =&gt; &#39;openid-connect&#39;,
@@ -635,9 +533,7 @@ Keycloak:</p>
 
 <h3 id="label-keycloak_protocol_mapper">keycloak_protocol_mapper</h3>
 
-<p>Associate a Protocol Mapper to a given Client Scope. The name in the
-following example will add the <code>email</code> protocol mapper to client
-scope <code>oidc-email</code> in the realm <code>test</code>.</p>
+<p>Associate a Protocol Mapper to a given Client Scope. The name in the following example will add the <code>email</code> protocol mapper to client scope <code>oidc-email</code> in the realm <code>test</code>.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak_protocol_mapper { &quot;email for oidc-email on test&quot;:
   claim_name     =&gt; &#39;email&#39;,
@@ -647,8 +543,7 @@ scope <code>oidc-email</code> in the realm <code>test</code>.</p>
 
 <h3 id="label-keycloak_client_protocol_mapper">keycloak_client_protocol_mapper</h3>
 
-<p>Add <code>email</code> protocol mapper to <code>test.example.com</code>
-client in realm <code>test</code></p>
+<p>Add <code>email</code> protocol mapper to <code>test.example.com</code> client in realm <code>test</code></p>
 
 <pre class="code ruby"><code class="ruby">keycloak_client_protocol_mapper { &quot;email for test.example.com on test&quot;:
   claim_name     =&gt; &#39;email&#39;,
@@ -675,10 +570,7 @@ client in realm <code>test</code></p>
 
 <h3 id="label-Keycloak+Flows">Keycloak Flows</h3>
 
-<p>The following is an example of deploying a custom Flow. The name for the
-top level flow is <code>$alias on $realm</code> The name for an execution
-is <code>$provider under $flow on $realm</code>. The name for the flow
-under a top level flow is <code>$alias under $flow_alias on $realm</code>.</p>
+<p>The following is an example of deploying a custom Flow. The name for the top level flow is <code>$alias on $realm</code> The name for an execution is <code>$provider under $flow on $realm</code>. The name for the flow under a top level flow is <code>$alias under $flow_alias on $realm</code>.</p>
 
 <pre class="code ruby"><code class="ruby">keycloak_flow { &#39;browser-with-duo on test&#39;:
   ensure =&gt; &#39;present&#39;,
@@ -728,53 +620,33 @@ keycloak_flow_execution { &#39;duo-universal under form-browser-with-duo on test
 
 <h3 id="label-keycloak_api">keycloak_api</h3>
 
-<p>The keycloak_api type can be used to define how this module&#39;s types
-access the Keycloak API if this module is only used for the types/providers
-and the module&#39;s <code>kcadm-wrapper.sh</code> is not installed.</p>
+<p>The keycloak_api type can be used to define how this module&#39;s types access the Keycloak API if this module is only used for the types/providers and the module&#39;s <code>kcadm-wrapper.sh</code> is not installed.</p>
 
-<p><code>puppet keycloak_api { &#39;keycloak&#39;   install_dir =&gt;
-&#39;/opt/keycloak&#39;,   server     =&gt;
-&#39;http://localhost:8080/auth&#39;,   realm      =&gt; &#39;master&#39;, 
-user       =&gt; &#39;admin&#39;,   password   =&gt; &#39;changeme&#39;, }
-</code></p>
+<p><code>puppet keycloak_api { &#39;keycloak&#39;   install_dir =&gt; &#39;/opt/keycloak&#39;,   server     =&gt; &#39;http://localhost:8080/auth&#39;,   realm      =&gt; &#39;master&#39;,   user       =&gt; &#39;admin&#39;,   password   =&gt; &#39;changeme&#39;, } </code></p>
 
-<p>The path for <code>install_dir</code> will be joined with
-<code>bin/kcadm.sh</code> to produce the full path to
-<code>kcadm.sh</code>.</p>
+<p>The path for <code>install_dir</code> will be joined with <code>bin/kcadm.sh</code> to produce the full path to <code>kcadm.sh</code>.</p>
 
 <h3 id="label-keycloak_required_action">keycloak_required_action</h3>
 
-<p>The keycloak_required_action type can be used to define actions a user must
-perform during the authentication process. A user will not be able to
-complete the authentication process until these actions are complete. For
-instance, change a one-time password, accept T&amp;C, etc.</p>
+<p>The keycloak_required_action type can be used to define actions a user must perform during the authentication process. A user will not be able to complete the authentication process until these actions are complete. For instance, change a one-time password, accept T&amp;C, etc.</p>
 
 <p>The name for an action is <code>$alias on $realm</code>.</p>
 
-<p><strong>Important</strong>: actions from puppet config and from a server
-are matched based on a combination of alias and realm, so edition of
-aliases is not supported.</p>
+<p><strong>Important</strong>: actions from puppet config and from a server are matched based on a combination of alias and realm, so edition of aliases is not supported.</p>
 
 <p>“`puppet</p>
 
 <h1 id="label-Minimal+example">Minimal example</h1>
 
-<p>keycloak_required_action { &#39;VERIFY_EMAIL on master&#39;:  ensure =&gt;
-present,  provider_id =&gt; &#39;webauthn-register&#39;, }</p>
+<p>keycloak_required_action { &#39;VERIFY_EMAIL on master&#39;:  ensure =&gt; present,  provider_id =&gt; &#39;webauthn-register&#39;, }</p>
 
 <h1 id="label-Full+example">Full example</h1>
 
-<p>keycloak_required_action { &#39;webauthn-register on master&#39;:  ensure
-=&gt; present,  provider_id =&gt; &#39;webauthn-register&#39;, 
-display_name =&gt; &#39;Webauthn Register&#39;,  default =&gt; true, 
-enabled =&gt; true,  priority =&gt; 1,  config =&gt; {  &#39;something&#39;
-=&gt; &#39;true&#39;, # keep in mind that keycloak only supports strings
-for both keys and values  &#39;smth else&#39; =&gt; &#39;1&#39;,  }, } “`</p>
+<p>keycloak_required_action { &#39;webauthn-register on master&#39;:  ensure =&gt; present,  provider_id =&gt; &#39;webauthn-register&#39;,  display_name =&gt; &#39;Webauthn Register&#39;,  default =&gt; true,  enabled =&gt; true,  priority =&gt; 1,  config =&gt; {  &#39;something&#39; =&gt; &#39;true&#39;, # keep in mind that keycloak only supports strings for both keys and values  &#39;smth else&#39; =&gt; &#39;1&#39;,  }, } “`</p>
 
 <h2 id="label-Reference">Reference</h2>
 
-<p><a
-href="http://treydock.github.io/puppet-module-keycloak/">treydock.github.io/puppet-module-keycloak/</a></p>
+<p><a href="http://treydock.github.io/puppet-module-keycloak/">treydock.github.io/puppet-module-keycloak/</a></p>
 
 <h2 id="label-Limitations">Limitations</h2>
 

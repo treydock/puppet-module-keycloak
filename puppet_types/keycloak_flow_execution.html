@@ -83,13 +83,7 @@
 <div class="docstring">
   <div class="discussion">
     
-<p>Manage a Keycloak flow <strong>Autorequires</strong> *
-<code>keycloak_realm</code> defined for <code>realm</code> parameter *
-<code>keycloak_flow</code> of value defined for <code>flow_alias</code> *
-<code>keycloak_flow</code> if they share same <code>flow_alias</code> value
-and the other resource <code>index</code> is lower *
-<code>keycloak_flow_execution</code> if <code>flow_alias</code> is the same
-and other <code>index</code> is lower</p>
+<p>Manage a Keycloak flow <strong>Autorequires</strong> * <code>keycloak_realm</code> defined for <code>realm</code> parameter * <code>keycloak_flow</code> of value defined for <code>flow_alias</code> * <code>keycloak_flow</code> if they share same <code>flow_alias</code> value and the other resource <code>index</code> is lower * <code>keycloak_flow_execution</code> if <code>flow_alias</code> is the same and other <code>index</code> is lower</p>
 
   </div>
 </div>
@@ -115,8 +109,7 @@ and other <code>index</code> is lower</p>
     
       
         <p class="example_title"><div class='inline'>
-<p>Add an execution to a execution flow that is one level deeper than top
-level</p>
+<p>Add an execution to a execution flow that is one level deeper than top level</p>
 </div></p>
       
       <pre class="example code"><code>keycloak_flow_execution { &#39;auth-username-password-form under form-browser-with-duo on test&#39;:
@@ -422,9 +415,7 @@ level</p>
       <div class="docstring">
         <div class="discussion">
           
-<p>The specific backend to use for this <code>keycloak_flow_execution</code>
-resource. You will seldom need to specify this — Puppet will usually
-discover the appropriate provider for your platform.</p>
+<p>The specific backend to use for this <code>keycloak_flow_execution</code> resource. You will seldom need to specify this — Puppet will usually discover the appropriate provider for your platform.</p>
 
         </div>
       </div>

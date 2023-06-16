@@ -107,9 +107,7 @@
       
         &mdash;
         <div class='inline'>
-<p>Install Keycloak from upstream Keycloak tarball. Set to false to manage
-installation of Keycloak outside this module and set $install_dir to match.
-Defaults to true.</p>
+<p>Install Keycloak from upstream Keycloak tarball. Set to false to manage installation of Keycloak outside this module and set $install_dir to match. Defaults to true.</p>
 </div>
       
     </li>
@@ -163,8 +161,7 @@ Defaults to true.</p>
       
         &mdash;
         <div class='inline'>
-<p>The directory of where to install Keycloak. Default is
-<code>/opt/keycloak-${version}</code>.</p>
+<p>The directory of where to install Keycloak. Default is <code>/opt/keycloak-${version}</code>.</p>
 </div>
       
     </li>
@@ -182,10 +179,7 @@ Defaults to true.</p>
       
         &mdash;
         <div class='inline'>
-<p>How to declare the Java class within this module The <code>include</code>
-value only includes the java class The <code>class</code> method defines
-the Java class and passes necessary parameters For RedHat base systems this
-defaults to <code>class</code>, other OSes default to <code>include</code></p>
+<p>How to declare the Java class within this module The <code>include</code> value only includes the java class The <code>class</code> method defines the Java class and passes necessary parameters For RedHat base systems this defaults to <code>class</code>, other OSes default to <code>include</code></p>
 </div>
       
     </li>
@@ -203,8 +197,7 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
       
         &mdash;
         <div class='inline'>
-<p>Java package name, only used when <code>java_declare_method</code> is
-<code>class</code></p>
+<p>Java package name, only used when <code>java_declare_method</code> is <code>class</code></p>
 </div>
       
     </li>
@@ -222,8 +215,7 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
       
         &mdash;
         <div class='inline'>
-<p>Java home path, only used when <code>java_declare_method</code> is
-<code>class</code></p>
+<p>Java home path, only used when <code>java_declare_method</code> is <code>class</code></p>
 </div>
       
     </li>
@@ -241,8 +233,7 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
       
         &mdash;
         <div class='inline'>
-<p>Java alternative path, only used when <code>java_declare_method</code> is
-<code>class</code></p>
+<p>Java alternative path, only used when <code>java_declare_method</code> is <code>class</code></p>
 </div>
       
     </li>
@@ -260,8 +251,7 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
       
         &mdash;
         <div class='inline'>
-<p>Java alternative, only used when <code>java_declare_method</code> is
-<code>class</code></p>
+<p>Java alternative, only used when <code>java_declare_method</code> is <code>class</code></p>
 </div>
       
     </li>
@@ -441,8 +431,7 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
       
         &mdash;
         <div class='inline'>
-<p>hostname to set in keycloak.conf Set to <code>unset</code> or
-<code>UNSET</code> to not define this in keycloak.conf</p>
+<p>hostname to set in keycloak.conf Set to <code>unset</code> or <code>UNSET</code> to not define this in keycloak.conf</p>
 </div>
       
     </li>
@@ -532,8 +521,7 @@ defaults to <code>class</code>, other OSes default to <code>include</code></p>
       
         &mdash;
         <div class='inline'>
-<p>Set the path relative to &#39;/&#39; for serving resources. The path must
-start with a &#39;/&#39;.</p>
+<p>Set the path relative to &#39;/&#39; for serving resources. The path must start with a &#39;/&#39;.</p>
 </div>
       
     </li>
@@ -551,8 +539,7 @@ start with a &#39;/&#39;.</p>
       
         &mdash;
         <div class='inline'>
-<p>Defines if the module should manage the Linux user for Keycloak
-installation</p>
+<p>Defines if the module should manage the Linux user for Keycloak installation</p>
 </div>
       
     </li>
@@ -660,8 +647,7 @@ installation</p>
       
         &mdash;
         <div class='inline'>
-<p>If keycloak user should be a system user with lower uid and gid. Default is
-<code>true</code></p>
+<p>If keycloak user should be a system user with lower uid and gid. Default is <code>true</code></p>
 </div>
       
     </li>
@@ -967,8 +953,7 @@ installation</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if truststore should be used. Default is
-<code>false</code>.</p>
+<p>Boolean that sets if truststore should be used. Default is <code>false</code>.</p>
 </div>
       
     </li>
@@ -986,8 +971,7 @@ installation</p>
       
         &mdash;
         <div class='inline'>
-<p>Hash that is used to define <code>keycloak::turststore::host</code>
-resources. Default is <code>{}</code>.</p>
+<p>Hash that is used to define <code>keycloak::turststore::host</code> resources. Default is <code>{}</code>.</p>
 </div>
       
     </li>
@@ -1041,8 +1025,7 @@ resources. Default is <code>{}</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Hash that is used to define keycloak_realm resources. Default is
-<code>{}</code>.</p>
+<p>Hash that is used to define keycloak_realm resources. Default is <code>{}</code>.</p>
 </div>
       
     </li>
@@ -1078,8 +1061,7 @@ resources. Default is <code>{}</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Hash that is used to define keycloak::client_scope::oidc resources. Default
-is <code>{}</code>.</p>
+<p>Hash that is used to define keycloak::client_scope::oidc resources. Default is <code>{}</code>.</p>
 </div>
       
     </li>
@@ -1097,8 +1079,7 @@ is <code>{}</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if <code>oidc_client_scopes</code> should be merged from
-Hiera.</p>
+<p>Boolean that sets if <code>oidc_client_scopes</code> should be merged from Hiera.</p>
 </div>
       
     </li>
@@ -1116,8 +1097,7 @@ Hiera.</p>
       
         &mdash;
         <div class='inline'>
-<p>Hash that is used to define keycloak::client_scope::saml resources. Default
-is <code>{}</code>.</p>
+<p>Hash that is used to define keycloak::client_scope::saml resources. Default is <code>{}</code>.</p>
 </div>
       
     </li>
@@ -1135,8 +1115,7 @@ is <code>{}</code>.</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if <code>saml_client_scopes</code> should be merged from
-Hiera.</p>
+<p>Boolean that sets if <code>saml_client_scopes</code> should be merged from Hiera.</p>
 </div>
       
     </li>
@@ -1172,8 +1151,7 @@ Hiera.</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if <code>identity_providers</code> should be merged from
-Hiera.</p>
+<p>Boolean that sets if <code>identity_providers</code> should be merged from Hiera.</p>
 </div>
       
     </li>
@@ -1227,8 +1205,7 @@ Hiera.</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if <code>client_scopes</code> should be merged from
-Hiera.</p>
+<p>Boolean that sets if <code>client_scopes</code> should be merged from Hiera.</p>
 </div>
       
     </li>
@@ -1264,8 +1241,7 @@ Hiera.</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if <code>protocol_mappers</code> should be merged from
-Hiera.</p>
+<p>Boolean that sets if <code>protocol_mappers</code> should be merged from Hiera.</p>
 </div>
       
     </li>
@@ -1409,8 +1385,7 @@ Hiera.</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if <code>required_actions</code> should be merged from
-Hiera.</p>
+<p>Boolean that sets if <code>required_actions</code> should be merged from Hiera.</p>
 </div>
       
     </li>
@@ -1482,8 +1457,7 @@ Hiera.</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that sets if <code>ldap_user_providers</code> should be merged from
-Hiera.</p>
+<p>Boolean that sets if <code>ldap_user_providers</code> should be merged from Hiera.</p>
 </div>
       
     </li>
@@ -1537,8 +1511,7 @@ Hiera.</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that determines of libunix-dbus-java build dependencies are managed
-by this module</p>
+<p>Boolean that determines of libunix-dbus-java build dependencies are managed by this module</p>
 </div>
       
     </li>
@@ -1736,8 +1709,7 @@ by this module</p>
       
         &mdash;
         <div class='inline'>
-<p>The URL path for validator testing Only necessary to set if the URL path to
-Keycloak is modified</p>
+<p>The URL path for validator testing Only necessary to set if the URL path to Keycloak is modified</p>
 </div>
       
     </li>
