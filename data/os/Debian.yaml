@@ -1,5 +1,4 @@
 ---
-keycloak::java_declare_method: include
 keycloak::java_package: openjdk-17-jdk
 keycloak::java_home: /usr/lib/jvm/java-1.17.0-openjdk-amd64/
 keycloak::java_alternative_path: /usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java
