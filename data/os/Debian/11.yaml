@@ -1,0 +1,3 @@
+---
+keycloak::java_package_dependencies:
+  - ca-certificates-java

@@ -16,6 +16,8 @@
 # @param install_dir
 #   The directory of where to install Keycloak.
 #   Default is `/opt/keycloak-${version}`.
+# @param java_package_dependencies
+#   Packages to install before Java
 # @param java_declare_method
 #   How to declare the Java class within this module
 #   The `include` value only includes the java class
@@ -214,6 +216,7 @@ class keycloak (
   String $version               = '21.0.1',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
+  Array[String[1]] $java_package_dependencies = [],
   Enum['include','class'] $java_declare_method = 'class',
   String[1] $java_package = 'java-11-openjdk-devel',
   Stdlib::Absolutepath $java_home = '/usr/lib/jvm/java-11-openjdk',
@@ -374,6 +377,13 @@ class keycloak (
     $service_extra_opts,
   ].filter |$s| { $s =~ NotUndef }
   $service_start_cmd = join($service_start, ' ')
+
+  $java_package_dependencies.each |$package| {
+    package { $package:
+      ensure => 'installed',
+      before => Class['java'],
+    }
+  }
 
   if $java_declare_method == 'include' {
     contain java
