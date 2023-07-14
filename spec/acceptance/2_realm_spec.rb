@@ -56,6 +56,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['verifyEmail']).to eq(false)
         expect(data['sslRequired']).to eq('external')
         expect(data['editUsernameAllowed']).to eq(false)
+        expect(data['internationalizationEnabled']).to eq(false)
       end
     end
 
@@ -196,6 +197,9 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         account_theme                     => 'keycloak.v2',
         admin_theme                       => 'keycloak.v2',
         email_theme                       => 'keycloak.v2',
+        internationalization_enabled      => true,
+        default_locale                    => 'en',
+        supported_locales                 => ['en','de'],
         custom_properties                 => {
           'failureFactor'      => 60,
           'revokeRefreshToken' => true,
@@ -247,6 +251,9 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['emailTheme']).to eq('keycloak.v2')
         expect(data['failureFactor']).to eq(60)
         expect(data['revokeRefreshToken']).to eq(true)
+        expect(data['internationalizationEnabled']).to eq(true)
+        expect(data['defaultLocale']).to eq('en')
+        expect(data['supportedLocales']).to eq(['de', 'en'])
       end
     end
 
