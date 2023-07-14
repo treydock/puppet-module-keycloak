@@ -182,6 +182,20 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     expect { resource }.to raise_error(Puppet::Error, %r{must start with "\(" and end with "\)"})
   end
 
+  it 'defaults cache_policy to default' do
+    expect(resource[:cache_policy]).to eq(:DEFAULT)
+  end
+
+  it 'supports cache_policy to default' do
+    config[:cache_policy] = 'EVICT_DAILY'
+    expect(resource[:cache_policy]).to eq(:EVICT_DAILY)
+  end
+
+  it 'does not allow invalid cache_policy' do
+    config[:cache_policy] = 'foo'
+    expect { resource }.to raise_error(Puppet::Error)
+  end
+
   defaults = {
     enabled: :true,
     priority: '0',

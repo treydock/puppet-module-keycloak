@@ -97,6 +97,12 @@ Manage Keycloak LDAP user providers
     defaultto '0'
   end
 
+  newproperty(:cache_policy) do
+    desc 'cachePolicy'
+    newvalues('DEFAULT', 'EVICT_DAILY', 'EVICT_WEEKLY', 'MAX_LIFESPAN', 'NO_CACHE')
+    defaultto 'DEFAULT'
+  end
+
   newproperty(:batch_size_for_sync) do
     desc 'batchSizeForSync'
     defaultto '1000'

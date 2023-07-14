@@ -52,6 +52,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         expect(d['config']['trustEmail']).to eq(['false'])
         expect(d['config']['fullSyncPeriod']).to eq(['-1'])
         expect(d['config']['changedSyncPeriod']).to eq(['-1'])
+        expect(d['config']['cachePolicy']).to eq(['DEFAULT'])
       end
     end
 
@@ -108,6 +109,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         trust_email         => true,
         full_sync_period    => 60,
         changed_sync_period => 30,
+        cache_policy        => 'EVICT_DAILY',
       }
       keycloak_ldap_mapper { 'full-name':
         realm          => 'test',
@@ -142,6 +144,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         expect(d['config']['trustEmail']).to eq(['true'])
         expect(d['config']['fullSyncPeriod']).to eq(['60'])
         expect(d['config']['changedSyncPeriod']).to eq(['30'])
+        expect(d['config']['cachePolicy']).to eq(['EVICT_DAILY'])
       end
     end
 
