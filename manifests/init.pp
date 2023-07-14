@@ -26,7 +26,8 @@
 # @param java_package
 #   Java package name, only used when `java_declare_method` is `class`
 # @param java_home
-#   Java home path, only used when `java_declare_method` is `class`
+#   Java home path.  This value is used when `java_declare_method` is `class`
+#   as well as to set JAVA_HOME environment variable for the Keycloak service.
 # @param java_alternative_path
 #   Java alternative path, only used when `java_declare_method` is `class`
 # @param java_alternative

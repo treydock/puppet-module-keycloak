@@ -17,6 +17,7 @@ Environment='JAVA_OPTS_APPEND=<%= scope['keycloak::java_opts'].join(' ') %>'
 Environment='JAVA_OPTS_APPEND=<%= scope['keycloak::java_opts'] %>'
   <%- end -%>
 <% end -%>
+Environment='JAVA_HOME=<%= scope['keycloak::java_home'] %>'
 User=<%= scope['keycloak::user'] %>
 Group=<%= scope['keycloak::group'] %>
 ExecStart=<%= scope['keycloak::service_start_cmd'] %>
