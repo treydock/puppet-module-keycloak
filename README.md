@@ -175,6 +175,7 @@ This module may work on earlier versions but this is the only version tested.
 | 18.x             | 8.x                             |
 | 19.x - 21.x      | 9.x                             |
 | 21.x             | 10.x                            |
+| 22.x             | 11.x                            |
 
 ## Usage
 
@@ -190,18 +191,18 @@ Install a specific version of Keycloak.
 
 ```puppet
 class { 'keycloak':
-  version => '18.0.0',
+  version => '22.0.0',
   db      => 'mariadb',
 }
 ```
 
 Upgrading Keycloak version works by changing `version` parameter as long as the `db` parameter is not the default of `dev-file`. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to `/opt/keycloak`, applying all changes to new version and then restarting the `keycloak` service.
 
-If the previous `version` was `18.0.0` using the following will upgrade to `19.0.0`:
+If the previous `version` was `22.0.0` using the following will upgrade to `23.0.0`:
 
 ```puppet
 class { 'keycloak':
-  version => '19.0.0',
+  version => '23.0.0',
   db      => 'mariadb',
 }
 ```
@@ -283,7 +284,7 @@ A simple example of deploying a custom SPI from a URL:
 keycloak::spi_deployment { 'duo-spi':
   ensure        => 'present',
   deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
-  source        => 'https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.4/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.4.jar',
+  source        => 'https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.5/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.5.jar',
 }
 ```
 
@@ -615,12 +616,9 @@ keycloak_required_action { 'webauthn-register on master':
 
 This module has been tested on:
 
-* RedHat/CentOS 7 x86_64
 * RedHat/Rocky/AlmaLinux 8 x86_64
 * RedHat/Rocky/AlmaLinux 9 x86_64
-* Debian 10 x86_64
 * Debian 11 x86_64
-* Ubuntu 18.04 x86_64
 * Ubuntu 20.04 x86_64
 * Ubuntu 22.04 x86_64
 

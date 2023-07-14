@@ -3,7 +3,7 @@
 RSpec.configure do |c|
   c.add_setting :keycloak_version
   keycloak_version = if ENV['BEAKER_keycloak_version'].nil? || ENV['BEAKER_keycloak_version'].empty?
-                       '21.0.1'
+                       '22.0.0'
                      else
                        ENV['BEAKER_keycloak_version']
                      end
@@ -28,26 +28,17 @@ hierarchy:
   - name: "Common"
     path: "common.yaml"
 HIERA_YAML
-centos7_yaml = <<-EL7_YAML
-postgresql::server::service_reload: 'systemctl reload postgresql 2>/dev/null 1>/dev/null'
-EL7_YAML
-ubuntu1804_yaml = <<-UBUNTU18_YAML
-keycloak::db: mysql
-UBUNTU18_YAML
 common_yaml = <<-COMMON_YAML
 ---
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
 keycloak::http_host: '127.0.0.1'
 keycloak::db: mariadb
 keycloak::proxy: edge
+# Force only listen on IPv4 for testing
+keycloak::java_opts: '-Djava.net.preferIPv4Stack=true'
 postgresql::server::service_status: 'service postgresql status 2>/dev/null 1>/dev/null'
 COMMON_YAML
 
 create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
 on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
-on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/CentOS'
-create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/CentOS/7.yaml', centos7_yaml)
-on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Ubuntu'
-create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Ubuntu/18.04.yaml', ubuntu1804_yaml)
-on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Debian'

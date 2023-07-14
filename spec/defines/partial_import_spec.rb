@@ -8,7 +8,7 @@ describe 'keycloak::partial_import' do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
-      let(:version) { '21.0.1' }
+      let(:version) { '22.0.0' }
       let(:title) { 'test' }
       let(:params) do
         {

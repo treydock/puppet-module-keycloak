@@ -70,7 +70,7 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
       pp = <<-PUPPET_PP
       class { 'keycloak':
         http_relative_path => '/auth',
-        java_opts          => '-Xmx512m -Xms64m',
+        java_opts          => '-Xmx512m -Xms64m -Djava.net.preferIPv4Stack=true',
         configs            => {
           'metrics-enabled' => true,
         },

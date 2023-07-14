@@ -67,7 +67,7 @@ define keycloak::freeipa_user_provider (
     rdn_ldap_attribute                       => 'uid',
     search_scope                             => '1',
     use_kerberos_for_password_authentication => 'false',
-    use_truststore_spi                       => 'ldapsOnly',
+    use_truststore_spi                       => 'always',
     user_object_classes                      => ['inetOrgPerson', ' organizationalPerson'],
     username_ldap_attribute                  => 'uid',
     users_dn                                 => $users_dn,

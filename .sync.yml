@@ -15,10 +15,9 @@ Rakefile:
   acceptance_name: '${{ matrix.puppet }} ${{ matrix.set }} (keycloak=${{ matrix.keycloak_version }} full=${{ matrix.keycloak_full }})'
   acceptance_matrix:
     set:
-      - el7
+      - ---el7
       - el8
       - el9
-      - debian-10
       - debian-11
       - ubuntu-2004
       - ubuntu-2204
@@ -26,16 +25,16 @@ Rakefile:
       - puppet7
       - puppet8
     keycloak_version:
-      - '21.0.1'
+      - '22.0.0'
     keycloak_full: ['no']
   acceptance_includes:
     - set: el8
       puppet: puppet7
-      keycloak_version: 21.0.1
+      keycloak_version: 22.0.0
       keycloak_full: 'yes'
     - set: el8
       puppet: puppet8
-      keycloak_version: 21.0.1
+      keycloak_version: 22.0.0
       keycloak_full: 'yes'
 .gitignore:
   paths:
@@ -51,11 +50,10 @@ Rakefile:
           Enabled: false
 appveyor.yml:
   delete: true
-spec/acceptance/nodesets/debian-9.yml:
+spec/acceptance/nodesets/el7.yml:
   delete: true
 spec/acceptance/nodesets/debian-10.yml:
-  packages:
-    - iproute2
+  delete: true
 spec/acceptance/nodesets/debian-11.yml:
   packages:
     - iproute2

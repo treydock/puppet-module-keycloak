@@ -1,4 +1,0 @@
-keycloak::java_package: java-11-openjdk-devel
-keycloak::java_home: /usr/lib/jvm/java-11-openjdk/
-keycloak::java_alternative_path: /usr/lib/jvm/java-11-openjdk/bin/java
-keycloak::java_alternative: /usr/lib/jvm/java-11-openjdk/bin/java
