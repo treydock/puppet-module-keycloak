@@ -56,7 +56,8 @@ describe Puppet::Type.type(:keycloak_realm) do
     events_listeners: ['jboss-logging'],
     admin_events_enabled: :false,
     admin_events_details_enabled: :false,
-    offline_session_max_lifespan_enabled: :false
+    offline_session_max_lifespan_enabled: :false,
+    internationalization_enabled: :false
   }
 
   describe 'basic properties' do
@@ -83,7 +84,8 @@ describe Puppet::Type.type(:keycloak_realm) do
       :smtp_server_from,
       :smtp_server_from_display_name,
       :smtp_server_reply_to,
-      :smtp_server_reply_to_display_name
+      :smtp_server_reply_to_display_name,
+      :default_locale
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'

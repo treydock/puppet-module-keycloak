@@ -72,6 +72,10 @@ Manage Keycloak realms
     defaultto :false
   end
 
+  newproperty(:default_locale) do
+    desc 'defaultLocale'
+  end
+
   newproperty(:sso_session_idle_timeout_remember_me, parent: PuppetX::Keycloak::IntegerProperty) do
     desc 'ssoSessionIdleTimeoutRememberMe'
   end
