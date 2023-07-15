@@ -4,12 +4,12 @@ Rakefile:
 .github/workflows/ci.yaml:
   unit_name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }} fixtures=${{ matrix.fixtures }})
   unit_includes:
-    - ruby: '2.5.9'
-      puppet: '6'
+    - ruby: '2.7.7'
+      puppet: '7'
       fixtures: .fixtures-latest.yml
       allow_failure: true
-    - ruby: '2.7.6'
-      puppet: '7'
+    - ruby: '3.2.2'
+      puppet: '8'
       fixtures: .fixtures-latest.yml
       allow_failure: true
   acceptance_name: '${{ matrix.puppet }} ${{ matrix.set }} (keycloak=${{ matrix.keycloak_version }} full=${{ matrix.keycloak_full }})'
@@ -24,18 +24,18 @@ Rakefile:
       - ubuntu-2004
       - ubuntu-2204
     puppet:
-      - puppet6
       - puppet7
+      - puppet8
     keycloak_version:
       - '21.0.1'
     keycloak_full: ['no']
   acceptance_includes:
     - set: el8
-      puppet: puppet6
+      puppet: puppet7
       keycloak_version: 21.0.1
       keycloak_full: 'yes'
     - set: el8
-      puppet: puppet7
+      puppet: puppet8
       keycloak_version: 21.0.1
       keycloak_full: 'yes'
 .gitignore:
