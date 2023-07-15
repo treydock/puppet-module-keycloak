@@ -302,6 +302,20 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     }.to raise_error(%r{foo})
   end
 
+  it 'accepts usermodel_client_role_mapping_client_id' do
+    config[:usermodel_client_role_mapping_client_id] = 'foo'
+    config[:type] = 'oidc-usermodel-client-role-mapper'
+    expect(resource[:usermodel_client_role_mapping_client_id]).to eq('foo')
+  end
+
+  it 'errors when usermodel_client_role_mapping_client_id used with wrong type' do
+    config[:usermodel_client_role_mapping_client_id] = 'foo'
+    config[:type] = 'saml-role-list-mapper'
+    expect {
+      resource
+    }.to raise_error(Puppet::Error)
+  end
+
   it 'accepts value for single' do
     config[:protocol] = 'saml'
     config[:type] = 'saml-role-list-mapper'
@@ -329,6 +343,27 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
   it 'does not accept invalid value for single' do
     config[:protocol] = 'saml'
     config[:type] = 'saml-role-list-mapper'
+    config[:single] = 'foo'
+    expect {
+      resource
+    }.to raise_error(%r{foo})
+  end
+
+  it 'accepts value for multivalued' do
+    config[:multivalued] = false
+    expect(resource[:multivalued]).to eq(:false)
+  end
+
+  it 'accepts value for multivalued string' do
+    config[:multivalued] = 'false'
+    expect(resource[:multivalued]).to eq(:false)
+  end
+
+  it 'has default for multivalued' do
+    expect(resource[:multivalued]).to be_nil
+  end
+
+  it 'does not accept invalid value for multivalued' do
     config[:single] = 'foo'
     expect {
       resource
