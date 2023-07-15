@@ -150,6 +150,14 @@ describe 'keycloak' do
           end
         end
 
+        context 'when http_enabled => false' do
+          let(:params) { { http_enabled: false } }
+
+          it do
+            verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", ['http-enabled=false'])
+          end
+        end
+
         context 'when features defined' do
           let(:params) { { features: ['authorization', 'impersonation'] } }
 
