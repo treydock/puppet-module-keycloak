@@ -183,6 +183,16 @@ describe 'keycloak' do
             )
           end
         end
+
+        context 'when java_home defined' do
+          let(:params) { { java_home: '/foo' } }
+
+          it do
+            is_expected.to contain_systemd__unit_file('keycloak.service').with(
+              content: %r{Environment='JAVA_HOME=/foo'},
+            )
+          end
+        end
       end
     end
   end
