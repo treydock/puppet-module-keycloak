@@ -106,4 +106,7 @@ class keycloak::resources {
   $keycloak::spi_deployments.each |$name, $deployment| {
     keycloak::spi_deployment { $name: * => $deployment }
   }
+  $keycloak::partial_imports.each |$name, $partial_import| {
+    keycloak::partial_import { $name: * => $partial_import }
+  }
 }

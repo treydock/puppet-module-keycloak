@@ -12,6 +12,7 @@
 2. [Usage - Configuration options](#usage)
     * [Keycloak](#keycloak)
     * [Deploy SPI](#deploy-spi)
+    * [Partial Import](#partial-import)
     * [keycloak_realm](#keycloak_realm)
     * [keycloak_role_mapping](#keycloak_role_mapping)
     * [keycloak_ldap_user_provider](#keycloak_ldap_user_provider)
@@ -305,6 +306,22 @@ keycloak::spi_deployment { 'duo-spi':
   ],
 }
 ```
+
+### Partial Import
+
+This module supports [Importing data from exported JSON files](https://www.keycloak.org/docs/latest/server_admin/index.html#importing-a-realm-from-exported-json-file) via the `keycloak::partial_import` defined type.
+
+Example of importing a JSON file into the `test` realm:
+
+```puppet
+keycloak::partial_import { 'mysettings':
+  realm              => 'test',
+  if_resource_exists => 'SKIP',
+  source             => 'puppet:///modules/profile/keycloak/mysettings.json',
+}
+```
+
+**NOTE:** By default the `keycloak::partial_import` defined type will require the `Keycloak_realm` resource used for the `realm` parameter. If you manage the realm a different way, pass `require_realm => false`.
 
 ### keycloak_realm
 

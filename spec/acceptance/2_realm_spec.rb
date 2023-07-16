@@ -40,6 +40,11 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
       keycloak_realm { 'test realm':
         ensure => 'present',
       }
+      keycloak::partial_import { 'test':
+        realm              => 'test',
+        if_resource_exists => 'OVERWRITE',
+        source             => 'file:///tmp/partial-import.json',
+      }
       PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
@@ -145,6 +150,14 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
           end
         end
         expect(expected_roles - realm_roles).to eq([])
+      end
+    end
+
+    it 'imports a client' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients -r test' do
+        data = JSON.parse(stdout)
+        client = data.find { |d| d['clientId'] == 'test.example.com' }
+        expect(client['clientId']).to eq('test.example.com')
       end
     end
   end
