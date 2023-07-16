@@ -187,6 +187,10 @@ Manage Keycloak protocol mappers
     end
   end
 
+  newproperty(:usermodel_client_role_mapping_client_id) do
+    desc 'usermodel.clientRoleMapping.clientId for `type` `oidc-usermodel-client-role-mapper`'
+  end
+
   newproperty(:single, boolean: true) do
     desc 'single. Default to `false` for `type` `saml-role-list-mapper`.'
     newvalues(:true, :false)
@@ -197,6 +201,11 @@ Manage Keycloak protocol mappers
         nil
       end
     end
+  end
+
+  newproperty(:multivalued, boolean: true) do
+    desc 'multivalued'
+    newvalues(:true, :false)
   end
 
   newproperty(:included_client_audience) do
@@ -263,6 +272,9 @@ Manage Keycloak protocol mappers
     end
     if self[:type] == 'oidc-audience-mapper' && self[:included_client_audience].nil?
       raise Puppet::Error, 'included_client_audience is required for oidc-audience-mapper'
+    end
+    if self[:usermodel_client_role_mapping_client_id] && self[:type] != 'oidc-usermodel-client-role-mapper'
+      raise Puppet::Error, 'usermodel_client_role_mapping_client_id is only valid for type=oidc-usermodel-client-role-mapper'
     end
   end
 end

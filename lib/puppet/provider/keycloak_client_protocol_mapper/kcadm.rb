@@ -48,6 +48,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
             protocol_mapper[:claim_name] = d['config']['claim.name']
             protocol_mapper[:json_type_label] = d['config']['jsonType.label']
           end
+          if protocol_mapper[:type] == 'oidc-usermodel-client-role-mapper'
+            protocol_mapper[:usermodel_client_role_mapping_client_id] = d['config']['usermodel.clientRoleMapping.clientId']
+          end
           if protocol_mapper[:type] == 'oidc-group-membership-mapper'
             protocol_mapper[:full_path] = d['config']['full.path']
           end
@@ -71,6 +74,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
           if ['saml-role-list-mapper'].include?(protocol_mapper[:type]) || protocol_mapper[:type] =~ %r{script-.+}
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
           end
+          protocol_mapper[:multivalued] = d['config']['multivalued'].to_s.to_sym if d['config']['multivalued']
           protocol_mappers << new(protocol_mapper)
         end
       end
@@ -112,6 +116,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
     if resource[:type] == 'oidc-group-membership-mapper' && resource[:full_path]
       data[:config][:'full.path'] = resource[:full_path]
     end
+    if resource[:type] == 'oidc-usermodel-client-role-mapper' && resource[:usermodel_client_role_mapping_client_id]
+      data[:config][:'usermodel.clientRoleMapping.clientId'] = resource[:usermodel_client_role_mapping_client_id]
+    end
     if (['saml-user-property-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:friendly_name]
       data[:config][:'friendly.name'] = resource[:friendly_name]
     end
@@ -131,6 +138,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
     end
     if (['saml-role-list-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:single]
       data[:config][:single] = resource[:single].to_s
+    end
+    if resource[:multivalued]
+      data[:config][:multivalued] = resource[:multivalued].to_s
     end
 
     t = Tempfile.new('keycloak_protocol_mapper')
@@ -194,6 +204,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
       if resource[:type] == 'oidc-group-membership-mapper' && resource[:full_path]
         config[:'full.path'] = resource[:full_path]
       end
+      if resource[:type] == 'oidc-usermodel-client-role-mapper' && resource[:usermodel_client_role_mapping_client_id]
+        config[:'usermodel.clientRoleMapping.clientId'] = resource[:usermodel_client_role_mapping_client_id]
+      end
       if (['saml-user-property-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:friendly_name]
         config[:'friendly.name'] = resource[:friendly_name]
       end
@@ -213,6 +226,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
       end
       if (['saml-role-list-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:single]
         config[:single] = resource[:single].to_s
+      end
+      if resource[:multivalued]
+        config[:multivalued] = resource[:multivalued].to_s
       end
       data[:config] = config unless config.empty?
 
