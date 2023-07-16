@@ -15,12 +15,24 @@ class keycloak::config {
   # - $keycloak::admin_user_password
   file { 'kcadm-wrapper.sh':
     ensure    => 'file',
-    path      => "${keycloak::install_base}/bin/kcadm-wrapper.sh",
+    path      => $keycloak::wrapper_path,
     owner     => $keycloak::user,
     group     => $keycloak::group,
     mode      => '0750',
     content   => template('keycloak/kcadm-wrapper.sh.erb'),
     show_diff => false,
+  }
+
+  file { $keycloak::conf_dir:
+    ensure  => 'directory',
+    owner   => $keycloak::user,
+    group   => $keycloak::group,
+    mode    => '0755',
+    purge   => $keycloak::conf_dir_purge,
+    force   => $keycloak::conf_dir_purge,
+    recurse => $keycloak::conf_dir_purge,
+    ignore  => ['cache-ispn.xml', 'README.md'],
+    notify  => Class['keycloak::service'],
   }
 
   file { $keycloak::admin_env:
@@ -42,7 +54,7 @@ class keycloak::config {
   } else {
     $config_content = template('keycloak/keycloak.conf.erb')
   }
-  file { "${keycloak::install_base}/conf/keycloak.conf":
+  file { "${keycloak::conf_dir}/keycloak.conf":
     owner     => $keycloak::user,
     group     => $keycloak::group,
     mode      => '0600',

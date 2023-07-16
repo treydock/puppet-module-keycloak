@@ -49,6 +49,12 @@
 #   Additional options added to the end of the service command-line.
 # @param service_environment_file
 #   Path to the file with environment variables for the systemd service
+# @param conf_dir_mode
+#   The mode for the configuration directory
+# @param conf_dir_purge
+#   Purge unmanaged files in configuration directory
+# @param conf_dir_purge_ignore
+#   The files to ignore when unmanaged files are purged from the configuration directory
 # @param configs
 #   Define additional configs for keycloak.conf
 # @param extra_configs
@@ -203,6 +209,8 @@
 #   Boolean that determines if SSSD should be restarted
 # @param spi_deployments
 #   Hash used to define keycloak::spi_deployment resources
+# @param partial_imports
+#   Hash used to define keycloak::partial_import resources
 # @param providers_purge
 #   Purge the providers directory of unmanaged SPIs
 # @param custom_config_content
@@ -230,6 +238,9 @@ class keycloak (
   Enum['start','start-dev'] $start_command = 'start',
   Optional[String] $service_extra_opts = undef,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
+  Stdlib::Filemode $conf_dir_mode = '0755',
+  Boolean $conf_dir_purge = true,
+  Array $conf_dir_purge_ignore = ['cache-ispn.xml', 'README.md'],
   Keycloak::Configs $configs = {},
   Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
   Variant[Stdlib::Host, Enum['unset','UNSET']] $hostname = $facts['networking']['fqdn'],
@@ -300,6 +311,7 @@ class keycloak (
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
   Hash $spi_deployments = {},
+  Hash $partial_imports = {},
   Boolean $providers_purge = true,
   Optional[String] $custom_config_content = undef,
   Optional[Variant[String, Array]] $custom_config_source = undef,
@@ -312,10 +324,12 @@ class keycloak (
   $download_url = pick($package_url, "https://github.com/keycloak/keycloak/releases/download/${version}/keycloak-${version}.tar.gz")
 
   $install_base = pick($install_dir, "/opt/keycloak-${keycloak::version}")
-  $admin_env = "${install_base}/conf/admin.env"
-  $truststore_file = "${install_base}/conf/truststore.jks"
+  $conf_dir = "${install_base}/conf"
+  $admin_env = "${conf_dir}/admin.env"
+  $truststore_file = "${conf_dir}/truststore.jks"
   $tmp_dir = "${install_base}/tmp"
   $providers_dir = "${install_base}/providers"
+  $wrapper_path = "${keycloak::install_base}/bin/kcadm-wrapper.sh"
 
   $default_config = {
     'hostname' => $hostname,
