@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v11.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v11.0.0) (2023-07-19)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v10.2.0...v11.0.0)
+
+### Changed
+
+- Drop Puppet 6, add Puppet 8 support, drop Ubuntu 18.04 [\#298](https://github.com/treydock/puppet-module-keycloak/pull/298) ([treydock](https://github.com/treydock))
+- Support Keycloak 22, Drop EL7 and Debian 10 [\#297](https://github.com/treydock/puppet-module-keycloak/pull/297) ([treydock](https://github.com/treydock))
+- Default java\_declare\_method to class for Debian and Ubuntu [\#295](https://github.com/treydock/puppet-module-keycloak/pull/295) ([treydock](https://github.com/treydock))
+
+### Added
+
+- Add keycloak::partial\_import resource [\#301](https://github.com/treydock/puppet-module-keycloak/pull/301) ([treydock](https://github.com/treydock))
+- Add properties to keycloak\_client\_protocol\_mapper [\#300](https://github.com/treydock/puppet-module-keycloak/pull/300) ([treydock](https://github.com/treydock))
+- Add cache\_policy property to keycloal\_ldap\_user\_provider [\#296](https://github.com/treydock/puppet-module-keycloak/pull/296) ([treydock](https://github.com/treydock))
+- Add default\_locale property to keycloak\_realm [\#294](https://github.com/treydock/puppet-module-keycloak/pull/294) ([treydock](https://github.com/treydock))
+- Set JAVA\_HOME environment variable for Keycloak service [\#293](https://github.com/treydock/puppet-module-keycloak/pull/293) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Do not reassign $hostname variable when http\_enabled=false [\#299](https://github.com/treydock/puppet-module-keycloak/pull/299) ([treydock](https://github.com/treydock))
+
 ## [v10.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v10.2.0) (2023-06-16)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v10.1.0...v10.2.0)
