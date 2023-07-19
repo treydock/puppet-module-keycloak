@@ -6,7 +6,7 @@
 <title>
   Puppet Class: keycloak
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
   <div class="examples">
@@ -120,7 +121,7 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;21.0.1&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;22.0.0&#39;</tt>)</em>
       
       
         &mdash;
@@ -168,6 +169,24 @@
   
     <li>
       
+        <span class='name'>java_package_dependencies</span>
+      
+      
+        <span class='type'>(<tt>Array[String[1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Packages to install before Java</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>java_declare_method</span>
       
       
@@ -192,7 +211,7 @@
         <span class='type'>(<tt>String[1]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;java-11-openjdk-devel&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;java-17-openjdk-devel&#39;</tt>)</em>
       
       
         &mdash;
@@ -210,12 +229,12 @@
         <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-11-openjdk&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-17-openjdk&#39;</tt>)</em>
       
       
         &mdash;
         <div class='inline'>
-<p>Java home path, only used when <code>java_declare_method</code> is <code>class</code></p>
+<p>Java home path. This value is used when <code>java_declare_method</code> is <code>class</code> as well as to set JAVA_HOME environment variable for the Keycloak service.</p>
 </div>
       
     </li>
@@ -228,7 +247,7 @@
         <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-11-openjdk/bin/java&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-17-openjdk/bin/java&#39;</tt>)</em>
       
       
         &mdash;
@@ -246,7 +265,7 @@
         <span class='type'>(<tt>String[1]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-11-openjdk/bin/java&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;/usr/lib/jvm/java-17-openjdk/bin/java&#39;</tt>)</em>
       
       
         &mdash;
@@ -378,6 +397,60 @@
         &mdash;
         <div class='inline'>
 <p>Path to the file with environment variables for the systemd service</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>conf_dir_mode</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Filemode</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;0755&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The mode for the configuration directory</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>conf_dir_purge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Purge unmanaged files in configuration directory</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>conf_dir_purge_ignore</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[&#39;cache-ispn.xml&#39;, &#39;README.md&#39;]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The files to ignore when unmanaged files are purged from the configuration directory</p>
 </div>
       
     </li>
@@ -1644,6 +1717,24 @@
   
     <li>
       
+        <span class='name'>partial_imports</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash used to define keycloak::partial_import resources</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>providers_purge</span>
       
       
@@ -1725,17 +1816,6 @@
         <pre class="lines">
 
 
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
 223
 224
 225
@@ -1932,21 +2012,47 @@
 416
 417
 418
-419</pre>
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 212</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 223</span>
 
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = &#39;21.0.1&#39;,
+  String $version               = &#39;22.0.0&#39;,
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
+  Array[String[1]] $java_package_dependencies = [],
   Enum[&#39;include&#39;,&#39;class&#39;] $java_declare_method = &#39;class&#39;,
-  String[1] $java_package = &#39;java-11-openjdk-devel&#39;,
-  Stdlib::Absolutepath $java_home = &#39;/usr/lib/jvm/java-11-openjdk&#39;,
-  Stdlib::Absolutepath $java_alternative_path = &#39;/usr/lib/jvm/java-11-openjdk/bin/java&#39;,
-  String[1] $java_alternative = &#39;/usr/lib/jvm/java-11-openjdk/bin/java&#39;,
+  String[1] $java_package = &#39;java-17-openjdk-devel&#39;,
+  Stdlib::Absolutepath $java_home = &#39;/usr/lib/jvm/java-17-openjdk&#39;,
+  Stdlib::Absolutepath $java_alternative_path = &#39;/usr/lib/jvm/java-17-openjdk/bin/java&#39;,
+  String[1] $java_alternative = &#39;/usr/lib/jvm/java-17-openjdk/bin/java&#39;,
   String $service_name          = &#39;keycloak&#39;,
   String $service_ensure        = &#39;running&#39;,
   Boolean $service_enable       = true,
@@ -1954,6 +2060,9 @@ class keycloak (
   Enum[&#39;start&#39;,&#39;start-dev&#39;] $start_command = &#39;start&#39;,
   Optional[String] $service_extra_opts = undef,
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
+  Stdlib::Filemode $conf_dir_mode = &#39;0755&#39;,
+  Boolean $conf_dir_purge = true,
+  Array $conf_dir_purge_ignore = [&#39;cache-ispn.xml&#39;, &#39;README.md&#39;],
   Keycloak::Configs $configs = {},
   Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
   Variant[Stdlib::Host, Enum[&#39;unset&#39;,&#39;UNSET&#39;]] $hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;],
@@ -2024,6 +2133,7 @@ class keycloak (
   Array $sssd_ifp_user_attributes = [],
   Boolean $restart_sssd = true,
   Hash $spi_deployments = {},
+  Hash $partial_imports = {},
   Boolean $providers_purge = true,
   Optional[String] $custom_config_content = undef,
   Optional[Variant[String, Array]] $custom_config_source = undef,
@@ -2036,10 +2146,12 @@ class keycloak (
   $download_url = pick($package_url, &quot;https://github.com/keycloak/keycloak/releases/download/${version}/keycloak-${version}.tar.gz&quot;)
 
   $install_base = pick($install_dir, &quot;/opt/keycloak-${keycloak::version}&quot;)
-  $admin_env = &quot;${install_base}/conf/admin.env&quot;
-  $truststore_file = &quot;${install_base}/conf/truststore.jks&quot;
+  $conf_dir = &quot;${install_base}/conf&quot;
+  $admin_env = &quot;${conf_dir}/admin.env&quot;
+  $truststore_file = &quot;${conf_dir}/truststore.jks&quot;
   $tmp_dir = &quot;${install_base}/tmp&quot;
   $providers_dir = &quot;${install_base}/providers&quot;
+  $wrapper_path = &quot;${keycloak::install_base}/bin/kcadm-wrapper.sh&quot;
 
   $default_config = {
     &#39;hostname&#39; =&gt; $hostname,
@@ -2083,15 +2195,15 @@ class keycloak (
     }
   } else {
     if $config[&#39;hostname&#39;] in [&#39;unset&#39;, &#39;UNSET&#39;] {
-      $hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;]
+      $effective_hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;]
     } else {
-      $hostname = $config[&#39;hostname&#39;]
+      $effective_hostname = $config[&#39;hostname&#39;]
     }
     $wrapper_protocol = &#39;https&#39;
     $wrapper_port = $config[&#39;https-port&#39;]
-    $wrapper_address = $hostname
+    $wrapper_address = $effective_hostname
     $validator_port = $config[&#39;https-port&#39;]
-    $validator_server = $hostname
+    $validator_server = $effective_hostname
     $validator_ssl = true
   }
   $wrapper_server = &quot;${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config[&#39;http-relative-path&#39;]}&quot;
@@ -2102,6 +2214,13 @@ class keycloak (
     $service_extra_opts,
   ].filter |$s| { $s =~ NotUndef }
   $service_start_cmd = join($service_start, &#39; &#39;)
+
+  $java_package_dependencies.each |$package| {
+    package { $package:
+      ensure =&gt; &#39;installed&#39;,
+      before =&gt; Class[&#39;java&#39;],
+    }
+  }
 
   if $java_declare_method == &#39;include&#39; {
     contain java

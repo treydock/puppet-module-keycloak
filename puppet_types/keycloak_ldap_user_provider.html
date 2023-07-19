@@ -6,7 +6,7 @@
 <title>
   Resource Type: keycloak_ldap_user_provider
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -87,6 +87,7 @@
 
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -226,6 +227,55 @@
         </div>
       </div>
       
+      
+    </li>
+    
+    <li>
+      <span class="name">cache_policy</span>
+      
+      <span class="default"> (defaults to: <em>DEFAULT</em>)</span>
+      
+      
+      <div class="docstring">
+        <div class="discussion">
+          
+<p>cachePolicy</p>
+
+        </div>
+      </div>
+      
+      
+      <div>
+        Supported values:
+        <ul>
+          
+          <li>
+            
+            DEFAULT
+          </li>
+          
+          <li>
+            
+            EVICT_DAILY
+          </li>
+          
+          <li>
+            
+            EVICT_WEEKLY
+          </li>
+          
+          <li>
+            
+            MAX_LIFESPAN
+          </li>
+          
+          <li>
+            
+            NO_CACHE
+          </li>
+          
+        </ul>
+      </div>
       
     </li>
     
@@ -692,7 +742,7 @@
     <li>
       <span class="name">use_truststore_spi</span>
       
-      <span class="default"> (defaults to: <em>ldapsOnly</em>)</span>
+      <span class="default"> (defaults to: <em>always</em>)</span>
       
       
       <div class="docstring">
@@ -711,11 +761,6 @@
           <li>
             
             always
-          </li>
-          
-          <li>
-            
-            ldapsOnly
           </li>
           
           <li>

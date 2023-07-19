@@ -6,7 +6,7 @@
 <title>
   Puppet Class: keycloak::resources
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -80,6 +80,7 @@
     
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -199,7 +200,10 @@
 106
 107
 108
-109</pre>
+109
+110
+111
+112</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/resources.pp', line 3</span>
@@ -309,6 +313,9 @@ class keycloak::resources {
   }
   $keycloak::spi_deployments.each |$name, $deployment| {
     keycloak::spi_deployment { $name: * =&gt; $deployment }
+  }
+  $keycloak::partial_imports.each |$name, $partial_import| {
+    keycloak::partial_import { $name: * =&gt; $partial_import }
   }
 }</pre>
       </td>

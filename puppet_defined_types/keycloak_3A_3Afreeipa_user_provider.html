@@ -6,7 +6,7 @@
 <title>
   Defined Type: keycloak::freeipa_user_provider
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -78,6 +78,7 @@
     
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -384,7 +385,7 @@ define keycloak::freeipa_user_provider (
     rdn_ldap_attribute                       =&gt; &#39;uid&#39;,
     search_scope                             =&gt; &#39;1&#39;,
     use_kerberos_for_password_authentication =&gt; &#39;false&#39;,
-    use_truststore_spi                       =&gt; &#39;ldapsOnly&#39;,
+    use_truststore_spi                       =&gt; &#39;always&#39;,
     user_object_classes                      =&gt; [&#39;inetOrgPerson&#39;, &#39; organizationalPerson&#39;],
     username_ldap_attribute                  =&gt; &#39;uid&#39;,
     users_dn                                 =&gt; $users_dn,

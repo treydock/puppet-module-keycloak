@@ -6,7 +6,7 @@
 <title>
   Puppet Class: keycloak::config
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -79,6 +79,7 @@
 
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -164,7 +165,19 @@
 71
 72
 73
-74</pre>
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 2</span>
@@ -185,12 +198,24 @@ class keycloak::config {
   # - $keycloak::admin_user_password
   file { &#39;kcadm-wrapper.sh&#39;:
     ensure    =&gt; &#39;file&#39;,
-    path      =&gt; &quot;${keycloak::install_base}/bin/kcadm-wrapper.sh&quot;,
+    path      =&gt; $keycloak::wrapper_path,
     owner     =&gt; $keycloak::user,
     group     =&gt; $keycloak::group,
     mode      =&gt; &#39;0750&#39;,
     content   =&gt; template(&#39;keycloak/kcadm-wrapper.sh.erb&#39;),
     show_diff =&gt; false,
+  }
+
+  file { $keycloak::conf_dir:
+    ensure  =&gt; &#39;directory&#39;,
+    owner   =&gt; $keycloak::user,
+    group   =&gt; $keycloak::group,
+    mode    =&gt; $keycloak::conf_dir_mode,
+    purge   =&gt; $keycloak::conf_dir_purge,
+    force   =&gt; $keycloak::conf_dir_purge,
+    recurse =&gt; $keycloak::conf_dir_purge,
+    ignore  =&gt; $keycloak::conf_dir_purge_ignore,
+    notify  =&gt; Class[&#39;keycloak::service&#39;],
   }
 
   file { $keycloak::admin_env:
@@ -212,7 +237,7 @@ class keycloak::config {
   } else {
     $config_content = template(&#39;keycloak/keycloak.conf.erb&#39;)
   }
-  file { &quot;${keycloak::install_base}/conf/keycloak.conf&quot;:
+  file { &quot;${keycloak::conf_dir}/keycloak.conf&quot;:
     owner     =&gt; $keycloak::user,
     group     =&gt; $keycloak::group,
     mode      =&gt; &#39;0600&#39;,

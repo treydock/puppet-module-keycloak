@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.28
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -79,6 +79,8 @@
 <p><a href="#keycloak">Keycloak</a></p>
 </li><li>
 <p><a href="#deploy-spi">Deploy SPI</a></p>
+</li><li>
+<p><a href="#partial-import">Partial Import</a></p>
 </li><li>
 <p><a href="#keycloak_realm">keycloak_realm</a></p>
 </li><li>
@@ -283,7 +285,7 @@ keycloak_ldap_mapper { &quot;first name for LDAP on test&quot;:
 
 <p>Currently this module supports Keycloak version 12.x. This module may work on earlier versions but this is the only version tested.</p>
 
-<p>| Keycloak Version | Keycloak Puppet module versions | | —————- | ——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x - 8.x | 4.x - 5.x | | 8.x - 12.x | 6.x | | 12.x - 16.x | 7.x | | 18.x | 8.x | | 19.x - 21.x | 9.x | | 21.x | 10.x |</p>
+<p>| Keycloak Version | Keycloak Puppet module versions | | —————- | ——————————- | | 3.x | 2.x | | 4.x - 6.x | 3.x | | 6.x - 8.x | 4.x - 5.x | | 8.x - 12.x | 6.x | | 12.x - 16.x | 7.x | | 18.x | 8.x | | 19.x - 21.x | 9.x | | 21.x | 10.x | | 22.x | 11.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
@@ -297,17 +299,17 @@ keycloak_ldap_mapper { &quot;first name for LDAP on test&quot;:
 <p>Install a specific version of Keycloak.</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  version =&gt; &#39;18.0.0&#39;,
+  version =&gt; &#39;22.0.0&#39;,
   db      =&gt; &#39;mariadb&#39;,
 }
 </code></pre>
 
 <p>Upgrading Keycloak version works by changing <code>version</code> parameter as long as the <code>db</code> parameter is not the default of <code>dev-file</code>. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to <code>/opt/keycloak</code>, applying all changes to new version and then restarting the <code>keycloak</code> service.</p>
 
-<p>If the previous <code>version</code> was <code>18.0.0</code> using the following will upgrade to <code>19.0.0</code>:</p>
+<p>If the previous <code>version</code> was <code>22.0.0</code> using the following will upgrade to <code>23.0.0</code>:</p>
 
 <pre class="code ruby"><code class="ruby">class { &#39;keycloak&#39;:
-  version =&gt; &#39;19.0.0&#39;,
+  version =&gt; &#39;23.0.0&#39;,
   db      =&gt; &#39;mariadb&#39;,
 }
 </code></pre>
@@ -384,7 +386,7 @@ apache::vhost { &#39;idp.example.com&#39;:
 <pre class="code ruby"><code class="ruby">keycloak::spi_deployment { &#39;duo-spi&#39;:
   ensure        =&gt; &#39;present&#39;,
   deployed_name =&gt; &#39;DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar&#39;,
-  source        =&gt; &#39;https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.4/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.4.jar&#39;,
+  source        =&gt; &#39;https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.5/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.5.jar&#39;,
 }
 </code></pre>
 
@@ -405,6 +407,21 @@ apache::vhost { &#39;idp.example.com&#39;:
   ],
 }
 </code></pre>
+
+<h3 id="label-Partial+Import">Partial Import</h3>
+
+<p>This module supports <a href="https://www.keycloak.org/docs/latest/server_admin/index.html#importing-a-realm-from-exported-json-file">Importing data from exported JSON files</a> via the <code>keycloak::partial_import</code> defined type.</p>
+
+<p>Example of importing a JSON file into the <code>test</code> realm:</p>
+
+<pre class="code ruby"><code class="ruby">keycloak::partial_import { &#39;mysettings&#39;:
+  realm              =&gt; &#39;test&#39;,
+  if_resource_exists =&gt; &#39;SKIP&#39;,
+  source             =&gt; &#39;puppet:///modules/profile/keycloak/mysettings.json&#39;,
+}
+</code></pre>
+
+<p><strong>NOTE:</strong> By default the <code>keycloak::partial_import</code> defined type will require the <code>Keycloak_realm</code> resource used for the <code>realm</code> parameter. If you manage the realm a different way, pass <code>require_realm =&gt; false</code>.</p>
 
 <h3 id="label-keycloak_realm">keycloak_realm</h3>
 
@@ -652,17 +669,11 @@ keycloak_flow_execution { &#39;duo-universal under form-browser-with-duo on test
 
 <p>This module has been tested on:</p>
 <ul><li>
-<p>RedHat/CentOS 7 x86_64</p>
-</li><li>
 <p>RedHat/Rocky/AlmaLinux 8 x86_64</p>
 </li><li>
 <p>RedHat/Rocky/AlmaLinux 9 x86_64</p>
 </li><li>
-<p>Debian 10 x86_64</p>
-</li><li>
 <p>Debian 11 x86_64</p>
-</li><li>
-<p>Ubuntu 18.04 x86_64</p>
 </li><li>
 <p>Ubuntu 20.04 x86_64</p>
 </li><li>
