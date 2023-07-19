@@ -24,7 +24,7 @@ jobs:
             puppet: 8
             fixtures: .fixtures.yml
             allow_failure: false
-          - ruby: 2.7.6
+          - ruby: 2.7.7
             puppet: 7
             fixtures: .fixtures-latest.yml
             allow_failure: true
@@ -56,10 +56,8 @@ jobs:
       fail-fast: false
       matrix:
         set:
-          - "el7"
           - "el8"
           - "el9"
-          - "debian-10"
           - "debian-11"
           - "ubuntu-2004"
           - "ubuntu-2204"
@@ -67,17 +65,17 @@ jobs:
           - "puppet7"
           - "puppet8"
         keycloak_version:
-          - "21.0.1"
+          - "22.0.0"
         keycloak_full:
           - "no"
         include:
           - set: "el8"
             puppet: "puppet7"
-            keycloak_version: "21.0.1"
+            keycloak_version: "22.0.0"
             keycloak_full: "yes"
           - set: "el8"
             puppet: "puppet8"
-            keycloak_version: "21.0.1"
+            keycloak_version: "22.0.0"
             keycloak_full: "yes"
     env:
       BUNDLE_WITHOUT: development:release

@@ -79,8 +79,8 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     }.to raise_error(%r{foo})
   end
 
-  it 'defaults to use_truststore_spi=ldapsOnly' do
-    expect(resource[:use_truststore_spi]).to eq('ldapsOnly')
+  it 'defaults to use_truststore_spi=always' do
+    expect(resource[:use_truststore_spi]).to eq('always')
   end
 
   it 'does not allow invalid use_truststore_spi' do

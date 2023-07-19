@@ -73,8 +73,8 @@ Manage Keycloak LDAP user providers
 
   newproperty(:use_truststore_spi) do
     desc 'useTruststoreSpi'
-    defaultto 'ldapsOnly'
-    newvalues('always', 'ldapsOnly', 'never')
+    defaultto 'always'
+    newvalues('always', 'never')
     munge { |v| v }
   end
 

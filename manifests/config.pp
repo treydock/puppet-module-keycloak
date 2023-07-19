@@ -27,11 +27,11 @@ class keycloak::config {
     ensure  => 'directory',
     owner   => $keycloak::user,
     group   => $keycloak::group,
-    mode    => '0755',
+    mode    => $keycloak::conf_dir_mode,
     purge   => $keycloak::conf_dir_purge,
     force   => $keycloak::conf_dir_purge,
     recurse => $keycloak::conf_dir_purge,
-    ignore  => ['cache-ispn.xml', 'README.md'],
+    ignore  => $keycloak::conf_dir_purge_ignore,
     notify  => Class['keycloak::service'],
   }
 
