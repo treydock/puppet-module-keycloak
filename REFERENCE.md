@@ -189,7 +189,7 @@ Default value: `'22.0.0'`
 
 ##### <a name="-keycloak--package_url"></a>`package_url`
 
-Data type: `Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]]`
+Data type: `Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl, Stdlib::Absolutepath]]`
 
 URL of the Keycloak download.
 Default is based on version.

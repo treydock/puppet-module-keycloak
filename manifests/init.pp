@@ -223,7 +223,7 @@
 class keycloak (
   Boolean $manage_install       = true,
   String $version               = '22.0.0',
-  Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]] $package_url= undef,
+  Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl, Stdlib::Absolutepath]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Array[String[1]] $java_package_dependencies = [],
   Enum['include','class'] $java_declare_method = 'class',
