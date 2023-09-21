@@ -240,7 +240,7 @@ class keycloak (
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Stdlib::Filemode $conf_dir_mode = '0755',
   Boolean $conf_dir_purge = true,
-  Array $conf_dir_purge_ignore = ['cache-ispn.xml', 'README.md'],
+  Array $conf_dir_purge_ignore = ['cache-ispn.xml', 'README.md', 'truststore.jks'],
   Keycloak::Configs $configs = {},
   Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
   Variant[Stdlib::Host, Enum['unset','UNSET']] $hostname = $facts['networking']['fqdn'],
