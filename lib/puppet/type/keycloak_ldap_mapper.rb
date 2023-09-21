@@ -306,7 +306,7 @@ Manage Keycloak LDAP attribute mappers
   autorequire(:keycloak_ldap_user_provider) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_ldap_user_provider'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_ldap_user_provider)
 
       if self[:ldap] == resource[:resource_name] && self[:realm] == resource[:realm]
         requires << resource.name

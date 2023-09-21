@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'keycloak::partial_import' do
   on_supported_os.each do |os, facts|
-    context "on #{os}" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+    context "when #{os}" do # rubocop:disable RSpec/MultipleMemoizedHelpers
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
