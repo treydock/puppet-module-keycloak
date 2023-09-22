@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'keycloak::freeipa_ldap_mappers' do
   on_supported_os.each do |os, _facts|
-    context "on #{os}" do
+    context "when #{os}" do
       let(:title) { 'ipa.example.org' }
       let(:params) do
         {

@@ -215,7 +215,7 @@ Manage Keycloak protocol mappers
   autorequire(:keycloak_client) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_client'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_client)
 
       if resource[:client_id] == self[:client]
         requires << resource.name

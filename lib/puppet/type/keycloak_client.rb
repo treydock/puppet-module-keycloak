@@ -245,7 +245,7 @@ Manage Keycloak clients
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_client_scope'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_client_scope)
 
       if self[:default_client_scopes].include?(resource[:resource_name])
         requires << resource.name
@@ -260,7 +260,7 @@ Manage Keycloak clients
   autorequire(:keycloak_protocol_mapper) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_protocol_mapper'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_protocol_mapper)
 
       if self[:default_client_scopes].include?(resource[:client_scope])
         requires << resource.name
@@ -275,7 +275,7 @@ Manage Keycloak clients
   autorequire(:keycloak_flow) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_flow)
       next if self[:realm] != resource[:realm]
 
       if self[:browser_flow] == resource[:alias]

@@ -8,7 +8,7 @@ module PuppetX # rubocop:disable Style/ClassAndModuleChildren
         autorequire(:keycloak_conn_validator) do
           requires = []
           catalog.resources.each do |resource|
-            if resource.class.to_s == 'Puppet::Type::Keycloak_conn_validator'
+            if resource.instance_of?(::Puppet::Type::Keycloak_conn_validator)
               requires << resource.name
             end
           end

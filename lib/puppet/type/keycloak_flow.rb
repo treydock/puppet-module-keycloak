@@ -141,7 +141,7 @@ Manage a Keycloak flow
   autorequire(:keycloak_flow) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_flow)
       next if self[:realm] != resource[:realm]
       next if self[:top_level] == :true
 
@@ -158,7 +158,7 @@ Manage a Keycloak flow
   autorequire(:keycloak_flow_execution) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow_execution'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_flow_execution)
       next if self[:realm] != resource[:realm]
       next if self[:top_level] == :true
 
@@ -172,7 +172,7 @@ Manage a Keycloak flow
   autorequire(:keycloak_resource_validator) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_resource_validator'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_resource_validator)
 
       resource[:dependent_resources].to_a.each do |dep|
         requires << resource if dep == "Keycloak_flow[#{self[:name]}]"
