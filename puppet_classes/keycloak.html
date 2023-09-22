@@ -445,7 +445,7 @@
         <span class='type'>(<tt>Array</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>[&#39;cache-ispn.xml&#39;, &#39;README.md&#39;]</tt>)</em>
+        <em class="default">(defaults to: <tt>[&#39;cache-ispn.xml&#39;, &#39;README.md&#39;, &#39;truststore.jks&#39;]</tt>)</em>
       
       
         &mdash;
@@ -2062,7 +2062,7 @@ class keycloak (
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Stdlib::Filemode $conf_dir_mode = &#39;0755&#39;,
   Boolean $conf_dir_purge = true,
-  Array $conf_dir_purge_ignore = [&#39;cache-ispn.xml&#39;, &#39;README.md&#39;],
+  Array $conf_dir_purge_ignore = [&#39;cache-ispn.xml&#39;, &#39;README.md&#39;, &#39;truststore.jks&#39;],
   Keycloak::Configs $configs = {},
   Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
   Variant[Stdlib::Host, Enum[&#39;unset&#39;,&#39;UNSET&#39;]] $hostname = $facts[&#39;networking&#39;][&#39;fqdn&#39;],
