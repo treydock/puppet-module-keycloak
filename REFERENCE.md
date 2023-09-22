@@ -338,7 +338,7 @@ Data type: `Array`
 
 The files to ignore when unmanaged files are purged from the configuration directory
 
-Default value: `['cache-ispn.xml', 'README.md']`
+Default value: `['cache-ispn.xml', 'README.md', 'truststore.jks']`
 
 ##### <a name="-keycloak--configs"></a>`configs`
 
