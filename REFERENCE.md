@@ -3657,7 +3657,9 @@ smtpServer host
 
 ##### `smtp_server_password`
 
-smtpServer password
+smtpServer password.
+Puppet has no way to check current value and will therefore emit a warning
+which can be suppressed by setting no_password_warning to true
 
 ##### `smtp_server_port`
 
@@ -3896,6 +3898,7 @@ The following parameters are available in the `keycloak_realm` type.
 * [`id`](#-keycloak_realm--id)
 * [`manage_roles`](#-keycloak_realm--manage_roles)
 * [`name`](#-keycloak_realm--name)
+* [`no_password_warning`](#-keycloak_realm--no_password_warning)
 * [`provider`](#-keycloak_realm--provider)
 
 ##### <a name="-keycloak_realm--id"></a>`id`
@@ -3915,6 +3918,14 @@ Default value: `true`
 namevar
 
 The realm name
+
+##### <a name="-keycloak_realm--no_password_warning"></a>`no_password_warning`
+
+Valid values: `true`, `false`, `yes`, `no`
+
+set this to true, to not display the puppet warning that we cannot ensure the smtp_server_password
+
+Default value: `false`
 
 ##### <a name="-keycloak_realm--provider"></a>`provider`
 
