@@ -257,6 +257,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
   describe 'boolean properties' do
     # Test boolean properties
     [
+      :no_bind_credential_warning,
       :enabled,
       :import_enabled,
       :trust_email,

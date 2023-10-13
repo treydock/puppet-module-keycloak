@@ -2923,7 +2923,9 @@ Default value: `1000`
 
 ##### `bind_credential`
 
-bindCredential
+bindCredential.
+Puppet has no way to check current value and will therefore emit a warning
+which can be suppressed by setting no_bind_credential_warning to true
 
 ##### `bind_dn`
 
@@ -3089,6 +3091,7 @@ The following parameters are available in the `keycloak_ldap_user_provider` type
 
 * [`id`](#-keycloak_ldap_user_provider--id)
 * [`name`](#-keycloak_ldap_user_provider--name)
+* [`no_bind_credential_warning`](#-keycloak_ldap_user_provider--no_bind_credential_warning)
 * [`provider`](#-keycloak_ldap_user_provider--provider)
 * [`realm`](#-keycloak_ldap_user_provider--realm)
 * [`resource_name`](#-keycloak_ldap_user_provider--resource_name)
@@ -3102,6 +3105,14 @@ Id
 namevar
 
 The LDAP user provider name
+
+##### <a name="-keycloak_ldap_user_provider--no_bind_credential_warning"></a>`no_bind_credential_warning`
+
+Valid values: `true`, `false`, `yes`, `no`
+
+set this to true, to not display the puppet warning that we cannot ensure the smtp_server_password
+
+Default value: `false`
 
 ##### <a name="-keycloak_ldap_user_provider--provider"></a>`provider`
 
