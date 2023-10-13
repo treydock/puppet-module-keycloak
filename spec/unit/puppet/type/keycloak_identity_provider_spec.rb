@@ -156,6 +156,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
   describe 'boolean properties' do
     # Test boolean properties
     [
+      :no_client_secret_warning,
       :enabled,
       :trust_email,
       :store_token,

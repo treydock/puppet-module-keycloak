@@ -2462,7 +2462,9 @@ clientId
 
 ##### `client_secret`
 
-clientSecret
+clientSecret.
+Puppet has no way to check current value and will therefore emit a warning
+which can be suppressed by setting no_client_secret_warning to true
 
 ##### `default_scope`
 
@@ -2627,6 +2629,7 @@ The following parameters are available in the `keycloak_identity_provider` type.
 * [`alias`](#-keycloak_identity_provider--alias)
 * [`internal_id`](#-keycloak_identity_provider--internal_id)
 * [`name`](#-keycloak_identity_provider--name)
+* [`no_client_secret_warning`](#-keycloak_identity_provider--no_client_secret_warning)
 * [`provider`](#-keycloak_identity_provider--provider)
 * [`provider_id`](#-keycloak_identity_provider--provider_id)
 * [`realm`](#-keycloak_identity_provider--realm)
@@ -2644,6 +2647,14 @@ internalId. Defaults to "`alias`-`realm`"
 namevar
 
 The identity provider name
+
+##### <a name="-keycloak_identity_provider--no_client_secret_warning"></a>`no_client_secret_warning`
+
+Valid values: `true`, `false`, `yes`, `no`
+
+set this to true, to not display the puppet warning that we cannot ensure the client_secret
+
+Default value: `false`
 
 ##### <a name="-keycloak_identity_provider--provider"></a>`provider`
 
