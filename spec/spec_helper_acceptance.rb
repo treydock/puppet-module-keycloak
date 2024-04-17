@@ -9,7 +9,8 @@ dir = __dir__
 Dir["#{dir}/acceptance/shared_examples/**/*.rb"].sort.each { |f| require f }
 require 'spec_helper_acceptance_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_acceptance_local.rb'))
 
-run_puppet_install_helper
+run_puppet_install_helper unless ENV['BEAKER_set'] == 'debian-12'
+on hosts, 'apt install -y puppet-agent' if ENV['BEAKER_set'] == 'debian-12'
 install_module_on(hosts)
 install_module_dependencies_on(hosts)
 
