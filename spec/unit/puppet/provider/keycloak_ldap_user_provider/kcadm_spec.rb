@@ -53,6 +53,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider).provider(:kcadm) do
     it 'creates a realm' do
       temp = Tempfile.new('keycloak_component')
       allow(Tempfile).to receive(:new).with('keycloak_component').and_return(temp)
+      allow(resource.provider).to receive(:get_parent_id).with('test').and_return('test')
       expect(resource.provider).to receive(:kcadm).with('create', 'components', 'test', temp.path)
       resource.provider.create
       property_hash = resource.provider.instance_variable_get('@property_hash')
