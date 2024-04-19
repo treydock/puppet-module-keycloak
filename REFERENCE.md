@@ -3982,7 +3982,6 @@ Struct[{
     Optional['log-file'] => Stdlib::Absolutepath,
     Optional['log-file-format'] => String[1],
     Optional['log-file-output'] => Enum['default','json'],
-    Optional['log-level'] => String[1],
     Optional['log-gelf-facility'] => String[1],
     Optional['log-gelf-host'] => Stdlib::Host,
     Optional['log-gelf-include-location'] => Boolean,

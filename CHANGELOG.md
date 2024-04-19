@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v11.0.2](https://github.com/treydock/puppet-module-keycloak/tree/v11.0.2) (2024-04-19)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.0.1...v11.0.2)
+
+### Added
+
+- allow absolute path for package\_url parameter [\#305](https://github.com/treydock/puppet-module-keycloak/pull/305) ([trefzer](https://github.com/trefzer))
+
+### Fixed
+
+- Bugfix: remove double declaration of "log-level" [\#308](https://github.com/treydock/puppet-module-keycloak/pull/308) ([sircubbi](https://github.com/sircubbi))
+- Fix \#306 - Retrieve parentId by realm name [\#307](https://github.com/treydock/puppet-module-keycloak/pull/307) ([TuningYourCode](https://github.com/TuningYourCode))
+
 ## [v11.0.1](https://github.com/treydock/puppet-module-keycloak/tree/v11.0.1) (2023-09-22)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.0.0...v11.0.1)
@@ -352,7 +365,7 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Added
 
-- Added support for bearer-only configuration of keycloak\_client [\#207](https://github.com/treydock/puppet-module-keycloak/pull/207) ([verrydtj](https://github.com/verrydtj))
+- Added support for bearer-only configuration of keycloak\_client [\#207](https://github.com/treydock/puppet-module-keycloak/pull/207) ([ghost](https://github.com/ghost))
 
 ## [v7.7.1](https://github.com/treydock/puppet-module-keycloak/tree/v7.7.1) (2021-08-23)
 
