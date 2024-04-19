@@ -57,13 +57,29 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
     end
   end
 
+  def get_parent_id(realm)
+    parent_id = nil
+    output = kcadm('get', 'realms', realm, nil, ['id'])
+    Puppet.debug("#{realm} realms: #{output}")
+    begin
+      data = JSON.parse(output)
+    rescue JSON::ParserError
+      Puppet.debug('Unable to parse output from kcadm get realms')
+      data = []
+    end
+    data.each do |d|
+      parent_id = d['id']
+    end
+    parent_id
+  end
+
   def create
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
     data = {}
     data[:id] = resource[:id] || name_uuid(resource[:name])
     data[:name] = resource[:resource_name]
-    data[:parentId] = resource[:realm]
+    data[:parentId] = get_parent_id(resource[:realm]) || resource[:realm]
     data[:providerId] = 'ldap'
     data[:providerType] = 'org.keycloak.storage.UserStorageProvider'
     data[:config] = {}
