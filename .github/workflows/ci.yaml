@@ -66,6 +66,7 @@ jobs:
           - "puppet8"
         keycloak_version:
           - "22.0.0"
+          - "24.0.3"
         keycloak_full:
           - "no"
         include:
@@ -76,6 +77,14 @@ jobs:
           - set: "el8"
             puppet: "puppet8"
             keycloak_version: "22.0.0"
+            keycloak_full: "yes"
+          - set: "el8"
+            puppet: "puppet7"
+            keycloak_version: "24.0.3"
+            keycloak_full: "yes"
+          - set: "el8"
+            puppet: "puppet8"
+            keycloak_version: "24.0.3"
             keycloak_full: "yes"
     env:
       BUNDLE_WITHOUT: development:release

@@ -175,7 +175,7 @@ This module may work on earlier versions but this is the only version tested.
 | 18.x             | 8.x                             |
 | 19.x - 21.x      | 9.x                             |
 | 21.x             | 10.x                            |
-| 22.x             | 11.x                            |
+| 22.x - 24.x      | 11.x                            |
 
 ## Usage
 
