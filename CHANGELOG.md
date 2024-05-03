@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v11.1.1](https://github.com/treydock/puppet-module-keycloak/tree/v11.1.1) (2024-05-03)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.1.0...v11.1.1)
+
+### Fixed
+
+- Allow mapped\_group\_attributes to be removed by defaulting to absent [\#311](https://github.com/treydock/puppet-module-keycloak/pull/311) ([treydock](https://github.com/treydock))
+
 ## [v11.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v11.1.0) (2024-04-19)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.0.2...v11.1.0)

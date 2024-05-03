@@ -2686,6 +2686,8 @@ ldap.attribute
 
 mapped.group.attributes, only for `type` of `group-ldap-mapper`
 
+Default value: `absent`
+
 ##### `memberof_ldap_attribute`
 
 memberof.ldap.attribute, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`
