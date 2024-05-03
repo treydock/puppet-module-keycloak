@@ -32,9 +32,10 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         roles_ldap_filter => '(!(cn=P*))',
       }
       keycloak_ldap_mapper { 'group for LDAP on test':
-        type               => 'group-ldap-mapper',
-        groups_dn          => 'ou=Groups,dc=example,dc=com',
-        groups_ldap_filter => '(cn=P*)',
+        type                    => 'group-ldap-mapper',
+        groups_dn               => 'ou=Groups,dc=example,dc=com',
+        groups_ldap_filter      => '(cn=P*)',
+        mapped_group_attributes => 'ou',
       }
       PUPPET_PP
 
@@ -92,6 +93,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         expect(d['providerId']).to eq('group-ldap-mapper')
         expect(d['config']['groups.dn']).to eq(['ou=Groups,dc=example,dc=com'])
         expect(d['config']['groups.ldap.filter']).to eq(['(cn=P*)'])
+        expect(d['config']['mapped.group.attributes']).to eq(['ou'])
       end
     end
   end
@@ -174,6 +176,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full d
         expect(d['providerId']).to eq('group-ldap-mapper')
         expect(d['config']['groups.dn']).to eq(['ou=Groups,dc=example,dc=com'])
         expect(d['config']['groups.ldap.filter']).to eq(['(cn=P0*)'])
+        expect(d['config']['mapped.group.attributes']).to be_nil
       end
     end
   end

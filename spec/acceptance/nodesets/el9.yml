@@ -1,10 +1,10 @@
 HOSTS:
-  almalinux-9:
+  el9:
     roles:
       - agent
     platform: el-9-x86_64
     hypervisor: docker
-    image: almalinux:9
+    image: rockylinux:9
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'

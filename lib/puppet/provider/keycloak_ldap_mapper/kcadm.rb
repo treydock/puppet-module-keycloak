@@ -72,7 +72,10 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
                 else
                   property.to_s.tr('_', '.')
                 end
-          next unless d['config'].key?(key)
+          unless d['config'].key?(key)
+            component[property.to_sym] = :absent
+            next
+          end
 
           value = d['config'][key][0]
           if !!value == value # rubocop:disable Style/DoubleNegation
@@ -130,6 +133,7 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
     data[:config] = {}
     type_properties.each do |property|
       next unless resource[property.to_sym]
+      next if resource[property.to_sym].to_s == 'absent'
 
       key = if property == :ldap_attribute && resource[:type] == 'full-name-ldap-mapper'
               'ldap.full.name.attribute'
@@ -194,7 +198,11 @@ Puppet::Type.type(:keycloak_ldap_mapper).provide(:kcadm, parent: Puppet::Provide
               end
         next unless type_supported_properties(resource[:type]).include?(property.to_sym)
 
-        data[:config][key] = [resource[property.to_sym]]
+        value = [resource[property.to_sym]]
+        if @property_flush[property.to_sym].to_s == 'absent'
+          value = ['']
+        end
+        data[:config][key] = value
       end
 
       t = Tempfile.new('keycloak_component')

@@ -217,6 +217,7 @@ Manage Keycloak LDAP attribute mappers
 
   newproperty(:mapped_group_attributes) do
     desc 'mapped.group.attributes, only for `type` of `group-ldap-mapper`'
+    defaultto(:absent)
   end
 
   newproperty(:groups_ldap_filter) do
