@@ -214,7 +214,8 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
   end
 
   defaults = {
-    read_only: :true
+    read_only: :true,
+    mapped_group_attributes: :absent
   }
 
   describe 'basic properties' do
