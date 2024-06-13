@@ -214,9 +214,15 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         default_locale                    => 'en',
         supported_locales                 => ['en','de'],
         custom_properties                 => {
-          'failureFactor'      => 60,
           'revokeRefreshToken' => true,
         },
+        failure_factor                    => 60,
+        permanent_lockout                 => true,
+        max_failure_wait_seconds          => 999,
+        minimum_quick_login_wait_seconds  => 40,
+        wait_increment_seconds            => 10,
+        quick_login_check_milli_seconds   => 10,
+        max_delta_time_seconds            => 3600,
       }
       PUPPET_PP
 
@@ -263,6 +269,12 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['adminTheme']).to eq('keycloak.v2')
         expect(data['emailTheme']).to eq('keycloak.v2')
         expect(data['failureFactor']).to eq(60)
+        expect(data['permanentLockout']).to eq(true)
+        expect(data['maxFailureWaitSeconds']).to eq(999)
+        expect(data['minimumQuickLoginWaitSeconds']).to eq(40)
+        expect(data['waitIncrementSeconds']).to eq(10)
+        expect(data['quickLoginCheckMilliSeconds']).to eq(10)
+        expect(data['maxDeltaTimeSeconds']).to eq(3600)
         expect(data['revokeRefreshToken']).to eq(true)
         expect(data['internationalizationEnabled']).to eq(true)
         expect(data['defaultLocale']).to eq('en')
