@@ -393,6 +393,61 @@ Manage Keycloak realms
     end
   end
 
+  newproperty(:web_authn_policy_rp_entity_name) do
+    desc 'webAuthnPolicyRpEntityName'
+    defaultto 'keycloak'
+  end
+
+  newproperty(:web_authn_policy_signature_algorithms, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicySignatureAlgorithms'
+    defaultto ['ES256']
+  end
+
+  newproperty(:web_authn_policy_rp_id) do
+    desc 'webAuthnPolicyRpId'
+    defaultto ''
+  end
+
+  newproperty(:web_authn_policy_attestation_conveyance_preference) do
+    desc 'webAuthnPolicyAttestationConveyancePreference'
+    newvalues('none', 'direct', 'indirect', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_authenticator_attachment) do
+    desc 'webAuthnPolicyAuthenticatorAttachment'
+    newvalues('platform', 'cross-platform', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_require_resident_key) do
+    desc 'webAuthnPolicyRequireResidentKey'
+    newvalues('No', 'Yes', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_user_verification_requirement) do
+    desc 'webAuthnPolicyUserVerificationRequirement'
+    newvalues('required', 'preferred', 'discouraged', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_create_timeout, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'webAuthnPolicyCreateTimeout'
+    defaultto 0
+  end
+
+  newproperty(:web_authn_policy_avoid_same_authenticator_register, boolean: true) do
+    desc 'webAuthnPolicyAvoidSameAuthenticatorRegister'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:web_authn_policy_acceptable_aaguids, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicyAcceptableAaguids'
+    defaultto []
+  end
+
   newproperty(:custom_properties) do
     desc 'custom properties to pass as realm configurations'
     defaultto {}
