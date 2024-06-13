@@ -338,6 +338,42 @@ Manage Keycloak realms
     newvalues(:true, :false)
   end
 
+  newproperty(:permanent_lockout, boolean: true) do
+    desc 'permanentLockout'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:max_failure_wait_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'maxFailureWaitSeconds'
+    defaultto 900
+  end
+
+  newproperty(:minimum_quick_login_wait_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'minimumQuickLoginWaitSeconds'
+    defaultto 60
+  end
+
+  newproperty(:wait_increment_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'waitIncrementSeconds'
+    defaultto 60
+  end
+
+  newproperty(:quick_login_check_milli_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'quickLoginCheckMilliSeconds'
+    defaultto 1_000
+  end
+
+  newproperty(:max_delta_time_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'maxDeltaTimeSeconds'
+    defaultto 43_200
+  end
+
+  newproperty(:failure_factor, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'failureFactor'
+    defaultto 30
+  end
+
   newparam(:manage_roles, boolean: true) do
     desc 'Manage realm roles'
     newvalues(:true, :false)
