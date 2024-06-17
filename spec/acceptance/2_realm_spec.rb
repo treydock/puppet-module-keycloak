@@ -239,6 +239,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         web_authn_policy_create_timeout                    => 600,
         web_authn_policy_avoid_same_authenticator_register => true,
         web_authn_policy_acceptable_aaguids                => ['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'],
+        web_authn_policy_extra_origins                     => ['https://example.com'],
         web_authn_policy_passwordless_rp_entity_name                    => 'Keycloak',
         web_authn_policy_passwordless_signature_algorithms              => ['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'],
         web_authn_policy_passwordless_rp_id                             => 'https://example.com',
@@ -249,6 +250,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         web_authn_policy_passwordless_create_timeout                    => 600,
         web_authn_policy_passwordless_avoid_same_authenticator_register => true,
         web_authn_policy_passwordless_acceptable_aaguids                => ['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'],
+        web_authn_policy_passwordless_extra_origins                     => ['https://example.com'],
       }
       PUPPET_PP
 
@@ -321,6 +323,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['webAuthnPolicyCreateTimeout']).to eq(600)
         expect(data['webAuthnPolicyAvoidSameAuthenticatorRegister']).to eq(true)
         expect(data['webAuthnPolicyAcceptableAaguids']).to eq(['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'])
+        expect(data['webAuthnPolicyExtraOrigins']).to eq(['https://example.com'])
         expect(data['webAuthnPolicyPasswordlessRpEntityName']).to eq('Keycloak')
         expect(data['webAuthnPolicyPasswordlessSignatureAlgorithms']).to eq(['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'])
         expect(data['webAuthnPolicyPasswordlessRpId']).to eq('https://example.com')
@@ -331,6 +334,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['webAuthnPolicyPasswordlessCreateTimeout']).to eq(600)
         expect(data['webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister']).to eq(true)
         expect(data['webAuthnPolicyPasswordlessAcceptableAaguids']).to eq(['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'])
+        expect(data['webAuthnPolicyPasswordlessExtraOrigins']).to eq(['https://example.com'])
       end
     end
 
