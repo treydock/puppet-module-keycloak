@@ -448,6 +448,61 @@ Manage Keycloak realms
     defaultto []
   end
 
+  newproperty(:web_authn_policy_passwordless_rp_entity_name) do
+    desc 'webAuthnPolicyPasswordlessRpEntityName'
+    defaultto 'keycloak'
+  end
+
+  newproperty(:web_authn_policy_passwordless_signature_algorithms, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicyPasswordlessSignatureAlgorithms'
+    defaultto ['ES256']
+  end
+
+  newproperty(:web_authn_policy_passwordless_rp_id) do
+    desc 'webAuthnPolicyPasswordlessRpId'
+    defaultto ''
+  end
+
+  newproperty(:web_authn_policy_passwordless_attestation_conveyance_preference) do
+    desc 'webAuthnPolicyPasswordlessAttestationConveyancePreference'
+    newvalues('none', 'direct', 'indirect', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_passwordless_authenticator_attachment) do
+    desc 'webAuthnPolicyPasswordlessAuthenticatorAttachment'
+    newvalues('platform', 'cross-platform', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_passwordless_require_resident_key) do
+    desc 'webAuthnPolicyPasswordlessRequireResidentKey'
+    newvalues('No', 'Yes', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_passwordless_user_verification_requirement) do
+    desc 'webAuthnPolicyPasswordlessUserVerificationRequirement'
+    newvalues('required', 'preferred', 'discouraged', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_passwordless_create_timeout, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'webAuthnPolicyPasswordlessCreateTimeout'
+    defaultto 0
+  end
+
+  newproperty(:web_authn_policy_passwordless_avoid_same_authenticator_register, boolean: true) do
+    desc 'webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:web_authn_policy_passwordless_acceptable_aaguids, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicyPasswordlessAcceptableAaguids'
+    defaultto []
+  end
+
   newproperty(:custom_properties) do
     desc 'custom properties to pass as realm configurations'
     defaultto {}
