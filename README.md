@@ -162,11 +162,11 @@ For `keycloak_ldap_mapper` ensure the `parent_id` property is set to point to ol
 
 ### Supported Versions of Keycloak
 
-Currently this module supports Keycloak version 12.x.
+Currently this module supports Keycloak version 24.x.
 This module may work on earlier versions but this is the only version tested.
 
 | Keycloak Version | Keycloak Puppet module versions |
-| ---------------- | ------------------------------- |
+|------------------|---------------------------------|
 | 3.x              | 2.x                             |
 | 4.x - 6.x        | 3.x                             |
 | 6.x - 8.x        | 4.x - 5.x                       |
@@ -176,6 +176,8 @@ This module may work on earlier versions but this is the only version tested.
 | 19.x - 21.x      | 9.x                             |
 | 21.x             | 10.x                            |
 | 22.x - 24.x      | 11.x                            |
+| 24.x - 25.x      | 12.x                            |
+| -----------------|---------------------------------|
 
 ## Usage
 
@@ -191,18 +193,18 @@ Install a specific version of Keycloak.
 
 ```puppet
 class { 'keycloak':
-  version => '22.0.0',
+  version => '24.0.0',
   db      => 'mariadb',
 }
 ```
 
 Upgrading Keycloak version works by changing `version` parameter as long as the `db` parameter is not the default of `dev-file`. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to `/opt/keycloak`, applying all changes to new version and then restarting the `keycloak` service.
 
-If the previous `version` was `22.0.0` using the following will upgrade to `23.0.0`:
+If the previous `version` was `22.0.0` using the following will upgrade to `24.0.0`:
 
 ```puppet
 class { 'keycloak':
-  version => '23.0.0',
+  version => '24.0.0',
   db      => 'mariadb',
 }
 ```
