@@ -65,6 +65,13 @@ describe Puppet::Type.type(:keycloak_realm) do
     quick_login_check_milli_seconds: 1_000,
     max_delta_time_seconds: 43_200,
     failure_factor: 30,
+    otp_policy_type: 'totp',
+    otp_policy_algorithm: 'HmacSHA1',
+    otp_policy_initial_counter: 0,
+    otp_policy_digits: 6,
+    otp_policy_look_ahead_window: 1,
+    otp_policy_period: 30,
+    otp_policy_code_reusable: :false,
     web_authn_policy_rp_entity_name: 'keycloak',
     web_authn_policy_signature_algorithms: ['ES256'],
     web_authn_policy_rp_id: '',
@@ -87,9 +94,62 @@ describe Puppet::Type.type(:keycloak_realm) do
     web_authn_policy_passwordless_acceptable_aaguids: []
   }
 
+  describe 'otp_policy_digits' do
+    it 'accepts 6 for otp_policy_digits' do
+      config[:otp_policy_digits] = 6
+      expect(resource[:otp_policy_digits]).to eq(6)
+    end
+
+    it 'accepts 8 for otp_policy_digits' do
+      config[:otp_policy_digits] = 8
+      expect(resource[:otp_policy_digits]).to eq(8)
+    end
+
+    it 'does not accept 7 for otp_policy_digits' do
+      config[:otp_policy_digits] = 7
+      expect {
+        resource
+      }.to raise_error(%r{7})
+    end
+
+    it 'does not accept 5 for otp_policy_digits' do
+      config[:otp_policy_digits] = 5
+      expect {
+        resource
+      }.to raise_error(%r{5})
+    end
+
+    it 'has default for otp_policy_digits' do
+      expect(resource[:otp_policy_digits]).to eq(defaults[:otp_policy_digits])
+    end
+
+    it 'does not accept nil for otp_policy_digits' do
+      config[:otp_policy_digits] = nil
+      expect {
+        resource
+      }.to raise_error(%r{nil})
+    end
+
+    it 'does not accept empty for otp_policy_digits' do
+      config[:otp_policy_digits] = ''
+      expect {
+        resource
+      }.to raise_error(%r{Invalid value ""})
+    end
+
+    it 'does not accept foo for otp_policy_digits' do
+      config[:otp_policy_digits] = 'foo'
+      expect {
+        resource
+      }.to raise_error(%r{Invalid value "foo"})
+    end
+  end
+
   # Test enumerable properties
   describe 'enumerable properties' do
     {
+      otp_policy_type: [:totp, :hotp],
+      otp_policy_algorithm: [:HmacSHA1, :HmacSHA256, :HmacSHA512],
       web_authn_policy_attestation_conveyance_preference: [:none, :indirect, :direct],
       web_authn_policy_authenticator_attachment: [:platform, :'cross-platform'],
       web_authn_policy_require_resident_key: [:Yes, :No],
@@ -200,6 +260,9 @@ describe Puppet::Type.type(:keycloak_realm) do
       :quick_login_check_milli_seconds,
       :max_delta_time_seconds,
       :failure_factor,
+      :otp_policy_initial_counter,
+      :otp_policy_look_ahead_window,
+      :otp_policy_period,
       :web_authn_policy_create_timeout,
       :web_authn_policy_passwordless_create_timeout
     ].each do |p|
@@ -237,7 +300,8 @@ describe Puppet::Type.type(:keycloak_realm) do
       :smtp_server_ssl,
       :brute_force_protected,
       :offline_session_max_lifespan_enabled,
-      :permanent_lockout
+      :permanent_lockout,
+      :otp_policy_code_reusable
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true

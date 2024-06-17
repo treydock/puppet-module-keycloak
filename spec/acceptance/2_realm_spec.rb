@@ -223,6 +223,12 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         wait_increment_seconds            => 10,
         quick_login_check_milli_seconds   => 10,
         max_delta_time_seconds            => 3600,
+        otp_policy_type                   => 'totp',
+        otp_policy_algorithm              => 'HmacSHA512',
+        otp_policy_initial_counter        => 1,
+        otp_policy_digits                 => 8,
+        otp_policy_period                 => 30,
+        otp_policy_code_reusable          => true,
         web_authn_policy_rp_entity_name                    => 'Keycloak',
         web_authn_policy_signature_algorithms              => ['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'],
         web_authn_policy_rp_id                             => 'https://example.com',
@@ -299,6 +305,12 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['internationalizationEnabled']).to eq(true)
         expect(data['defaultLocale']).to eq('en')
         expect(data['supportedLocales']).to eq(['de', 'en'])
+        expect(data['otpPolicyType']).to eq('totp')
+        expect(data['otpPolicyAlgorithm']).to eq('HmacSHA512')
+        expect(data['otpPolicyInitialCounter']).to eq(1)
+        expect(data['otpPolicyDigits']).to eq(8)
+        expect(data['otpPolicyPeriod']).to eq(30)
+        expect(data['otpPolicyCodeReusable']).to eq(true)
         expect(data['webAuthnPolicyRpEntityName']).to eq('Keycloak')
         expect(data['webAuthnPolicySignatureAlgorithms']).to eq(['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'])
         expect(data['webAuthnPolicyRpId']).to eq('https://example.com')
