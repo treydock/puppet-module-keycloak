@@ -380,6 +380,46 @@ Manage Keycloak realms
     defaultto(:true)
   end
 
+  newproperty(:otp_policy_type) do
+    desc 'otpPolicyType'
+    newvalues('totp', 'hotp')
+    defaultto 'totp'
+  end
+
+  newproperty(:otp_policy_algorithm) do
+    desc 'otpPolicyAlgorithm'
+    newvalues('HmacSHA1', 'HmacSHA256', 'HmacSHA512')
+    defaultto 'HmacSHA1'
+  end
+
+  newproperty(:otp_policy_initial_counter, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'otpPolicyInitialCounter'
+    defaultto 0
+  end
+
+  newproperty(:otp_policy_digits) do
+    desc 'otpPolicyDigits'
+    newvalues(6, 8)
+    defaultto 6
+    munge { |v| v.to_i }
+  end
+
+  newproperty(:otp_policy_look_ahead_window, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'otpPolicyLookAheadWindow'
+    defaultto 1
+  end
+
+  newproperty(:otp_policy_period, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'otpPolicyPeriod'
+    defaultto 30
+  end
+
+  newproperty(:otp_policy_code_reusable, boolean: true) do
+    desc 'otpPolicyCodeReusable'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:roles, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'roles'
     defaultto ['offline_access', 'uma_authorization']
