@@ -488,6 +488,11 @@ Manage Keycloak realms
     defaultto []
   end
 
+  newproperty(:web_authn_policy_extra_origins, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicyExtraOrigins'
+    defaultto []
+  end
+
   newproperty(:web_authn_policy_passwordless_rp_entity_name) do
     desc 'webAuthnPolicyPasswordlessRpEntityName'
     defaultto 'keycloak'
@@ -540,6 +545,11 @@ Manage Keycloak realms
 
   newproperty(:web_authn_policy_passwordless_acceptable_aaguids, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'webAuthnPolicyPasswordlessAcceptableAaguids'
+    defaultto []
+  end
+
+  newproperty(:web_authn_policy_passwordless_extra_origins, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicyPasswordlessExtraOrigins'
     defaultto []
   end
 
