@@ -338,10 +338,86 @@ Manage Keycloak realms
     newvalues(:true, :false)
   end
 
+  newproperty(:permanent_lockout, boolean: true) do
+    desc 'permanentLockout'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:max_failure_wait_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'maxFailureWaitSeconds'
+    defaultto 900
+  end
+
+  newproperty(:minimum_quick_login_wait_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'minimumQuickLoginWaitSeconds'
+    defaultto 60
+  end
+
+  newproperty(:wait_increment_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'waitIncrementSeconds'
+    defaultto 60
+  end
+
+  newproperty(:quick_login_check_milli_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'quickLoginCheckMilliSeconds'
+    defaultto 1_000
+  end
+
+  newproperty(:max_delta_time_seconds, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'maxDeltaTimeSeconds'
+    defaultto 43_200
+  end
+
+  newproperty(:failure_factor, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'failureFactor'
+    defaultto 30
+  end
+
   newparam(:manage_roles, boolean: true) do
     desc 'Manage realm roles'
     newvalues(:true, :false)
     defaultto(:true)
+  end
+
+  newproperty(:otp_policy_type) do
+    desc 'otpPolicyType'
+    newvalues('totp', 'hotp')
+    defaultto 'totp'
+  end
+
+  newproperty(:otp_policy_algorithm) do
+    desc 'otpPolicyAlgorithm'
+    newvalues('HmacSHA1', 'HmacSHA256', 'HmacSHA512')
+    defaultto 'HmacSHA1'
+  end
+
+  newproperty(:otp_policy_initial_counter, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'otpPolicyInitialCounter'
+    defaultto 0
+  end
+
+  newproperty(:otp_policy_digits) do
+    desc 'otpPolicyDigits'
+    newvalues(6, 8)
+    defaultto 6
+    munge { |v| v.to_i }
+  end
+
+  newproperty(:otp_policy_look_ahead_window, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'otpPolicyLookAheadWindow'
+    defaultto 1
+  end
+
+  newproperty(:otp_policy_period, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'otpPolicyPeriod'
+    defaultto 30
+  end
+
+  newproperty(:otp_policy_code_reusable, boolean: true) do
+    desc 'otpPolicyCodeReusable'
+    newvalues(:true, :false)
+    defaultto :false
   end
 
   newproperty(:roles, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
@@ -355,6 +431,116 @@ Manage Keycloak realms
 
       super(is)
     end
+  end
+
+  newproperty(:web_authn_policy_rp_entity_name) do
+    desc 'webAuthnPolicyRpEntityName'
+    defaultto 'keycloak'
+  end
+
+  newproperty(:web_authn_policy_signature_algorithms, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicySignatureAlgorithms'
+    defaultto ['ES256']
+  end
+
+  newproperty(:web_authn_policy_rp_id) do
+    desc 'webAuthnPolicyRpId'
+    defaultto ''
+  end
+
+  newproperty(:web_authn_policy_attestation_conveyance_preference) do
+    desc 'webAuthnPolicyAttestationConveyancePreference'
+    newvalues('none', 'direct', 'indirect', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_authenticator_attachment) do
+    desc 'webAuthnPolicyAuthenticatorAttachment'
+    newvalues('platform', 'cross-platform', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_require_resident_key) do
+    desc 'webAuthnPolicyRequireResidentKey'
+    newvalues('No', 'Yes', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_user_verification_requirement) do
+    desc 'webAuthnPolicyUserVerificationRequirement'
+    newvalues('required', 'preferred', 'discouraged', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_create_timeout, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'webAuthnPolicyCreateTimeout'
+    defaultto 0
+  end
+
+  newproperty(:web_authn_policy_avoid_same_authenticator_register, boolean: true) do
+    desc 'webAuthnPolicyAvoidSameAuthenticatorRegister'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:web_authn_policy_acceptable_aaguids, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicyAcceptableAaguids'
+    defaultto []
+  end
+
+  newproperty(:web_authn_policy_passwordless_rp_entity_name) do
+    desc 'webAuthnPolicyPasswordlessRpEntityName'
+    defaultto 'keycloak'
+  end
+
+  newproperty(:web_authn_policy_passwordless_signature_algorithms, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicyPasswordlessSignatureAlgorithms'
+    defaultto ['ES256']
+  end
+
+  newproperty(:web_authn_policy_passwordless_rp_id) do
+    desc 'webAuthnPolicyPasswordlessRpId'
+    defaultto ''
+  end
+
+  newproperty(:web_authn_policy_passwordless_attestation_conveyance_preference) do
+    desc 'webAuthnPolicyPasswordlessAttestationConveyancePreference'
+    newvalues('none', 'direct', 'indirect', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_passwordless_authenticator_attachment) do
+    desc 'webAuthnPolicyPasswordlessAuthenticatorAttachment'
+    newvalues('platform', 'cross-platform', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_passwordless_require_resident_key) do
+    desc 'webAuthnPolicyPasswordlessRequireResidentKey'
+    newvalues('No', 'Yes', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_passwordless_user_verification_requirement) do
+    desc 'webAuthnPolicyPasswordlessUserVerificationRequirement'
+    newvalues('required', 'preferred', 'discouraged', 'not specified')
+    defaultto 'not specified'
+  end
+
+  newproperty(:web_authn_policy_passwordless_create_timeout, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'webAuthnPolicyPasswordlessCreateTimeout'
+    defaultto 0
+  end
+
+  newproperty(:web_authn_policy_passwordless_avoid_same_authenticator_register, boolean: true) do
+    desc 'webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
+  newproperty(:web_authn_policy_passwordless_acceptable_aaguids, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
+    desc 'webAuthnPolicyPasswordlessAcceptableAaguids'
+    defaultto []
   end
 
   newproperty(:custom_properties) do

@@ -214,9 +214,41 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         default_locale                    => 'en',
         supported_locales                 => ['en','de'],
         custom_properties                 => {
-          'failureFactor'      => 60,
           'revokeRefreshToken' => true,
         },
+        failure_factor                    => 60,
+        permanent_lockout                 => true,
+        max_failure_wait_seconds          => 999,
+        minimum_quick_login_wait_seconds  => 40,
+        wait_increment_seconds            => 10,
+        quick_login_check_milli_seconds   => 10,
+        max_delta_time_seconds            => 3600,
+        otp_policy_type                   => 'totp',
+        otp_policy_algorithm              => 'HmacSHA512',
+        otp_policy_initial_counter        => 1,
+        otp_policy_digits                 => 8,
+        otp_policy_period                 => 30,
+        otp_policy_code_reusable          => true,
+        web_authn_policy_rp_entity_name                    => 'Keycloak',
+        web_authn_policy_signature_algorithms              => ['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'],
+        web_authn_policy_rp_id                             => 'https://example.com',
+        web_authn_policy_attestation_conveyance_preference => 'direct',
+        web_authn_policy_authenticator_attachment          => 'cross-platform',
+        web_authn_policy_require_resident_key              => 'No',
+        web_authn_policy_user_verification_requirement     => 'required',
+        web_authn_policy_create_timeout                    => 600,
+        web_authn_policy_avoid_same_authenticator_register => true,
+        web_authn_policy_acceptable_aaguids                => ['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'],
+        web_authn_policy_passwordless_rp_entity_name                    => 'Keycloak',
+        web_authn_policy_passwordless_signature_algorithms              => ['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'],
+        web_authn_policy_passwordless_rp_id                             => 'https://example.com',
+        web_authn_policy_passwordless_attestation_conveyance_preference => 'direct',
+        web_authn_policy_passwordless_authenticator_attachment          => 'cross-platform',
+        web_authn_policy_passwordless_require_resident_key              => 'No',
+        web_authn_policy_passwordless_user_verification_requirement     => 'required',
+        web_authn_policy_passwordless_create_timeout                    => 600,
+        web_authn_policy_passwordless_avoid_same_authenticator_register => true,
+        web_authn_policy_passwordless_acceptable_aaguids                => ['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'],
       }
       PUPPET_PP
 
@@ -263,10 +295,42 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
         expect(data['adminTheme']).to eq('keycloak.v2')
         expect(data['emailTheme']).to eq('keycloak.v2')
         expect(data['failureFactor']).to eq(60)
+        expect(data['permanentLockout']).to eq(true)
+        expect(data['maxFailureWaitSeconds']).to eq(999)
+        expect(data['minimumQuickLoginWaitSeconds']).to eq(40)
+        expect(data['waitIncrementSeconds']).to eq(10)
+        expect(data['quickLoginCheckMilliSeconds']).to eq(10)
+        expect(data['maxDeltaTimeSeconds']).to eq(3600)
         expect(data['revokeRefreshToken']).to eq(true)
         expect(data['internationalizationEnabled']).to eq(true)
         expect(data['defaultLocale']).to eq('en')
         expect(data['supportedLocales']).to eq(['de', 'en'])
+        expect(data['otpPolicyType']).to eq('totp')
+        expect(data['otpPolicyAlgorithm']).to eq('HmacSHA512')
+        expect(data['otpPolicyInitialCounter']).to eq(1)
+        expect(data['otpPolicyDigits']).to eq(8)
+        expect(data['otpPolicyPeriod']).to eq(30)
+        expect(data['otpPolicyCodeReusable']).to eq(true)
+        expect(data['webAuthnPolicyRpEntityName']).to eq('Keycloak')
+        expect(data['webAuthnPolicySignatureAlgorithms']).to eq(['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'])
+        expect(data['webAuthnPolicyRpId']).to eq('https://example.com')
+        expect(data['webAuthnPolicyAttestationConveyancePreference']).to eq('direct')
+        expect(data['webAuthnPolicyAuthenticatorAttachment']).to eq('cross-platform')
+        expect(data['webAuthnPolicyRequireResidentKey']).to eq('No')
+        expect(data['webAuthnPolicyUserVerificationRequirement']).to eq('required')
+        expect(data['webAuthnPolicyCreateTimeout']).to eq(600)
+        expect(data['webAuthnPolicyAvoidSameAuthenticatorRegister']).to eq(true)
+        expect(data['webAuthnPolicyAcceptableAaguids']).to eq(['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'])
+        expect(data['webAuthnPolicyPasswordlessRpEntityName']).to eq('Keycloak')
+        expect(data['webAuthnPolicyPasswordlessSignatureAlgorithms']).to eq(['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'])
+        expect(data['webAuthnPolicyPasswordlessRpId']).to eq('https://example.com')
+        expect(data['webAuthnPolicyPasswordlessAttestationConveyancePreference']).to eq('direct')
+        expect(data['webAuthnPolicyPasswordlessAuthenticatorAttachment']).to eq('cross-platform')
+        expect(data['webAuthnPolicyPasswordlessRequireResidentKey']).to eq('No')
+        expect(data['webAuthnPolicyPasswordlessUserVerificationRequirement']).to eq('required')
+        expect(data['webAuthnPolicyPasswordlessCreateTimeout']).to eq(600)
+        expect(data['webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister']).to eq(true)
+        expect(data['webAuthnPolicyPasswordlessAcceptableAaguids']).to eq(['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'])
       end
     end
 
