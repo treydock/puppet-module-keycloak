@@ -3381,6 +3381,12 @@ eventsListeners
 
 Default value: `['jboss-logging']`
 
+##### `failure_factor`
+
+failureFactor
+
+Default value: `30`
+
 ##### `internationalization_enabled`
 
 Valid values: `true`, `false`
@@ -3403,6 +3409,24 @@ loginWithEmailAllowed
 
 Default value: `true`
 
+##### `max_delta_time_seconds`
+
+maxDeltaTimeSeconds
+
+Default value: `43_200`
+
+##### `max_failure_wait_seconds`
+
+maxFailureWaitSeconds
+
+Default value: `900`
+
+##### `minimum_quick_login_wait_seconds`
+
+minimumQuickLoginWaitSeconds
+
+Default value: `60`
+
 ##### `offline_session_idle_timeout`
 
 offlineSessionIdleTimeout
@@ -3422,6 +3446,70 @@ Default value: `false`
 ##### `optional_client_scopes`
 
 Optional Client Scopes
+
+##### `otp_policy_algorithm`
+
+Valid values: `HmacSHA1`, `HmacSHA256`, `HmacSHA512`
+
+otpPolicyAlgorithm
+
+Default value: `HmacSHA1`
+
+##### `otp_policy_code_reusable`
+
+Valid values: `true`, `false`
+
+otpPolicyCodeReusable
+
+Default value: `false`
+
+##### `otp_policy_digits`
+
+Valid values: `6`, `8`
+
+otpPolicyDigits
+
+Default value: `6`
+
+##### `otp_policy_initial_counter`
+
+otpPolicyInitialCounter
+
+Default value: `0`
+
+##### `otp_policy_look_ahead_window`
+
+otpPolicyLookAheadWindow
+
+Default value: `1`
+
+##### `otp_policy_period`
+
+otpPolicyPeriod
+
+Default value: `30`
+
+##### `otp_policy_type`
+
+Valid values: `totp`, `hotp`
+
+otpPolicyType
+
+Default value: `totp`
+
+##### `permanent_lockout`
+
+Valid values: `true`, `false`
+
+permanentLockout
+
+Default value: `false`
+
+##### `quick_login_check_milli_seconds`
+
+quickLoginCheckMilliSeconds
+
+Default value: `1_000`
 
 ##### `registration_allowed`
 
@@ -3562,6 +3650,152 @@ Valid values: `true`, `false`
 verifyEmail
 
 Default value: `false`
+
+##### `wait_increment_seconds`
+
+waitIncrementSeconds
+
+Default value: `60`
+
+##### `web_authn_policy_acceptable_aaguids`
+
+webAuthnPolicyAcceptableAaguids
+
+Default value: `[]`
+
+##### `web_authn_policy_attestation_conveyance_preference`
+
+Valid values: `none`, `direct`, `indirect`, `not specified`
+
+webAuthnPolicyAttestationConveyancePreference
+
+Default value: `not specified`
+
+##### `web_authn_policy_authenticator_attachment`
+
+Valid values: `platform`, `cross-platform`, `not specified`
+
+webAuthnPolicyAuthenticatorAttachment
+
+Default value: `not specified`
+
+##### `web_authn_policy_avoid_same_authenticator_register`
+
+Valid values: `true`, `false`
+
+webAuthnPolicyAvoidSameAuthenticatorRegister
+
+Default value: `false`
+
+##### `web_authn_policy_create_timeout`
+
+webAuthnPolicyCreateTimeout
+
+Default value: `0`
+
+##### `web_authn_policy_passwordless_acceptable_aaguids`
+
+webAuthnPolicyPasswordlessAcceptableAaguids
+
+Default value: `[]`
+
+##### `web_authn_policy_passwordless_attestation_conveyance_preference`
+
+Valid values: `none`, `direct`, `indirect`, `not specified`
+
+webAuthnPolicyPasswordlessAttestationConveyancePreference
+
+Default value: `not specified`
+
+##### `web_authn_policy_passwordless_authenticator_attachment`
+
+Valid values: `platform`, `cross-platform`, `not specified`
+
+webAuthnPolicyPasswordlessAuthenticatorAttachment
+
+Default value: `not specified`
+
+##### `web_authn_policy_passwordless_avoid_same_authenticator_register`
+
+Valid values: `true`, `false`
+
+webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister
+
+Default value: `false`
+
+##### `web_authn_policy_passwordless_create_timeout`
+
+webAuthnPolicyPasswordlessCreateTimeout
+
+Default value: `0`
+
+##### `web_authn_policy_passwordless_require_resident_key`
+
+Valid values: `No`, `Yes`, `not specified`
+
+webAuthnPolicyPasswordlessRequireResidentKey
+
+Default value: `not specified`
+
+##### `web_authn_policy_passwordless_rp_entity_name`
+
+webAuthnPolicyPasswordlessRpEntityName
+
+Default value: `keycloak`
+
+##### `web_authn_policy_passwordless_rp_id`
+
+webAuthnPolicyPasswordlessRpId
+
+Default value: `''`
+
+##### `web_authn_policy_passwordless_signature_algorithms`
+
+webAuthnPolicyPasswordlessSignatureAlgorithms
+
+Default value: `['ES256']`
+
+##### `web_authn_policy_passwordless_user_verification_requirement`
+
+Valid values: `required`, `preferred`, `discouraged`, `not specified`
+
+webAuthnPolicyPasswordlessUserVerificationRequirement
+
+Default value: `not specified`
+
+##### `web_authn_policy_require_resident_key`
+
+Valid values: `No`, `Yes`, `not specified`
+
+webAuthnPolicyRequireResidentKey
+
+Default value: `not specified`
+
+##### `web_authn_policy_rp_entity_name`
+
+webAuthnPolicyRpEntityName
+
+Default value: `keycloak`
+
+##### `web_authn_policy_rp_id`
+
+webAuthnPolicyRpId
+
+Default value: `''`
+
+##### `web_authn_policy_signature_algorithms`
+
+webAuthnPolicySignatureAlgorithms
+
+Default value: `['ES256']`
+
+##### `web_authn_policy_user_verification_requirement`
+
+Valid values: `required`, `preferred`, `discouraged`, `not specified`
+
+webAuthnPolicyUserVerificationRequirement
+
+Default value: `not specified`
 
 #### Parameters
 

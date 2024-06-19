@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v11.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v11.2.0) (2024-06-19)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.1.1...v11.2.0)
+
+### Added
+
+- Implement realm otp, webauthn, webauthn passwordless and bruteforce properties [\#312](https://github.com/treydock/puppet-module-keycloak/pull/312) ([TuningYourCode](https://github.com/TuningYourCode))
+
 ## [v11.1.1](https://github.com/treydock/puppet-module-keycloak/tree/v11.1.1) (2024-05-03)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.1.0...v11.1.1)
