@@ -219,6 +219,7 @@ describe Puppet::Type.type(:keycloak_realm) do
       :smtp_server_reply_to,
       :smtp_server_reply_to_display_name,
       :default_locale,
+      :password_policy,
       :web_authn_policy_rp_entity_name,
       :web_authn_policy_rp_id,
       :web_authn_policy_passwordless_rp_entity_name,

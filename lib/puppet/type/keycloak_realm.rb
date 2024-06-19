@@ -420,6 +420,10 @@ Manage Keycloak realms
     defaultto :false
   end
 
+  newproperty(:password_policy) do
+    desc 'passwordPolicy'
+  end
+
   newproperty(:roles, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'roles'
     defaultto ['offline_access', 'uma_authorization']
