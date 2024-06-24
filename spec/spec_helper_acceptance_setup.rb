@@ -3,7 +3,7 @@
 RSpec.configure do |c|
   c.add_setting :keycloak_version
   keycloak_version = if ENV['BEAKER_keycloak_version'].nil? || ENV['BEAKER_keycloak_version'].empty?
-                       '22.0.0'
+                       '24.0.5'
                      else
                        ENV['BEAKER_keycloak_version']
                      end
