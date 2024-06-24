@@ -11,7 +11,7 @@ describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
              realm: 'test',
              flow_alias: 'browser-with-duo',
              provider_id: 'auth-username-password-form',
-             index: 0)
+             priority: 0)
   end
 
   describe 'self.instances' do
@@ -117,38 +117,6 @@ describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
       allow(Tempfile).to receive(:new).with('keycloak_flow_execution_config').and_return(temp)
       expect(resource.provider).to receive(:kcadm).with('update', 'authentication/config/uuid', 'test', temp.path)
       resource.provider.config = { 'foo' => 'bar' }
-      resource.provider.flush
-    end
-
-    it 'lowers priority twice' do
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(0)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/lower-priority', 'test').twice
-      resource.provider.index = 2
-      resource.provider.flush
-    end
-
-    it 'lowers priority once' do
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(0)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/lower-priority', 'test').once
-      resource.provider.index = 1
-      resource.provider.flush
-    end
-
-    it 'raise priority twice' do
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(2)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/raise-priority', 'test').twice
-      resource.provider.index = 0
-      resource.provider.flush
-    end
-
-    it 'raise priority once' do
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(1)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/raise-priority', 'test').once
-      resource.provider.index = 0
       resource.provider.flush
     end
   end

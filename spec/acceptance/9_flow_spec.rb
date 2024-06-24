@@ -16,15 +16,41 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         test_realm    => 'test',
         test_before   => [
           'Keycloak_flow[form-browser-with-duo]',
-          'Keycloak_flow[form-browser-with-duo2]',
           'Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]',
-          'Keycloak_flow_execution[duo-universal under form-browser-with-duo2 on test]',
         ],
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'browser-with-duo on test':
         ensure      => 'present',
         description => 'Browser with DUO',
+      }
+      keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
+        ensure       => 'present',
+        configurable => false,
+        display_name => 'Cookie',
+        priority     => 10,
+        requirement  => 'ALTERNATIVE',
+      }
+      keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
+        ensure       => 'present',
+        configurable => true,
+        display_name => 'Identity Provider Redirector',
+        priority     => 20,
+        requirement  => 'ALTERNATIVE',
+      }
+      keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
+        ensure      => 'present',
+        priority    => 30,
+        requirement => 'ALTERNATIVE',
+        top_level   => false,
+        description => 'Form Browser with DUO',
+      }
+      keycloak_flow_execution { 'auth-username-password-form under form-browser-with-duo on test':
+        ensure       => 'present',
+        configurable => false,
+        display_name => 'Username Password Form',
+        priority     => 10,
+        requirement  => 'REQUIRED',
       }
       keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
         ensure       => 'present',
@@ -38,49 +64,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
           "duoGroups"         => "duo"
         },
         requirement  => 'REQUIRED',
-        index        => 1,
-      }
-      keycloak_flow_execution { 'duo-universal under form-browser-with-duo2 on test':
-        ensure       => 'present',
-        configurable => true,
-        display_name => 'Duo Universal MFA',
-        alias        => 'Duo2 Universal',
-        requirement  => 'REQUIRED',
-        index        => 0,
-      }
-      keycloak_flow_execution { 'auth-username-password-form under form-browser-with-duo on test':
-        ensure       => 'present',
-        configurable => false,
-        display_name => 'Username Password Form',
-        index        => 0,
-        requirement  => 'REQUIRED',
-      }
-      keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
-        ensure      => 'present',
-        index       => 2,
-        requirement => 'ALTERNATIVE',
-        top_level   => false,
-        description => 'Form Browser with DUO',
-      }
-      keycloak_flow { 'form-browser-with-duo2 under browser-with-duo on test':
-        ensure      => 'present',
-        index       => 3,
-        requirement => 'REQUIRED',
-        top_level   => false,
-      }
-      keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
-        ensure       => 'present',
-        configurable => false,
-        display_name => 'Cookie',
-        index        => 0,
-        requirement  => 'ALTERNATIVE',
-      }
-      keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
-        ensure       => 'present',
-        configurable => true,
-        display_name => 'Identity Provider Redirector',
-        index        => 1,
-        requirement  => 'ALTERNATIVE',
+        priority     => 20,
       }
       PUPPET_PP
 
@@ -100,12 +84,12 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
     it 'has executions' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo/executions -r test' do
         data = JSON.parse(stdout)
+        form = data.find { |d| d['displayName'] == 'form-browser-with-duo' }
+        expect(form['index']).to eq(2)
         cookie = data.find { |d| d['providerId'] == 'auth-cookie' }
         expect(cookie['index']).to eq(0)
         idp = data.find { |d| d['providerId'] == 'identity-provider-redirector' }
         expect(idp['index']).to eq(1)
-        form = data.find { |d| d['displayName'] == 'form-browser-with-duo' }
-        expect(form['index']).to eq(2)
         expect(form['description']).to eq('Form Browser with DUO')
         auth_form = data.find { |d| d['providerId'] == 'auth-username-password-form' }
         expect(auth_form['index']).to eq(0)
@@ -128,15 +112,33 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         test_realm    => 'test',
         test_before   => [
           'Keycloak_flow[form-browser-with-duo]',
-          'Keycloak_flow[form-browser-with-duo2]',
           'Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]',
-          'Keycloak_flow_execution[duo-universal under form-browser-with-duo2 on test]',
         ],
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'browser-with-duo on test':
         ensure => 'present',
         description => 'browser with Duo',
+      }
+      keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
+        ensure       => 'present',
+        configurable => false,
+        display_name => 'Cookie',
+        priority     => 25,
+        requirement  => 'ALTERNATIVE',
+      }
+      keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
+        ensure       => 'present',
+        configurable => true,
+        display_name => 'Identity Provider Redirector',
+        priority     => 15,
+        requirement  => 'ALTERNATIVE',
+      }
+      keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
+        ensure      => 'present',
+        priority    => 30,
+        requirement => 'REQUIRED',
+        top_level   => false,
       }
       keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
         ensure       => 'present',
@@ -147,57 +149,17 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
           "duoApiHostname"    => "api-foo.duosecurity.com",
           "duoSecretKey"      => "secret2",
           "duoIntegrationKey" => "foo-ikey2",
-          "duoGroups"         => "duo,duo2"
+          "duoGroups"         => "duo"
         },
         requirement  => 'REQUIRED',
-        index        => 0,
-      }
-      keycloak_flow_execution { 'duo-universal under form-browser-with-duo2 on test':
-        ensure       => 'present',
-        configurable => true,
-        display_name => 'Duo Universal MFA',
-        alias        => 'Duo2 Universal',
-        config       => {
-          "duoApiHostname"    => "api-foo.duosecurity.com",
-          "duoSecretKey"      => "secret2",
-          "duoIntegrationKey" => "foo-ikey2",
-          "duoGroups"         => "duo,duo2"
-        },
-        requirement  => 'REQUIRED',
-        index        => 0,
+        priority     => 15,
       }
       keycloak_flow_execution { 'auth-username-password-form under form-browser-with-duo on test':
         ensure       => 'present',
         configurable => false,
         display_name => 'Username Password Form',
-        index        => 1,
+        priority     => 25,
         requirement  => 'REQUIRED',
-      }
-      keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
-        ensure      => 'present',
-        index       => 2,
-        requirement => 'REQUIRED',
-        top_level   => false,
-      }
-      keycloak_flow { 'form-browser-with-duo2 under browser-with-duo on test':
-        ensure      => 'present',
-        index       => 3,
-        requirement => 'REQUIRED',
-        top_level   => false,
-      }
-      keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
-        ensure       => 'present',
-        configurable => false,
-        display_name => 'Cookie',
-        index        => 1,
-        requirement  => 'ALTERNATIVE',
-      }
-      keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
-        ensure       => 'present',
-        configurable => true,
-        display_name => 'Identity Provider Redirector',
-        index        => 0,
-        requirement  => 'ALTERNATIVE',
       }
       PUPPET_PP
 
@@ -215,12 +177,12 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
     it 'has executions' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo/executions -r test' do
         data = JSON.parse(stdout)
+        form = data.find { |d| d['displayName'] == 'form-browser-with-duo' }
+        expect(form['index']).to eq(2)
         cookie = data.find { |d| d['providerId'] == 'auth-cookie' }
         expect(cookie['index']).to eq(1)
         idp = data.find { |d| d['providerId'] == 'identity-provider-redirector' }
         expect(idp['index']).to eq(0)
-        form = data.find { |d| d['displayName'] == 'form-browser-with-duo' }
-        expect(form['index']).to eq(2)
         auth_form = data.find { |d| d['providerId'] == 'auth-username-password-form' }
         expect(auth_form['index']).to eq(1)
         duo = data.find { |d| d['providerId'] == 'duo-universal' }

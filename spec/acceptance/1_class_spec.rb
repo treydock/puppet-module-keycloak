@@ -39,7 +39,7 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     end
 
     describe port(8080) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
   end
 
@@ -61,7 +61,7 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     end
 
     describe port(8080) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
   end
 
@@ -87,7 +87,7 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     end
 
     describe port(8080) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
   end
 
@@ -107,7 +107,7 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
     end
 
     describe port(8080) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
+      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
   end
 end

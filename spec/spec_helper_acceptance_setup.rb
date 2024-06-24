@@ -3,7 +3,7 @@
 RSpec.configure do |c|
   c.add_setting :keycloak_version
   keycloak_version = if ENV['BEAKER_keycloak_version'].nil? || ENV['BEAKER_keycloak_version'].empty?
-                       '24.0.5'
+                       '25.0.1'
                      else
                        ENV['BEAKER_keycloak_version']
                      end
@@ -31,7 +31,8 @@ HIERA_YAML
 common_yaml = <<-COMMON_YAML
 ---
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
-keycloak::http_host: '127.0.0.1'
+keycloak::http_host: '0.0.0.0'
+keycloak::hostname: localhost
 keycloak::db: mariadb
 keycloak::proxy: edge
 # Force only listen on IPv4 for testing

@@ -222,7 +222,7 @@
 #   Only necessary to set if the URL path to Keycloak is modified
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = '24.0.5',
+  String $version               = '25.0.1',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl, Stdlib::Absolutepath]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Array[String[1]] $java_package_dependencies = [],
@@ -243,7 +243,7 @@ class keycloak (
   Array $conf_dir_purge_ignore = ['cache-ispn.xml', 'README.md', 'truststore.jks'],
   Keycloak::Configs $configs = {},
   Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
-  Variant[Stdlib::Host, Enum['unset','UNSET']] $hostname = $facts['networking']['fqdn'],
+  Variant[Stdlib::Host, Stdlib::HTTPUrl, Stdlib::HTTPSUrl, Enum['unset','UNSET']] $hostname = $facts['networking']['fqdn'],
   Boolean $http_enabled = true,
   Stdlib::IP::Address $http_host = '0.0.0.0',
   Stdlib::Port $http_port = 8080,
