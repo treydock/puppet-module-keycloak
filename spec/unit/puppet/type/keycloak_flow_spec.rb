@@ -7,7 +7,7 @@ describe Puppet::Type.type(:keycloak_flow) do
     {
       name: 'foo',
       realm: 'test',
-      index: 0,
+      priority: 10,
       flow_alias: 'bar'
     }
   end
@@ -113,7 +113,7 @@ describe Puppet::Type.type(:keycloak_flow) do
   describe 'integer properties' do
     # Integer properties
     [
-      :index
+      :priority
     ].each do |p|
       it "accepts integer for #{p}" do
         config[p] = 1
@@ -233,10 +233,10 @@ describe Puppet::Type.type(:keycloak_flow) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'autorequires keycloak_flow of lower index' do
+  it 'autorequires keycloak_flow of lower priority' do
     config[:top_level] = false
-    config[:index] = 1
-    keycloak_flow = Puppet::Type.type(:keycloak_flow).new(name: 'baz under bar on test', index: 0)
+    config[:priority] = 1
+    keycloak_flow = Puppet::Type.type(:keycloak_flow).new(name: 'baz under bar on test', priority: 0)
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_flow
@@ -245,10 +245,10 @@ describe Puppet::Type.type(:keycloak_flow) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'autorequires keycloak_flow_execution of lower index' do
+  it 'autorequires keycloak_flow_execution of lower priority' do
     config[:top_level] = false
-    config[:index] = 1
-    keycloak_flow_execution = Puppet::Type.type(:keycloak_flow_execution).new(name: 'baz under bar on test', index: 0)
+    config[:priority] = 1
+    keycloak_flow_execution = Puppet::Type.type(:keycloak_flow_execution).new(name: 'baz under bar on test', priority: 0)
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_flow_execution
@@ -294,21 +294,21 @@ describe Puppet::Type.type(:keycloak_flow) do
       expect { resource }.to raise_error(%r{must have a realm defined})
     end
 
-    it 'requires index when present' do
-      config.delete(:index)
+    it 'requires priority when present' do
+      config.delete(:priority)
       config[:top_level] = false
       config[:ensure] = 'present'
-      expect { resource }.to raise_error(%r{index is required})
+      expect { resource }.to raise_error(%r{priority is required})
     end
 
-    it 'does not require index for absent' do
-      config.delete(:index)
+    it 'does not require priority for absent' do
+      config.delete(:priority)
       config[:ensure] = 'absent'
       expect { resource }.not_to raise_error
     end
 
-    it 'does not require index for top level' do
-      config.delete(:index)
+    it 'does not require priority for top level' do
+      config.delete(:priority)
       config[:ensure] = 'present'
       config[:top_level] = true
       expect { resource }.not_to raise_error

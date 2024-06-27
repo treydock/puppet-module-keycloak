@@ -215,7 +215,6 @@ Manage Keycloak clients
 
   newproperty(:web_origins, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'webOrigins'
-    defaultto []
   end
 
   newproperty(:login_theme) do

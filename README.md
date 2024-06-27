@@ -6,6 +6,7 @@
 #### Table of Contents
 
 1. [Overview](#overview)
+    * [Upgrade to 12.x](#upgrade-to-12x)
     * [Upgrade to 8.x](#upgrade-to-8x)
         * [Changes to LDAP user provider IDs](#changes-to-ldap-user-provider-ids)
     * [Supported Versions of Keycloak](#supported-versions-of-keycloak)
@@ -34,6 +35,25 @@
 ## Overview
 
 The keycloak module allows easy installation and management of Keycloak.
+
+### Upgrade to 12.x
+
+Version 12.x of this module had some major breaking changes to support Keycloak 25.x.
+
+The default Java version is now OpenJDK 21 except for Debian. The next major release will drop Debian support unless OpenJDK 21 is added to Debian repos.
+
+The `keycloak_flow` and `keycloak_flow_execution` types had their `index` property replaced by `priority`.  If you had executions with `index` 0,1,2 you'd need to set `priority` to something like 10,20,30.
+
+The configuration options switched to using Hostname v2 options.
+
+* `hostname` now accepts a URL
+* `hostname-url` is removed
+* `hostname-path` is removed
+* `hostname-port` is removed
+* `hostname-admin` now requires a URL
+* `hostname-admin-url` is removed
+* `hostname-strict-backchannel` is renamed to `hostname-backchannel-dynamic`
+* `hostname-strict-https` is removed
 
 ### Upgrade to 8.x
 
@@ -176,7 +196,7 @@ This module may work on earlier versions but this is the only version tested.
 | 19.x - 21.x      | 9.x                             |
 | 21.x             | 10.x                            |
 | 22.x - 24.x      | 11.x                            |
-| 24.x             | 12.x                            |
+| 25.x             | 12.x                            |
 | -----------------|---------------------------------|
 
 ## Usage
@@ -523,19 +543,19 @@ keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
   ensure       => 'present',
   configurable => false,
   display_name => 'Cookie',
-  index        => 0,
+  priority     => 10,
   requirement  => 'ALTERNATIVE',
 }
 keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
   ensure       => 'present',
   configurable => true,
   display_name => 'Identity Provider Redirector',
-  index        => 1,
+  priority     => 15,
   requirement  => 'ALTERNATIVE',
 }
 keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
   ensure      => 'present',
-  index       => 2,
+  priority    => 20,
   requirement => 'ALTERNATIVE',
   top_level   => false,
 }
@@ -543,7 +563,7 @@ keycloak_flow_execution { 'auth-username-password-form under form-browser-with-d
   ensure       => 'present',
   configurable => false,
   display_name => 'Username Password Form',
-  index        => 0,
+  priority     => 10,
   requirement  => 'REQUIRED',
 }
 keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
@@ -558,7 +578,7 @@ keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
     "duoGroups"         => "duo"
   },
   requirement  => 'REQUIRED',
-  index        => 1,
+  priority     => 15,
 }
 ```
 
