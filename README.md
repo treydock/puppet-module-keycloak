@@ -40,6 +40,8 @@ The keycloak module allows easy installation and management of Keycloak.
 
 Version 12.x of this module had some major breaking changes to support Keycloak 25.x.
 
+The default Java version is now OpenJDK 21 except for Debian. The next major release will drop Debian support unless OpenJDK 21 is added to Debian repos.
+
 The `keycloak_flow` and `keycloak_flow_execution` types had their `index` property replaced by `priority`.  If you had executions with `index` 0,1,2 you'd need to set `priority` to something like 10,20,30.
 
 The configuration options switched to using Hostname v2 options.
