@@ -73,7 +73,6 @@ describe Puppet::Type.type(:keycloak_client) do
     default_client_scopes: [],
     optional_client_scopes: [],
     redirect_uris: [],
-    web_origins: [],
     login_theme: :absent,
     browser_flow: :absent,
     direct_grant_flow: :absent

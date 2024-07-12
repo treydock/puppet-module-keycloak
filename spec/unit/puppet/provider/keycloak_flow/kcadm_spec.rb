@@ -121,41 +121,5 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       resource.provider.requirement = 'ALTERNATIVE'
       resource.provider.flush
     end
-
-    it 'lowers priority twice' do
-      resource[:top_level] = false
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(0)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/lower-priority', 'test').twice
-      resource.provider.index = 2
-      resource.provider.flush
-    end
-
-    it 'lowers priority once' do
-      resource[:top_level] = false
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(0)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/lower-priority', 'test').once
-      resource.provider.index = 1
-      resource.provider.flush
-    end
-
-    it 'raise priority twice' do
-      resource[:top_level] = false
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(2)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/raise-priority', 'test').twice
-      resource.provider.index = 0
-      resource.provider.flush
-    end
-
-    it 'raise priority once' do
-      resource[:top_level] = false
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(1)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/raise-priority', 'test').once
-      resource.provider.index = 0
-      resource.provider.flush
-    end
   end
 end

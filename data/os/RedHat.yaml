@@ -1,8 +1,8 @@
 ---
-keycloak::java_package: java-17-openjdk-devel
-keycloak::java_home: /usr/lib/jvm/java-17-openjdk/
-keycloak::java_alternative_path: /usr/lib/jvm/java-17-openjdk/bin/java
-keycloak::java_alternative: /usr/lib/jvm/java-17-openjdk/bin/java
+keycloak::java_package: java-21-openjdk-devel
+keycloak::java_home: /usr/lib/jvm/java-21-openjdk/
+keycloak::java_alternative_path: /usr/lib/jvm/java-21-openjdk/bin/java
+keycloak::java_alternative: /usr/lib/jvm/java-21-openjdk/bin/java
 keycloak::user_shell: '/sbin/nologin'
 keycloak::libunix_dbus_java_build_dependencies:
   - 'which'
