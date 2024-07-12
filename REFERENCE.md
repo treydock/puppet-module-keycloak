@@ -185,7 +185,7 @@ Data type: `String`
 
 Version of Keycloak to install and manage.
 
-Default value: `'22.0.0'`
+Default value: `'25.0.1'`
 
 ##### <a name="-keycloak--package_url"></a>`package_url`
 
@@ -230,7 +230,7 @@ Data type: `String[1]`
 
 Java package name, only used when `java_declare_method` is `class`
 
-Default value: `'java-17-openjdk-devel'`
+Default value: `'java-21-openjdk-devel'`
 
 ##### <a name="-keycloak--java_home"></a>`java_home`
 
@@ -239,7 +239,7 @@ Data type: `Stdlib::Absolutepath`
 Java home path.  This value is used when `java_declare_method` is `class`
 as well as to set JAVA_HOME environment variable for the Keycloak service.
 
-Default value: `'/usr/lib/jvm/java-17-openjdk'`
+Default value: `'/usr/lib/jvm/java-21-openjdk'`
 
 ##### <a name="-keycloak--java_alternative_path"></a>`java_alternative_path`
 
@@ -247,7 +247,7 @@ Data type: `Stdlib::Absolutepath`
 
 Java alternative path, only used when `java_declare_method` is `class`
 
-Default value: `'/usr/lib/jvm/java-17-openjdk/bin/java'`
+Default value: `'/usr/lib/jvm/java-21-openjdk/bin/java'`
 
 ##### <a name="-keycloak--java_alternative"></a>`java_alternative`
 
@@ -255,7 +255,7 @@ Data type: `String[1]`
 
 Java alternative, only used when `java_declare_method` is `class`
 
-Default value: `'/usr/lib/jvm/java-17-openjdk/bin/java'`
+Default value: `'/usr/lib/jvm/java-21-openjdk/bin/java'`
 
 ##### <a name="-keycloak--service_name"></a>`service_name`
 
@@ -358,7 +358,7 @@ Default value: `{}`
 
 ##### <a name="-keycloak--hostname"></a>`hostname`
 
-Data type: `Variant[Stdlib::Host, Enum['unset','UNSET']]`
+Data type: `Variant[Stdlib::Host, Stdlib::HTTPUrl, Stdlib::HTTPSUrl, Enum['unset','UNSET']]`
 
 hostname to set in keycloak.conf
 Set to `unset` or `UNSET` to not define this in keycloak.conf
@@ -1729,8 +1729,6 @@ Default value: `true`
 
 webOrigins
 
-Default value: `[]`
-
 #### Parameters
 
 The following parameters are available in the `keycloak_client` type.
@@ -2081,8 +2079,8 @@ Manage a Keycloak flow
 **Autorequires**
 * `keycloak_realm` defined for `realm` parameter
 * `keycloak_flow` of `flow_alias` if `top_level=false`
-* `keycloak_flow` of `flow_alias` if other `index` is lower and if `top_level=false`
-* `keycloak_flow_execution` if `flow_alias` is the same and other `index` is lower and if `top_level=false`
+* `keycloak_flow` of `flow_alias` if other `priority` is lower and if `top_level=false`
+* `keycloak_flow_execution` if `flow_alias` is the same and other `priority` is lower and if `top_level=false`
 
 #### Examples
 
@@ -2100,7 +2098,7 @@ keycloak_flow { 'browser-with-duo':
 ```puppet
 keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
   ensure      => 'present',
-  index       => 2,
+  priority    => 20,
   requirement => 'ALTERNATIVE',
   top_level   => false,
 }
@@ -2122,9 +2120,9 @@ The basic property that the resource should be in.
 
 Default value: `present`
 
-##### `index`
+##### `priority`
 
-execution index, only applied to top_level=false, required for top_level=false
+execution priority, only applied to top_level=false, required for top_level=false
 
 ##### `requirement`
 
@@ -2200,8 +2198,8 @@ Manage a Keycloak flow
 **Autorequires**
 * `keycloak_realm` defined for `realm` parameter
 * `keycloak_flow` of value defined for `flow_alias`
-* `keycloak_flow` if they share same `flow_alias` value and the other resource `index` is lower
-* `keycloak_flow_execution` if `flow_alias` is the same and other `index` is lower
+* `keycloak_flow` if they share same `flow_alias` value and the other resource `priority` is lower
+* `keycloak_flow_execution` if `flow_alias` is the same and other `priority` is lower
 
 #### Examples
 
@@ -2212,7 +2210,7 @@ keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
   ensure       => 'present',
   configurable => false,
   display_name => 'Cookie',
-  index        => 0,
+  priority     => 10,
   requirement  => 'ALTERNATIVE',
 }
 ```
@@ -2224,7 +2222,7 @@ keycloak_flow_execution { 'auth-username-password-form under form-browser-with-d
   ensure       => 'present',
   configurable => false,
   display_name => 'Username Password Form',
-  index        => 0,
+  priority     => 10,
   requirement  => 'REQUIRED',
 }
 ```
@@ -2245,7 +2243,7 @@ keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on 
     "duomfa.groups"  => "duo"
   },
   requirement  => 'REQUIRED',
-  index        => 1,
+  priority     => 20,
 }
 ```
 
@@ -2271,9 +2269,9 @@ The basic property that the resource should be in.
 
 Default value: `present`
 
-##### `index`
+##### `priority`
 
-execution index
+execution priority
 
 ##### `requirement`
 
@@ -3497,6 +3495,10 @@ otpPolicyType
 
 Default value: `totp`
 
+##### `password_policy`
+
+passwordPolicy
+
 ##### `permanent_lockout`
 
 Valid values: `true`, `false`
@@ -3693,6 +3695,12 @@ webAuthnPolicyCreateTimeout
 
 Default value: `0`
 
+##### `web_authn_policy_extra_origins`
+
+webAuthnPolicyExtraOrigins
+
+Default value: `[]`
+
 ##### `web_authn_policy_passwordless_acceptable_aaguids`
 
 webAuthnPolicyPasswordlessAcceptableAaguids
@@ -3728,6 +3736,12 @@ Default value: `false`
 webAuthnPolicyPasswordlessCreateTimeout
 
 Default value: `0`
+
+##### `web_authn_policy_passwordless_extra_origins`
+
+webAuthnPolicyPasswordlessExtraOrigins
+
+Default value: `[]`
 
 ##### `web_authn_policy_passwordless_require_resident_key`
 
@@ -4190,16 +4204,11 @@ Struct[{
     Optional['transaction-xa-enabled'] => Boolean,
     Optional['features'] => Array[String[1]],
     Optional['features-disabled'] => Array[String[1]],
-    Optional['hostname'] => Stdlib::Host,
-    Optional['hostname-admin'] => Stdlib::Host,
-    Optional['hostname-admin-url'] => String[1],
+    Optional['hostname'] => Variant[Stdlib::Host, Stdlib::HTTPUrl, Stdlib::HTTPSUrl],
+    Optional['hostname-admin'] => Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl],
+    Optional['hostname-backchannel-dynamic'] => Boolean,
     Optional['hostname-debug'] => Boolean,
-    Optional['hostname-path'] => String[1],
-    Optional['hostname-port'] => Stdlib::Port,
     Optional['hostname-strict'] => Boolean,
-    Optional['hostname-strict-backchannel'] => Boolean,
-    Optional['hostname-strict-https'] => Boolean,
-    Optional['hostname-url'] => String[1],
     Optional['http-enabled'] => Boolean,
     Optional['http-host'] => Stdlib::Host,
     Optional['http-max-queued-requests'] => Integer,

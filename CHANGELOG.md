@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v12.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v12.0.0) (2024-07-12)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.2.0...v12.0.0)
+
+### Changed
+
+- BREAKING: Support Keycloak 25 [\#316](https://github.com/treydock/puppet-module-keycloak/pull/316) ([treydock](https://github.com/treydock))
+- Implement webauthn extra origins & Raise KeyCloak version to 24.0.5 in acceptance tests [\#313](https://github.com/treydock/puppet-module-keycloak/pull/313) ([TuningYourCode](https://github.com/TuningYourCode))
+
+### Added
+
+- Implement password policy property [\#315](https://github.com/treydock/puppet-module-keycloak/pull/315) ([TuningYourCode](https://github.com/TuningYourCode))
+
 ## [v11.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v11.2.0) (2024-06-19)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.1.1...v11.2.0)
