@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v12.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v12.1.0) (2024-08-25)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v12.0.0...v12.1.0)
+
+### Added
+
+- Add syslog settings to `configs` type [\#318](https://github.com/treydock/puppet-module-keycloak/pull/318) ([saz](https://github.com/saz))
+
 ## [v12.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v12.0.0) (2024-07-12)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v11.2.0...v12.0.0)
