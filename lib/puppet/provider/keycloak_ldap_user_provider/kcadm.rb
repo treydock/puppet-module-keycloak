@@ -58,7 +58,6 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
   end
 
   def get_parent_id(realm)
-    parent_id = nil
     output = kcadm('get', "realms/#{realm}", nil, nil, ['id'])
     Puppet.debug("#{realm} realms: #{output}")
     begin
@@ -67,8 +66,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
       Puppet.debug("Unable to parse output from kcadm get realms/#{realm}")
       data = {}
     end
-    parent_id = data['id']
-    parent_id
+    data['id']
   end
 
   def create
