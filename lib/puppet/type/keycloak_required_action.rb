@@ -9,7 +9,6 @@ Manage Keycloak required actions
 @example Enable Webauthn Register and make it default
   keycloak_required_action { 'webauthn-register on master':
     ensure       => present,
-    alias        => 'webauthn-register',
     provider_id  => 'webauthn-register',
     display_name => 'Webauthn Register',
     default      => true,
@@ -40,16 +39,9 @@ Manage Keycloak required actions
     desc 'realm'
   end
 
-  newparam(:alias, namevar: true) do
-    desc 'Alias.'
-  end
-
-  newparam(:provider_id) do
-    desc 'providerId of the required action. Default to `alias`'
+  newparam(:provider_id, namevar: true) do
+    desc 'providerId of the required action.'
     munge { |v| v.to_s }
-    defaultto do
-      @resource[:alias]
-    end
   end
 
   newproperty(:display_name) do
@@ -107,7 +99,7 @@ Manage Keycloak required actions
         %r{^((\S+) on (\S+))$},
         [
           [:name],
-          [:alias],
+          [:provider_id],
           [:realm]
         ]
       ],
@@ -122,7 +114,7 @@ Manage Keycloak required actions
 
   validate do
     required_properties = [
-      :alias,
+      :provider_id,
       :realm
     ]
     required_properties.each do |property|
