@@ -7,7 +7,6 @@ describe Puppet::Type.type(:keycloak_required_action) do
     {
       name: 'foo',
       realm: 'test',
-      alias: 'something',
       provider_id: 'some-provider'
     }
   end
@@ -25,15 +24,9 @@ describe Puppet::Type.type(:keycloak_required_action) do
     }.not_to raise_error
   end
 
-  it 'has alias default to provider_id' do
-    config.delete(:provider_id)
-    expect(resource[:provider_id]).to eq('something')
-  end
-
   it 'handles componsite name' do
     component = described_class.new(name: 'foo on test')
     expect(component[:name]).to eq('foo on test')
-    expect(component[:alias]).to eq('foo')
     expect(component[:provider_id]).to eq('foo')
     expect(component[:realm]).to eq('test')
   end
@@ -49,8 +42,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
       :realm,
       :name,
       :display_name,
-      :provider_id,
-      :alias
+      :provider_id
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -163,16 +155,9 @@ describe Puppet::Type.type(:keycloak_required_action) do
       expect { resource }.to raise_error(%r{must have a realm defined})
     end
 
-    it 'requires alias' do
+    it 'requires provider_id' do
       config.delete(:provider_id)
-      config.delete(:alias)
-      expect { resource }.to raise_error(%r{must have a alias defined})
-    end
-
-    it 'does not require provider_id for absent' do
-      config.delete(:provider_id)
-      config[:ensure] = 'absent'
-      expect { resource }.not_to raise_error
+      expect { resource }.to raise_error(%r{must have a provider_id defined})
     end
   end
 end

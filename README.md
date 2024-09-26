@@ -603,9 +603,9 @@ The path for `install_dir` will be joined with `bin/kcadm.sh` to produce the ful
 The keycloak_required_action type can be used to define actions a user must perform during the authentication process.
 A user will not be able to complete the authentication process until these actions are complete. For instance, change a one-time password, accept T&C, etc.
 
-The name for an action is `$alias on $realm`.
+The name for an action is `$provider_id on $realm`.
 
-**Important**: actions from puppet config and from a server are matched based on a combination of alias and realm, so edition of aliases is not supported.
+**Important**: The keycloak rest api documentation uses the term `alias` which will be filled with the value of `provider_id` in this module.
 
  ```puppet
 # Minimal example
