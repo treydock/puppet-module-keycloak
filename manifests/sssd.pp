@@ -13,7 +13,7 @@ class keycloak::sssd {
       'ensure' => 'installed',
       'before' => Exec['libunix-dbus-java-setup'],
     }
-    ensure_packages($keycloak::libunix_dbus_java_build_dependencies, $build_dependency_defaults)
+    stdlib::ensure_packages($keycloak::libunix_dbus_java_build_dependencies, $build_dependency_defaults)
   }
 
   file { '/usr/local/src/libunix-dbus-java':
