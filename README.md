@@ -196,7 +196,7 @@ This module may work on earlier versions but this is the only version tested.
 | 19.x - 21.x      | 9.x                             |
 | 21.x             | 10.x                            |
 | 22.x - 24.x      | 11.x                            |
-| 25.x             | 12.x                            |
+| 25.x             | 12.x - 13.x                     |
 | -----------------|---------------------------------|
 
 ## Usage

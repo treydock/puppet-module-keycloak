@@ -3854,7 +3854,6 @@ Manage Keycloak required actions
 ```puppet
 keycloak_required_action { 'webauthn-register on master':
   ensure       => present,
-  alias        => 'webauthn-register',
   provider_id  => 'webauthn-register',
   display_name => 'Webauthn Register',
   default      => true,
@@ -3916,15 +3915,10 @@ Required action priority
 
 The following parameters are available in the `keycloak_required_action` type.
 
-* [`alias`](#-keycloak_required_action--alias)
 * [`name`](#-keycloak_required_action--name)
 * [`provider`](#-keycloak_required_action--provider)
 * [`provider_id`](#-keycloak_required_action--provider_id)
 * [`realm`](#-keycloak_required_action--realm)
-
-##### <a name="-keycloak_required_action--alias"></a>`alias`
-
-Alias.
 
 ##### <a name="-keycloak_required_action--name"></a>`name`
 
@@ -3939,7 +3933,7 @@ Puppet will usually discover the appropriate provider for your platform.
 
 ##### <a name="-keycloak_required_action--provider_id"></a>`provider_id`
 
-providerId of the required action. Default to `alias`
+providerId of the required action.
 
 ##### <a name="-keycloak_required_action--realm"></a>`realm`
 
