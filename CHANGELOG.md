@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v12.1.1](https://github.com/treydock/puppet-module-keycloak/tree/v12.1.1) (2024-10-19)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v12.1.0...v12.1.1)
+
+### Fixed
+
+- Fix ldap user provider parent\_id lookup [\#319](https://github.com/treydock/puppet-module-keycloak/pull/319) ([aba-zwicker](https://github.com/aba-zwicker))
+
 ## [v12.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v12.1.0) (2024-08-25)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v12.0.0...v12.1.0)
