@@ -9,7 +9,6 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
   let(:resource) do
     type.new(name: 'foo',
              realm: 'test',
-             alias: 'somealias',
              provider_id: 'webauthn-register')
   end
 
@@ -50,11 +49,9 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
 
   describe 'destroy' do
     it 'deregisters a required action' do
-      # It suppoed to use whatever came from api and was matched by provider id
-      # But not what developer provided
-      resource.provider.instance_variable_set(:@property_hash, alias: 'otheralias')
+      resource.provider.instance_variable_set(:@property_hash, resource.to_hash)
 
-      expect(resource.provider).to receive(:kcadm).with('delete', 'authentication/required-actions/otheralias', 'test')
+      expect(resource.provider).to receive(:kcadm).with('delete', 'authentication/required-actions/webauthn-register', 'test')
 
       resource.provider.destroy
 
@@ -77,7 +74,7 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
       temp = Tempfile.new('keycloak_required_action_configure')
       allow(Tempfile).to receive(:new).with('keycloak_required_action_configure').and_return(temp)
 
-      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/required-actions/somealias', 'test', temp.path)
+      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/required-actions/webauthn-register', 'test', temp.path)
 
       resource.provider.display_name = 'something'
       resource.provider.flush
@@ -86,11 +83,11 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
     # If developer does not specify the display name, the api would use the name
     # that is initially returned from unregistered-required-actions
     it 'uses display_name from current state if none specified explicitly' do
-      resource.provider.instance_variable_set(:@property_hash, display_name: 'display name', alias: 'somealias')
+      resource.provider.instance_variable_set(:@property_hash, display_name: 'display name', provider_id: 'webauthn-register')
       temp = Tempfile.new('keycloak_required_action_configure')
       allow(Tempfile).to receive(:new).with('keycloak_required_action_configure').and_return(temp)
 
-      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/required-actions/somealias', 'test', temp.path)
+      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/required-actions/webauthn-register', 'test', temp.path)
 
       resource.provider.priority = 1000
       resource.provider.flush
@@ -106,7 +103,7 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
       temp = Tempfile.new('keycloak_required_action_configure')
       allow(Tempfile).to receive(:new).with('keycloak_required_action_configure').and_return(temp)
 
-      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/required-actions/somealias', 'test', temp.path)
+      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/required-actions/webauthn-register', 'test', temp.path)
 
       resource.provider.priority = 200
       resource.provider.flush
@@ -114,19 +111,6 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
       data = IO.read(temp.path)
       json = JSON.parse(data)
       expect(json['name']).to eq('something')
-    end
-
-    it 'always uses alias from the current state to make edits' do
-      resource[:display_name] = 'newalias'
-      resource.provider.instance_variable_set(:@property_hash, alias: 'current')
-
-      temp = Tempfile.new('keycloak_required_action_configure')
-      allow(Tempfile).to receive(:new).with('keycloak_required_action_configure').and_return(temp)
-
-      expect(resource.provider).to receive(:kcadm).with('update', 'authentication/required-actions/current', 'test', temp.path)
-
-      resource.provider.priority = 200
-      resource.provider.flush
     end
   end
 end
