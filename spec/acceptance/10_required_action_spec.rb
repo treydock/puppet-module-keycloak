@@ -87,4 +87,31 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
       end
     end
   end
+
+  context 'when required action with multiple realms' do
+    it 'runs successfully' do
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_realm { 'test2': ensure => 'present' }
+      keycloak_required_action { 'webauthn-register on test':
+        ensure       => 'present',
+        display_name => 'Webauthn Register',
+        default      => true,
+        enabled      => true,
+        priority     => 200,
+      }
+      keycloak_required_action { 'webauthn-register on test2':
+        ensure       => 'present',
+        display_name => 'Webauthn Register',
+        default      => true,
+        enabled      => true,
+        priority     => 200,
+      }
+      PUPPET_PP
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+  end
 end
