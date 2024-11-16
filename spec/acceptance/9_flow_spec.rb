@@ -19,6 +19,18 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
           'Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]',
         ],
       }
+      keycloak::spi_deployment { 'osc-keycloak-scripts':
+        deployed_name => 'osc-keycloak-scripts-jar-with-dependencies.jar',
+        source        => "https://github.com/OSC/osc-keycloak-scripts/releases/download/1.1.0/osc-keycloak-scripts-1.1.0-jar-with-dependencies.jar",
+        test_url      => 'authentication/authenticator-providers',
+        test_key      => 'id',
+        test_value    => 'script-user-enabled-authenticator.js',
+        test_realm    => 'test',
+        test_before   => [
+          'Keycloak_flow[form-browser-with-duo]',
+          'Keycloak_flow_execution[script-user-enabled-authenticator.js under form-browser-with-duo on test]',
+        ],
+      }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'browser-with-duo on test':
         ensure      => 'present',
@@ -51,6 +63,11 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         display_name => 'Username Password Form',
         priority     => 10,
         requirement  => 'REQUIRED',
+      }
+      keycloak_flow_execution { 'script-user-enabled-authenticator.js under form-browser-with-duo on test':
+        ensure      => 'present',
+        requirement => 'REQUIRED',
+        priority    => 15,
       }
       keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
         ensure       => 'present',
@@ -93,8 +110,10 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         expect(form['description']).to eq('Form Browser with DUO')
         auth_form = data.find { |d| d['providerId'] == 'auth-username-password-form' }
         expect(auth_form['index']).to eq(0)
+        script = data.find { |d| d['authenticationConfig'] == 'script-user-enabled-authenticator.js' }
+        expect(script['index']).to eq(1)
         duo = data.find { |d| d['providerId'] == 'duo-universal' }
-        expect(duo['index']).to eq(1)
+        expect(duo['index']).to eq(2)
       end
     end
   end
@@ -113,6 +132,18 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         test_before   => [
           'Keycloak_flow[form-browser-with-duo]',
           'Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]',
+        ],
+      }
+      keycloak::spi_deployment { 'osc-keycloak-scripts':
+        deployed_name => 'osc-keycloak-scripts-jar-with-dependencies.jar',
+        source        => "https://github.com/OSC/osc-keycloak-scripts/releases/download/1.1.0/osc-keycloak-scripts-1.1.0-jar-with-dependencies.jar",
+        test_url      => 'authentication/authenticator-providers',
+        test_key      => 'id',
+        test_value    => 'script-user-enabled-authenticator.js',
+        test_realm    => 'test',
+        test_before   => [
+          'Keycloak_flow[form-browser-with-duo]',
+          'Keycloak_flow_execution[script-user-enabled-authenticator.js under form-browser-with-duo on test]',
         ],
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -161,6 +192,11 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         priority     => 25,
         requirement  => 'REQUIRED',
       }
+      keycloak_flow_execution { 'script-user-enabled-authenticator.js under form-browser-with-duo on test':
+        ensure      => 'present',
+        requirement => 'REQUIRED',
+        priority    => 35,
+      }
       PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
@@ -187,6 +223,8 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full do
         expect(auth_form['index']).to eq(1)
         duo = data.find { |d| d['providerId'] == 'duo-universal' }
         expect(duo['index']).to eq(0)
+        script = data.find { |d| d['authenticationConfig'] == 'script-user-enabled-authenticator.js' }
+        expect(script['index']).to eq(2)
       end
     end
   end
