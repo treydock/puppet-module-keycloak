@@ -1,5 +1,14 @@
 #!/bin/bash
 
 KCADM="<%= scope['keycloak::install_base'] %>/bin/kcadm.sh"
+CONFIG="/root/.keycloak/kcadm.config"
+EXPIRES=$(/usr/bin/sed  -n -r 's|.*"refreshExpiresAt" : ([0-9]*).*|\1|p' ~/.keycloak/kcadm.config)
+NOW=$(/usr/bin/date +%s%3N)
 
-${KCADM} "$@" --no-config --server '<%= scope['keycloak::wrapper_server'] %>' --realm master --user '<%= scope['keycloak::admin_user'] %>' --password '<%= scope['keycloak::admin_user_password'] %>'
+if [ ! -f "$CONFIG" ]; then
+    ${KCADM} config credentials --server '<%= scope['keycloak::wrapper_server'] %>' --realm master --user '<%= scope['keycloak::admin_user'] %>' --password '<%= scope['keycloak::admin_user_password'] %>'
+elif [ "$EXPIRES" -gt "$NOW" ]; then
+    ${KCADM} config credentials --server '<%= scope['keycloak::wrapper_server'] %>' --realm master --user '<%= scope['keycloak::admin_user'] %>' --password '<%= scope['keycloak::admin_user_password'] %>'
+fi
+
+${KCADM} "$@" --server '<%= scope['keycloak::wrapper_server'] %>' --realm master --user '<%= scope['keycloak::admin_user'] %>' --password '<%= scope['keycloak::admin_user_password'] %>'
