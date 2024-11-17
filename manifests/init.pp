@@ -240,7 +240,7 @@ class keycloak (
   Optional[Stdlib::Absolutepath] $service_environment_file = undef,
   Stdlib::Filemode $conf_dir_mode = '0755',
   Boolean $conf_dir_purge = true,
-  Array $conf_dir_purge_ignore = ['cache-ispn.xml', 'README.md', 'truststore.jks'],
+  Array $conf_dir_purge_ignore = ['cache-ispn.xml', 'README.md', 'truststore.jks', 'kcadm.config'],
   Keycloak::Configs $configs = {},
   Hash[String, Variant[String[1],Boolean,Array]] $extra_configs = {},
   Variant[Stdlib::Host, Stdlib::HTTPUrl, Stdlib::HTTPSUrl, Enum['unset','UNSET']] $hostname = $facts['networking']['fqdn'],
@@ -330,6 +330,7 @@ class keycloak (
   $tmp_dir = "${install_base}/tmp"
   $providers_dir = "${install_base}/providers"
   $wrapper_path = "${keycloak::install_base}/bin/kcadm-wrapper.sh"
+  $wrapper_conf = "${conf_dir}/kcadm-wrapper.conf"
 
   $default_config = {
     'hostname' => $hostname,
