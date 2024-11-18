@@ -35,6 +35,8 @@ keycloak::http_host: '0.0.0.0'
 keycloak::hostname: localhost
 keycloak::db: mariadb
 keycloak::proxy: edge
+keycloak::features:
+  - scripts
 # Force only listen on IPv4 for testing
 keycloak::java_opts: '-Djava.net.preferIPv4Stack=true'
 postgresql::server::service_status: 'service postgresql status 2>/dev/null 1>/dev/null'

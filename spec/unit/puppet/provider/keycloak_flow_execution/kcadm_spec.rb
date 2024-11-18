@@ -20,7 +20,8 @@ describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(my_fixture_read('get-test.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/config/be93a426-077f-4235-9686-677ff0706bf8', 'test').and_return('{}')
-      expect(described_class.instances.length).to eq(4)
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/config/script-user-enabled-authenticator.js', 'test').and_return('{}')
+      expect(described_class.instances.length).to eq(5)
     end
 
     it 'returns the resource for a flow' do
@@ -28,8 +29,19 @@ describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(my_fixture_read('get-test.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/config/be93a426-077f-4235-9686-677ff0706bf8', 'test').and_return('{}')
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/config/script-user-enabled-authenticator.js', 'test').and_return('{}')
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
       expect(property_hash[:name]).to eq('auth-cookie under browser-with-duo on test')
+    end
+
+    it 'returns script execution' do
+      allow(described_class).to receive(:realms).and_return(['test'])
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(my_fixture_read('get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/config/be93a426-077f-4235-9686-677ff0706bf8', 'test').and_return('{}')
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/config/script-user-enabled-authenticator.js', 'test').and_return('{}')
+      property_hash = described_class.instances.last.instance_variable_get('@property_hash')
+      expect(property_hash[:provider_id]).to eq('script-user-enabled-authenticator.js')
     end
   end
   #   describe 'self.prefetch' do

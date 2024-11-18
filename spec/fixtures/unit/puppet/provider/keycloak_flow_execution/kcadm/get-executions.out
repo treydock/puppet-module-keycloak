@@ -46,4 +46,16 @@
   "authenticationConfig" : "be93a426-077f-4235-9686-677ff0706bf8",
   "level" : 1,
   "index" : 1
+}, {
+  "id" : "fe1692cb-5a30-4312-ac1a-25dce4cad7ef",
+  "requirement" : "DISABLED",
+  "displayName" : "User Enabled Authenticator",
+  "alias" : "User Enabled Authenticator",
+  "requirementChoices" : [ "REQUIRED", "ALTERNATIVE", "DISABLED" ],
+  "configurable" : true,
+  "providerId" : "ONRXE2LQOQWXK43FOIWWK3TBMJWGKZBNMF2XI2DFNZ2GSY3BORXXELTKOM",
+  "authenticationConfig" : "script-user-enabled-authenticator.js",
+  "level" : 0,
+  "index" : 3,
+  "priority" : 31
 } ]

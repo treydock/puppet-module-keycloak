@@ -55,6 +55,9 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
             execution[:flow_alias] = parent_level[1][-1] if parent_level.size > 1
           end
           execution[:provider_id] = e['providerId']
+          if e['authenticationConfig'] =~ %r{^script-.+}
+            execution[:provider_id] = e['authenticationConfig']
+          end
           execution[:alias] = e['alias']
           execution[:name] = "#{execution[:provider_id]} under #{execution[:flow_alias]} on #{realm}"
           if e['authenticationFlow']
