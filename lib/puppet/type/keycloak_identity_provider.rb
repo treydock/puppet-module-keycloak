@@ -127,8 +127,8 @@ Manage Keycloak identity providers
 
   # BEGIN: oidc
 
-  newproperty(:hide_on_login_page, boolean: true) do
-    desc 'hideOnLoginPage'
+  newproperty(:hide_on_login, boolean: true) do
+    desc 'hideOnLogin'
     newvalues(:true, :false)
     defaultto :false
   end
