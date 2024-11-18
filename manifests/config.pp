@@ -9,18 +9,33 @@ class keycloak::config {
     }
   }
 
-  # Template uses:
-  # - $keycloak::install_base
-  # - $keycloak::admin_user
-  # - $keycloak::admin_user_password
+  $wrapper_conf = {
+    'KCADM'      => "${keycloak::install_base}/bin/kcadm.sh",
+    'CONFIG'     => $keycloak::login_config,
+    'SERVER'     => $keycloak::wrapper_server,
+    'REALM'      => 'master',
+    'ADMIN_USER' => $keycloak::admin_user,
+    'PASSWORD'   => $keycloak::admin_user_password,
+  }
+  file { 'kcadm-wrapper.conf':
+    ensure    => 'file',
+    path      => $keycloak::wrapper_conf,
+    owner     => $keycloak::user,
+    group     => $keycloak::group,
+    mode      => '0640',
+    content   => epp('keycloak/shell_vars.epp', { 'vars' => $wrapper_conf }),
+    show_diff => false,
+  }
+
   file { 'kcadm-wrapper.sh':
     ensure    => 'file',
     path      => $keycloak::wrapper_path,
     owner     => $keycloak::user,
     group     => $keycloak::group,
     mode      => '0750',
-    content   => template('keycloak/kcadm-wrapper.sh.erb'),
+    source    => 'puppet:///modules/keycloak/kcadm-wrapper.sh',
     show_diff => false,
+    require   => File['kcadm-wrapper.conf'],
   }
 
   file { $keycloak::conf_dir:

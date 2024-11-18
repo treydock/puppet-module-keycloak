@@ -121,8 +121,9 @@ describe 'keycloak' do
             owner: 'keycloak',
             group: 'keycloak',
             mode: '0750',
-            content: %r{.*},
+            source: 'puppet:///modules/keycloak/kcadm-wrapper.sh',
             show_diff: 'false',
+            require: 'File[kcadm-wrapper.conf]',
           )
         end
 
