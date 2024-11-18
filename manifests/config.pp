@@ -11,7 +11,7 @@ class keycloak::config {
 
   $wrapper_conf = {
     'KCADM'      => "${keycloak::install_base}/bin/kcadm.sh",
-    'CONFIG'     => "${keycloak::conf_dir}/kcadm.config",
+    'CONFIG'     => $keycloak::login_config,
     'SERVER'     => $keycloak::wrapper_server,
     'REALM'      => 'master',
     'ADMIN_USER' => $keycloak::admin_user,

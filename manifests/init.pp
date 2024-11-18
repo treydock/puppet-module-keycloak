@@ -331,6 +331,7 @@ class keycloak (
   $providers_dir = "${install_base}/providers"
   $wrapper_path = "${keycloak::install_base}/bin/kcadm-wrapper.sh"
   $wrapper_conf = "${conf_dir}/kcadm-wrapper.conf"
+  $login_config = "${conf_dir}/kcadm.config"
 
   $default_config = {
     'hostname' => $hostname,

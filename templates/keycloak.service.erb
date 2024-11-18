@@ -21,6 +21,10 @@ Environment='JAVA_HOME=<%= scope['keycloak::java_home'] %>'
 User=<%= scope['keycloak::user'] %>
 Group=<%= scope['keycloak::group'] %>
 ExecStart=<%= scope['keycloak::service_start_cmd'] %>
+# TODO: remove once upgraded from Keycloak 25 to 26
+<% unless (scope['keycloak::features'] || []).include?('persistent-user-sessions') -%>
+ExecStartPost=-/usr/bin/rm -f <%= scope['keycloak::login_config'] %>
+<% end -%>
 TimeoutStartSec=600
 TimeoutStopSec=600
 SuccessExitStatus=0 143
