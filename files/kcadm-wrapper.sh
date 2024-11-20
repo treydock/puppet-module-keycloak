@@ -3,7 +3,7 @@
 # shellcheck source=/dev/null
 . /opt/keycloak/conf/kcadm-wrapper.conf
 
-EXPIRES=$(/usr/bin/sed  -n -r 's|.*"refreshExpiresAt" : ([0-9]*).*|\1|p' "$CONFIG" 2>/dev/null || echo "0")
+EXPIRES=$(/usr/bin/sed  -n -r 's|.*"expiresAt" : ([0-9]*).*|\1|p' "$CONFIG" 2>/dev/null || echo "0")
 NOW=$(/usr/bin/date +%s%3N)
 
 if [ ! -f "$CONFIG" ] || [ "$EXPIRES" -lt "$NOW" ]; then
