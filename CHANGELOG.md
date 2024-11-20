@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v13.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v13.2.0) (2024-11-20)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.1.0...v13.2.0)
+
+### Added
+
+- Add http\(s\)-management options [\#332](https://github.com/treydock/puppet-module-keycloak/pull/332) ([nblock](https://github.com/nblock))
+
+### Fixed
+
+- Fix kcadm-wrapper to check proper value for credential expiration [\#334](https://github.com/treydock/puppet-module-keycloak/pull/334) ([treydock](https://github.com/treydock))
+
 ## [v13.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v13.1.0) (2024-11-18)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.0.0...v13.1.0)
