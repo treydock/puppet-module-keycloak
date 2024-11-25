@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v13.2.1](https://github.com/treydock/puppet-module-keycloak/tree/v13.2.1) (2024-11-25)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.2.0...v13.2.1)
+
+### Fixed
+
+- Allow claim\_name and json\_type\_label with script mappers [\#335](https://github.com/treydock/puppet-module-keycloak/pull/335) ([treydock](https://github.com/treydock))
+
 ## [v13.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v13.2.0) (2024-11-20)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.1.0...v13.2.0)
