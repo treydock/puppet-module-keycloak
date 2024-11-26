@@ -59,6 +59,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
           if protocol_mapper[:protocol] == 'openid-connect'
             protocol_mapper[:id_token_claim] = d['config']['id.token.claim']
             protocol_mapper[:access_token_claim] = d['config']['access.token.claim']
+            protocol_mapper[:introspection_token_claim] = d['config']['introspection.token.claim']
           end
           unless ['oidc-audience-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:userinfo_token_claim] = d['config']['userinfo.token.claim']
@@ -123,6 +124,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
     if resource[:protocol] == 'openid-connect'
       data[:config][:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
       data[:config][:'access.token.claim'] = resource[:access_token_claim] if resource[:access_token_claim]
+      data[:config][:'introspection.token.claim'] = resource[:introspection_token_claim] if resource[:introspection_token_claim]
     end
     if !['oidc-audience-mapper'].include?(resource[:type]) && resource[:userinfo_token_claim]
       data[:config][:'userinfo.token.claim'] = resource[:userinfo_token_claim]
@@ -210,6 +212,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       if resource[:protocol] == 'openid-connect'
         config[:'id.token.claim'] = resource[:id_token_claim] if resource[:id_token_claim]
         config[:'access.token.claim'] = resource[:access_token_claim] if resource[:access_token_claim]
+        config[:'introspection.token.claim'] = resource[:introspection_token_claim] if resource[:introspection_token_claim]
       end
       if !['oidc-audience-mapper'].include?(resource[:type]) && resource[:userinfo_token_claim]
         config[:'userinfo.token.claim'] = resource[:userinfo_token_claim]
