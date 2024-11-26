@@ -251,6 +251,36 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     }.to raise_error(%r{foo})
   end
 
+  it 'defaults for introspection_token_claim' do
+    expect(resource[:introspection_token_claim]).to eq(:true)
+  end
+
+  it 'does not default introspection_token_claim for saml' do
+    config[:protocol] = 'saml'
+    expect(resource[:introspection_token_claim]).to be_nil
+  end
+
+  it 'accepts true for introspection_token_claim' do
+    config[:introspection_token_claim] = true
+    expect(resource[:introspection_token_claim]).to eq(:true)
+    config[:introspection_token_claim] = 'true'
+    expect(resource[:introspection_token_claim]).to eq(:true)
+  end
+
+  it 'accepts false for introspection_token_claim' do
+    config[:introspection_token_claim] = false
+    expect(resource[:introspection_token_claim]).to eq(:false)
+    config[:introspection_token_claim] = 'false'
+    expect(resource[:introspection_token_claim]).to eq(:false)
+  end
+
+  it 'does not accept strings for introspection_token_claim' do
+    config[:introspection_token_claim] = 'foo'
+    expect {
+      resource
+    }.to raise_error(%r{foo})
+  end
+
   defaults = {}
 
   describe 'basic properties' do
