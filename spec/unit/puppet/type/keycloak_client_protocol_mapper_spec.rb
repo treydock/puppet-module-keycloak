@@ -364,7 +364,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
   end
 
   it 'does not accept invalid value for multivalued' do
-    config[:single] = 'foo'
+    config[:multivalued] = 'foo'
     expect {
       resource
     }.to raise_error(%r{foo})

@@ -341,6 +341,27 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     expect(resource[:included_client_audience]).to eq('foo')
   end
 
+  it 'accepts value for multivalued' do
+    config[:multivalued] = false
+    expect(resource[:multivalued]).to eq(:false)
+  end
+
+  it 'accepts value for multivalued string' do
+    config[:multivalued] = 'false'
+    expect(resource[:multivalued]).to eq(:false)
+  end
+
+  it 'has default for multivalued' do
+    expect(resource[:multivalued]).to be_nil
+  end
+
+  it 'does not accept invalid value for multivalued' do
+    config[:multivalued] = 'foo'
+    expect {
+      resource
+    }.to raise_error(%r{foo})
+  end
+
   it 'accepts script' do
     config[:protocol] = 'saml'
     config[:type] = 'script-foo.js'

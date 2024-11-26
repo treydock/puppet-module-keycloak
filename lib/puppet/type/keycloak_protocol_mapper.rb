@@ -201,6 +201,11 @@ Manage Keycloak client scope protocol mappers
     end
   end
 
+  newproperty(:multivalued, boolean: true) do
+    desc 'multivalued'
+    newvalues(:true, :false)
+  end
+
   newproperty(:included_client_audience) do
     desc 'included.client.audience Required for `type` of `oidc-audience-mapper`'
   end
