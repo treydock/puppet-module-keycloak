@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v13.3.0](https://github.com/treydock/puppet-module-keycloak/tree/v13.3.0) (2024-11-26)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.2.1...v13.3.0)
+
+### Added
+
+- Add multivalued property to keycloak\_protocol\_mapper [\#336](https://github.com/treydock/puppet-module-keycloak/pull/336) ([treydock](https://github.com/treydock))
+
 ## [v13.2.1](https://github.com/treydock/puppet-module-keycloak/tree/v13.2.1) (2024-11-25)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.2.0...v13.2.1)
