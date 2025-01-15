@@ -28,6 +28,7 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, parent: Puppet::Provid
         attributes = d['attributes'] || {}
         client_scope[:consent_screen_text] = attributes['consent.screen.text']
         client_scope[:display_on_consent_screen] = attributes['display.on.consent.screen']
+        client_scope[:include_in_token_scope] = attributes['include.in.token.scope']
         client_scopes << new(client_scope)
       end
     end
@@ -54,6 +55,7 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, parent: Puppet::Provid
     attributes = {}
     attributes['consent.screen.text'] = resource[:consent_screen_text]
     attributes['display.on.consent.screen'] = resource[:display_on_consent_screen]
+    attributes['include.in.token.scope'] = resource[:include_in_token_scope]
     data[:attributes] = attributes
 
     t = Tempfile.new('keycloak_client_scope')
@@ -104,6 +106,7 @@ Puppet::Type.type(:keycloak_client_scope).provide(:kcadm, parent: Puppet::Provid
       attributes = {}
       attributes['consent.screen.text'] = @property_flush[:consent_screen_text] if @property_flush[:consent_screen_text]
       attributes['display.on.consent.screen'] = @property_flush[:display_on_consent_screen] if @property_flush[:display_on_consent_screen]
+      attributes['include.in.token.scope'] = @property_flush[:include_in_token_scope] if @property_flush[:include_in_token_scope]
       data[:attributes] = attributes if attributes
 
       t = Tempfile.new('keycloak_client_scope')

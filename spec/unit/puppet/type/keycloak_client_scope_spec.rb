@@ -71,6 +71,7 @@ describe Puppet::Type.type(:keycloak_client_scope) do
   # Test boolean properties
   [
     :display_on_consent_screen,
+    :include_in_token_scope,
   ].each do |p|
     it "should accept true for #{p}" do
       config[p] = true
