@@ -72,6 +72,11 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
           if ['saml-group-membership-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
           end
+          unless ['oidc-usermodel-property-mapper', 'oidc-usermodel-attribute-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper', 'oidc-audience-mapper', 'saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(d['protocolMapper'])
+            protocol_mapper[:type] = 'custom'
+            protocol_mapper[:custom_type] = d['protocolMapper']
+            protocol_mapper[:custom_config] = d['config']
+          end
           protocol_mappers << new(protocol_mapper)
         end
       end
@@ -102,6 +107,10 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
     data[:protocol] = resource[:protocol]
     data[:protocolMapper] = resource[:type]
     data[:config] = {}
+    if resource[:type] == "custom"
+      data[:protocolMapper] = resource[:custom_type]
+      data[:config] = resource[:custom_config]
+    end
     if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
       data[:config][:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
     end
@@ -186,6 +195,10 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
       config = {}
+      if resource[:type] == "custom"
+        data[:protocolMapper] = resource[:custom_type]
+        data[:config] = resource[:custom_config]
+      end
       if ['oidc-usermodel-property-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'oidc-usermodel-attribute-mapper'].include?(resource[:type])
         config[:'user.attribute'] = resource[:user_attribute] if resource[:user_attribute]
       end
