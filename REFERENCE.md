@@ -1975,6 +1975,14 @@ display.on.consent.screen
 
 Default value: `true`
 
+##### `include_in_token_scope`
+
+Valid values: ``true``, ``false``
+
+include.in.token.scope
+
+Default value: `true`
+
 ##### `ensure`
 
 Valid values: `present`, `absent`
