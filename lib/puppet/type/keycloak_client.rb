@@ -166,6 +166,14 @@ Manage Keycloak clients
     desc 'backchannel.logout.url'
   end
 
+  newproperty(:backchannel_logout_session_required) do
+    desc 'backchannel.logout.session.required'
+  end
+
+  newproperty(:backchannel_logout_revoke_offline_tokens) do
+    desc 'backchannel.logout.revoke.offline.tokens'
+  end
+
   newproperty(:saml_name_id_format) do
     desc 'saml_name_id_format'
   end

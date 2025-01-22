@@ -83,6 +83,8 @@ describe Puppet::Type.type(:keycloak_client) do
       :secret,
       :login_theme,
       :backchannel_logout_url,
+      :backchannel_logout_session_required,
+      :backchannel_logout_revoke_offline_tokens,
       :root_url,
       :admin_url,
       :base_url,
