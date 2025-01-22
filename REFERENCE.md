@@ -1711,6 +1711,10 @@ saml_artifact_binding_url
 
 saml_assertion_consumer_url_post
 
+##### `saml_client_signature`
+
+saml.client.signature
+
 ##### `saml_assertion_signature`
 
 saml.assertion.signature

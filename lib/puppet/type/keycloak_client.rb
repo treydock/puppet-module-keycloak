@@ -186,6 +186,10 @@ Manage Keycloak clients
     desc 'saml.encrypt'
   end
 
+  newproperty(:saml_client_signature) do
+    desc 'saml.client.signature'
+  end
+
   newproperty(:saml_assertion_signature) do
     desc 'saml.assertion.signature'
   end
