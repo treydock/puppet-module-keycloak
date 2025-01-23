@@ -3198,7 +3198,7 @@ protocolMapper.
 Default is `oidc-usermodel-property-mapper` for `protocol` `openid-connect` and
 `saml-user-property-mapper` for `protocol` `saml`.
 
-##### <a name="-ckeycloak_protocol_mapper--ustom_type"></a>`custom_type`
+##### <a name="-keycloak_protocol_mapper--custom_type"></a>`custom_type`
 
 Custom mapper type if `type` is set to `custom`.
 
