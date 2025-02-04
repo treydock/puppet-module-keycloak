@@ -363,12 +363,12 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
   end
 
   it 'accepts value for aggregate_attrs' do
-    config[:aggregate.attrs] = false
+    config[:'aggregate.attrs'] = false
     expect(resource[:aggregate_attrs]).to eq(:false)
   end
 
   it 'accepts value for aggregate_attrs string' do
-    config[:aggregate.attrs] = 'false'
+    config[:'aggregate.attrs'] = 'false'
     expect(resource[:aggregate_attrs]).to eq(:false)
   end
 
@@ -377,7 +377,7 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
   end
 
   it 'does not accept invalid value for aggregate_attrs' do
-    config[:aggregate.attrs] = 'foo'
+    config[:'aggregate.attrs'] = 'foo'
     expect {
       resource
     }.to raise_error(%r{foo})
