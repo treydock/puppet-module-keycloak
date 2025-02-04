@@ -1867,6 +1867,12 @@ included.client.audience Required for `type` of `oidc-audience-mapper`
 
 json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper` and `oidc-group-membership-mapper`.
 
+##### `aggregate_attrs`
+
+Valid values: `true`, `false`
+
+aggregate.attrs
+
 ##### `protocol`
 
 Valid values: `openid-connect`, `saml`
@@ -3101,6 +3107,12 @@ included.client.audience Required for `type` of `oidc-audience-mapper`
 ##### `json_type_label`
 
 json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper` and `oidc-group-membership-mapper`.
+
+##### `aggregate_attrs`
+
+Valid values: `true`, `false`
+
+aggregate.attrs
 
 ##### `protocol`
 

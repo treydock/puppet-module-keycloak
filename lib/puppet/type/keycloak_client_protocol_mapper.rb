@@ -196,6 +196,11 @@ Manage Keycloak protocol mappers
     end
   end
 
+  newproperty(:aggregate_attrs, boolean: true) do
+    desc 'aggregate.attrs'
+    newvalues(:true, :false)
+  end
+
   newproperty(:script) do
     desc <<-EOS
     Script, only valid for `type` of `saml-javascript-mapper`'

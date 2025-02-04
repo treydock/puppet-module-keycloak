@@ -72,6 +72,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
           if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(protocol_mapper[:type])
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
           end
+          protocol_mapper[:aggregate_attrs] = d['config']['aggregate.attrs'].to_s.to_sym if d['config']['aggregate.attrs']
           protocol_mappers << new(protocol_mapper)
         end
       end
@@ -134,6 +135,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
     end
     if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(resource[:type])
       data[:config][:single] = resource[:single].to_s if resource[:single]
+    end
+    if resource[:aggregate_attrs]
+      data[:config][:aggregate.attrs] = resource[:aggregate_attrs].to_s
     end
 
     t = Tempfile.new('keycloak_protocol_mapper')
@@ -218,6 +222,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
       end
       if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(resource[:type])
         config[:single] = resource[:single].to_s if resource[:single]
+      end
+      if resource[:aggregate_attrs]
+        config[:aggregate.attrs] = resource[:aggregate_attrs].to_s
       end
       data[:config] = config unless config.empty?
 
