@@ -18,6 +18,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :saml_assertion_consumer_url_post,
       :saml_encrypt,
       :saml_assertion_signature,
+      :saml_client_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
       :saml_signing_private_key
@@ -30,6 +31,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :backchannel_logout_url,
       :saml_encrypt,
       :saml_assertion_signature,
+      :saml_client_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
       :saml_signing_private_key

@@ -95,6 +95,7 @@ describe Puppet::Type.type(:keycloak_client) do
       :saml_assertion_consumer_url_post,
       :saml_encrypt,
       :saml_assertion_signature,
+      :saml_client_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
       :saml_signing_private_key
