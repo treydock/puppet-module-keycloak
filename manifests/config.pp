@@ -20,8 +20,8 @@ class keycloak::config {
   file { 'kcadm-wrapper.conf':
     ensure    => 'file',
     path      => $keycloak::wrapper_conf,
-    owner     => 'root',
-    group     => 'root',
+    owner     => $keycloak::user,
+    group     => $keycloak::group,
     mode      => '0640',
     content   => epp('keycloak/shell_vars.epp', { 'vars' => $wrapper_conf }),
     show_diff => false,
@@ -30,8 +30,8 @@ class keycloak::config {
   file { 'kcadm-wrapper.sh':
     ensure    => 'file',
     path      => $keycloak::wrapper_path,
-    owner     => 'root',
-    group     => 'root',
+    owner     => $keycloak::user,
+    group     => $keycloak::group,
     mode      => '0750',
     source    => 'puppet:///modules/keycloak/kcadm-wrapper.sh',
     show_diff => false,

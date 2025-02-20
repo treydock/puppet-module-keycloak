@@ -118,8 +118,8 @@ describe 'keycloak' do
           is_expected.to contain_file('kcadm-wrapper.sh').only_with(
             ensure: 'file',
             path: "/opt/keycloak-#{version}/bin/kcadm-wrapper.sh",
-            owner: 'root',
-            group: 'root',
+            owner: 'keycloak',
+            group: 'keycloak',
             mode: '0750',
             source: 'puppet:///modules/keycloak/kcadm-wrapper.sh',
             show_diff: 'false',

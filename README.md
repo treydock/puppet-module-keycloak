@@ -588,11 +588,13 @@ The keycloak_api type can be used to define how this module's types access the K
 
  ```puppet
 keycloak_api { 'keycloak'
-  install_dir => '/opt/keycloak',
-  server     => 'http://localhost:8080/auth',
-  realm      => 'master',
-  user       => 'admin',
-  password   => 'changeme',
+  install_dir    => '/opt/keycloak',
+  server         => 'http://localhost:8080/auth',
+  realm          => 'master',
+  user           => 'admin',
+  password       => 'changeme',
+  keycloak_user  => 'keycloak',
+  keycloak_group => 'keycloak',
 }
 ```
 

@@ -54,6 +54,16 @@ Puppet::Type.newtype(:keycloak_api) do
     defaultto :false
   end
 
+  newparam(:keycloak_user) do
+    desc 'Keycloak user'
+    defaultto('keycloak')
+  end
+
+  newparam(:keycloak_group) do
+    desc 'Keycloak group'
+    defaultto('keycloak')
+  end
+
   def generate
     kcadm_types = []
     Dir[File.join(File.dirname(__FILE__), '../provider/keycloak_*/kcadm.rb')].each do |file|
@@ -68,6 +78,8 @@ Puppet::Type.newtype(:keycloak_api) do
       provider_class.user = self[:user]
       provider_class.password = self[:password]
       provider_class.use_wrapper = self[:use_wrapper]
+      provider_class.keycloak_user = self[:keycloak_user]
+      provider_class.keycloak_group = self[:keycloak_group]
     end
 
     []

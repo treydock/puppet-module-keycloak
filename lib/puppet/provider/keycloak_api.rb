@@ -16,9 +16,12 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   @user = nil
   @password = nil
   @use_wrapper = true
+  @keycloak_user = 'keycloak'
+  @keycloak_group = 'keycloak'
 
   class << self
-    attr_accessor :install_dir, :server, :realm, :user, :password, :use_wrapper
+    attr_accessor :install_dir, :server, :realm, :user, :password, :use_wrapper,
+                  :keycloak_user, :keycloak_group
   end
 
   def self.type_properties
@@ -107,7 +110,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
     cmd.reject! { |c| c.empty? }
 
-    execute(cmd, combine: false, failonfail: true)
+    execute(cmd, combine: false, failonfail: true, uid: keycloak_user, gid: keycloak_group)
   end
 
   def kcadm(*args)
