@@ -58,6 +58,8 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
   def self.kcadm(action, resource, realm = nil, file = nil, fields = nil, print_id = false, params = nil)
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
+    keycloak_user ||= 'keycloak'
+    keycloak_group ||= 'keycloak'
 
     arguments = [action]
 
@@ -73,6 +75,14 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
       arguments << escape(realm)
     end
     if file
+      Puppet.debug("Get Keycloak user UID for #{keycloak_user}")
+      uid = Etc.getpwnam(keycloak_user).uid
+      Puppet.debug("Get Keycloak group GID for #{keycloak_group}")
+      gid = Etc.getgrnam(keycloak_group).gid
+      # Force the 0600 mode tempfile to be readable only by 'keycloak' user
+      # so that the kcadm commands can be run as 'keycloak'
+      Puppet.debug("Change ownership of #{file} to #{keycloak_user}(#{uid}):#{keycloak_group}(#{gid})")
+      File.chown(uid, gid, file)
       arguments << '-f'
       arguments << file
     end
