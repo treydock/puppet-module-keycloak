@@ -16,9 +16,12 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
   @user = nil
   @password = nil
   @use_wrapper = true
+  @keycloak_user = 'keycloak'
+  @keycloak_group = 'keycloak'
 
   class << self
-    attr_accessor :install_dir, :server, :realm, :user, :password, :use_wrapper
+    attr_accessor :install_dir, :server, :realm, :user, :password, :use_wrapper,
+                  :keycloak_user, :keycloak_group
   end
 
   def self.type_properties
@@ -55,6 +58,8 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
   def self.kcadm(action, resource, realm = nil, file = nil, fields = nil, print_id = false, params = nil)
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
+    keycloak_user ||= 'keycloak'
+    keycloak_group ||= 'keycloak'
 
     arguments = [action]
 
@@ -70,6 +75,14 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
       arguments << escape(realm)
     end
     if file
+      Puppet.debug("Get Keycloak user UID for #{keycloak_user}")
+      uid = Etc.getpwnam(keycloak_user).uid
+      Puppet.debug("Get Keycloak group GID for #{keycloak_group}")
+      gid = Etc.getgrnam(keycloak_group).gid
+      # Force the 0600 mode tempfile to be readable only by 'keycloak' user
+      # so that the kcadm commands can be run as 'keycloak'
+      Puppet.debug("Change ownership of #{file} to #{keycloak_user}(#{uid}):#{keycloak_group}(#{gid})")
+      File.chown(uid, gid, file)
       arguments << '-f'
       arguments << file
     end
@@ -107,7 +120,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
     cmd.reject! { |c| c.empty? }
 
-    execute(cmd, combine: false, failonfail: true)
+    execute(cmd, combine: false, failonfail: true, uid: keycloak_user, gid: keycloak_group)
   end
 
   def kcadm(*args)
