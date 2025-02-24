@@ -152,6 +152,8 @@ The following parameters are available in the `keycloak` class:
 * [`ldap_mappers_merge`](#-keycloak--ldap_mappers_merge)
 * [`ldap_user_providers`](#-keycloak--ldap_user_providers)
 * [`ldap_user_providers_merge`](#-keycloak--ldap_user_providers_merge)
+* [`role_mappings`](#-keycloak--role_mappings)
+* [`role_mapping_merge`](#-keycloak--role_mapping_merge)
 * [`with_sssd_support`](#-keycloak--with_sssd_support)
 * [`libunix_dbus_java_source`](#-keycloak--libunix_dbus_java_source)
 * [`install_libunix_dbus_java_build_dependencies`](#-keycloak--install_libunix_dbus_java_build_dependencies)
@@ -834,6 +836,22 @@ Boolean that sets if `ldap_user_providers` should be merged from Hiera.
 
 Default value: `false`
 
+##### <a name="-keycloak--role_mappings"></a>`role_mappings`
+
+Data type: `Hash`
+
+Hash that is used to define keycloak_role_mapping resources.
+
+Default value: `{}`
+
+##### <a name="-keycloak--role_mapping_merge"></a>`role_mapping_merge`
+
+Data type: `Boolean`
+
+Boolean that sets if `role_mappings` should be merged from Hiera.
+
+Default value: `false`
+
 ##### <a name="-keycloak--with_sssd_support"></a>`with_sssd_support`
 
 Data type: `Boolean`
@@ -1453,6 +1471,8 @@ keycloak_api { 'keycloak'
 The following parameters are available in the `keycloak_api` type.
 
 * [`install_dir`](#-keycloak_api--install_dir)
+* [`keycloak_group`](#-keycloak_api--keycloak_group)
+* [`keycloak_user`](#-keycloak_api--keycloak_user)
 * [`name`](#-keycloak_api--name)
 * [`password`](#-keycloak_api--password)
 * [`realm`](#-keycloak_api--realm)
@@ -1465,6 +1485,18 @@ The following parameters are available in the `keycloak_api` type.
 Install location of Keycloak
 
 Default value: `/opt/keycloak`
+
+##### <a name="-keycloak_api--keycloak_group"></a>`keycloak_group`
+
+Keycloak group
+
+Default value: `keycloak`
+
+##### <a name="-keycloak_api--keycloak_user"></a>`keycloak_user`
+
+Keycloak user
+
+Default value: `keycloak`
 
 ##### <a name="-keycloak_api--name"></a>`name`
 
@@ -1677,13 +1709,13 @@ saml_artifact_binding_url
 
 saml_assertion_consumer_url_post
 
-##### `saml_client_signature`
-
-saml.client.signature
-
 ##### `saml_assertion_signature`
 
 saml.assertion.signature
+
+##### `saml_client_signature`
+
+saml.client.signature
 
 ##### `saml_encrypt`
 
@@ -1947,14 +1979,6 @@ display.on.consent.screen
 
 Default value: `true`
 
-##### `include_in_token_scope`
-
-Valid values: ``true``, ``false``
-
-include.in.token.scope
-
-Default value: `true`
-
 ##### `ensure`
 
 Valid values: `present`, `absent`
@@ -1962,6 +1986,12 @@ Valid values: `present`, `absent`
 The basic property that the resource should be in.
 
 Default value: `present`
+
+##### `include_in_token_scope`
+
+Valid values: `true`, `false`
+
+include.in.token.scope
 
 ##### `protocol`
 
