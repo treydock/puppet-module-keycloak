@@ -3201,6 +3201,8 @@ The following parameters are available in the `keycloak_protocol_mapper` type.
 * [`realm`](#-keycloak_protocol_mapper--realm)
 * [`resource_name`](#-keycloak_protocol_mapper--resource_name)
 * [`type`](#-keycloak_protocol_mapper--type)
+* [`custom_type`](#-keycloak_protocol_mapper--custom_type)
+* [`custom_config`](#-keycloak_protocol_mapper--custom_config)
 
 ##### <a name="-keycloak_protocol_mapper--client_scope"></a>`client_scope`
 
@@ -3231,12 +3233,20 @@ The protocol mapper name. Defaults to `name`.
 
 ##### <a name="-keycloak_protocol_mapper--type"></a>`type`
 
-Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-user-attribute-mapper`, `saml-role-list-mapper`
+Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-user-attribute-mapper`, `saml-role-list-mapper`, `custom`
 
 protocolMapper.
 
 Default is `oidc-usermodel-property-mapper` for `protocol` `openid-connect` and
 `saml-user-property-mapper` for `protocol` `saml`.
+
+##### <a name="-keycloak_protocol_mapper--custom_type"></a>`custom_type`
+
+Custom mapper type if `type` is set to `custom`.
+
+##### <a name="-keycloak_protocol_mapper--custom_config"></a>`custom_config`
+
+Custom mapper config for custom type. Simple hash with key-value pair, which will be converted to JSON.
 
 ### <a name="keycloak_realm"></a>`keycloak_realm`
 
