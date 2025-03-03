@@ -74,7 +74,8 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
           end
           protocol_mapper[:multivalued] = d['config']['multivalued'].to_s.to_sym if d['config']['multivalued']
-          unless ['oidc-usermodel-property-mapper', 'oidc-usermodel-attribute-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper', 'oidc-audience-mapper', 'saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(d['protocolMapper'])
+          unless ['oidc-usermodel-property-mapper', 'oidc-usermodel-attribute-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper', 'oidc-audience-mapper',
+                  'saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(d['protocolMapper'])
             protocol_mapper[:type] = 'custom'
             protocol_mapper[:custom_type] = d['protocolMapper']
             protocol_mapper[:custom_config] = d['config']
@@ -110,7 +111,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
     data[:protocol] = resource[:protocol]
     data[:protocolMapper] = resource[:type]
     data[:config] = {}
-    if resource[:type] == "custom"
+    if resource[:type] == 'custom'
       data[:protocolMapper] = resource[:custom_type]
       data[:config] = resource[:custom_config]
     end
@@ -201,7 +202,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       data[:protocol] = resource[:protocol]
       data[:protocolMapper] = resource[:type]
       config = {}
-      if resource[:type] == "custom"
+      if resource[:type] == 'custom'
         data[:protocolMapper] = resource[:custom_type]
         config = resource[:custom_config]
       end

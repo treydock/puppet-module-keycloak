@@ -283,10 +283,10 @@ Manage Keycloak client scope protocol mappers
     if self[:type] == 'oidc-audience-mapper' && self[:included_client_audience].nil?
       raise Puppet::Error, 'included_client_audience is required for oidc-audience-mapper'
     end
-    if self[:type] == "custom" && !self[:custom_type]
+    if self[:type] == 'custom' && !self[:custom_type]
       raise Puppet::Error, 'custom_type is required for `custom` protocol mapper type'
     end
-    if self[:type] == "custom" && !self[:custom_config]
+    if self[:type] == 'custom' && !self[:custom_config]
       raise Puppet::Error, 'custom_config is required for `custom` protocol mapper type'
     end
   end
