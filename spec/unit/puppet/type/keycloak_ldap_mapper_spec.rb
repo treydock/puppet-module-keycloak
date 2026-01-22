@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_ldap_mapper) do
@@ -5,7 +7,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     {
       name: 'foo',
       realm: 'test',
-      ldap: 'ldap-test',
+      ldap: 'ldap'
     }
   end
   let(:config) do
@@ -213,6 +215,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
 
   defaults = {
     read_only: :true,
+    mapped_group_attributes: :absent
   }
 
   describe 'basic properties' do
@@ -223,14 +226,16 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
       :user_model_attribute,
       :mapped_group_attributes,
       :groups_ldap_filter,
-      :roles_ldap_filter,
+      :roles_ldap_filter
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -240,32 +245,38 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     # Test boolean properties
     [
       :read_only,
-      :write_only,
+      :write_only
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(:true)
       end
-      it "should accept true for #{p} string" do
+
+      it "accepts true for #{p} string" do
         config[p] = 'true'
         expect(resource[p]).to eq(:true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(:false)
       end
-      it "should accept false for #{p} string" do
+
+      it "accepts false for #{p} string" do
         config[p] = 'false'
         expect(resource[p]).to eq(:false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -327,14 +338,15 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
 
   [
     :realm,
-    :ldap,
+    :ldap
   ].each do |property|
-    it "should require property #{property} when ensure => present" do
+    it "requires property #{property} when ensure => present" do
       config.delete(property)
       config[:ensure] = :present
       expect { resource }.to raise_error(Puppet::Error, %r{You must provide a value for #{property}})
     end
-    it "should require property #{property} when ensure => absent" do
+
+    it "requires property #{property} when ensure => absent" do
       config.delete(property)
       config[:ensure] = :absent
       expect { resource }.to raise_error(Puppet::Error, %r{You must provide a value for #{property}})

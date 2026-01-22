@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
@@ -71,6 +73,7 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
   #       described_class.prefetch(resources)
   #     end
   #   end
+
   describe 'create' do
     it 'creates a client' do
       resource[:browser_flow] = 'browser'
@@ -80,7 +83,7 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
       allow(resource.provider).to receive(:kcadm).with('get', 'client-scopes', 'test', nil, ['id', 'name']).and_return(my_fixture_read('get-scopes.out'))
       allow(described_class).to receive(:get_client_roles).with('test', 'foo').and_return([])
-      expect(resource.provider).to receive(:kcadm).with('create', 'clients', 'test', temp.path).and_return(my_fixture_read('get-client.out'))
+      expect(resource.provider).to receive(:kcadm).with('create', 'clients', 'test', temp.path).and_return(my_fixture_read('get-client.out')) # rubocop:disable RSpec/StubbedMock
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/default-client-scopes/b8ebafcc-485f-44d2-9fe6-f4ed0da80980', 'test')
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/default-client-scopes/3e40378d-d26d-471f-b2c7-7a3d9651e588', 'test')
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/optional-client-scopes/96f8b56b-7b3a-44cf-82a5-ffbda49271bd', 'test')

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_client) do
   let(:default_config) do
     {
       name: 'foo',
-      realm: 'test',
+      realm: 'test'
     }
   end
   let(:config) do
@@ -71,10 +73,9 @@ describe Puppet::Type.type(:keycloak_client) do
     default_client_scopes: [],
     optional_client_scopes: [],
     redirect_uris: [],
-    web_origins: [],
     login_theme: :absent,
     browser_flow: :absent,
-    direct_grant_flow: :absent,
+    direct_grant_flow: :absent
   }
 
   describe 'basic properties' do
@@ -96,16 +97,19 @@ describe Puppet::Type.type(:keycloak_client) do
       :saml_assertion_consumer_url_post,
       :saml_encrypt,
       :saml_assertion_signature,
+      :saml_client_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
-      :saml_signing_private_key,
+      :saml_signing_private_key
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -121,32 +125,38 @@ describe Puppet::Type.type(:keycloak_client) do
       :service_accounts_enabled,
       :public_client,
       :bearer_only,
-      :full_scope_allowed,
+      :full_scope_allowed
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(:true)
       end
-      it "should accept true for #{p} string" do
+
+      it "accepts true for #{p} string" do
         config[p] = 'true'
         expect(resource[p]).to eq(:true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(:false)
       end
-      it "should accept false for #{p} string" do
+
+      it "accepts false for #{p} string" do
         config[p] = 'false'
         expect(resource[p]).to eq(:false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -159,14 +169,16 @@ describe Puppet::Type.type(:keycloak_client) do
       :optional_client_scopes,
       :redirect_uris,
       :web_origins,
-      :roles,
+      :roles
     ].each do |p|
-      it "should accept array for #{p}" do
+      it "accepts array for #{p}" do
         config[p] = ['foo', 'bar']
         expect(resource[p]).to eq(['foo', 'bar'])
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end

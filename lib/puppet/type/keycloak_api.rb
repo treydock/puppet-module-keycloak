@@ -1,6 +1,9 @@
-Dir[File.dirname(__FILE__) + '/keycloak*.rb'].each do |file|
+# frozen_string_literal: true
+
+Dir["#{File.dirname(__FILE__)}/keycloak*.rb"].sort.each do |file|
   next if file == __FILE__
   next if File.basename(file) == 'keycloak_conn_validator.rb'
+
   require file
 end
 
@@ -10,7 +13,7 @@ Puppet::Type.newtype(:keycloak_api) do
   @example Define API access
     keycloak_api { 'keycloak'
       install_dir  => '/opt/keycloak',
-      server       => 'http://localhost:8080/auth',
+      server       => 'http://localhost:8080',
       realm        => 'master',
       user         => 'admin',
       password     => 'changeme',
@@ -27,7 +30,7 @@ Puppet::Type.newtype(:keycloak_api) do
 
   newparam(:server) do
     desc 'Auth URL for Keycloak server'
-    defaultto('http://localhost:8080/auth')
+    defaultto('http://localhost:8080')
   end
 
   newparam(:realm) do
@@ -51,6 +54,16 @@ Puppet::Type.newtype(:keycloak_api) do
     defaultto :false
   end
 
+  newparam(:keycloak_user) do
+    desc 'Keycloak user'
+    defaultto('keycloak')
+  end
+
+  newparam(:keycloak_group) do
+    desc 'Keycloak group'
+    defaultto('keycloak')
+  end
+
   def generate
     kcadm_types = []
     Dir[File.join(File.dirname(__FILE__), '../provider/keycloak_*/kcadm.rb')].each do |file|
@@ -65,6 +78,8 @@ Puppet::Type.newtype(:keycloak_api) do
       provider_class.user = self[:user]
       provider_class.password = self[:password]
       provider_class.use_wrapper = self[:use_wrapper]
+      provider_class.keycloak_user = self[:keycloak_user]
+      provider_class.keycloak_group = self[:keycloak_group]
     end
 
     []

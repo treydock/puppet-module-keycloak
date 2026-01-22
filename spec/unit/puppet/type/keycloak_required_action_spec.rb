@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_required_action) do
@@ -5,8 +7,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
     {
       name: 'foo',
       realm: 'test',
-      alias: 'something',
-      provider_id: 'some-provider',
+      provider_id: 'some-provider'
     }
   end
   let(:config) do
@@ -23,21 +24,16 @@ describe Puppet::Type.type(:keycloak_required_action) do
     }.not_to raise_error
   end
 
-  it 'has alias default to provider_id' do
-    config.delete(:alias)
-    expect(resource[:alias]).to eq('some-provider')
-  end
-
   it 'handles componsite name' do
-    component = described_class.new(name: 'foo on test', provider_id: 'provider')
+    component = described_class.new(name: 'foo on test')
     expect(component[:name]).to eq('foo on test')
-    expect(component[:alias]).to eq('foo')
+    expect(component[:provider_id]).to eq('foo')
     expect(component[:realm]).to eq('test')
   end
 
   defaults = {
     enabled: true,
-    default: false,
+    default: false
   }
 
   describe 'basic properties' do
@@ -46,15 +42,16 @@ describe Puppet::Type.type(:keycloak_required_action) do
       :realm,
       :name,
       :display_name,
-      :provider_id,
-      :alias,
+      :provider_id
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -64,32 +61,38 @@ describe Puppet::Type.type(:keycloak_required_action) do
     # Test boolean properties
     [
       :enabled,
-      :default,
+      :default
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(true)
       end
-      it "should accept true for #{p} string" do
+
+      it "accepts true for #{p} string" do
         config[p] = 'true'
         expect(resource[p]).to eq(true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(false)
       end
-      it "should accept false for #{p} string" do
+
+      it "accepts false for #{p} string" do
         config[p] = 'false'
         expect(resource[p]).to eq(false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -98,18 +101,21 @@ describe Puppet::Type.type(:keycloak_required_action) do
   describe 'hash properties' do
     # Hash properties
     [
-      :config,
+      :config
     ].each do |p|
-      it "should accept hash for #{p}" do
+      it "accepts hash for #{p}" do
         config[p] = { foo: 'bar' }
         expect(resource[p]).to eq(foo: 'bar')
       end
+
       it 'requires hash' do
         config[p] = 'foo'
         expect { resource }.to raise_error(%r{must be a Hash})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -118,22 +124,26 @@ describe Puppet::Type.type(:keycloak_required_action) do
   describe 'integer properties' do
     # Integer properties
     [
-      :priority,
+      :priority
     ].each do |p|
-      it "should accept integer for #{p}" do
+      it "accepts integer for #{p}" do
         config[p] = 1
         expect(resource[p]).to eq(1)
       end
-      it "should accept integer string for #{p}" do
+
+      it "accepts integer string for #{p}" do
         config[p] = '1'
         expect(resource[p]).to eq(1)
       end
-      it "should not accept non-integer for #{p}" do
+
+      it "does not accept non-integer for #{p}" do
         config[p] = 'foo'
         expect { resource }.to raise_error(%r{Integer})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -144,20 +154,10 @@ describe Puppet::Type.type(:keycloak_required_action) do
       config.delete(:realm)
       expect { resource }.to raise_error(%r{must have a realm defined})
     end
-    it 'requires alias' do
+
+    it 'requires provider_id' do
       config.delete(:provider_id)
-      config.delete(:alias)
-      expect { resource }.to raise_error(%r{must have a alias defined})
-    end
-    it 'requires provider_id when present' do
-      config.delete(:provider_id)
-      config[:ensure] = 'present'
-      expect { resource }.to raise_error(%r{provider_id is required})
-    end
-    it 'does not require provider_id for absent' do
-      config.delete(:provider_id)
-      config[:ensure] = 'absent'
-      expect { resource }.not_to raise_error
+      expect { resource }.to raise_error(%r{must have a provider_id defined})
     end
   end
 end

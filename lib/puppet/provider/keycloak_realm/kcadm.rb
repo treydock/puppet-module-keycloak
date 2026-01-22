@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -12,7 +14,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       :direct_grant_flow,
       :reset_credentials_flow,
       :client_authentication_flow,
-      :docker_authentication_flow,
+      :docker_authentication_flow
     ]
   end
 
@@ -29,13 +31,13 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       :smtp_server_from,
       :smtp_server_from_display_name,
       :smtp_server_reply_to,
-      :smtp_server_reply_to_display_name,
+      :smtp_server_reply_to_display_name
     ]
   end
 
   def self.browser_security_headers
     [
-      :content_security_policy,
+      :content_security_policy
     ]
   end
 
@@ -101,10 +103,13 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
 
   def self.instances
     realms = []
-    output = kcadm('get', 'realms')
-    Puppet.debug("Realms: #{output}")
     begin
+      output = kcadm('get', 'realms')
+      Puppet.debug("Realms: #{output}")
       data = JSON.parse(output)
+    rescue Puppet::ExecutionFailure => e
+      Puppet.notice("Failed to get realms: #{e}")
+      data = []
     rescue JSON::ParserError
       Puppet.debug('Unable to parse output from kcadm get realms')
       data = []
@@ -117,6 +122,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       events_config = get_events_config(d['realm'])
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
+
         value = if property.to_s =~ %r{events}
                   events_config[camelize(property)]
                 elsif browser_security_headers.include?(property)
@@ -147,7 +153,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
 
   def self.prefetch(resources)
     realms = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = realms.find { |realm| realm.name == name }
       if provider
         resources[name].provider = provider
@@ -166,6 +172,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     type_properties.each do |property|
       next if flow_properties.include?(property)
       next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
+
       if self.class.browser_security_headers.include?(property) && !data.key?('browserSecurityHeaders')
         data['browserSecurityHeaders'] = {}
       end
@@ -194,7 +201,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
         :login_theme,
         :account_theme,
         :admin_theme,
-        :email_theme,
+        :email_theme
       ].each do |theme|
         if resource[theme]
           check_theme_exists(resource[theme], "Keycloak_realm[#{resource[:name]}]")
@@ -328,6 +335,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       end
       type_properties.each do |property|
         next if [:default_client_scopes, :optional_client_scopes, :roles].include?(property)
+
         if flow_properties.include?(property) && !available_flows(resource[:name]).include?(resource[property.to_sym])
           Puppet.warning("Keycloak_realm[#{resource[:name]}]: #{property} '#{resource[property.to_sym]}' does not exist, skipping")
           next
@@ -362,7 +370,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
             :login_theme,
             :account_theme,
             :admin_theme,
-            :email_theme,
+            :email_theme
           ].each do |theme|
             if @property_flush[theme]
               check_theme_exists(@property_flush[theme], "Keycloak_realm[#{resource[:name]}]")

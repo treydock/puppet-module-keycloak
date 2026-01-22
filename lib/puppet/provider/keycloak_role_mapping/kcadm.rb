@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_role_mapping).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -33,11 +35,13 @@ Puppet::Type.type(:keycloak_role_mapping).provide(:kcadm, parent: Puppet::Provid
 
   def remove_roles(roles)
     return if roles.empty?
+
     kcadm('remove-roles', '', resource[:realm], nil, nil, false, opt => resource[:name], rolename: roles)
   end
 
   def add_roles(roles)
     return if roles.empty?
+
     kcadm('add-roles', '', resource[:realm], nil, nil, false, opt => resource[:name], rolename: roles)
   end
 end

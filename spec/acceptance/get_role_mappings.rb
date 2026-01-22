@@ -1,4 +1,6 @@
 #!/opt/puppetlabs/puppet/bin/ruby
+# frozen_string_literal: true
+
 #
 # Simple script to enable testing the functionality of keycloak_role_mapping provider.
 # Not expected to be useful outside of the Beaker tests, nor to be robust against
@@ -6,10 +8,11 @@
 #
 require 'json'
 
-if ARGV[0] == 'groups'
+case ARGV[0]
+when 'groups'
   path = 'groups'
   filter = 'name=testgroup'
-elsif ARGV[0] == 'users'
+when 'users'
   path = 'users'
   filter = 'username=admin'
 else

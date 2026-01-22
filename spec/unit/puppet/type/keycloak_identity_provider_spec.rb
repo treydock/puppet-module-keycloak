@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_identity_provider) do
@@ -8,7 +10,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
       authorization_url: 'http://authorization',
       token_url: 'http://token',
       client_id: 'foobar',
-      client_secret: 'secret',
+      client_secret: 'secret'
     }
   end
   let(:config) do
@@ -100,7 +102,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     backchannel_supported: :false,
     use_jwks_url: :true,
     login_hint: :false,
-    disable_user_info: :false,
+    disable_user_info: :false
   }
 
   describe 'basic properties' do
@@ -118,14 +120,16 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
       :default_scope,
       :allowed_clock_skew,
       :forward_parameters,
-      :jwks_url,
+      :jwks_url
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -134,14 +138,16 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
   describe 'integer properties' do
     # Test integer properties
     [
-      :gui_order,
+      :gui_order
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 100
         expect(resource[p]).to eq('100')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -162,28 +168,32 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
       :backchannel_supported,
       :use_jwks_url,
       :login_hint,
-      :disable_user_info,
+      :disable_user_info
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(:true)
         config[p] = 'true'
         expect(resource[p]).to eq(:true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(:false)
         config[p] = 'false'
         expect(resource[p]).to eq(:false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -191,14 +201,15 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
 
   describe 'array properties' do
     # Array properties
-    [
-    ].each do |p|
+    [].each do |p|
       it 'accepts array' do
         config[p] = ['foo', 'bar']
         expect(resource[p]).to eq(['foo', 'bar'])
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end

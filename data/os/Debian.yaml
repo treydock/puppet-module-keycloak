@@ -1,4 +1,8 @@
 ---
+keycloak::java_package: openjdk-21-jdk
+keycloak::java_home: /usr/lib/jvm/java-1.21.0-openjdk-amd64/
+keycloak::java_alternative_path: /usr/lib/jvm/java-1.21.0-openjdk-amd64/bin/java
+keycloak::java_alternative: java-1.21.0-openjdk-amd64
 keycloak::user_shell: '/usr/sbin/nologin'
 keycloak::libunix_dbus_java_build_dependencies:
   - 'zlib1g-dev'

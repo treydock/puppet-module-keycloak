@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/integer_property'
 
 Puppet::Type.newtype(:keycloak_resource_validator) do

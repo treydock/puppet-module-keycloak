@@ -14,8 +14,7 @@ define keycloak::client_scope::oidc (
   String $realm,
   String $resource_name = $name,
 ) {
-
-  include ::keycloak
+  include keycloak
 
   keycloak_client_scope { $name:
     realm         => $realm,
@@ -47,5 +46,4 @@ define keycloak::client_scope::oidc (
     claim_name     => 'given_name',
     user_attribute => 'firstName',
   }
-
 }

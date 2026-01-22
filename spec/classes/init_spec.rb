@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'keycloak' do
   on_supported_os.each do |os, facts|
-    context "on #{os}" do
+    context "when #{os}" do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
-      let(:version) { '12.0.4' }
+      let(:version) { '25.0.1' }
 
       case facts[:osfamily]
       when %r{RedHat}
@@ -23,96 +25,7 @@ describe 'keycloak' do
       it { is_expected.to contain_class('keycloak::config').that_comes_before('Class[keycloak::service]') }
       it { is_expected.to contain_class('keycloak::service') }
 
-      context 'domain master' do
-        let(:params) do
-          {
-            operating_mode: 'domain',
-            install_dir: '/opt/keycloak-x',
-            role: 'master',
-            datasource_driver: 'postgresql',
-            wildfly_user: 'wildfly',
-            wildfly_user_password: 'changeme',
-          }
-        end
-
-        it { is_expected.to compile.with_all_deps }
-        it do
-          is_expected.to contain_augeas('ensure-servername').with(incl: '/opt/keycloak-x/domain/configuration/host-master.xml')
-          is_expected.to contain_exec('create-wildfly-user').with(command: '/opt/keycloak-x/bin/add-user.sh --user wildfly --password changeme -e -s && touch /opt/keycloak-x/.create-wildfly-user')
-        end
-      end
-
-      context 'domain slave' do
-        let(:params) do
-          {
-            operating_mode: 'domain',
-            install_dir: '/opt/keycloak-x',
-            role: 'slave',
-            master_address: '10.0.5.10',
-            datasource_driver: 'postgresql',
-            wildfly_user: 'wildfly',
-            wildfly_user_password: 'changeme',
-          }
-        end
-
-        it { is_expected.to compile.with_all_deps }
-
-        it do
-          is_expected.to contain_augeas('ensure-servername').with(incl: '/opt/keycloak-x/domain/configuration/host-slave.xml',
-                                                                  context: '/files/opt/keycloak-x/domain/configuration/host-slave.xml/host/servers')
-          is_expected.to contain_exec('create-wildfly-user').with(command: '/opt/keycloak-x/bin/add-user.sh --user wildfly --password changeme -e -s && touch /opt/keycloak-x/.create-wildfly-user')
-        end
-      end
-
-      context 'standalone with domain role defined' do
-        let(:params) do
-          {
-            operating_mode: 'standalone',
-            role: 'master',
-          }
-        end
-
-        it { is_expected.not_to compile }
-      end
-
-      context 'domain slave without master_address' do
-        let(:params) do
-          {
-            operating_mode: 'domain',
-            wildfly_user: 'wildfly',
-            wildfly_user_password: 'wildfly',
-            role: 'slave',
-          }
-        end
-
-        it { is_expected.not_to compile }
-      end
-
-      context 'domain master without wildfly user' do
-        let(:params) do
-          {
-            operating_mode: 'domain',
-            role: 'master',
-            wildfly_user_password: 'wildfly',
-          }
-        end
-
-        it { is_expected.not_to compile }
-      end
-
-      context 'domain master without wildfly user password' do
-        let(:params) do
-          {
-            operating_mode: 'domain',
-            role: 'master',
-            wildfly_user: 'wildfly',
-          }
-        end
-
-        it { is_expected.not_to compile }
-      end
-
-      context 'keycloak::install' do
+      describe 'keycloak::install' do
         it do
           is_expected.to contain_user('keycloak').only_with(ensure: 'present',
                                                             name: 'keycloak',
@@ -125,46 +38,82 @@ describe 'keycloak' do
         end
       end
 
-      context 'keycloak::datasource::mysql' do
+      context 'when keycloak db=mysql' do
         let(:pre_condition) { 'include ::mysql::server' }
-        let(:params) { { datasource_driver: 'mysql' } }
+        let(:params) { { db: 'mysql' } }
 
-        it { is_expected.to contain_class('keycloak::install').that_comes_before('Class[keycloak::datasource::mysql]') }
-        it { is_expected.to contain_class('keycloak::datasource::mysql').that_comes_before('Class[keycloak::config]') }
+        it { is_expected.to contain_class('keycloak::db::mysql').that_notifies('Class[keycloak::service]') }
 
         it do
-          is_expected.to contain_mysql__db('keycloak').with(user: 'sa',
-                                                            password: 'sa',
+          is_expected.to contain_mysql__db('keycloak').with(user: 'keycloak',
+                                                            password: 'changeme',
                                                             host: 'localhost',
                                                             grant: 'ALL')
         end
 
-        context 'manage_datasource => false' do
-          let(:params) { { datasource_driver: 'mysql', manage_datasource: false } }
+        it do
+          verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", [
+                            'db=mysql'
+                          ])
+        end
+
+        context 'when manage_db => false' do
+          let(:params) { { db: 'mysql', manage_db: false } }
 
           it { is_expected.not_to contain_mysql__db('keycloak') }
         end
       end
 
-      context 'keycloak::datasource::postgresql' do
-        let(:params) { { datasource_driver: 'postgresql' } }
+      context 'when keycloak db=mariadb' do
+        let(:pre_condition) { 'include ::mysql::server' }
+        let(:params) { { db: 'mariadb' } }
 
-        it { is_expected.to contain_class('keycloak::install').that_comes_before('Class[keycloak::datasource::postgresql]') }
-        it { is_expected.to contain_class('keycloak::datasource::postgresql').that_comes_before('Class[keycloak::config]') }
+        it { is_expected.to contain_class('keycloak::db::mariadb').that_notifies('Class[keycloak::service]') }
 
         it do
-          is_expected.to contain_postgresql__server__db('keycloak').with(user: 'sa',
+          is_expected.to contain_mysql__db('keycloak').with(user: 'keycloak',
+                                                            password: 'changeme',
+                                                            host: 'localhost',
+                                                            grant: 'ALL')
+        end
+
+        it do
+          verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", [
+                            'db=mariadb'
+                          ])
+        end
+
+        context 'when manage_db => false' do
+          let(:params) { { db: 'mariadb', manage_db: false } }
+
+          it { is_expected.not_to contain_mysql__db('keycloak') }
+        end
+      end
+
+      context 'when keycloak db=postgres' do
+        let(:params) { { db: 'postgres' } }
+
+        it { is_expected.to contain_class('keycloak::db::postgres').that_notifies('Class[keycloak::service]') }
+
+        it do
+          is_expected.to contain_postgresql__server__db('keycloak').with(user: 'keycloak',
                                                                          password: %r{.*})
         end
 
-        context 'manage_datasource => false' do
-          let(:params) { { datasource_driver: 'postgresql', manage_datasource: false } }
+        it do
+          verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", [
+                            'db=postgres'
+                          ])
+        end
+
+        context 'when manage_db => false' do
+          let(:params) { { db: 'postgres', manage_db: false } }
 
           it { is_expected.not_to contain_postgresql__server__db('keycloak') }
         end
       end
 
-      context 'keycloak::config' do
+      describe 'keycloak::config' do
         it do
           is_expected.to contain_file('kcadm-wrapper.sh').only_with(
             ensure: 'file',
@@ -172,101 +121,60 @@ describe 'keycloak' do
             owner: 'keycloak',
             group: 'keycloak',
             mode: '0750',
-            content: %r{.*},
+            source: 'puppet:///modules/keycloak/kcadm-wrapper.sh',
             show_diff: 'false',
+            require: 'File[kcadm-wrapper.conf]',
           )
         end
 
         it do
-          is_expected.to contain_exec('create-keycloak-admin')
-            .with(command: "/opt/keycloak-#{version}/bin/add-user-keycloak.sh --user admin --password changeme --realm master && touch /opt/keycloak-#{version}/.create-keycloak-admin-h2",
-                  creates: "/opt/keycloak-#{version}/.create-keycloak-admin-h2",
-                  notify: 'Class[Keycloak::Service]')
+          verify_exact_file_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", [
+                                       "hostname=#{facts[:fqdn]}",
+                                       'http-enabled=true',
+                                       'http-host=0.0.0.0',
+                                       'http-port=8080',
+                                       'https-port=8443',
+                                       'http-relative-path=/',
+                                       'db=dev-file',
+                                       'db-url-database=keycloak',
+                                       'db-username=keycloak',
+                                       'db-password=changeme',
+                                       'proxy=none'
+                                     ])
         end
 
-        it do
-          is_expected.to contain_file("/opt/keycloak-#{version}/standalone/configuration").only_with(
-            ensure: 'directory',
-            owner: 'keycloak',
-            group: 'keycloak',
-            mode: '0750',
-          )
-        end
-
-        it do
-          is_expected.to contain_file("/opt/keycloak-#{version}/standalone/configuration/profile.properties").only_with(
-            ensure: 'file',
-            owner: 'keycloak',
-            group: 'keycloak',
-            mode: '0644',
-            content: %r{.*},
-            notify: 'Class[Keycloak::Service]',
-          )
-        end
-
-        it do
-          verify_exact_file_contents(catalogue, "/opt/keycloak-#{version}/standalone/configuration/profile.properties", [])
-        end
-
-        it do
-          is_expected.to contain_concat("/opt/keycloak-#{version}/config.cli").with(
-            ensure: 'present',
-            owner: 'keycloak',
-            group: 'keycloak',
-            mode: '0600',
-            notify: 'Exec[jboss-cli.sh --file=config.cli]',
-            show_diff: 'false',
-          )
-        end
-
-        it do
-          is_expected.to contain_file_line('keycloak-JAVA_OPTS').with(
-            ensure: 'absent',
-            path: "/opt/keycloak-#{version}/bin/standalone.conf",
-            line: 'JAVA_OPTS="$JAVA_OPTS "',
-            match: '^JAVA_OPTS=',
-            notify: 'Class[Keycloak::Service]',
-          )
-        end
-
-        context 'when tech_preview_features defined' do
-          let(:params) { { tech_preview_features: ['account_api'] } }
+        context 'when hostname is unset' do
+          let(:params) { { hostname: 'unset' } }
 
           it do
-            verify_exact_file_contents(catalogue, "/opt/keycloak-#{version}/standalone/configuration/profile.properties", ['feature.account_api=enabled'])
+            is_expected.to contain_file("/opt/keycloak-#{version}/conf/keycloak.conf").without_content(%r{^hostname=})
           end
         end
 
-        context 'when java_opts defined' do
-          let(:params) { { java_opts: '-Xmx512m -Xms64m' } }
+        context 'when http_enabled => false' do
+          let(:params) { { http_enabled: false } }
 
           it do
-            is_expected.to contain_file_line('keycloak-JAVA_OPTS').with(
-              ensure: 'present',
-              path: "/opt/keycloak-#{version}/bin/standalone.conf",
-              line: 'JAVA_OPTS="$JAVA_OPTS -Xmx512m -Xms64m"',
-              match: '^JAVA_OPTS=',
-              notify: 'Class[Keycloak::Service]',
-            )
+            verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", ['http-enabled=false'])
           end
+        end
 
-          context 'when java_opts_append is false' do
-            let(:params) { { java_opts: '-Xmx512m -Xms64m', java_opts_append: false } }
+        context 'when features defined' do
+          let(:params) { { features: ['authorization', 'impersonation'] } }
 
-            it do
-              is_expected.to contain_file_line('keycloak-JAVA_OPTS').with(
-                ensure: 'present',
-                path: "/opt/keycloak-#{version}/bin/standalone.conf",
-                line: 'JAVA_OPTS="-Xmx512m -Xms64m"',
-                match: '^JAVA_OPTS=',
-                notify: 'Class[Keycloak::Service]',
-              )
-            end
+          it do
+            verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", ['features=authorization,impersonation'])
           end
         end
       end
 
-      context 'keycloak::service' do
+      describe 'keycloak::service' do
+        it do
+          is_expected.to contain_systemd__unit_file('keycloak.service').with(
+            content: %r{ExecStart=/opt/keycloak-#{version}/bin/kc.sh start$},
+          )
+        end
+
         it do
           is_expected.to contain_service('keycloak').only_with(ensure: 'running',
                                                                enable: 'true',
@@ -274,15 +182,27 @@ describe 'keycloak' do
                                                                hasstatus: 'true',
                                                                hasrestart: 'true')
         end
-      end
 
-      context 'syslog support' do
-        let(:params) { { syslog: true, install_dir: '/opt/keycloak-x' } }
+        context 'when java_opts defined' do
+          let(:params) { { java_opts: '-Xmx512m -Xms64m' } }
 
-        it do
-          is_expected.to contain_concat_fragment('keycloak-config.cli-syslog').with(target: '/opt/keycloak-x/config.cli', order: '12')
+          it do
+            is_expected.to contain_systemd__unit_file('keycloak.service').with(
+              content: %r{Environment='JAVA_OPTS_APPEND=-Xmx512m -Xms64m'},
+            )
+          end
+        end
+
+        context 'when java_home defined' do
+          let(:params) { { java_home: '/foo' } }
+
+          it do
+            is_expected.to contain_systemd__unit_file('keycloak.service').with(
+              content: %r{Environment='JAVA_HOME=/foo'},
+            )
+          end
         end
       end
-    end # end context
-  end # end on_supported_os loop
-end # end describe
+    end
+  end
+end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
@@ -50,6 +52,7 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
   #       described_class.prefetch(resources)
   #     end
   #   end
+
   describe 'create' do
     it 'creates a flow' do
       temp = Tempfile.new('keycloak_flow')
@@ -59,6 +62,7 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       property_hash = resource.provider.instance_variable_get('@property_hash')
       expect(property_hash[:ensure]).to eq(:present)
     end
+
     it 'creates a flow and updates requirement' do
       resource[:top_level] = false
       resource[:requirement] = 'ALTERNATIVE'
@@ -67,9 +71,9 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       tempu = Tempfile.new('keycloak_flow_execution')
       allow(Tempfile).to receive(:new).with('keycloak_flow').and_return(temp)
       allow(Tempfile).to receive(:new).with('keycloak_flow_execution').and_return(tempu)
-      expect(resource.provider).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/flows/browser-with-duo/executions/flow', 'test', temp.path, nil, true) \
-                                                  .and_return('53751618-6a49-4682-b4e8-624f170b8507')
+      uid = '53751618-6a49-4682-b4e8-624f170b8507'
+      expect(resource.provider).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out')) # rubocop:disable RSpec/StubbedMock
+      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/flows/browser-with-duo/executions/flow', 'test', temp.path, nil, true).and_return(uid) # rubocop:disable RSpec/StubbedMock
       expect(resource.provider).to receive(:kcadm).with('update', 'authentication/flows/browser-with-duo/executions', 'test', tempu.path, nil, true)
       resource.provider.create
       property_hash = resource.provider.instance_variable_get('@property_hash')
@@ -86,6 +90,7 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       property_hash = resource.provider.instance_variable_get('@property_hash')
       expect(property_hash).to eq({})
     end
+
     it 'deletes a flow that is not top level' do
       allow(resource.provider).to receive(:id).and_return('uuid')
       resource[:top_level] = false
@@ -106,6 +111,7 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       resource.provider.description = 'foobar'
       resource.provider.flush
     end
+
     it 'updates a execution requirement' do
       resource[:flow_alias] = 'browser-with-duo'
       resource[:top_level] = false
@@ -113,38 +119,6 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       allow(Tempfile).to receive(:new).with('keycloak_flow').and_return(temp)
       expect(resource.provider).to receive(:kcadm).with('update', 'authentication/flows/browser-with-duo/executions', 'test', temp.path, nil, true)
       resource.provider.requirement = 'ALTERNATIVE'
-      resource.provider.flush
-    end
-    it 'lowers priority twice' do
-      resource[:top_level] = false
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(0)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/lower-priority', 'test').twice
-      resource.provider.index = 2
-      resource.provider.flush
-    end
-    it 'lowers priority once' do
-      resource[:top_level] = false
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(0)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/lower-priority', 'test').once
-      resource.provider.index = 1
-      resource.provider.flush
-    end
-    it 'raise priority twice' do
-      resource[:top_level] = false
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(2)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/raise-priority', 'test').twice
-      resource.provider.index = 0
-      resource.provider.flush
-    end
-    it 'raise priority once' do
-      resource[:top_level] = false
-      allow(resource.provider).to receive(:id).and_return('uuid')
-      allow(resource.provider).to receive(:current_priority).and_return(1)
-      expect(resource.provider).to receive(:kcadm).with('create', 'authentication/executions/uuid/raise-priority', 'test').once
-      resource.provider.index = 0
       resource.provider.flush
     end
   end

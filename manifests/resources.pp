@@ -63,6 +63,11 @@ class keycloak::resources {
   } else {
     $ldap_user_providers = $keycloak::ldap_user_providers
   }
+  if $keycloak::role_mapping_merge {
+    $role_mappings = lookup('keycloak::role_mappings', Hash, 'deep', {})
+  } else {
+    $role_mappings = $keycloak::role_mappings
+  }
 
   $realms.each |$name, $realm| {
     keycloak_realm { $name: * => $realm }
@@ -103,7 +108,13 @@ class keycloak::resources {
   $ldap_user_providers.each |$name, $data| {
     keycloak_ldap_user_provider { $name: * => $data }
   }
+  $role_mappings.each |$name, $data| {
+    keycloak_role_mapping { $name: * => $data }
+  }
   $keycloak::spi_deployments.each |$name, $deployment| {
     keycloak::spi_deployment { $name: * => $deployment }
+  }
+  $keycloak::partial_imports.each |$name, $partial_import| {
+    keycloak::partial_import { $name: * => $partial_import }
   }
 }

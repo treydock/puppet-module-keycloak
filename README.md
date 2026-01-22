@@ -6,10 +6,14 @@
 #### Table of Contents
 
 1. [Overview](#overview)
+    * [Upgrade to 12.x](#upgrade-to-12x)
+    * [Upgrade to 8.x](#upgrade-to-8x)
+        * [Changes to LDAP user provider IDs](#changes-to-ldap-user-provider-ids)
     * [Supported Versions of Keycloak](#supported-versions-of-keycloak)
 2. [Usage - Configuration options](#usage)
     * [Keycloak](#keycloak)
     * [Deploy SPI](#deploy-spi)
+    * [Partial Import](#partial-import)
     * [keycloak_realm](#keycloak_realm)
     * [keycloak_role_mapping](#keycloak_role_mapping)
     * [keycloak_ldap_user_provider](#keycloak_ldap_user_provider)
@@ -32,24 +36,174 @@
 
 The keycloak module allows easy installation and management of Keycloak.
 
+### Upgrade to 12.x
+
+Version 12.x of this module had some major breaking changes to support Keycloak 25.x.
+
+The default Java version is now OpenJDK 21 except for Debian. The next major release will drop Debian support unless OpenJDK 21 is added to Debian repos.
+
+The `keycloak_flow` and `keycloak_flow_execution` types had their `index` property replaced by `priority`.  If you had executions with `index` 0,1,2 you'd need to set `priority` to something like 10,20,30.
+
+The configuration options switched to using Hostname v2 options.
+
+* `hostname` now accepts a URL
+* `hostname-url` is removed
+* `hostname-path` is removed
+* `hostname-port` is removed
+* `hostname-admin` now requires a URL
+* `hostname-admin-url` is removed
+* `hostname-strict-backchannel` is renamed to `hostname-backchannel-dynamic`
+* `hostname-strict-https` is removed
+
+### Upgrade to 8.x
+
+This module underwent major changes in the 8.0.0 release to support Keycloak that uses Quarkus.
+The initial 8.0.0 release of this module only supports Keycloak 18.x.
+
+Numerous parameters were changed or removed. Below is a list of the changes to parameters as well as some behavior changes.
+
+**Parameters removed**
+
+* `service_hasstatus`, `service_hasrestart`
+* `management_bind_address`
+* `java_opts_append`
+* `wildfly_user`, `wildfly_user_password`
+* `datasource_package`, `datasource_jar_source`, `datasource_jar_filename`, `datasource_module_source`, `datasource_xa_class`
+* `proxy_https`
+* `truststore_hostname_verification_policy`
+* `theme_static_max_age`, `theme_cache_themes`, `theme_cache_templates`
+* `operating_mode`, `enable_jdbc_ping`, `jboss_bind_public_address`, `jboss_bind_private_address`
+* `master_address`, `server_name`, `role`, `user_cache`
+* `tech_preview_features`
+* `auto_deploy_exploded`, `auto_deploy_zipped`
+* `syslog`, `syslog_app_name`, `syslog_facility`, `syslog_hostname`, `syslog_level`
+* `syslog_port`, `syslog_server_address`, `syslog_format`
+
+**Parameters renamed**
+
+* `service_bind_address` renamed to `http_host` and now defined in keycloak.conf instead of the systemd unit file
+* `manage_datasource` renamed to `manage_db`
+* `datasource_driver` renamed to `db`
+* `datasource_host` renamed to `db_url_host`
+* `datasource_port` renamed to `db_url_port`
+* `datasource_url` renamed to `db_url`
+* `datasource_dbname` renamed to `db_url_database`
+* `datasource_username` renamed to `db_username`
+* `datasource_password` renamed to `db_password`
+* `mysql_database_charset` renamed to `db_charset`
+* `auth_url_path` renamed to `validator_test_url` and default value changed
+
+**Parameters added**
+
+* `java_declare_method` to make it easier for EL platforms to deploy working Keycloak with correct Java
+* `java_package`, `java_home`, `java_alternative_path`, `java_alternative`
+* `start_command`
+* `configs`
+* `hostname`, `http_enabled`, `http_host`, `https_port`, `proxy`
+* `manage_db_server`
+* `features`
+* `features_disabled`
+* `providers_purge`
+
+**Behavior changes**
+
+The SSSD parameters are no longer tested and likely won't work.  If you use the SSSD user provider and SSSD related parameters, please open an issue on this repo.
+
+This module no longer makes copies for DB driver jar files or install Java bindings, they are not necessary.
+
+When `db` is set to `mariadb`, `mysql` or `postgres` this module will by default install the database server to the Keycloak host. If you run a remote DB server for Keycloak, set `manage_db_server` and `manage_db` to `false`.
+
+There is no longer a need to define cluster or domain modes in the Quarkus deployment, all related functionality is removed.
+
+Some basic configuration options are exposed using parameters but most configuration options for Keycloak will need to be passed into the `configs` parameter.
+
+Drop Debian 9 support due to OS repos not having Java 11.
+
+#### Changes to LDAP user provider IDs
+
+If you had `keycloak_ldap_user_provider` resources defined the mechanism for defining the ID has changed and requires some migration. Also the `ldap` property for any `keycloak_ldap_mapper` resources will have to be adjusted.
+
+**WARNING** The LDAP user provider ID is used to create user IDs for LDAP users. These will change if the ID is changed. This is to prevent messages such as this: `The given key is not a valid key per specification, future migration might fail: f:OSC-LDAP-osc:tdockendorf`. If you wish to keep the old style IDs you must provide the `id` parameter as `$ldap-$realm` to maintain old IDs.
+
+It's advised to either [Migrate to new IDs](#migrate-to-new-ids) or [Keep old IDs](#keep-old-ids)
+
+##### Migrate to new IDs
+
+**Changes**
+
+* Define old `keycloak_ldap_user_provider` resource as absent with new name and setting `id` and `resource_name`.
+* Define same `keycloak_ldap_user_provider` resource to get created with new ID
+* Update `keycloak_ldap_mapper` resources to point to just name of `keycloak_ldap_user_provider`.
+
+**Before:**
+
+```puppet
+keycloak_ldap_user_provider { 'LDAP on test':
+  users_dn                  => 'ou=People,dc=test',
+  connection_url            => 'ldap://localhost:389',
+  custom_user_search_filter => '(objectClass=posixAccount)',
+}
+keycloak_ldap_mapper { "first name for LDAP-test on test":
+  ensure               => 'present',
+  type                 => 'user-attribute-ldap-mapper',
+  user_model_attribute => 'firstName',
+  ldap_attribute       => 'givenName',
+}
+```
+
+**After:**
+
+```
+keycloak_ldap_user_provider { 'LDAP-remove on test':
+  ensure        => 'absent',
+  resource_name => 'LDAP',
+  id            => 'LDAP-test',
+}
+keycloak_ldap_user_provider { 'LDAP on test':
+  users_dn                  => 'ou=People,dc=test',
+  connection_url            => 'ldap://localhost:389',
+  custom_user_search_filter => '(objectClass=posixAccount)',
+}
+keycloak_ldap_mapper { "first name for LDAP on test":
+  ensure               => 'present',
+  type                 => 'user-attribute-ldap-mapper',
+  user_model_attribute => 'firstName',
+  ldap_attribute       => 'givenName',
+}
+```
+
+##### Keep old IDs
+
+If you wish to avoid re-creating `keycloak_ldap_user_provider` and `keycloak_ldap_mapper` resources then the ID parameters must be defined.
+
+For `keycloak_ldap_user_provider` ensure the `id` property is set to match the old pattern. If name was `LDAP` and realm `test` or name was componsite `LDAP on test` then set `id` to `LDAP-test`.
+
+For `keycloak_ldap_mapper` ensure the `parent_id` property is set to point to old ID for associated `keycloak_ldap_user_provider`. If the `ldap` value is `LDAP` and `realm` is `test` or composite name is `first name for LDAP on test` then ensure `parent_id` is set to `LDAP-test`.
+
 ### Supported Versions of Keycloak
 
-Currently this module supports Keycloak version 12.x.
+Currently this module supports Keycloak version 24.x.
 This module may work on earlier versions but this is the only version tested.
 
 | Keycloak Version | Keycloak Puppet module versions |
-| ---------------- | ------------------------------- |
+|------------------|---------------------------------|
 | 3.x              | 2.x                             |
 | 4.x - 6.x        | 3.x                             |
 | 6.x - 8.x        | 4.x - 5.x                       |
 | 8.x - 12.x       | 6.x                             |
-| 12.x - 15.x      | 7.x                             |
+| 12.x - 16.x      | 7.x                             |
+| 18.x             | 8.x                             |
+| 19.x - 21.x      | 9.x                             |
+| 21.x             | 10.x                            |
+| 22.x - 24.x      | 11.x                            |
+| 25.x             | 12.x - 13.x                     |
+| -----------------|---------------------------------|
 
 ## Usage
 
 ### keycloak
 
-Install Keycloak using default `h2` database storage.
+Install Keycloak using default `dev-file` database.
 
 ```puppet
 class { 'keycloak': }
@@ -59,33 +213,33 @@ Install a specific version of Keycloak.
 
 ```puppet
 class { 'keycloak':
-  version           => '6.0.1',
-  datasource_driver => 'mysql',
+  version => '24.0.0',
+  db      => 'mariadb',
 }
 ```
 
-Upgrading Keycloak version works by changing `version` parameter as long as the `datasource_driver` is not the default of `h2`. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to `/opt/keycloak`, applying all changes to new version and then restarting the `keycloak` service.
+Upgrading Keycloak version works by changing `version` parameter as long as the `db` parameter is not the default of `dev-file`. An upgrade involves installing the new version without touching the old version, updating the symlink which defaults to `/opt/keycloak`, applying all changes to new version and then restarting the `keycloak` service.
 
-If the previous `version` was `6.0.1` using the following will upgrade to `7.0.0`:
+If the previous `version` was `22.0.0` using the following will upgrade to `24.0.0`:
 
 ```puppet
 class { 'keycloak':
-  version           => '7.0.0',
-  datasource_driver => 'mysql',
+  version => '24.0.0',
+  db      => 'mariadb',
 }
 ```
 
-Install keycloak and use a local MySQL server for database storage
+Install keycloak and use a local MariaDB server for database storage
 
 ```puppet
 include mysql::server
 class { 'keycloak':
-  datasource_driver   => 'mysql',
-  datasource_host     => 'localhost',
-  datasource_port     => 3306,
-  datasource_dbname   => 'keycloak',
-  datasource_username => 'keycloak',
-  datasource_password => 'foobar',
+  db              => 'mariadb',
+  db_url_host     => 'localhost',
+  db_url_port     => 3306,
+  db_url_database => 'keycloak',
+  db_username     => 'keycloak',
+  db_password     => 'foobar',
 }
 ```
 
@@ -94,33 +248,12 @@ The following example can be used to configure keycloak with a local PostgreSQL 
 ```puppet
 include postgresql::server
 class { 'keycloak':
-    datasource_driver     => 'postgresql',
-    datasource_host       => 'localhost',
-    datasource_port       => 5432,
-    datasource_dbname     => 'keycloak',
-    datasource_username   => 'keycloak',
-    datasource_password   => 'foobar',
-}
-```
-
-Configure keycloak to use a remote Oracle database.
-
-The parameter `datasource_jar_source` is always required with Oracle database.
-The jar is downloaded to the keycloak module dir and renamed to `datasource_jar_filename` or `'ojdbc8.jar'` as default value.
-
-With a special database configuration it may be more suitable to give the complete database url `'jdbc:oracle:thin:@[...]'` using the parameter `database_url` instead of `database_host`, `database_port` and `database_dbname`.
-The default value with Oracle database for `database_host` is `'localhost'` and the default value for `database_port` is here `1521`.
-
-```puppet
-class { 'keycloak':
-    datasource_driver       => 'oracle',
-    datasource_host         => 'oracleserver.mydomain.de',
-    datasource_port         => 1521,
-    datasource_dbname       => 'keycloak',
-    datasource_username     => 'keycloak',
-    datasource_password     => 'foobar',
-    datasource_jar_source   => 'https://oracle.com/path/to/driver.jar',
-    datasource_jar_filename => 'ojdbc8.jar',
+    db              => 'postgres',
+    db_url_host     => 'localhost',
+    db_url_port     => 5432,
+    db_url_database => 'keycloak',
+    db_username     => 'keycloak',
+    db_password     => 'foobar',
 }
 ```
 
@@ -128,9 +261,8 @@ Configure a SSL certificate truststore and add a LDAP server's certificate to th
 
 ```puppet
 class { 'keycloak':
-  truststore                              => true,
-  truststore_password                     => 'supersecret',
-  truststore_hostname_verification_policy => 'STRICT',
+  truststore          => true,
+  truststore_password => 'supersecret',
 }
 keycloak::truststore::host { 'ldap1.example.com':
   certificate => '/etc/openldap/certs/0a00000.0',
@@ -141,15 +273,17 @@ Setup Keycloak to proxy through Apache HTTPS.
 
 ```puppet
 class { 'keycloak':
-  proxy_https => true
+  http_host => '127.0.0.1',
+  proxy     => 'edge',
 }
 apache::vhost { 'idp.example.com':
-  servername => 'idp.example.com',
-  port        => '443',
-  ssl         => true,
-  manage_docroot  => false,
-  docroot         => '/var/www/html',
+  servername          => 'idp.example.com',
+  port                => '443',
+  ssl                 => true,
+  manage_docroot      => false,
+  docroot             => '/var/www/html',
   proxy_preserve_host => true,
+  proxy_add_headers   => true,
   proxy_pass          => [
     {'path' => '/', 'url' => 'http://localhost:8080/'}
   ],
@@ -161,80 +295,8 @@ apache::vhost { 'idp.example.com':
   ssl_key             => '/etc/pki/tls/private/idp.example.com.key',
 }
 ```
-Setup a domain master. (This needs a shared database, here '1.2.3.4').
 
-```puppet
-class { '::keycloak':
-  operating_mode        => 'domain',
-  role                  => 'master',
-  wildfly_user          => 'wildfly,
-  wildfly_user_password => 'changeme,
-  manage_datasource     => false,
-  datasource_driver     => 'postgresql',
-  datasource_host       => '1.2.3.4,
-  datasource_dbname     => 'keycloak,
-  datasource_username   => 'keycloak,
-  datasource_password   => 'changeme,
-  admin_user            => 'admin,
-  admin_user_password   => 'changeme,
-}
-```
-
-Setup a domain slave. (This needs a shared database, here '1.2.3.4').
-
-```puppet
-class { '::keycloak':
-  operating_mode        => 'domain',
-  role                  => 'slave',
-  wildfly_user          => 'wildfly,
-  wildfly_user_password => 'changeme,
-  manage_datasource     => false,
-  datasource_driver     => 'postgresql',
-  datasource_host       => '1.2.3.4,
-  datasource_dbname     => 'keycloak,
-  datasource_username   => 'keycloak,
-  datasource_password   => 'changeme,
-  admin_user            => 'admin,
-  admin_user_password   => 'changeme,
-}
-```
-**NOTE:** The wilfdly user and password need to match those in domain master. These are required for authentication in a cluster.
-
-Setup a host for theme development so that theme changes don't require a service restart, not recommended for production.
-
-```puppet
-class { 'keycloak':
-  theme_static_max_age  => -1,
-  theme_cache_themes    => false,
-  theme_cache_templates => false,
-}
-```
-
-Run Keycloak using standalone clustered mode (multicast):
-
-```puppet
-class { 'keycloak':
-  operating_mode => 'clustered',
-}
-```
-
-Run Keycloak using standalone clustered mode (JDBC_PING):
-
-> [JDBC_PING](http://jgroups.org/manual/#_jdbc_ping) uses port **7600** to ensure cluster members are discoverable by each other. This module **does NOT manage firewall changes**.
-
-```puppet
-class { 'keycloak':
-  operating_mode             => 'clustered',
-  datasource_driver          => 'postgresql',
-  enable_jdbc_ping           => true,
-  jboss_bind_private_address => $facts['networking']['ip'],
-  jboss_bind_public_address  => $facts['networking']['ip'],
-}
-
-# your puppet code to open port 7600
-# ...
-# ...
-```
+**NOTE:** Can set `hostname` parameter to `unset` if you wish for that configuration to not be set in the Keycloak configuration if you wish for Keycloak to not use strict hostname checking and respond to multiple hostnames.
 
 ### Deploy SPI
 
@@ -243,8 +305,8 @@ A simple example of deploying a custom SPI from a URL:
 ```puppet
 keycloak::spi_deployment { 'duo-spi':
   ensure        => 'present',
-  deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
-  source        => 'https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar',
+  deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
+  source        => 'https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.5/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.5.jar',
 }
 ```
 
@@ -255,18 +317,34 @@ This is useful to ensure SPI is loaded into Keycloak before attempting to add cu
 
 ```puppet
 keycloak::spi_deployment { 'duo-spi':
-  deployed_name => 'keycloak-duo-spi-jar-with-dependencies.jar',
-  source        => 'https://example.com/files/keycloak-duo-spi-jar-with-dependencies.jar',
+  deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
+  source        => 'https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.0.4/DuoUniversalKeycloakAuthenticator-jar-with-dependencies-1.0.4.jar',
   test_url      => 'authentication/authenticator-providers',
   test_key      => 'id',
-  test_value    => 'duo-mfa-authenticator',
+  test_value    => 'duo-universal',
   test_realm    => 'test',
   test_before   => [
     'Keycloak_flow[form-browser-with-duo]',
-    'Keycloak_flow_execution[duo-mfa-authenticator under form-browser-with-duo on test]',
+    'Keycloak_flow_execution[duo-universal under form-browser-with-duo on test]',
   ],
 }
 ```
+
+### Partial Import
+
+This module supports [Importing data from exported JSON files](https://www.keycloak.org/docs/latest/server_admin/index.html#importing-a-realm-from-exported-json-file) via the `keycloak::partial_import` defined type.
+
+Example of importing a JSON file into the `test` realm:
+
+```puppet
+keycloak::partial_import { 'mysettings':
+  realm              => 'test',
+  if_resource_exists => 'SKIP',
+  source             => 'puppet:///modules/profile/keycloak/mysettings.json',
+}
+```
+
+**NOTE:** By default the `keycloak::partial_import` defined type will require the `Keycloak_realm` resource used for the `realm` parameter. If you manage the realm a different way, pass `require_realm => false`.
 
 ### keycloak_realm
 
@@ -314,8 +392,6 @@ keycloak_ldap_user_provider { 'LDAP on test':
 }
 ```
 
-**NOTE** The `Id` for the above resource would be `LDAP-test` where the format is `${resource_name}-${realm}`.
-
 If you're using FreeIPA you can use a defined resource that wraps keycloak\_ldap\_user\_provider:
 
 ```puppet
@@ -354,6 +430,8 @@ keycloak::freeipa_ldap_mappers { 'ipa.example.org':
 ```
 
 ### keycloak\_sssd\_user\_provider
+
+**WARNING** This feature is no longer tested and likely stopped working when Keycloak began requiring Java 11+. If you rely on this feature, please open an issue or pull request. Likely need to build jna from source.
 
 Define SSSD user provider.  **NOTE** This type requires that SSSD be properly configured and Keycloak service restarted after SSSD ifp service is setup.  Also requires `keycloak` class be called with `with_sssd_support` set to `true`.
 
@@ -465,19 +543,19 @@ keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
   ensure       => 'present',
   configurable => false,
   display_name => 'Cookie',
-  index        => 0,
+  priority     => 10,
   requirement  => 'ALTERNATIVE',
 }
 keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
   ensure       => 'present',
   configurable => true,
   display_name => 'Identity Provider Redirector',
-  index        => 1,
+  priority     => 15,
   requirement  => 'ALTERNATIVE',
 }
 keycloak_flow { 'form-browser-with-duo under browser-with-duo on test':
   ensure      => 'present',
-  index       => 2,
+  priority    => 20,
   requirement => 'ALTERNATIVE',
   top_level   => false,
 }
@@ -485,23 +563,22 @@ keycloak_flow_execution { 'auth-username-password-form under form-browser-with-d
   ensure       => 'present',
   configurable => false,
   display_name => 'Username Password Form',
-  index        => 0,
+  priority     => 10,
   requirement  => 'REQUIRED',
 }
-keycloak_flow_execution { 'duo-mfa-authenticator under form-browser-with-duo on test':
+keycloak_flow_execution { 'duo-universal under form-browser-with-duo on test':
   ensure       => 'present',
   configurable => true,
-  display_name => 'Duo MFA',
+  display_name => 'Duo Universal MFA',
   alias        => 'Duo',
   config       => {
-    "duomfa.akey"    => "foo-akey",
-    "duomfa.apihost" => "api-foo.duosecurity.com",
-    "duomfa.skey"    => "secret",
-    "duomfa.ikey"    => "foo-ikey",
-    "duomfa.groups"  => "duo"
+    "duoApiHostname"    => "api-foo.duosecurity.com",
+    "duoSecretKey"      => "secret",
+    "duoIntegrationKey" => "foo-ikey",
+    "duoGroups"         => "duo"
   },
   requirement  => 'REQUIRED',
-  index        => 1,
+  priority     => 15,
 }
 ```
 
@@ -511,11 +588,13 @@ The keycloak_api type can be used to define how this module's types access the K
 
  ```puppet
 keycloak_api { 'keycloak'
-  install_dir => '/opt/keycloak',
-  server     => 'http://localhost:8080/auth',
-  realm      => 'master',
-  user       => 'admin',
-  password   => 'changeme',
+  install_dir    => '/opt/keycloak',
+  server         => 'http://localhost:8080/auth',
+  realm          => 'master',
+  user           => 'admin',
+  password       => 'changeme',
+  keycloak_user  => 'keycloak',
+  keycloak_group => 'keycloak',
 }
 ```
 
@@ -526,9 +605,9 @@ The path for `install_dir` will be joined with `bin/kcadm.sh` to produce the ful
 The keycloak_required_action type can be used to define actions a user must perform during the authentication process.
 A user will not be able to complete the authentication process until these actions are complete. For instance, change a one-time password, accept T&C, etc.
 
-The name for an action is `$alias on $realm`.
+The name for an action is `$provider_id on $realm`.
 
-**Important**: actions from puppet config and from a server are matched based on a combination of alias and realm, so edition of aliases is not supported.
+**Important**: The keycloak rest api documentation uses the term `alias` which will be filled with the value of `provider_id` in this module.
 
  ```puppet
 # Minimal example
@@ -561,9 +640,18 @@ keycloak_required_action { 'webauthn-register on master':
 
 This module has been tested on:
 
-* RedHat/CentOS 7 x86_64
-* RedHat/CentOS 8 x86_64
-* Debian 9 x86_64
-* Debian 10 x86_64
-* Ubuntu 18.04 x86_64
+* RedHat/Rocky/AlmaLinux 8 x86_64
+* RedHat/Rocky/AlmaLinux 9 x86_64
+* Debian 11 x86_64
 * Ubuntu 20.04 x86_64
+* Ubuntu 22.04 x86_64
+
+## UUID Generation
+
+```
+bundle exec irb
+2.5.1 :001 > require File.expand_path(File.join(File.dirname(__FILE__), 'lib/puppet/provider/keycloak_api'))
+ => true 
+2.5.1 :002 > Puppet::Provider::KeycloakAPI.name_uuid('LDAP')
+ => "bc7bc27f-39b8-5152-91c3-915d710fba35" 
+```

@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'keycloak::freeipa_user_provider' do
   on_supported_os.each do |os, _facts|
-    context "on #{os}" do
-      let(:version) { '12.0.4' }
+    context "when #{os}" do
       let(:title) { 'ipa.example.org' }
       let(:default_params) do
         {
@@ -11,7 +12,7 @@ describe 'keycloak::freeipa_user_provider' do
           bind_dn: 'uid=ldapproxy,cn=sysaccounts,cn=etc,dc=example,dc=org',
           bind_credential: 'secret',
           users_dn: 'cn=users,cn=accounts,dc=example,dc=org',
-          priority: 20,
+          priority: 20
         }
       end
       let(:params) { default_params }
@@ -30,7 +31,7 @@ describe 'keycloak::freeipa_user_provider' do
           rdn_ldap_attribute: 'uid',
           search_scope: '1',
           use_kerberos_for_password_authentication: 'false',
-          use_truststore_spi: 'ldapsOnly',
+          use_truststore_spi: 'always',
           user_object_classes: ['inetOrgPerson', ' organizationalPerson'],
           username_ldap_attribute: 'uid',
           users_dn: 'cn=users,cn=accounts,dc=example,dc=org',

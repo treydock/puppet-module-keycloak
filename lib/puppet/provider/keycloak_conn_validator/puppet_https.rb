@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # See: #10295 for more details.
 #
 # This is a workaround for bug: #4248 whereby ruby files outside of the normal
@@ -38,8 +40,8 @@ Puppet::Type.type(:keycloak_conn_validator).provide(:puppet_https) do
       # especially on the first install.  Therefore, our first connection attempt
       # may fail.  Here we have somewhat arbitrarily chosen to retry every 2
       # seconds until the configurable timeout has expired.
-      Puppet.notice('Failed to connect to keycloak; sleeping 2 seconds before retry')
-      sleep 2
+      Puppet.notice('Failed to connect to keycloak; sleeping 5 seconds before retry')
+      sleep 5
       success = validator.attempt_connection
     end
 
@@ -57,7 +59,7 @@ Puppet::Type.type(:keycloak_conn_validator).provide(:puppet_https) do
     # If `#create` is called, that means that `#exists?` returned false, which
     # means that the connection could not be established... so we need to
     # cause a failure here.
-    raise Puppet::Error, "Unable to connect to keycloak server! (#{@validator.keycloak_server}:#{@validator.keycloak_port})"
+    raise Puppet::Error, "Unable to connect to keycloak server! (#{@validator.keycloak_server}:#{@validator.keycloak_port}#{@validator.path})"
   end
 
   # Returns the existing validator, if one exists otherwise creates a new object
@@ -65,6 +67,6 @@ Puppet::Type.type(:keycloak_conn_validator).provide(:puppet_https) do
   #
   # @api private
   def validator
-    @validator ||= Puppet::Util::KeycloakValidator.new(resource[:keycloak_server], resource[:keycloak_port], resource[:use_ssl], resource[:test_url])
+    @validator ||= Puppet::Util::KeycloakValidator.new(resource[:keycloak_server], resource[:keycloak_port], resource[:use_ssl], resource[:test_url], resource[:relative_path])
   end
 end

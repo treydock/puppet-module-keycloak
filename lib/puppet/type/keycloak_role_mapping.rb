@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 

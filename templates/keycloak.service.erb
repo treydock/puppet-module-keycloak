@@ -1,6 +1,7 @@
 [Unit]
-Description=Jboss Application Server
-After=network.target
+Description=Keycloak service
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=idle
@@ -8,21 +9,25 @@ SyslogIdentifier=keycloak
 <% if scope['keycloak::service_environment_file'] -%>
 EnvironmentFile=<%= scope['keycloak::service_environment_file'] %>
 <% end -%>
+EnvironmentFile=<%= scope['keycloak::admin_env'] %>
+<% if scope['keycloak::java_opts'] -%>
+  <%- if scope['keycloak::java_opts'].is_a?(Array) -%>
+Environment='JAVA_OPTS_APPEND=<%= scope['keycloak::java_opts'].join(' ') %>'
+  <%- else -%>
+Environment='JAVA_OPTS_APPEND=<%= scope['keycloak::java_opts'] %>'
+  <%- end -%>
+<% end -%>
+Environment='JAVA_HOME=<%= scope['keycloak::java_home'] %>'
 User=<%= scope['keycloak::user'] %>
 Group=<%= scope['keycloak::group'] %>
-<% if scope['keycloak::operating_mode'] == 'standalone'-%>
-ExecStart=<%= scope['keycloak::install_base'] %>/bin/standalone.sh -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %><% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
-<% elsif scope['keycloak::operating_mode'] == 'clustered'-%>
-ExecStart=<%= scope['keycloak::install_base'] %>/bin/standalone.sh --server-config=standalone-ha.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %><% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
-<% elsif scope['keycloak::operating_mode'] == 'domain'-%>
-<% if scope['keycloak::role'] == 'master' -%>
-ExecStart=<%= scope['keycloak::install_base'] %>/bin/domain.sh --host-config=host-master.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %> -Djboss.bind.address.management=<%= scope['keycloak::management_bind_address'] %> <% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
-<% else -%>
-ExecStart=<%= scope['keycloak::install_base'] %>/bin/domain.sh --host-config=host-slave.xml -b <%= scope['keycloak::service_bind_address'] %> -Djboss.http.port=<%= scope['keycloak::http_port'] %> -Djboss.domain.master.address=<%= scope['keycloak::master_address'] %> -Djboss.bind.address.management=<%= scope['keycloak::management_bind_address'] %> <% if scope['keycloak::service_extra_opts'] -%> <%= scope['keycloak::service_extra_opts'] -%><% end %>
-<% end -%>
+ExecStart=<%= scope['keycloak::service_start_cmd'] %>
+# TODO: remove once upgraded from Keycloak 25 to 26
+<% unless (scope['keycloak::features'] || []).include?('persistent-user-sessions') -%>
+ExecStartPost=-/usr/bin/rm -f <%= scope['keycloak::login_config'] %>
 <% end -%>
 TimeoutStartSec=600
 TimeoutStopSec=600
+SuccessExitStatus=0 143
 
 [Install]
 WantedBy=multi-user.target

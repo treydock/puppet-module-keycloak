@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -25,7 +27,7 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
         Puppet.debug("Evaluate flow #{f['alias']}")
         begin
           executions_output = kcadm('get', "authentication/flows/#{f['alias']}/executions", realm)
-        rescue
+        rescue StandardError
           Puppet.notice("Unable to query flow #{f['alias']} executions")
           executions_output = '[]'
         end
@@ -46,13 +48,16 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
           execution[:configurable] = e['configurable'].to_s.to_sym if e.key?('configurable')
           execution[:flow_alias] = f['alias']
           execution[:realm] = realm
-          execution[:index] = e['index']
+          execution[:priority] = e['priority']
           execution[:display_name] = e['displayName'] if e.key?('displayName')
           if e['level'] != 0
             parent_level = levels.find { |k, _v| k == (e['level'] - 1) }
             execution[:flow_alias] = parent_level[1][-1] if parent_level.size > 1
           end
           execution[:provider_id] = e['providerId']
+          if e['authenticationConfig'] =~ %r{^script-.+}
+            execution[:provider_id] = e['authenticationConfig']
+          end
           execution[:alias] = e['alias']
           execution[:name] = "#{execution[:provider_id]} under #{execution[:flow_alias]} on #{realm}"
           if e['authenticationFlow']
@@ -86,7 +91,7 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
 
   def self.prefetch(resources)
     executions = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = executions.find do |c|
         c.provider_id == resources[name][:provider_id] && c.flow_alias == resources[name][:flow_alias] && c.realm == resources[name][:realm]
       end
@@ -102,6 +107,7 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
     data[:displayName] = resource[:display_name] if resource[:display_name]
     data[:configurable] = convert_property_value(resource[:configurable]) if resource[:configurable]
     data[:alias] = resource[:alias] if resource[:alias]
+    data[:priority] = resource[:priority]
     t = Tempfile.new('keycloak_flow_execution')
     t.write(JSON.pretty_generate(data))
     t.close
@@ -116,6 +122,7 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
       update_data = {
         id: new_id.strip,
         requirement: resource[:requirement],
+        priority: resource[:priority]
       }
       tu = Tempfile.new('keycloak_flow_execution_update')
       tu.write(JSON.pretty_generate(update_data))
@@ -171,25 +178,13 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
     end
   end
 
-  def current_priority
-    data = {}
-    begin
-      output = kcadm('get', "authentication/executions/#{id}", resource[:realm])
-      data = JSON.parse(output)
-    rescue Puppet::ExecutionFailure => e
-      Puppet.debug("kcadm get execution failed\nError message: #{e.message}")
-    rescue JSON::ParserError
-      Puppet.debug('Unable to parse output from kcadm get execution')
-    end
-    data['priority'] || resource[:index]
-  end
-
   def flush
     unless @property_flush.empty?
-      if @property_flush[:requirement]
+      if @property_flush[:requirement] || @property_flush[:priority]
         data = {}
         data[:id] = id
-        data[:requirement] = resource[:requirement] if @property_flush[:requirement]
+        data[:requirement] = resource[:requirement]
+        data[:priority] = resource[:priority]
         t = Tempfile.new('keycloak_flow_execution')
         t.write(JSON.pretty_generate(data))
         t.close
@@ -221,22 +216,6 @@ Puppet::Type.type(:keycloak_flow_execution).provide(:kcadm, parent: Puppet::Prov
           end
         rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update flow execution config failed\nError message: #{e.message}"
-        end
-      end
-      if @property_flush[:index]
-        index_difference = current_priority - @property_flush[:index]
-        if index_difference.zero?
-          Puppet.notice("Index difference for Keycloak_flow_execution[#{resource[:name]}] is unchanged, skipping.")
-        elsif index_difference < 0
-          incrementer = 1
-          action = 'lower-priority'
-        else
-          incrementer = -1
-          action = 'raise-priority'
-        end
-        while index_difference != 0
-          kcadm('create', "authentication/executions/#{id}/#{action}", resource[:realm])
-          index_difference += incrementer
         end
       end
     end

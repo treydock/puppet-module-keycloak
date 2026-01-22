@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
-describe 'keycloak class:', unless: RSpec.configuration.keycloak_domain_mode_cluster do
-  context 'default parameters' do
+describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
+  context 'with default parameters' do
     it 'runs successfully' do
-      pp = <<-EOS
-      class { 'keycloak': }
-      EOS
+      pp = <<-PUPPET_PP
+      class { 'keycloak': db => 'dev-file' }
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -21,32 +23,11 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_domain_mode_clu
     end
   end
 
-  context 'default with clustered mode enable' do
+  context 'with default for mysql/mariadb db' do # rubocop:disable RSpec/RepeatedExampleGroupBody
     it 'runs successfully' do
-      pp = <<-EOS
-      class { 'keycloak':
-        operating_mode => 'clustered',
-      }
-      EOS
-
-      apply_manifest(pp, catch_failures: true)
-      apply_manifest(pp, catch_changes: true)
-    end
-
-    describe service('keycloak') do
-      it { is_expected.to be_enabled }
-      it { is_expected.to be_running }
-    end
-  end
-
-  context 'default with mysql datasource' do
-    it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
-      EOS
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -60,20 +41,15 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_domain_mode_clu
     describe port(8080) do
       it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
-
-    describe port(9990) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
-    end
   end
 
-  context 'default with postgresql datasource' do
+  context 'with default for postgresql db' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include postgresql::server
+      pp = <<-PUPPET_PP
       class { 'keycloak':
-        datasource_driver => 'postgresql',
+        db => 'postgres',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -87,24 +63,19 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_domain_mode_clu
     describe port(8080) do
       it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
-
-    describe port(9990) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
-    end
   end
 
-  context 'default with JDBC_PING, clustered mode and postgresql datasource' do
+  context 'with changes to defaults' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include postgresql::server
+      pp = <<-PUPPET_PP
       class { 'keycloak':
-        datasource_driver          => 'postgresql',
-        operating_mode             => 'clustered',
-        enable_jdbc_ping           => true,
-        jboss_bind_private_address => '0.0.0.0',
-        jboss_bind_public_address  => '0.0.0.0',
+        http_relative_path => '/auth',
+        java_opts          => '-Xmx512m -Xms64m -Djava.net.preferIPv4Stack=true',
+        configs            => {
+          'metrics-enabled' => true,
+        },
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -118,27 +89,13 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_domain_mode_clu
     describe port(8080) do
       it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
     end
-
-    describe port(9990) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
-    end
-
-    describe port(7600) do
-      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
-    end
   end
 
-  context 'changes to defaults' do
+  context 'with reset to defaults' do # rubocop:disable RSpec/RepeatedExampleGroupBody
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-        proxy_https       => true,
-        java_opts         => '-Xmx512m -Xms64m',
-        syslog            => true,
-      }
-      EOS
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -151,37 +108,6 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_domain_mode_clu
 
     describe port(8080) do
       it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
-    end
-
-    describe port(9990) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
-    end
-  end
-
-  context 'reset to defaults' do
-    it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
-      EOS
-
-      apply_manifest(pp, catch_failures: true)
-      apply_manifest(pp, catch_changes: true)
-    end
-
-    describe service('keycloak') do
-      it { is_expected.to be_enabled }
-      it { is_expected.to be_running }
-    end
-
-    describe port(8080) do
-      it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
-    end
-
-    describe port(9990) do
-      it { is_expected.to be_listening.on('127.0.0.1').with('tcp') }
     end
   end
 end

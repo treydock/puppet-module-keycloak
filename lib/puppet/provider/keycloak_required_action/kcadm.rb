@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -7,9 +9,9 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
 
   def self.prefetch(resources)
     action_providers = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = action_providers.find do |c|
-        c.alias == resources[name][:alias] && c.realm == resources[name][:realm]
+        c.provider_id == resources[name][:provider_id] && c.realm == resources[name][:realm]
       end
       if provider
         resources[name].provider = provider
@@ -32,7 +34,6 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
       required_actions.each do |a|
         action = {
           ensure: :present,
-          alias: a['alias'],
           display_name: a['name'],
           realm: realm,
           enabled: a['enabled'],
@@ -40,7 +41,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
           name: "#{a['providerId']} on #{realm}",
           priority: a['priority'],
           config: a['config'],
-          default: a['defaultAction'],
+          default: a['defaultAction']
         }
 
         Puppet.debug("Keycloak REQUIRED ACTION: #{action}")
@@ -59,13 +60,12 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
       unregistered_actions.each do |a|
         action = {
           ensure: :absent,
-          alias: a['providerId'],
           display_name: a['name'],
           realm: realm,
           enabled: false,
           default: false,
           provider_id: a['providerId'],
-          name: "#{a['providerId']} on #{realm}",
+          name: "#{a['providerId']} on #{realm}"
         }
 
         Puppet.debug("Keycloak UNREGISTERED REQUIRED ACTION: #{action}")
@@ -95,7 +95,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
     Puppet.debug(IO.read(t.path))
     begin
       kcadm('create', 'authentication/register-required-action', resource[:realm], t.path)
-    rescue => e
+    rescue StandardError => e
       raise Puppet::Error, "kcadm registration of required action failed\nError message: #{e.message}"
     end
     Puppet.info("Keycloak: registered required action for provider #{resource[:provider_id]} for #{resource[:realm]}")
@@ -103,18 +103,17 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
     # Asigning property_flush to is needed to make the flush method to
     # configure properties of the required action after the registration.
     @property_flush = resource.to_hash
-    @property_hash[:alias] = resource[:provider_id] # Initially it's equal to the provider id until configuration is applied to it
     @property_hash[:ensure] = :present
   end
 
   def destroy
     Puppet.debug('Keycloak required action: destroy')
     begin
-      kcadm('delete', "authentication/required-actions/#{@property_hash[:alias]}", resource[:realm])
-    rescue => e
+      kcadm('delete', "authentication/required-actions/#{@property_hash[:provider_id]}", resource[:realm])
+    rescue StandardError => e
       raise Puppet::Error, "kcadm deletion of required action failed\nError message: #{e.message}"
     end
-    Puppet.info("Keycloak: deregistered required action #{@property_hash[:alias]} for #{resource[:realm]}")
+    Puppet.info("Keycloak: deregistered required action #{@property_hash[:provider_id]} for #{resource[:realm]}")
     @property_hash.clear
   end
 
@@ -128,7 +127,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
 
     begin
       t = Tempfile.new('keycloak_required_action_configure')
-      t.write(JSON.pretty_generate(alias: resource[:alias],
+      t.write(JSON.pretty_generate(alias: resource[:provider_id],
                                    name: resource[:display_name] || @property_hash[:display_name],
                                    enabled: resource[:enabled],
                                    priority: resource[:priority],
@@ -136,9 +135,9 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
                                    defaultAction: resource[:default]))
       t.close
       Puppet.debug(IO.read(t.path))
-      kcadm('update', "authentication/required-actions/#{@property_hash[:alias]}", resource[:realm], t.path)
-      Puppet.info("Keycloak: configured required action #{@property_hash[:alias]} (provider #{resource[:provider_id]}) for #{resource[:realm]}")
-    rescue => e
+      kcadm('update', "authentication/required-actions/#{@property_hash[:provider_id]}", resource[:realm], t.path)
+      Puppet.info("Keycloak: configured required action #{@property_hash[:display_name]} (provider #{resource[:provider_id]}) for #{resource[:realm]}")
+    rescue StandardError => e
       raise Puppet::Error, "kcadm configuration of required action failed\nError message: #{e.message}"
     end
 
@@ -148,14 +147,13 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
 
   def to_keycloak_representation(resource)
     {
-      alias: resource[:alias],
       name: resource[:display_name],
       realm: resource[:realm],
       providerId: resource[:provider_id],
       enabled: resource[:ensure] == :present,
       priority: resource[:priority],
       config: resource[:config],
-      defaultAction: resource[:default],
+      defaultAction: resource[:default]
     }
   end
 end

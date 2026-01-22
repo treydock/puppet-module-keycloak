@@ -1,33 +1,30 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'required action types:', if: RSpec.configuration.keycloak_full do
-  context 'creates required action' do
+  context 'when creates required action' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_required_action { 'webauthn-register on test':
+        ensure       => 'present',
+        display_name => 'Webauthn Register',
+        default      => true,
+        enabled      => true,
+        priority     => 200,
       }
-
-      -> keycloak_realm { 'test': ensure => 'present' }
-
-      -> keycloak_required_action { 'custom-alias on test':
-        ensure      => 'present',
-        provider_id => 'webauthn-register',
-        default     => true,
-        enabled     => true,
-        priority    => 200,
-      }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
 
     it 'has configured a required action' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/custom-alias -r test' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/webauthn-register -r test' do
         data = JSON.parse(stdout)
-        expect(data['alias']).to eq('custom-alias')
+        expect(data['alias']).to eq('webauthn-register')
         expect(data['defaultAction']).to eq(true)
         expect(data['enabled']).to eq(true)
         expect(data['priority']).to eq(200)
@@ -37,56 +34,46 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
     it 'has the configured required action in list' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions -r test' do
         data = JSON.parse(stdout)
-        webauthn = data.find { |d| d['alias'] == 'custom-alias' }
+        webauthn = data.find { |d| d['alias'] == 'webauthn-register' }
         expect(webauthn['priority']).to eq(200)
       end
     end
   end
 
-  context 'updates required action' do
+  context 'when updates required action' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
-
-      -> keycloak_realm { 'test': ensure => 'present' }
-
-      -> keycloak_required_action { 'custom-alias on test':
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_required_action { 'webauthn-register on test':
         ensure       => 'present',
-        provider_id => 'webauthn-register',
-        display_name => 'updated name',
+        display_name => 'Webauthn Register',
         default      => true,
         enabled      => true,
         priority     => 100,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
 
     it 'has updated a required action' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/custom-alias -r test' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/webauthn-register -r test' do
         data = JSON.parse(stdout)
-        expect(data['name']).to eq('updated name')
         expect(data['priority']).to eq(100)
       end
     end
   end
 
-  context 'ensure => absent' do
+  context 'when ensure => absent' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
+      keycloak_required_action { 'webauthn-register on test':
+        ensure => 'absent',
       }
-      -> keycloak_required_action { 'custom-alias on test':
-        ensure   => 'absent'
-      }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -95,9 +82,36 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full do
     it 'has deleted a flow' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions -r test' do
         data = JSON.parse(stdout)
-        d = data.select { |o| o['alias'] == 'custom-alias' }[0]
+        d = data.select { |o| o['alias'] == 'webauthn-register' }[0]
         expect(d).to be_nil
       end
+    end
+  end
+
+  context 'when required action with multiple realms' do
+    it 'runs successfully' do
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
+      keycloak_realm { 'test': ensure => 'present' }
+      keycloak_realm { 'test2': ensure => 'present' }
+      keycloak_required_action { 'webauthn-register on test':
+        ensure       => 'present',
+        display_name => 'Webauthn Register',
+        default      => true,
+        enabled      => true,
+        priority     => 200,
+      }
+      keycloak_required_action { 'webauthn-register on test2':
+        ensure       => 'present',
+        display_name => 'Webauthn Register',
+        default      => true,
+        enabled      => true,
+        priority     => 200,
+      }
+      PUPPET_PP
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
   end
 end

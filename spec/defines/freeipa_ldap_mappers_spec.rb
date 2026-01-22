@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'keycloak::freeipa_ldap_mappers' do
   on_supported_os.each do |os, _facts|
-    context "on #{os}" do
-      let(:version) { '12.0.4' }
+    context "when #{os}" do
       let(:title) { 'ipa.example.org' }
       let(:params) do
         {
           realm: 'EXAMPLE.ORG',
           groups_dn: 'cn=groups,cn=accounts,dc=example,dc=org',
           roles_dn: 'cn=groups,cn=accounts,dc=example,dc=org',
-          parent_id: 'ipa.example.org',
+          parent_id: 'ipa.example.org'
         }
       end
 
@@ -41,7 +42,7 @@ describe 'keycloak::freeipa_ldap_mappers' do
           ensure: 'present',
           realm: 'EXAMPLE.ORG',
           type: 'role-ldap-mapper',
-          ldap:  'ipa.example.org',
+          ldap: 'ipa.example.org',
           is_mandatory_in_ldap: false,
           mode: 'READ_ONLY',
           memberof_ldap_attribute: 'memberOf',

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -34,7 +36,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
         flows << new(flow)
         begin
           executions_output = kcadm('get', "authentication/flows/#{d['alias']}/executions", realm)
-        rescue
+        rescue StandardError
           Puppet.notice("Unable to query flow #{d['alias']} executions")
           executions_output = '[]'
         end
@@ -60,7 +62,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
           flow[:flow_alias] = d['alias']
           flow[:realm] = realm
           flow[:description] = e['description']
-          flow[:index] = e['index']
+          flow[:priority] = e['priority']
           flow[:display_name] = e['displayName']
           flow[:alias] = e['displayName']
           if e['level'] != 0
@@ -79,7 +81,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
 
   def self.prefetch(resources)
     flows = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = flows.find do |c|
         (c.alias == resources[name][:alias] && c.flow_alias == resources[name][:flow_alias] && c.realm == resources[name][:realm]) ||
           (c.alias == resources[name][:alias] && c.realm == resources[name][:realm])
@@ -103,6 +105,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
       data[:provider] = resource[:type]
       data[:description] = resource[:description]
       data[:type] = resource[:provider_id]
+      data[:priority] = resource[:priority]
       url = "authentication/flows/#{resource[:flow_alias]}/executions/flow"
     end
     t = Tempfile.new('keycloak_flow')
@@ -126,12 +129,14 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
       execution_id = nil
       execution_data.each do |ed|
         next unless ed['flowId'] == new_id.strip
+
         execution_id = ed['id']
       end
       unless execution_id.nil?
         update_data = {
           id: execution_id,
           requirement: resource[:requirement],
+          priority: resource[:priority]
         }
         t = Tempfile.new('keycloak_flow_execution')
         t.write(JSON.pretty_generate(update_data))
@@ -178,19 +183,6 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
     end
   end
 
-  def current_priority
-    data = {}
-    begin
-      output = kcadm('get', "authentication/executions/#{id}", resource[:realm])
-      data = JSON.parse(output)
-    rescue Puppet::ExecutionFailure => e
-      Puppet.debug("kcadm get execution failed\nError message: #{e.message}")
-    rescue JSON::ParserError
-      Puppet.debug('Unable to parse output from kcadm get execution')
-    end
-    data['priority'] || resource[:index]
-  end
-
   def flush
     unless @property_flush.empty?
       data = {}
@@ -201,10 +193,11 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
         data[:providerId] = resource[:provider_id]
         data[:topLevel] = true
         url = "authentication/flows/#{id}"
-      elsif @property_flush[:requirement]
+      elsif @property_flush[:requirement] || @property_flush[:priority]
         data[:id] = id
         data[:description] = resource[:description]
         data[:requirement] = resource[:requirement]
+        data[:priority] = resource[:priority]
         url = "authentication/flows/#{resource[:flow_alias]}/executions"
       end
       unless data.empty?
@@ -216,22 +209,6 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
           kcadm('update', url, resource[:realm], t.path, nil, true)
         rescue Puppet::ExecutionFailure => e
           raise Puppet::Error, "kcadm update flow failed\nError message: #{e.message}"
-        end
-      end
-      if resource[:top_level] == :false && @property_flush[:index]
-        index_difference = current_priority - @property_flush[:index]
-        if index_difference.zero?
-          Puppet.notice("Index difference for Keycloak_flow[#{resource[:name]}] is unchanged, skipping.")
-        elsif index_difference < 0
-          incrementer = 1
-          action = 'lower-priority'
-        else
-          incrementer = -1
-          action = 'raise-priority'
-        end
-        while index_difference != 0
-          kcadm('create', "authentication/executions/#{id}/#{action}", resource[:realm])
-          index_difference += incrementer
         end
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
@@ -5,7 +7,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     {
       name: 'foo',
       realm: 'test',
-      client: 'test.example.com',
+      client: 'test.example.com'
     }
   end
   let(:config) do
@@ -254,14 +256,16 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
   describe 'basic properties' do
     # Test basic properties
     [
-      :claim_name,
+      :claim_name
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -271,6 +275,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     it 'defaults to nil for non groups' do
       expect(resource[:full_path]).to be_nil
     end
+
     it 'defaults to false for groups' do
       config[:type] = 'oidc-group-membership-mapper'
       expect(resource[:full_path]).to eq(:false)
@@ -295,6 +300,20 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     expect {
       resource
     }.to raise_error(%r{foo})
+  end
+
+  it 'accepts usermodel_client_role_mapping_client_id' do
+    config[:usermodel_client_role_mapping_client_id] = 'foo'
+    config[:type] = 'oidc-usermodel-client-role-mapper'
+    expect(resource[:usermodel_client_role_mapping_client_id]).to eq('foo')
+  end
+
+  it 'errors when usermodel_client_role_mapping_client_id used with wrong type' do
+    config[:usermodel_client_role_mapping_client_id] = 'foo'
+    config[:type] = 'saml-role-list-mapper'
+    expect {
+      resource
+    }.to raise_error(Puppet::Error)
   end
 
   it 'accepts value for single' do
@@ -330,18 +349,35 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper) do
     }.to raise_error(%r{foo})
   end
 
-  it 'accepts value for script' do
-    config[:protocol] = 'saml'
-    config[:type] = 'saml-javascript-mapper'
-    config[:script] = 'foobar'
-    expect(resource[:script]).to eq('foobar')
+  it 'accepts value for multivalued' do
+    config[:multivalued] = false
+    expect(resource[:multivalued]).to eq(:false)
   end
 
-  it 'accepts value with newline for script' do
+  it 'accepts value for multivalued string' do
+    config[:multivalued] = 'false'
+    expect(resource[:multivalued]).to eq(:false)
+  end
+
+  it 'has default for multivalued' do
+    expect(resource[:multivalued]).to be_nil
+  end
+
+  it 'does not accept invalid value for multivalued' do
+    config[:multivalued] = 'foo'
+    expect {
+      resource
+    }.to raise_error(%r{foo})
+  end
+
+  it 'accepts script' do
     config[:protocol] = 'saml'
-    config[:type] = 'saml-javascript-mapper'
-    config[:script] = 'foobar\nbaz'
-    expect(resource[:script]).to eq('foobar\nbaz')
+    config[:type] = 'script-foo.js'
+    config[:single] = true
+    config[:attribute_name] = 'foo'
+    config[:attribute_nameformat] = 'uri'
+    config[:friendly_name] = 'foo'
+    expect(resource[:type]).to eq('script-foo.js')
   end
 
   it 'accepts value for included_client_audience' do

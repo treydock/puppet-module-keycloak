@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
@@ -54,6 +56,11 @@ Manage Keycloak client scopes
     defaultto :true
   end
 
+  newproperty(:include_in_token_scope, boolean: true) do
+    desc 'include.in.token.scope'
+    newvalues(:true, :false)
+  end
+
   def self.title_patterns
     [
       [
@@ -61,15 +68,15 @@ Manage Keycloak client scopes
         [
           [:name],
           [:resource_name],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_ldap_user_provider).provider(:kcadm) do
@@ -25,6 +27,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider).provider(:kcadm) do
       expect(property_hash[:name]).to eq('LDAP on test')
     end
   end
+
   #   describe 'self.prefetch' do
   #     let(:instances) do
   #       all_realms.map { |f| described_class.new(f) }
@@ -50,6 +53,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider).provider(:kcadm) do
     it 'creates a realm' do
       temp = Tempfile.new('keycloak_component')
       allow(Tempfile).to receive(:new).with('keycloak_component').and_return(temp)
+      allow(resource.provider).to receive(:get_parent_id).with('test').and_return('test')
       expect(resource.provider).to receive(:kcadm).with('create', 'components', 'test', temp.path)
       resource.provider.create
       property_hash = resource.provider.instance_variable_get('@property_hash')
@@ -61,7 +65,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider).provider(:kcadm) do
     it 'deletes a realm' do
       hash = resource.to_hash
       resource.provider.instance_variable_set(:@property_hash, hash)
-      expect(resource.provider).to receive(:kcadm).with('delete', 'components/foo-test', 'test')
+      expect(resource.provider).to receive(:kcadm).with('delete', 'components/b84ed8ed-a7b1-502f-83f6-90132e68adef', 'test')
       resource.provider.destroy
       property_hash = resource.provider.instance_variable_get('@property_hash')
       expect(property_hash).to eq({})
@@ -74,7 +78,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider).provider(:kcadm) do
       resource.provider.instance_variable_set(:@property_hash, hash)
       temp = Tempfile.new('keycloak_component')
       allow(Tempfile).to receive(:new).with('keycloak_component').and_return(temp)
-      expect(resource.provider).to receive(:kcadm).with('update', 'components/foo-test', 'test', temp.path)
+      expect(resource.provider).to receive(:kcadm).with('update', 'components/b84ed8ed-a7b1-502f-83f6-90132e68adef', 'test', temp.path)
       resource.provider.connection_url = 'foobar'
       resource.provider.flush
     end

@@ -1,21 +1,22 @@
+# frozen_string_literal: true
+
 RSpec.configure do |c|
   c.add_setting :keycloak_version
   keycloak_version = if ENV['BEAKER_keycloak_version'].nil? || ENV['BEAKER_keycloak_version'].empty?
-                       '12.0.4'
+                       '25.0.1'
                      else
                        ENV['BEAKER_keycloak_version']
                      end
   c.keycloak_version = keycloak_version
   c.add_setting :keycloak_full
   c.keycloak_full = (ENV['BEAKER_keycloak_full'] == 'true' || ENV['BEAKER_keycloak_full'] == 'yes')
-  c.add_setting :keycloak_domain_mode_cluster
-  c.keycloak_domain_mode_cluster = (ENV['BEAKER_keycloak_domain_mode_cluster'] == 'true' || ENV['BEAKER_keycloak_domain_mode_cluster'] == 'yes')
 end
 
 proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-scp_to(hosts, File.join(proj_root, 'spec/fixtures/keycloak-duo-spi-jar-with-dependencies.jar'), '/tmp/keycloak-duo-spi-jar-with-dependencies.jar')
+scp_to(hosts, File.join(proj_root, 'spec/fixtures/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar'), '/tmp/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar')
+scp_to(hosts, File.join(proj_root, 'spec/fixtures/partial-import.json'), '/tmp/partial-import.json')
 
-hiera_yaml = <<-EOS
+hiera_yaml = <<-HIERA_YAML
 ---
 version: 5
 defaults:
@@ -26,24 +27,21 @@ hierarchy:
     path: "os/%{facts.os.name}/%{facts.os.release.major}.yaml"
   - name: "Common"
     path: "common.yaml"
-EOS
-# TODO: Use until released https://github.com/puppetlabs/puppetlabs-mysql/pull/1373
-ubuntu2004_yaml = <<-EOS
-mysql::bindings::java_package_name: libmariadb-java
-EOS
-centos7_yaml = <<-EOS
-postgresql::server::service_reload: 'systemctl reload postgresql 2>/dev/null 1>/dev/null'
-EOS
-common_yaml = <<-EOS
+HIERA_YAML
+common_yaml = <<-COMMON_YAML
 ---
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
+keycloak::http_host: '0.0.0.0'
+keycloak::hostname: localhost
+keycloak::db: mariadb
+keycloak::proxy: edge
+keycloak::features:
+  - scripts
+# Force only listen on IPv4 for testing
+keycloak::java_opts: '-Djava.net.preferIPv4Stack=true'
 postgresql::server::service_status: 'service postgresql status 2>/dev/null 1>/dev/null'
-EOS
+COMMON_YAML
 
 create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
 on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
-on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/Ubuntu'
-create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/Ubuntu/20.04.yaml', ubuntu2004_yaml)
-on hosts, 'mkdir -p /etc/puppetlabs/puppet/data/os/CentOS'
-create_remote_file(hosts, '/etc/puppetlabs/puppet/data/os/CentOS/7.yaml', centos7_yaml)

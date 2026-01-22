@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_protocol_mapper) do
@@ -5,7 +7,7 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     {
       name: 'foo',
       realm: 'test',
-      client_scope: 'oidc',
+      client_scope: 'oidc'
     }
   end
   let(:config) do
@@ -254,14 +256,16 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
   describe 'basic properties' do
     # Test basic properties
     [
-      :claim_name,
+      :claim_name
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -271,6 +275,7 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     it 'defaults to nil for non groups' do
       expect(resource[:full_path]).to be_nil
     end
+
     it 'defaults to false for groups' do
       config[:type] = 'oidc-group-membership-mapper'
       expect(resource[:full_path]).to eq(:false)
@@ -330,24 +335,41 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     }.to raise_error(%r{foo})
   end
 
-  it 'accepts value for script' do
-    config[:protocol] = 'saml'
-    config[:type] = 'saml-javascript-mapper'
-    config[:script] = 'foobar'
-    expect(resource[:script]).to eq('foobar')
-  end
-
-  it 'accepts value with newline for script' do
-    config[:protocol] = 'saml'
-    config[:type] = 'saml-javascript-mapper'
-    config[:script] = 'foobar\nbaz'
-    expect(resource[:script]).to eq('foobar\nbaz')
-  end
-
   it 'accepts value for included_client_audience' do
     config[:type] = 'oidc-audience-mapper'
     config[:included_client_audience] = 'foo'
     expect(resource[:included_client_audience]).to eq('foo')
+  end
+
+  it 'accepts value for multivalued' do
+    config[:multivalued] = false
+    expect(resource[:multivalued]).to eq(:false)
+  end
+
+  it 'accepts value for multivalued string' do
+    config[:multivalued] = 'false'
+    expect(resource[:multivalued]).to eq(:false)
+  end
+
+  it 'has default for multivalued' do
+    expect(resource[:multivalued]).to be_nil
+  end
+
+  it 'does not accept invalid value for multivalued' do
+    config[:multivalued] = 'foo'
+    expect {
+      resource
+    }.to raise_error(%r{foo})
+  end
+
+  it 'accepts script' do
+    config[:protocol] = 'saml'
+    config[:type] = 'script-foo.js'
+    config[:single] = true
+    config[:attribute_name] = 'foo'
+    config[:attribute_nameformat] = 'uri'
+    config[:friendly_name] = 'foo'
+    expect(resource[:type]).to eq('script-foo.js')
   end
 
   it 'requires included_client_audience for oidc-audience-mapper' do

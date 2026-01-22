@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:keycloak_flow_execution) do
@@ -5,9 +7,9 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
     {
       name: 'foo',
       realm: 'test',
-      index: 0,
+      priority: 10,
       flow_alias: 'bar',
-      provider_id: 'auth-username-password-form',
+      provider_id: 'auth-username-password-form'
     }
   end
   let(:config) do
@@ -46,14 +48,16 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
     # Test basic properties
     [
       :display_name,
-      :alias,
+      :alias
     ].each do |p|
-      it "should accept a #{p}" do
+      it "accepts a #{p}" do
         config[p] = 'foo'
         expect(resource[p]).to eq('foo')
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -62,32 +66,38 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :configurable,
+      :configurable
     ].each do |p|
-      it "should accept true for #{p}" do
+      it "accepts true for #{p}" do
         config[p] = true
         expect(resource[p]).to eq(:true)
       end
-      it "should accept true for #{p} string" do
+
+      it "accepts true for #{p} string" do
         config[p] = 'true'
         expect(resource[p]).to eq(:true)
       end
-      it "should accept false for #{p}" do
+
+      it "accepts false for #{p}" do
         config[p] = false
         expect(resource[p]).to eq(:false)
       end
-      it "should accept false for #{p} string" do
+
+      it "accepts false for #{p} string" do
         config[p] = 'false'
         expect(resource[p]).to eq(:false)
       end
-      it "should not accept strings for #{p}" do
+
+      it "does not accept strings for #{p}" do
         config[p] = 'foo'
         expect {
           resource
         }.to raise_error(%r{foo})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -96,22 +106,26 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
   describe 'integer properties' do
     # Integer properties
     [
-      :index,
+      :priority
     ].each do |p|
-      it "should accept integer for #{p}" do
+      it "accepts integer for #{p}" do
         config[p] = 1
         expect(resource[p]).to eq(1)
       end
-      it "should accept integer string for #{p}" do
+
+      it "accepts integer string for #{p}" do
         config[p] = '1'
         expect(resource[p]).to eq(1)
       end
-      it "should not accept non-integer for #{p}" do
+
+      it "does not accept non-integer for #{p}" do
         config[p] = 'foo'
         expect { resource }.to raise_error(%r{Integer})
       end
+
       next unless defaults[p]
-      it "should have default for #{p}" do
+
+      it "has default for #{p}" do
         expect(resource[p]).to eq(defaults[p])
       end
     end
@@ -121,6 +135,7 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
     it 'defaults to DISABLED for top_level=false' do
       expect(resource[:requirement]).to eq('DISABLED')
     end
+
     [
       'DISABLED', 'ALTERNATIVE', 'REQUIRED', 'CONDITIONAL'
     ].each do |v|
@@ -128,6 +143,7 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
         config[:requirement] = v
         expect(resource[:requirement]).to eq(v)
       end
+
       it "accepts lowercase value #{v}" do
         config[:requirement] = v.downcase
         expect(resource[:requirement]).to eq(v)
@@ -144,6 +160,7 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
       config[:config] = { 'foo' => 'bar' }
       expect(resource[:config]).to eq('foo' => 'bar')
     end
+
     it 'requires hash' do
       config[:config] = 'foo'
       expect { resource }.to raise_error(%r{must be a Hash})
@@ -190,9 +207,9 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'autorequires keycloak_flow of lower index' do
-    config[:index] = 1
-    keycloak_flow = Puppet::Type.type(:keycloak_flow).new(name: 'baz under bar on test', index: 0)
+  it 'autorequires keycloak_flow of lower priority' do
+    config[:priority] = 1
+    keycloak_flow = Puppet::Type.type(:keycloak_flow).new(name: 'baz under bar on test', priority: 0)
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_flow
@@ -201,9 +218,9 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
     expect(rel.target.ref).to eq(resource.ref)
   end
 
-  it 'autorequires keycloak_flow_execution of lower index' do
-    config[:index] = 1
-    keycloak_flow_execution = Puppet::Type.type(:keycloak_flow_execution).new(name: 'baz under bar on test', index: 0)
+  it 'autorequires keycloak_flow_execution of lower priority' do
+    config[:priority] = 1
+    keycloak_flow_execution = Puppet::Type.type(:keycloak_flow_execution).new(name: 'baz under bar on test', priority: 0)
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource resource
     catalog.add_resource keycloak_flow_execution
@@ -233,21 +250,25 @@ describe Puppet::Type.type(:keycloak_flow_execution) do
       config.delete(:realm)
       expect { resource }.to raise_error(%r{must have a realm defined})
     end
-    it 'requires index when present' do
-      config.delete(:index)
+
+    it 'requires priority when present' do
+      config.delete(:priority)
       config[:ensure] = 'present'
-      expect { resource }.to raise_error(%r{index is required})
+      expect { resource }.to raise_error(%r{priority is required})
     end
-    it 'does not require index for absent' do
-      config.delete(:index)
+
+    it 'does not require priority for absent' do
+      config.delete(:priority)
       config[:ensure] = 'absent'
       expect { resource }.not_to raise_error
     end
+
     it 'requires flow_alias' do
       config.delete(:flow_alias)
       config[:ensure] = 'present'
       expect { resource }.to raise_error(%r{flow_alias is required})
     end
+
     it 'requires provider_id' do
       config.delete(:provider_id)
       config[:ensure] = 'present'

@@ -47,12 +47,9 @@ define keycloak::spi_deployment (
 ) {
   include keycloak
 
-  $dir = "${keycloak::install_base}/standalone/deployments"
   $basename = basename($source)
-  $dest = "${dir}/${deployed_name}"
-  $tmp = "${keycloak::install_base}/tmp/${basename}"
-  $dodeploy = "${dest}.dodeploy"
-  $deployed = "${dest}.deployed"
+  $dest = "${keycloak::providers_dir}/${deployed_name}"
+  $tmp = "${keycloak::tmp_dir}/${basename}"
 
   if $ensure == 'present' {
     if $source =~ Stdlib::HTTPUrl or $source =~ Stdlib::HTTPSUrl {
@@ -66,7 +63,7 @@ define keycloak::spi_deployment (
         cleanup => false,
         user    => $keycloak::user,
         group   => $keycloak::group,
-        require => File["${keycloak::install_base}/tmp"],
+        require => File[$keycloak::tmp_dir],
         before  => File[$dest],
       }
     } else {
@@ -79,14 +76,7 @@ define keycloak::spi_deployment (
       group   => $keycloak::group,
       mode    => '0644',
       require => Class['keycloak::install'],
-      notify  => Exec["${name}-dodeploy"],
-    }
-    exec { "${name}-dodeploy":
-      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command     => "touch ${dodeploy}",
-      refreshonly => true,
-      user        => $keycloak::user,
-      group       => $keycloak::group,
+      notify  => Class['keycloak::service'],
     }
 
     if $test_url and $test_key and $test_value {
@@ -96,15 +86,16 @@ define keycloak::spi_deployment (
         test_value          => $test_value,
         realm               => $test_realm,
         dependent_resources => $test_before,
-        require             => Exec["${name}-dodeploy"],
+        require             => Class['keycloak::service'],
       }
     }
   }
 
   if $ensure == 'absent' {
-    file { $deployed:
-      ensure => 'absent',
+    file { $dest:
+      ensure  => 'absent',
+      require => Class['keycloak::install'],
+      notify  => Class['keycloak::service'],
     }
   }
-
 }

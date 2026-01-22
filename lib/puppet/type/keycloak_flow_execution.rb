@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
@@ -10,7 +12,7 @@ Manage a Keycloak flow
     ensure       => 'present',
     configurable => false,
     display_name => 'Cookie',
-    index        => 0,
+    priority     => 10,
     requirement  => 'ALTERNATIVE',
   }
 
@@ -19,7 +21,7 @@ Manage a Keycloak flow
     ensure       => 'present',
     configurable => false,
     display_name => 'Username Password Form',
-    index        => 0,
+    priority     => 10,
     requirement  => 'REQUIRED',
   }
 
@@ -37,14 +39,14 @@ Manage a Keycloak flow
       "duomfa.groups"  => "duo"
     },
     requirement  => 'REQUIRED',
-    index        => 1,
+    priority     => 20,
   }
 
 **Autorequires**
 * `keycloak_realm` defined for `realm` parameter
 * `keycloak_flow` of value defined for `flow_alias`
-* `keycloak_flow` if they share same `flow_alias` value and the other resource `index` is lower
-* `keycloak_flow_execution` if `flow_alias` is the same and other `index` is lower
+* `keycloak_flow` if they share same `flow_alias` value and the other resource `priority` is lower
+* `keycloak_flow_execution` if `flow_alias` is the same and other `priority` is lower
   DESC
 
   extend PuppetX::Keycloak::Type
@@ -77,8 +79,8 @@ Manage a Keycloak flow
     desc 'displayName'
   end
 
-  newproperty(:index, parent: PuppetX::Keycloak::IntegerProperty) do
-    desc 'execution index'
+  newproperty(:priority, parent: PuppetX::Keycloak::IntegerProperty) do
+    desc 'execution priority'
     munge { |v| v.to_i }
   end
 
@@ -133,27 +135,28 @@ Manage a Keycloak flow
           [:name],
           [:provider_id],
           [:flow_alias],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
   autorequire(:keycloak_flow) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_flow)
       next if self[:realm] != resource[:realm]
+
       if self[:flow_alias] == resource[:alias]
         requires << resource.name
       end
-      if !resource[:index].nil? && !self[:index].nil? && self[:index] > resource[:index] && self[:flow_alias] == resource[:flow_alias]
+      if !resource[:priority].nil? && !self[:priority].nil? && self[:priority] > resource[:priority] && self[:flow_alias] == resource[:flow_alias]
         requires << resource.name
       end
     end
@@ -163,9 +166,10 @@ Manage a Keycloak flow
   autorequire(:keycloak_flow_execution) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow_execution'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_flow_execution)
       next if self[:realm] != resource[:realm]
-      if self[:flow_alias] == resource[:flow_alias] && !resource[:index].nil? && !self[:index].nil? && self[:index] > resource[:index]
+
+      if self[:flow_alias] == resource[:flow_alias] && !resource[:priority].nil? && !self[:priority].nil? && self[:priority] > resource[:priority]
         requires << resource.name
       end
     end
@@ -175,7 +179,8 @@ Manage a Keycloak flow
   autorequire(:keycloak_resource_validator) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_resource_validator'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_resource_validator)
+
       resource[:dependent_resources].to_a.each do |dep|
         requires << resource if dep == "Keycloak_flow_execution[#{self[:name]}]"
       end
@@ -187,9 +192,10 @@ Manage a Keycloak flow
     if self[:realm].nil?
       raise "Keycloak_flow_execution[#{self[:name]}] must have a realm defined"
     end
+
     if self[:ensure] == :present
-      if self[:index].nil?
-        raise "Keycloak_flow_execution[#{self[:name]}] index is required"
+      if self[:priority].nil?
+        raise "Keycloak_flow_execution[#{self[:name]}] priority is required"
       end
       if self[:flow_alias].nil?
         raise "Keycloak_flow_execution[#{self[:name]}] flow_alias is required"

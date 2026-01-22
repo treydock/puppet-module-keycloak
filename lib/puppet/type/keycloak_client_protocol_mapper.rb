@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../provider/keycloak_api'
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
@@ -62,12 +64,13 @@ Manage Keycloak protocol mappers
       'oidc-audience-mapper',
       'saml-user-property-mapper',
       'saml-role-list-mapper',
-      'saml-javascript-mapper',
+      %r{script-.+},
     )
     defaultto do
-      if @resource[:protocol] == 'openid-connect'
+      case @resource[:protocol]
+      when 'openid-connect'
         'oidc-usermodel-property-mapper'
-      elsif @resource[:protocol] == 'saml'
+      when 'saml'
         'saml-user-property-mapper'
       else
         nil
@@ -184,11 +187,15 @@ Manage Keycloak protocol mappers
     end
   end
 
+  newproperty(:usermodel_client_role_mapping_client_id) do
+    desc 'usermodel.clientRoleMapping.clientId for `type` `oidc-usermodel-client-role-mapper`'
+  end
+
   newproperty(:single, boolean: true) do
     desc 'single. Default to `false` for `type` `saml-role-list-mapper`.'
     newvalues(:true, :false)
     defaultto do
-      if ['saml-role-list-mapper', 'saml-javascript-mapper'].include?(@resource['type'])
+      if ['saml-role-list-mapper'].include?(@resource['type'])
         :false
       else
         nil
@@ -196,12 +203,9 @@ Manage Keycloak protocol mappers
     end
   end
 
-  newproperty(:script) do
-    desc <<-EOS
-    Script, only valid for `type` of `saml-javascript-mapper`'
-
-    Array values will be joined with newlines. Strings will be kept unchanged.
-    EOS
+  newproperty(:multivalued, boolean: true) do
+    desc 'multivalued'
+    newvalues(:true, :false)
   end
 
   newproperty(:included_client_audience) do
@@ -211,7 +215,8 @@ Manage Keycloak protocol mappers
   autorequire(:keycloak_client) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_client'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_client)
+
       if resource[:client_id] == self[:client]
         requires << resource.name
       end
@@ -227,15 +232,15 @@ Manage Keycloak protocol mappers
           [:name],
           [:resource_name],
           [:client],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
@@ -245,15 +250,15 @@ Manage Keycloak protocol mappers
       'oidc-usermodel-property-mapper',
       'oidc-full-name-mapper',
       'oidc-group-membership-mapper',
-      'oidc-audience-mapper',
+      'oidc-audience-mapper'
     ]
-    if self[:protocol] == 'openid-connect' && !oidc_types.include?(self[:type])
+    if self[:protocol] == 'openid-connect' && !oidc_types.include?(self[:type]) && self[:type] !~ %r{script-.+}
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
     end
-    if self[:protocol] == 'saml' && !['saml-user-property-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
+    if self[:protocol] == 'saml' && !['saml-user-property-mapper', 'saml-role-list-mapper'].include?(self[:type]) && self[:type] !~ %r{script-.+}
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol saml"
     end
-    if self[:friendly_name] && !['saml-user-property-mapper', 'saml-javascript-mapper'].include?(self[:type])
+    if self[:friendly_name] && self[:type] !~ %r{(saml-user-property-mapper|script.+)}
       raise Puppet::Error, "friendly_name is not valid for type #{self[:type]}"
     end
     if self[:attribute_name] && self[:protocol] != 'saml'
@@ -262,14 +267,14 @@ Manage Keycloak protocol mappers
     if self[:attribute_nameformat] && self[:protocol] != 'saml'
       raise Puppet::Error, "attribute_nameformat is not valid for protocol #{self[:protocol]}"
     end
-    if self[:single] && !['saml-role-list-mapper', 'saml-javascript-mapper'].include?(self[:type])
+    if self[:single] && self[:type] !~ %r{(saml-role-list-mapper|script-.+)}
       raise Puppet::Error, "single is not valid for type #{self[:type]}"
-    end
-    if self[:type] == 'saml-javascript-mapper' && self[:script].nil?
-      raise Puppet::Error, 'script is required for saml-javascript-mapper'
     end
     if self[:type] == 'oidc-audience-mapper' && self[:included_client_audience].nil?
       raise Puppet::Error, 'included_client_audience is required for oidc-audience-mapper'
+    end
+    if self[:usermodel_client_role_mapping_client_id] && self[:type] != 'oidc-usermodel-client-role-mapper'
+      raise Puppet::Error, 'usermodel_client_role_mapping_client_id is only valid for type=oidc-usermodel-client-role-mapper'
     end
   end
 end

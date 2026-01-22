@@ -1,13 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_full do
-  context 'creates identity provider' do
+  context 'when creates identity provider' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_identity_provider { 'cilogon on test':
         ensure                         => 'present',
@@ -34,7 +33,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
         authorization_url              => 'https://foo/authorize',
         gui_order                      => 2,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -66,13 +65,10 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     end
   end
 
-  context 'updates identity provider' do
+  context 'when updates identity provider' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_identity_provider { 'cilogon on test':
         ensure                         => 'present',
@@ -100,7 +96,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
         authorization_url              => 'https://foo/authorize',
         gui_order                      => 4,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -133,17 +129,14 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     end
   end
 
-  context 'ensure => absent' do
+  context 'when ensure => absent' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
       keycloak_identity_provider { 'cilogon on test':
         ensure => 'absent',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

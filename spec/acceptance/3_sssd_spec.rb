@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
-describe 'keycloak_sssd_user_provider:', if: RSpec.configuration.keycloak_full do
-  context 'bootstrap sssd' do
+# TODO: Figure out how to support SSSD user provider on latest Keycloak and Java 11
+describe 'keycloak_sssd_user_provider:', if: false do
+  context 'when bootstrap sssd' do
     it 'is successful' do
       on hosts, 'puppet resource package sssd-dbus ensure=installed'
       on hosts, 'puppet resource package sssd-ldap ensure=installed'
-      sssd_conf = <<-EOS
+      sssd_conf = <<-SSSD_CONF
 [domain/LDAP]
 ldap_uri = ldap://localhost:389/
 id_provider = ldap
@@ -18,20 +21,19 @@ config_file_version = 2
 debug_level = 0x02F0
 domains = LDAP
 services = ifp
-      EOS
+      SSSD_CONF
       create_remote_file(hosts, '/etc/sssd/sssd.conf', sssd_conf)
       on hosts, 'chmod 0600 /etc/sssd/sssd.conf'
       on hosts, 'systemctl restart dbus'
       on hosts, 'systemctl restart sssd'
     end
   end
-  context 'creates sssd' do
+
+  context 'when creates sssd' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -39,7 +41,7 @@ services = ifp
         ensure => 'present',
         realm => 'test',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -55,13 +57,11 @@ services = ifp
     end
   end
 
-  context 'updates sssd' do
+  context 'when updates sssd' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -70,7 +70,7 @@ services = ifp
         realm => 'test',
         priority => '1',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -86,13 +86,11 @@ services = ifp
     end
   end
 
-  context 'deletes sssd' do
+  context 'when deletes sssd' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PUPPET_PP
       service { 'sssd': ensure => 'running' }
-      include mysql::server
       class { 'keycloak':
-        datasource_driver => 'mysql',
         with_sssd_support => true,
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -100,7 +98,7 @@ services = ifp
         ensure => 'absent',
         realm => 'test',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

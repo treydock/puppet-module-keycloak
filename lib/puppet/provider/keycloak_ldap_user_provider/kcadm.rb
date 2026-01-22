@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -20,6 +22,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
       data.each do |d|
         next unless d['providerType'] == 'org.keycloak.storage.UserStorageProvider'
         next unless d['providerId'] == 'ldap'
+
         component = {}
         component[:ensure] = :present
         component[:id] = d['id']
@@ -28,6 +31,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
         component[:name] = "#{component[:resource_name]} on #{component[:realm]}"
         type_properties.each do |property|
           next unless d['config'].key?(camelize(property).gsub(%r{ldap}i, 'LDAP'))
+
           value = d['config'][camelize(property).gsub(%r{ldap}i, 'LDAP')][0]
           if property == :user_object_classes
             value = value.split(',')
@@ -45,32 +49,46 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
 
   def self.prefetch(resources)
     components = instances
-    resources.keys.each do |name|
-      provider = components.find { |c| c.resource_name == resources[name][:resource_name] && c.realm == resources[name][:realm] }
+    resources.each_key do |name|
+      provider = components.find { |c| c.id == resources[name][:id] }
       if provider
         resources[name].provider = provider
       end
     end
   end
 
+  def get_parent_id(realm)
+    output = kcadm('get', "realms/#{realm}", nil, nil, ['id'])
+    Puppet.debug("#{realm} realms: #{output}")
+    begin
+      data = JSON.parse(output)
+    rescue JSON::ParserError
+      Puppet.debug("Unable to parse output from kcadm get realms/#{realm}")
+      data = {}
+    end
+    data['id']
+  end
+
   def create
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
 
     data = {}
-    data[:id] = resource[:id]
+    data[:id] = resource[:id] || name_uuid(resource[:name])
     data[:name] = resource[:resource_name]
-    data[:parentId] = resource[:realm]
+    data[:parentId] = get_parent_id(resource[:realm]) || resource[:realm]
     data[:providerId] = 'ldap'
     data[:providerType] = 'org.keycloak.storage.UserStorageProvider'
     data[:config] = {}
     type_properties.each do |property|
       next unless resource[property.to_sym]
+
       value = if property == :user_object_classes
                 resource[property.to_sym].join(',')
               else
                 resource[property.to_sym]
               end
       next if value == :absent
+
       data[:config][camelize(property).gsub(%r{ldap}i, 'LDAP')] = [value]
     end
 
@@ -88,6 +106,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
 
   def destroy
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+
     begin
       kcadm('delete', "components/#{id}", resource[:realm])
     rescue Puppet::ExecutionFailure => e
@@ -122,6 +141,7 @@ Puppet::Type.type(:keycloak_ldap_user_provider).provide(:kcadm, parent: Puppet::
       data[:config] = {}
       type_properties.each do |property|
         next unless @property_flush[property.to_sym]
+
         value = if property == :user_object_classes
                   resource[property.to_sym].join(',')
                 else

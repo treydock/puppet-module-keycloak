@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 
@@ -194,6 +196,10 @@ Manage Keycloak clients
     desc 'saml.encrypt'
   end
 
+  newproperty(:saml_client_signature) do
+    desc 'saml.client.signature'
+  end
+
   newproperty(:saml_assertion_signature) do
     desc 'saml.assertion.signature'
   end
@@ -221,7 +227,6 @@ Manage Keycloak clients
 
   newproperty(:web_origins, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'webOrigins'
-    defaultto []
   end
 
   newproperty(:login_theme) do
@@ -251,7 +256,8 @@ Manage Keycloak clients
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_client_scope'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_client_scope)
+
       if self[:default_client_scopes].include?(resource[:resource_name])
         requires << resource.name
       end
@@ -265,7 +271,8 @@ Manage Keycloak clients
   autorequire(:keycloak_protocol_mapper) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_protocol_mapper'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_protocol_mapper)
+
       if self[:default_client_scopes].include?(resource[:client_scope])
         requires << resource.name
       end
@@ -279,8 +286,9 @@ Manage Keycloak clients
   autorequire(:keycloak_flow) do
     requires = []
     catalog.resources.each do |resource|
-      next unless resource.class.to_s == 'Puppet::Type::Keycloak_flow'
+      next unless resource.instance_of?(Puppet::Type::Keycloak_flow)
       next if self[:realm] != resource[:realm]
+
       if self[:browser_flow] == resource[:alias]
         requires << resource.name
       end
@@ -304,15 +312,15 @@ Manage Keycloak clients
         [
           [:name],
           [:client_id],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 end

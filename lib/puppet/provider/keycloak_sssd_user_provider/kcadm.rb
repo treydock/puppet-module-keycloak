@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'keycloak_api'))
 
 Puppet::Type.type(:keycloak_sssd_user_provider).provide(:kcadm, parent: Puppet::Provider::KeycloakAPI) do
@@ -20,6 +22,7 @@ Puppet::Type.type(:keycloak_sssd_user_provider).provide(:kcadm, parent: Puppet::
       data.each do |d|
         next unless d['providerType'] == 'org.keycloak.storage.UserStorageProvider'
         next unless d['providerId'] == 'sssd'
+
         component = {}
         component[:ensure] = :present
         component[:id] = d['id']
@@ -31,6 +34,7 @@ Puppet::Type.type(:keycloak_sssd_user_provider).provide(:kcadm, parent: Puppet::
           unless d['config'].key?(key)
             next
           end
+
           value = d['config'][key][0]
           if !!value == value # rubocop:disable Style/DoubleNegation
             value = value.to_s.to_sym
@@ -45,7 +49,7 @@ Puppet::Type.type(:keycloak_sssd_user_provider).provide(:kcadm, parent: Puppet::
 
   def self.prefetch(resources)
     components = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       provider = components.find { |c| c.resource_name == resources[name][:resource_name] && c.realm == resources[name][:realm] }
       if provider
         resources[name].provider = provider
@@ -65,8 +69,10 @@ Puppet::Type.type(:keycloak_sssd_user_provider).provide(:kcadm, parent: Puppet::
     data[:config] = {}
     type_properties.each do |property|
       next unless resource[property.to_sym]
+
       value = resource[property.to_sym]
       next if value == :absent
+
       data[:config][camelize(property)] = [value]
     end
 
@@ -84,6 +90,7 @@ Puppet::Type.type(:keycloak_sssd_user_provider).provide(:kcadm, parent: Puppet::
 
   def destroy
     raise(Puppet::Error, "Realm is mandatory for #{resource.type} #{resource.name}") if resource[:realm].nil?
+
     begin
       kcadm('delete', "components/#{id}", resource[:realm])
     rescue Puppet::ExecutionFailure => e
@@ -118,6 +125,7 @@ Puppet::Type.type(:keycloak_sssd_user_provider).provide(:kcadm, parent: Puppet::
       data[:config] = {}
       type_properties.each do |property|
         next unless @property_flush[property.to_sym]
+
         value = resource[property.to_sym]
         if value == :absent
           value = ''

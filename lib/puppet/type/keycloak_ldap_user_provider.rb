@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
@@ -32,9 +34,9 @@ Manage Keycloak LDAP user providers
   end
 
   newparam(:id) do
-    desc 'Id. Defaults to "`resource_name`-`realm`"'
+    desc 'Id'
     defaultto do
-      "#{@resource[:resource_name]}-#{@resource[:realm]}"
+      @resource.provider.name_uuid(@resource[:name])
     end
   end
 
@@ -71,8 +73,8 @@ Manage Keycloak LDAP user providers
 
   newproperty(:use_truststore_spi) do
     desc 'useTruststoreSpi'
-    defaultto 'ldapsOnly'
-    newvalues('always', 'ldapsOnly', 'never')
+    defaultto 'always'
+    newvalues('always', 'never')
     munge { |v| v }
   end
 
@@ -84,9 +86,21 @@ Manage Keycloak LDAP user providers
     desc 'connectionUrl'
   end
 
+  newproperty(:sync_registrations, boolean: true) do
+    desc 'syncRegistrations'
+    newvalues(:true, :false)
+    defaultto :false
+  end
+
   newproperty(:priority) do
     desc 'priority'
     defaultto '0'
+  end
+
+  newproperty(:cache_policy) do
+    desc 'cachePolicy'
+    newvalues('DEFAULT', 'EVICT_DAILY', 'EVICT_WEEKLY', 'MAX_LIFESPAN', 'NO_CACHE')
+    defaultto 'DEFAULT'
   end
 
   newproperty(:batch_size_for_sync) do
@@ -117,7 +131,7 @@ Manage Keycloak LDAP user providers
     desc 'bindCredential'
 
     def insync?(is)
-      if is =~ %r{^[\*]+$}
+      if is =~ %r{^\*+$}
         Puppet.warning("Parameter 'bind_credential' is set and Puppet has no way to check current value")
         true
       else
@@ -153,6 +167,23 @@ Manage Keycloak LDAP user providers
     newvalues(:true, :false)
   end
 
+  newproperty(:allow_kerberos_authentication, boolean: true) do
+    desc 'allowKerberosAuthentication'
+    newvalues(:true, :false)
+  end
+
+  newproperty(:kerberos_realm) do
+    desc 'kerberosRealm'
+  end
+
+  newproperty(:key_tab) do
+    desc 'keyTab'
+  end
+
+  newproperty(:server_principal) do
+    desc 'serverPrincipal'
+  end
+
   newproperty(:user_object_classes, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'userObjectClasses'
     defaultto ['inetOrgPerson', 'organizationalPerson']
@@ -177,10 +208,8 @@ Manage Keycloak LDAP user providers
     newvalues(%r{.*}, :absent)
     defaultto(:absent)
     validate do |v|
-      if v != :absent
-        unless v.start_with?('(') && v.end_with?(')')
-          raise ArgumentError, 'custom_user_search_filter must start with "(" and end with ")"'
-        end
+      if v != :absent && !v.start_with?('(') && !v.end_with?(')')
+        raise ArgumentError, 'custom_user_search_filter must start with "(" and end with ")"'
       end
     end
   end
@@ -192,15 +221,15 @@ Manage Keycloak LDAP user providers
         [
           [:name],
           [:resource_name],
-          [:realm],
-        ],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 

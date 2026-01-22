@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/integer_property'
 
@@ -6,29 +8,28 @@ Puppet::Type.newtype(:keycloak_required_action) do
 Manage Keycloak required actions
 @example Enable Webauthn Register and make it default
   keycloak_required_action { 'webauthn-register on master':
-    ensure => present,
-    provider_id => 'webauthn-register',
+    ensure       => present,
+    provider_id  => 'webauthn-register',
     display_name => 'Webauthn Register',
-    default => true,
-    enabled => true,
-    priority => 1,
-    config => {
+    default      => true,
+    enabled      => true,
+    priority     => 1,
+    config       => {
       'something' => 'true', # keep in mind that keycloak only supports strings for both keys and values
       'smth else' => '1',
     },
-    alias => 'webauthn',
   }
 
   @example Minimal example to enable email verification without making it default
   keycloak_required_action { 'VERIFY_EMAIL on master':
     ensure => present,
-    provider_id => 'webauthn-register',
   }
   DESC
 
   extend PuppetX::Keycloak::Type
 
   ensurable
+  add_autorequires
 
   newparam(:name, namevar: true) do
     desc 'The required action name'
@@ -39,32 +40,25 @@ Manage Keycloak required actions
   end
 
   newparam(:provider_id, namevar: true) do
-    desc 'providerId of the required action'
+    desc 'providerId of the required action.'
     munge { |v| v.to_s }
   end
 
   newproperty(:display_name) do
-    desc 'Displayed name. Default to `provider_id`'
+    desc 'Displayed name.'
     munge { |v| v.to_s }
   end
 
   newproperty(:enabled, boolean: true) do
     desc 'If the required action is enabled. Default to true.'
-    defaultto true
+    defaultto :true
     newvalues(:true, :false)
     munge { |v| v.to_s == 'true' }
   end
 
-  newproperty(:alias) do
-    desc 'Alias. Default to `provider_id`.'
-    defaultto do
-      @resource[:provider_id]
-    end
-  end
-
   newproperty(:default, boolean: true) do
     desc 'If the required action is a default one. Default to false'
-    defaultto false
+    defaultto :false
     newvalues(:true, :false)
     munge { |v| v.to_s == 'true' }
   end
@@ -105,33 +99,32 @@ Manage Keycloak required actions
         %r{^((\S+) on (\S+))$},
         [
           [:name],
-          [:alias],
-          [:realm],
-        ],
+          [:provider_id],
+          [:realm]
+        ]
       ],
       [
         %r{(.*)},
         [
-          [:name],
-        ],
-      ],
+          [:name]
+        ]
+      ]
     ]
   end
 
   validate do
     required_properties = [
-      :alias,
-      :realm,
+      :provider_id,
+      :realm
     ]
     required_properties.each do |property|
       if self[property].nil?
         raise Puppet::Error, "Keycloak_required_action[#{self[:name]}] must have a #{property} defined"
       end
     end
-    if self[:ensure] == :present
-      if self[:provider_id].nil?
-        raise Puppet::Error, "Keycloak_required_action[#{self[:name]}] provider_id is required"
-      end
+    # for whatever reason puppet makes @should an array, so we actually need to compare with first element
+    if self[:ensure] == :present && self[:provider_id].nil?
+      raise Puppet::Error, "Keycloak_required_action[#{self[:name]}] provider_id is required"
     end
   end
 end

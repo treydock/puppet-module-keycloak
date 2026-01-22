@@ -1,13 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full do
-  context 'creates protocol_mapper' do
+  context 'when creates protocol_mapper' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'oidc on test':
         ensure => 'present',
@@ -28,7 +27,7 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         type                     => 'oidc-audience-mapper',
         included_client_audience => 'foo',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -86,13 +85,10 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
   end
 
-  context 'updates protocol_mapper' do
+  context 'when updates protocol_mapper' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
-      class { 'keycloak':
-        datasource_driver => 'mysql',
-      }
+      pp = <<-PUPPET_PP
+      class { 'keycloak': }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'oidc on test':
         ensure => 'present',
@@ -116,7 +112,7 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         included_client_audience => 'foo',
         id_token_claim           => false,
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -166,12 +162,15 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
   end
 
-  context 'creates saml protocol_mapper' do
+  context 'when creates saml protocol_mapper' do
     it 'runs successfully' do
-      pp = <<-EOS
-      include mysql::server
+      pp = <<-PUPPET_PP
       class { 'keycloak':
-        datasource_driver => 'mysql',
+        features => ['scripts'],
+      }
+      keycloak::spi_deployment { 'osc-keycloak-scripts':
+        deployed_name => 'osc-keycloak-scripts-jar-with-dependencies.jar',
+        source        => 'https://github.com/OSC/osc-keycloak-scripts/releases/download/1.1.0/osc-keycloak-scripts-1.1.0-jar-with-dependencies.jar',
       }
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_client_scope { 'saml on test':
@@ -192,14 +191,14 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
         friendly_name  => 'firstName',
         attribute_name => 'firstName',
       }
-      keycloak_protocol_mapper { "displayName for saml on test":
-        protocol       => 'saml',
-        type           => 'saml-javascript-mapper',
-        script         => "var foo = 'bar';\\nfoo;",
-        friendly_name  => 'displayName',
-        attribute_name => 'displayName',
+      keycloak_protocol_mapper { 'x500 displayName for saml on test':
+        protocol             => 'saml',
+        type                 => 'script-x500-displayName.js',
+        attribute_nameformat => 'uri',
+        friendly_name        => 'displayName',
+        attribute_name       => 'urn:oid:2.16.840.1.113730.3.1.241',
       }
-      EOS
+      PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -235,14 +234,13 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
       end
     end
 
-    it 'has created protocol mapper displayName' do
+    it 'has created protocol mapper from script' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do
         data = JSON.parse(stdout)
-        mapper = data.select { |d| d['name'] == 'displayName' }[0]
-        expect(mapper['protocolMapper']).to eq('saml-javascript-mapper')
-        expect(mapper['config']['attribute.name']).to eq('displayName')
-        expect(mapper['config']['Script']).to match(%r{^var foo = 'bar';$})
-        expect(mapper['config']['Script']).to match(%r{^foo;$})
+        mapper = data.select { |d| d['name'] == 'x500 displayName' }[0]
+        expect(mapper['protocolMapper']).to eq('script-x500-displayName.js')
+        expect(mapper['config']['attribute.name']).to eq('urn:oid:2.16.840.1.113730.3.1.241')
+        expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
         expect(mapper['config']['friendly.name']).to eq('displayName')
       end
     end

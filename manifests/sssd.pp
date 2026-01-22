@@ -13,7 +13,7 @@ class keycloak::sssd {
       'ensure' => 'installed',
       'before' => Exec['libunix-dbus-java-setup'],
     }
-    ensure_packages($keycloak::libunix_dbus_java_build_dependencies, $build_dependency_defaults)
+    stdlib::ensure_packages($keycloak::libunix_dbus_java_build_dependencies, $build_dependency_defaults)
   }
 
   file { '/usr/local/src/libunix-dbus-java':
@@ -75,10 +75,10 @@ class keycloak::sssd {
     }
 
     $sssd_config = delete_undef_values([
-      '# File managed by Puppet',
-      '[ifp]',
-      'allowed_uids = root, keycloak',
-      $user_attributes,
+        '# File managed by Puppet',
+        '[ifp]',
+        'allowed_uids = root, keycloak',
+        $user_attributes,
     ])
     if $keycloak::restart_sssd {
       $sssd_notify = Service['sssd']
@@ -94,5 +94,4 @@ class keycloak::sssd {
       notify  => $sssd_notify,
     }
   }
-
 }
