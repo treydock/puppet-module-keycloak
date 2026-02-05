@@ -6,7 +6,7 @@ describe Puppet::Type.type(:keycloak_sssd_user_provider) do
   let(:default_config) do
     {
       name: 'foo',
-      realm: 'test'
+      realm: 'test',
     }
   end
   let(:config) do
@@ -59,13 +59,13 @@ describe Puppet::Type.type(:keycloak_sssd_user_provider) do
 
   defaults = {
     enabled: :true,
-    priority: '0'
+    priority: '0',
   }
 
   describe 'basic properties' do
     # Test basic properties
     [
-      :priority
+      :priority,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -83,7 +83,7 @@ describe Puppet::Type.type(:keycloak_sssd_user_provider) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :enabled
+      :enabled,
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true

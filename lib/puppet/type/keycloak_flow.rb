@@ -99,7 +99,7 @@ Manage a Keycloak flow
   newproperty(:requirement) do
     desc 'requirement, only applied to top_level=false and defaults to DISABLED'
     newvalues('DISABLED', 'ALTERNATIVE', 'REQUIRED', 'CONDITIONAL',
-              'disabled', 'alternative', 'required', 'conditional')
+              'disabled', 'alternative', 'required', 'conditional',)
     defaultto do
       if @resource[:top_level] == :false
         'DISABLED'
@@ -118,23 +118,23 @@ Manage a Keycloak flow
           [:name],
           [:alias],
           [:flow_alias],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{^((\S+) on (\S+))$},
         [
           [:name],
           [:alias],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 

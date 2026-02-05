@@ -41,7 +41,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
           name: "#{a['providerId']} on #{realm}",
           priority: a['priority'],
           config: a['config'],
-          default: a['defaultAction']
+          default: a['defaultAction'],
         }
 
         Puppet.debug("Keycloak REQUIRED ACTION: #{action}")
@@ -65,7 +65,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
           enabled: false,
           default: false,
           provider_id: a['providerId'],
-          name: "#{a['providerId']} on #{realm}"
+          name: "#{a['providerId']} on #{realm}",
         }
 
         Puppet.debug("Keycloak UNREGISTERED REQUIRED ACTION: #{action}")
@@ -132,7 +132,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
                                    enabled: resource[:enabled],
                                    priority: resource[:priority],
                                    config: resource[:config] || {},
-                                   defaultAction: resource[:default]))
+                                   defaultAction: resource[:default],))
       t.close
       Puppet.debug(IO.read(t.path))
       kcadm('update', "authentication/required-actions/#{@property_hash[:provider_id]}", resource[:realm], t.path)
@@ -153,7 +153,7 @@ Puppet::Type.type(:keycloak_required_action).provide(:kcadm, parent: Puppet::Pro
       enabled: resource[:ensure] == :present,
       priority: resource[:priority],
       config: resource[:config],
-      defaultAction: resource[:default]
+      defaultAction: resource[:default],
     }
   end
 end

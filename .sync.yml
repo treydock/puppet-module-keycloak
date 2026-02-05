@@ -2,40 +2,28 @@
 Rakefile:
   changelog_since_tag: v7.0.0
 .github/workflows/ci.yaml:
-  unit_name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }} fixtures=${{ matrix.fixtures }})
-  unit_includes:
-    - ruby: '2.7.7'
-      puppet: '7'
-      fixtures: .fixtures-latest.yml
-      allow_failure: true
-    - ruby: '3.2.2'
-      puppet: '8'
-      fixtures: .fixtures-latest.yml
-      allow_failure: true
   acceptance_name: '${{ matrix.puppet }} ${{ matrix.set }} (keycloak=${{ matrix.keycloak_version }} full=${{ matrix.keycloak_full }})'
   acceptance_matrix:
     set:
-      - ---el7
       - el8
       - el9
       - debian-11
       - ubuntu-2004
       - ubuntu-2204
     puppet:
-      - puppet7
       - puppet8
     keycloak_version:
       - '25.0.1'
     keycloak_full: ['no']
   acceptance_includes:
     - set: el8
-      puppet: puppet7
+      puppet: puppet8
       keycloak_version: '25.0.1'
-      keycloak_full: 'yes'
+      keycloak_full: 'batch1'
     - set: el8
       puppet: puppet8
       keycloak_version: '25.0.1'
-      keycloak_full: 'yes'
+      keycloak_full: 'batch2'
 .gitignore:
   paths:
     - /vagrant/.vagrant/
@@ -52,14 +40,19 @@ appveyor.yml:
   delete: true
 spec/acceptance/nodesets/el7.yml:
   delete: true
+spec/acceptance/nodesets/el10.yml:
+  delete: true
 spec/acceptance/nodesets/debian-11.yml:
   packages:
     - iproute2
 spec/acceptance/nodesets/debian-12.yml:
   delete: true
 spec/acceptance/nodesets/ubuntu-2004.yml:
+  delete: false
   packages:
     - iproute2
 spec/acceptance/nodesets/ubuntu-2204.yml:
   packages:
     - iproute2
+spec/acceptance/nodesets/ubuntu-2404.yml:
+  delete: true

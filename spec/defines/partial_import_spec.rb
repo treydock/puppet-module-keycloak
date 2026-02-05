@@ -14,7 +14,7 @@ describe 'keycloak::partial_import' do
         {
           realm: 'myrealm',
           if_resource_exists: 'OVERWRITE',
-          source: 'puppet:///modules/profile/keycloak/test.json'
+          source: 'puppet:///modules/profile/keycloak/test.json',
         }
       end
       let(:file_path) { "/opt/keycloak-#{version}/conf/#{title}.json" }
@@ -22,7 +22,7 @@ describe 'keycloak::partial_import' do
         [
           "/opt/keycloak-#{version}/bin/kcadm-wrapper.sh create partialImport",
           "-r #{params[:realm]} -s ifResourceExists=#{params[:if_resource_exists]}",
-          "-o -f #{file_path}"
+          "-o -f #{file_path}",
         ].join(' ')
       end
       let(:pre_condition) do

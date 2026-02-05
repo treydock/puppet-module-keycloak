@@ -9,7 +9,11 @@ RSpec.configure do |c|
                      end
   c.keycloak_version = keycloak_version
   c.add_setting :keycloak_full
-  c.keycloak_full = (ENV['BEAKER_keycloak_full'] == 'true' || ENV['BEAKER_keycloak_full'] == 'yes')
+  c.add_setting :keycloak_full_batch1
+  c.add_setting :keycloak_full_batch2
+  c.keycloak_full_batch1 = ENV['BEAKER_keycloak_full'] == 'batch1'
+  c.keycloak_full_batch2 = ENV['BEAKER_keycloak_full'] == 'batch2'
+  c.keycloak_full = (c.keycloak_full_batch1 || c.keycloak_full_batch2)
 end
 
 proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))

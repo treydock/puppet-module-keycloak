@@ -221,15 +221,15 @@ Manage Keycloak LDAP user providers
         [
           [:name],
           [:resource_name],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 

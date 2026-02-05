@@ -6,7 +6,7 @@ describe Puppet::Type.type(:keycloak_client_scope) do
   let(:default_config) do
     {
       name: 'foo',
-      realm: 'test'
+      realm: 'test',
     }
   end
   let(:config) do
@@ -67,13 +67,13 @@ describe Puppet::Type.type(:keycloak_client_scope) do
   end
 
   defaults = {
-    full_scope_allowed: :true
+    full_scope_allowed: :true,
   }
 
   # Test boolean properties
   [
     :display_on_consent_screen,
-    :include_in_token_scope
+    :include_in_token_scope,
   ].each do |p|
     it "accepts true for #{p}" do
       config[p] = true

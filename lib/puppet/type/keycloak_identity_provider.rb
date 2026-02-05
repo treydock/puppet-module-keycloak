@@ -262,15 +262,15 @@ Manage Keycloak identity providers
         [
           [:name],
           [:alias],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 

@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
+describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
   context 'when creates realm' do
     it 'runs successfully' do
       pp = <<-PUPPET_PP
@@ -272,7 +272,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
           'upperCase(1)',
           'lowerCase(1)',
           'digits(1)',
-          'maxLength(64)'
+          'maxLength(64)',
         ]
 
         data = JSON.parse(stdout)

@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'keycloak_api:', if: RSpec.configuration.keycloak_full do
+describe 'keycloak_api:', if: RSpec.configuration.keycloak_full_batch1 do
   context 'when bootstraps' do
     it 'runs successfully' do
       pp = <<-PUPPET_PP
