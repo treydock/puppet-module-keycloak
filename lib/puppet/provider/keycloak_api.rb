@@ -58,8 +58,8 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
   def self.kcadm(action, resource, realm = nil, file = nil, fields = nil, print_id = false, params = nil)
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
-    keycloak_user ||= 'keycloak'
-    keycloak_group ||= 'keycloak'
+    @keycloak_user ||= 'keycloak'
+    @keycloak_group ||= 'keycloak'
 
     arguments = [action]
 
