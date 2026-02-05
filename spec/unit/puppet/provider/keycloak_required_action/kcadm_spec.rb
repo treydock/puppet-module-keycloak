@@ -9,7 +9,7 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
   let(:resource) do
     type.new(name: 'foo',
              realm: 'test',
-             provider_id: 'webauthn-register')
+             provider_id: 'webauthn-register',)
   end
 
   describe 'self.instances' do

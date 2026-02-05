@@ -136,7 +136,7 @@ Puppet::Type.type(:keycloak_flow).provide(:kcadm, parent: Puppet::Provider::Keyc
         update_data = {
           id: execution_id,
           requirement: resource[:requirement],
-          priority: resource[:priority]
+          priority: resource[:priority],
         }
         t = Tempfile.new('keycloak_flow_execution')
         t.write(JSON.pretty_generate(update_data))

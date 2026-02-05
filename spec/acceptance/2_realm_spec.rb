@@ -272,7 +272,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full do
           'upperCase(1)',
           'lowerCase(1)',
           'digits(1)',
-          'maxLength(64)'
+          'maxLength(64)',
         ]
 
         data = JSON.parse(stdout)

@@ -6,7 +6,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
   let(:default_config) do
     {
       name: 'foo',
-      realm: 'test'
+      realm: 'test',
     }
   end
   let(:config) do
@@ -208,7 +208,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     trust_email: :false,
     full_sync_period: '-1',
     changed_sync_period: '-1',
-    sync_registrations: :false
+    sync_registrations: :false,
   }
 
   describe 'basic properties' do
@@ -220,7 +220,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
       :batch_size_for_sync,
       :username_ldap_attribute,
       :rdn_ldap_attribute,
-      :uuid_ldap_attribute
+      :uuid_ldap_attribute,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -239,7 +239,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
     # Test integer properties
     [
       :full_sync_period,
-      :changed_sync_period
+      :changed_sync_period,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 100
@@ -260,7 +260,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
       :enabled,
       :import_enabled,
       :trust_email,
-      :sync_registrations
+      :sync_registrations,
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true
@@ -294,7 +294,7 @@ describe Puppet::Type.type(:keycloak_ldap_user_provider) do
   describe 'array properties' do
     # Array properties
     [
-      :user_object_classes
+      :user_object_classes,
     ].each do |p|
       it 'accepts array' do
         config[p] = ['foo', 'bar']

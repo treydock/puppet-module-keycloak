@@ -17,10 +17,6 @@ HOSTS:
       - LANGUAGE=en_US.UTF-8
       - LC_ALL=en_US.UTF-8
     docker_container_name: 'keycloak-el8'
-    docker_port_bindings:
-      8080/tcp:
-        - HostPort: '8080'
-          HostIp: '0.0.0.0'
 CONFIG:
   log_level: debug
   type: foss

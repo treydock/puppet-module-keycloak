@@ -9,7 +9,7 @@ describe Puppet::Type.type(:keycloak_client_protocol_mapper).provider(:kcadm) do
   let(:resource) do
     type.new(name: 'foo',
              realm: 'test',
-             client: 'test.local')
+             client: 'test.local',)
   end
 
   describe 'self.instances' do

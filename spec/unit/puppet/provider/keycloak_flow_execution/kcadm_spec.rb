@@ -11,7 +11,7 @@ describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
              realm: 'test',
              flow_alias: 'browser-with-duo',
              provider_id: 'auth-username-password-form',
-             priority: 0)
+             priority: 0,)
   end
 
   describe 'self.instances' do

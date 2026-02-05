@@ -7,7 +7,7 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     {
       name: 'foo',
       realm: 'test',
-      client_scope: 'oidc'
+      client_scope: 'oidc',
     }
   end
   let(:config) do
@@ -256,7 +256,7 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
   describe 'basic properties' do
     # Test basic properties
     [
-      :claim_name
+      :claim_name,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'

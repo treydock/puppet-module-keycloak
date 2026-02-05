@@ -11,7 +11,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
     {
       uri: 'URI Reference',
       basic: 'Basic',
-      unspecified: 'Unspecified'
+      unspecified: 'Unspecified',
     }
   end
 
@@ -45,7 +45,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
             protocol_mapper[:user_attribute] = d['config']['user.attribute']
           end
           if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper',
-              'oidc-usermodel-attribute-mapper'].include?(protocol_mapper[:type]) || (protocol_mapper[:protocol] == 'openid-connect' && protocol_mapper[:type] =~ %r{script-.+})
+              'oidc-usermodel-attribute-mapper',].include?(protocol_mapper[:type]) || (protocol_mapper[:protocol] == 'openid-connect' && protocol_mapper[:type] =~ %r{script-.+})
             protocol_mapper[:claim_name] = d['config']['claim.name']
             protocol_mapper[:json_type_label] = d['config']['jsonType.label']
           end
@@ -53,7 +53,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
             protocol_mapper[:full_path] = d['config']['full.path']
           end
           if ['saml-group-membership-mapper', 'saml-user-property-mapper',
-              'saml-user-attribute-mapper'].include?(protocol_mapper[:type]) || (protocol_mapper[:protocol] == 'saml' && protocol_mapper[:type] =~ %r{script-.+})
+              'saml-user-attribute-mapper',].include?(protocol_mapper[:type]) || (protocol_mapper[:protocol] == 'saml' && protocol_mapper[:type] =~ %r{script-.+})
             protocol_mapper[:friendly_name] = d['config']['friendly.name']
           end
           if protocol_mapper[:protocol] == 'openid-connect'
@@ -109,7 +109,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       data[:config][:'user.attribute'] = resource[:user_attribute]
     end
     if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper',
-        'oidc-usermodel-attribute-mapper'].include?(resource[:type]) || (resource[:protocol] == 'openid-connect' && resource[:type] =~ %r{script-.+})
+        'oidc-usermodel-attribute-mapper',].include?(resource[:type]) || (resource[:protocol] == 'openid-connect' && resource[:type] =~ %r{script-.+})
       data[:config][:'claim.name'] = resource[:claim_name] if resource[:claim_name]
       data[:config][:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
     end
@@ -117,7 +117,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
       data[:config][:'full.path'] = resource[:full_path]
     end
     if (['saml-group-membership-mapper', 'saml-user-property-mapper',
-         'saml-user-attribute-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:friendly_name]
+         'saml-user-attribute-mapper',].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:friendly_name]
       data[:config][:'friendly.name'] = resource[:friendly_name]
     end
     if resource[:protocol] == 'openid-connect'
@@ -196,7 +196,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
         config[:'user.attribute'] = resource[:user_attribute]
       end
       if ['oidc-usermodel-property-mapper', 'oidc-group-membership-mapper',
-          'oidc-usermodel-attribute-mapper'].include?(resource[:type]) || (resource[:protocol] == 'openid-connect' && resource[:type] =~ %r{script-.+})
+          'oidc-usermodel-attribute-mapper',].include?(resource[:type]) || (resource[:protocol] == 'openid-connect' && resource[:type] =~ %r{script-.+})
         config[:'claim.name'] = resource[:claim_name] if resource[:claim_name]
         config[:'jsonType.label'] = resource[:json_type_label] if resource[:json_type_label]
       end
@@ -204,7 +204,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
         config[:'full.path'] = resource[:full_path]
       end
       if (['saml-group-membership-mapper', 'saml-user-property-mapper',
-           'saml-user-attribute-mapper'].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:friendly_name]
+           'saml-user-attribute-mapper',].include?(resource[:type]) || (resource[:protocol] == 'saml' && resource[:type] =~ %r{script-.+})) && resource[:friendly_name]
         config[:'friendly.name'] = resource[:friendly_name]
       end
       if resource[:protocol] == 'openid-connect'

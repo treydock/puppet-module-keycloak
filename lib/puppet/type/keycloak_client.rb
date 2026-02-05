@@ -304,15 +304,15 @@ Manage Keycloak clients
         [
           [:name],
           [:client_id],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 end

@@ -21,7 +21,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :saml_client_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
-      :saml_signing_private_key
+      :saml_signing_private_key,
     ]
   end
 
@@ -34,14 +34,14 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :saml_client_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
-      :saml_signing_private_key
+      :saml_signing_private_key,
     ]
   end
 
   def self.auth_flow_properties
     {
       browser_flow: 'browser',
-      direct_grant_flow: 'direct_grant'
+      direct_grant_flow: 'direct_grant',
     }
   end
 
