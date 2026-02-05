@@ -5,3 +5,7 @@ keycloak::java_package: openjdk-17-jdk
 keycloak::java_home: /usr/lib/jvm/java-1.17.0-openjdk-amd64/
 keycloak::java_alternative_path: /usr/lib/jvm/java-1.17.0-openjdk-amd64/bin/java
 keycloak::java_alternative: java-1.17.0-openjdk-amd64
+# TODO: Use until the defaults are addressed upstream:
+# https://github.com/puppetlabs/puppetlabs-mysql/issues/1507
+keycloak::db_charset: utf8mb3
+keycloak::db_collate: utf8mb3_general_ci
