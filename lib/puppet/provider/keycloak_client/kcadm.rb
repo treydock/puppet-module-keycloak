@@ -22,6 +22,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :saml_signing_certificate,
       :saml_encryption_certificate,
       :saml_signing_private_key,
+      :pkce_code_challenge_method,
     ]
   end
 
@@ -35,6 +36,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       :saml_signing_certificate,
       :saml_encryption_certificate,
       :saml_signing_private_key,
+      :pkce_code_challenge_method,
     ]
   end
 

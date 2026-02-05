@@ -245,6 +245,12 @@ Manage Keycloak clients
     defaultto []
   end
 
+  newproperty(:pkce_code_challenge_method) do
+    desc 'PKCE Code Challenge Method for OAuth 2.0 flows'
+    newvalues('S256', 'plain', :absent)
+    defaultto :absent
+  end
+
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
