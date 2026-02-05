@@ -19,7 +19,11 @@ Rakefile:
     - set: el8
       puppet: puppet8
       keycloak_version: '25.0.1'
-      keycloak_full: 'yes'
+      keycloak_full: 'batch1'
+    - set: el8
+      puppet: puppet8
+      keycloak_version: '25.0.1'
+      keycloak_full: 'batch2'
 .gitignore:
   paths:
     - /vagrant/.vagrant/
