@@ -20,6 +20,12 @@ proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 scp_to(hosts, File.join(proj_root, 'spec/fixtures/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar'), '/tmp/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar')
 scp_to(hosts, File.join(proj_root, 'spec/fixtures/partial-import.json'), '/tmp/partial-import.json')
 
+puppet_dir = if fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12
+               '/etc/puppet'
+             else
+               '/etc/puppetlabs/puppet'
+             end
+
 hiera_yaml = <<-HIERA_YAML
 ---
 version: 5
@@ -46,6 +52,6 @@ keycloak::java_opts: '-Djava.net.preferIPv4Stack=true'
 postgresql::server::service_status: 'service postgresql status 2>/dev/null 1>/dev/null'
 COMMON_YAML
 
-create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
-on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
-create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
+create_remote_file(hosts, File.join(puppet_dir, 'hiera.yaml'), hiera_yaml)
+on hosts, "mkdir -p #{File.join(puppet_dir, 'data')}"
+create_remote_file(hosts, File.join(puppet_dir, 'data/common.yaml'), common_yaml)
