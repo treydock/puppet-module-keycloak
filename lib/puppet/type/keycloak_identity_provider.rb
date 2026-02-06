@@ -4,6 +4,9 @@ require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
 
+# needed for puppet >= 8
+require 'puppet/parameter/boolean'
+
 Puppet::Type.newtype(:keycloak_identity_provider) do
   desc <<-DESC
 Manage Keycloak identity providers
@@ -46,6 +49,11 @@ Manage Keycloak identity providers
 
   newparam(:realm, namevar: true) do
     desc 'realm'
+  end
+
+  newparam(:no_client_secret_warning, boolean: true, parent: Puppet::Parameter::Boolean) do
+    desc 'set this to true, to not display the puppet warning that we cannot ensure the client_secret'
+    defaultto :false
   end
 
   newproperty(:display_name) do
@@ -149,11 +157,13 @@ Manage Keycloak identity providers
   end
 
   newproperty(:client_secret) do
-    desc 'clientSecret'
+    desc "clientSecret.
+         Puppet has no way to check current value and will therefore emit a warning
+         which can be suppressed by setting no_client_secret_warning to true"
 
     def insync?(is)
       if is =~ %r{^\*+$}
-        Puppet.warning("Parameter 'client_secret' is set and Puppet has no way to check current value")
+        Puppet.warning("Parameter 'client_secret' is set and Puppet has no way to check current value") unless @resource[:no_client_secret_warning]
         true
       else
         false

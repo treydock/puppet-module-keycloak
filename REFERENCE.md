@@ -2448,7 +2448,9 @@ clientId
 
 ##### `client_secret`
 
-clientSecret
+clientSecret.
+Puppet has no way to check current value and will therefore emit a warning
+which can be suppressed by setting no_client_secret_warning to true
 
 ##### `default_scope`
 
@@ -2613,6 +2615,7 @@ The following parameters are available in the `keycloak_identity_provider` type.
 * [`alias`](#-keycloak_identity_provider--alias)
 * [`internal_id`](#-keycloak_identity_provider--internal_id)
 * [`name`](#-keycloak_identity_provider--name)
+* [`no_client_secret_warning`](#-keycloak_identity_provider--no_client_secret_warning)
 * [`provider`](#-keycloak_identity_provider--provider)
 * [`provider_id`](#-keycloak_identity_provider--provider_id)
 * [`realm`](#-keycloak_identity_provider--realm)
@@ -2630,6 +2633,14 @@ internalId. Defaults to "`alias`-`realm`"
 namevar
 
 The identity provider name
+
+##### <a name="-keycloak_identity_provider--no_client_secret_warning"></a>`no_client_secret_warning`
+
+Valid values: `true`, `false`, `yes`, `no`
+
+set this to true, to not display the puppet warning that we cannot ensure the client_secret
+
+Default value: `false`
 
 ##### <a name="-keycloak_identity_provider--provider"></a>`provider`
 
@@ -2898,7 +2909,9 @@ Default value: `1000`
 
 ##### `bind_credential`
 
-bindCredential
+bindCredential.
+Puppet has no way to check current value and will therefore emit a warning
+which can be suppressed by setting no_bind_credential_warning to true
 
 ##### `bind_dn`
 
@@ -3064,6 +3077,7 @@ The following parameters are available in the `keycloak_ldap_user_provider` type
 
 * [`id`](#-keycloak_ldap_user_provider--id)
 * [`name`](#-keycloak_ldap_user_provider--name)
+* [`no_bind_credential_warning`](#-keycloak_ldap_user_provider--no_bind_credential_warning)
 * [`provider`](#-keycloak_ldap_user_provider--provider)
 * [`realm`](#-keycloak_ldap_user_provider--realm)
 * [`resource_name`](#-keycloak_ldap_user_provider--resource_name)
@@ -3077,6 +3091,14 @@ Id
 namevar
 
 The LDAP user provider name
+
+##### <a name="-keycloak_ldap_user_provider--no_bind_credential_warning"></a>`no_bind_credential_warning`
+
+Valid values: `true`, `false`, `yes`, `no`
+
+set this to true, to not display the puppet warning that we cannot ensure the smtp_server_password
+
+Default value: `false`
 
 ##### <a name="-keycloak_ldap_user_provider--provider"></a>`provider`
 
@@ -3627,7 +3649,9 @@ smtpServer host
 
 ##### `smtp_server_password`
 
-smtpServer password
+smtpServer password.
+Puppet has no way to check current value and will therefore emit a warning
+which can be suppressed by setting no_password_warning to true
 
 ##### `smtp_server_port`
 
@@ -3866,6 +3890,7 @@ The following parameters are available in the `keycloak_realm` type.
 * [`id`](#-keycloak_realm--id)
 * [`manage_roles`](#-keycloak_realm--manage_roles)
 * [`name`](#-keycloak_realm--name)
+* [`no_password_warning`](#-keycloak_realm--no_password_warning)
 * [`provider`](#-keycloak_realm--provider)
 
 ##### <a name="-keycloak_realm--id"></a>`id`
@@ -3885,6 +3910,14 @@ Default value: `true`
 namevar
 
 The realm name
+
+##### <a name="-keycloak_realm--no_password_warning"></a>`no_password_warning`
+
+Valid values: `true`, `false`, `yes`, `no`
+
+set this to true, to not display the puppet warning that we cannot ensure the smtp_server_password
+
+Default value: `false`
 
 ##### <a name="-keycloak_realm--provider"></a>`provider`
 
