@@ -7,6 +7,7 @@ Rakefile:
     set:
       - el8
       - el9
+      - el10
       - debian-11
       - debian-12
       - ubuntu-2004
@@ -40,8 +41,6 @@ Rakefile:
 appveyor.yml:
   delete: true
 spec/acceptance/nodesets/el7.yml:
-  delete: true
-spec/acceptance/nodesets/el10.yml:
   delete: true
 spec/acceptance/nodesets/debian-11.yml:
   packages:
