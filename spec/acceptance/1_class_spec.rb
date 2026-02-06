@@ -29,7 +29,9 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
       class { 'keycloak': }
       PUPPET_PP
 
-      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_failures: false)
+      on hosts, 'cat /var/lib/pgsql/16/data/log/*' if ENV['BEAKER_set'] == 'el10'
+      #on hosts, 'journalctl -e --no-pager' if ENV['BEAKER_set'] == 'el10'
       apply_manifest(pp, catch_changes: true)
     end
 
