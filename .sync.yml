@@ -9,8 +9,8 @@ Rakefile:
       - el9
       - debian-11
       - debian-12
-      - ubuntu-2004
       - ubuntu-2204
+      - ubuntu-2404
     puppet:
       - puppet8
     keycloak_version:
@@ -49,12 +49,9 @@ spec/acceptance/nodesets/debian-11.yml:
 spec/acceptance/nodesets/debian-12.yml:
   packages:
     - iproute2
-spec/acceptance/nodesets/ubuntu-2004.yml:
-  delete: false
-  packages:
-    - iproute2
 spec/acceptance/nodesets/ubuntu-2204.yml:
   packages:
     - iproute2
 spec/acceptance/nodesets/ubuntu-2404.yml:
-  delete: true
+  packages:
+    - iproute2
