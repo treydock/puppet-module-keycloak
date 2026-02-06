@@ -22,6 +22,8 @@ scp_to(hosts, File.join(proj_root, 'spec/fixtures/partial-import.json'), '/tmp/p
 
 puppet_dir = if fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12
                '/etc/puppet'
+             elsif fact('os.name') == 'Ubuntu' && fact('os.release.major').to_s.split('.')[0].to_i >= 24
+               '/etc/puppet'
              else
                '/etc/puppetlabs/puppet'
              end
