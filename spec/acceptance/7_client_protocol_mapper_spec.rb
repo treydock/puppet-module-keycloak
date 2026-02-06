@@ -35,6 +35,12 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
         multivalued                             => true,
         usermodel_client_role_mapping_client_id => 'test.foo.bar',
       }
+      keycloak_client_protocol_mapper { 'role mapper AA for test.foo.bar on test':
+        type                                    => 'oidc-usermodel-client-role-mapper',
+        claim_name                              => 'permissions',
+        aggregate_attrs                         => true,
+        usermodel_client_role_mapping_client_id => 'test.foo.bar',
+      }
       PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
@@ -91,6 +97,17 @@ describe 'keycloak_client_protocol_mapper type:', if: RSpec.configuration.keyclo
         expect(mapper['protocolMapper']).to eq('oidc-usermodel-client-role-mapper')
         expect(mapper['config']['claim.name']).to eq('permissions')
         expect(mapper['config']['multivalued']).to eq('true')
+        expect(mapper['config']['usermodel.clientRoleMapping.clientId']).to eq('test.foo.bar')
+      end
+    end
+
+    it 'has created protocol mapper AA type=oidc-usermodel-client-role-mapper' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/protocol-mappers/models -r test' do
+        data = JSON.parse(stdout)
+        mapper = data.select { |d| d['name'] == 'role mapper AA' }[0]
+        expect(mapper['protocolMapper']).to eq('oidc-usermodel-client-role-mapper')
+        expect(mapper['config']['claim.name']).to eq('permissions')
+        expect(mapper['config']['aggregate.attrs']).to eq('true')
         expect(mapper['config']['usermodel.clientRoleMapping.clientId']).to eq('test.foo.bar')
       end
     end
