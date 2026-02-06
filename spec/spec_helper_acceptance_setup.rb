@@ -53,7 +53,6 @@ keycloak::features:
   - scripts
 # Force only listen on IPv4 for testing
 keycloak::java_opts: '-Djava.net.preferIPv4Stack=true'
-postgresql::server::service_status: 'service postgresql status 2>/dev/null 1>/dev/null'
 COMMON_YAML
 
 # Remove logic once merged and released:
