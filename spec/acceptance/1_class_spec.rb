@@ -52,7 +52,6 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
       PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
-      on hosts, 'journalctl -u keycloak -e --no-pager' if ENV['BEAKER_set'] == 'debian-12'
       apply_manifest(pp, catch_changes: true)
     end
 
