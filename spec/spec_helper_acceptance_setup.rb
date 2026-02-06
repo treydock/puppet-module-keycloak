@@ -38,7 +38,7 @@ defaults:
   data_hash: yaml_data
 hierarchy:
   - name: 'os family major release'
-    path: "os/%{facts.os.name}/%{facts.os.release.major}.yaml"
+    path: "os/%{facts.os.family}/%{facts.os.release.major}.yaml"
   - name: "Common"
     path: "common.yaml"
 HIERA_YAML
@@ -56,6 +56,16 @@ keycloak::java_opts: '-Djava.net.preferIPv4Stack=true'
 postgresql::server::service_status: 'service postgresql status 2>/dev/null 1>/dev/null'
 COMMON_YAML
 
+# Remove logic once merged and released:
+# https://github.com/puppetlabs/puppetlabs-postgresql/pull/1650
+el10_yaml = <<-EL10_YAML
+---
+postgresql::globals::version: '16'
+postgresql::globals::manage_package_repo: true
+EL10_YAML
+
 create_remote_file(hosts, File.join(puppet_dir, 'hiera.yaml'), hiera_yaml)
 on hosts, "mkdir -p #{File.join(puppet_dir, 'data')}"
 create_remote_file(hosts, File.join(puppet_dir, 'data/common.yaml'), common_yaml)
+on hosts, "mkdir -p #{File.join(puppet_dir, 'data/os/RedHat')}"
+create_remote_file(hosts, File.join(puppet_dir, 'data/os/RedHat/10.yaml'), el10_yaml)
