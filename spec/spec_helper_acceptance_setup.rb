@@ -25,7 +25,11 @@ puppet_dir = if fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 
              else
                '/etc/puppetlabs/puppet'
              end
-
+default_db = if fact('os.family') == 'RedHat' && fact('os.release.major').to_i >= 10
+               'postgres'
+             else
+               'mariadb'
+             end
 hiera_yaml = <<-HIERA_YAML
 ---
 version: 5
@@ -43,7 +47,7 @@ common_yaml = <<-COMMON_YAML
 keycloak::version: '#{RSpec.configuration.keycloak_version}'
 keycloak::http_host: '0.0.0.0'
 keycloak::hostname: localhost
-keycloak::db: mariadb
+keycloak::db: #{default_db}
 keycloak::proxy: edge
 keycloak::features:
   - scripts
