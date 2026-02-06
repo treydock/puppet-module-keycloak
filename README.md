@@ -182,7 +182,7 @@ For `keycloak_ldap_mapper` ensure the `parent_id` property is set to point to ol
 
 ### Supported Versions of Keycloak
 
-Currently this module supports Keycloak version 24.x.
+Currently this module supports Keycloak version 26.x.
 This module may work on earlier versions but this is the only version tested.
 
 | Keycloak Version | Keycloak Puppet module versions |
@@ -197,6 +197,7 @@ This module may work on earlier versions but this is the only version tested.
 | 21.x             | 10.x                            |
 | 22.x - 24.x      | 11.x                            |
 | 25.x             | 12.x - 13.x                     |
+| 26.x             | 14.x                            |
 | -----------------|---------------------------------|
 
 ## Usage
