@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Puppet::Type.type(:keycloak_role_mapping) do
   let(:default_config) do
     {
-      name: 'test'
+      name: 'test',
     }
   end
   let(:config) do
@@ -27,14 +27,14 @@ describe Puppet::Type.type(:keycloak_role_mapping) do
   end
 
   defaults = {
-    group: :false
+    group: :false,
   }
 
   describe 'basic properties' do
     # Test basic properties
     [
       :realm,
-      :name
+      :name,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -52,7 +52,7 @@ describe Puppet::Type.type(:keycloak_role_mapping) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :group
+      :group,
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true
@@ -92,7 +92,7 @@ describe Puppet::Type.type(:keycloak_role_mapping) do
   describe 'array properties' do
     # Array properties
     [
-      :realm_roles
+      :realm_roles,
     ].each do |p|
       it "accepts array for #{p}" do
         config[p] = ['foo', 'bar']

@@ -188,6 +188,10 @@ Manage Keycloak clients
     desc 'saml.encrypt'
   end
 
+  newproperty(:saml_client_signature) do
+    desc 'saml.client.signature'
+  end
+
   newproperty(:saml_assertion_signature) do
     desc 'saml.assertion.signature'
   end
@@ -239,6 +243,12 @@ Manage Keycloak clients
   newproperty(:roles, array_matching: :all, parent: PuppetX::Keycloak::ArrayProperty) do
     desc 'roles'
     defaultto []
+  end
+
+  newproperty(:pkce_code_challenge_method) do
+    desc 'PKCE Code Challenge Method for OAuth 2.0 flows'
+    newvalues('S256', 'plain', :absent)
+    defaultto :absent
   end
 
   autorequire(:keycloak_client_scope) do
@@ -300,15 +310,15 @@ Manage Keycloak clients
         [
           [:name],
           [:client_id],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 end

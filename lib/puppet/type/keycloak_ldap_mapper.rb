@@ -140,7 +140,7 @@ Manage Keycloak LDAP attribute mappers
   newproperty(:user_roles_retrieve_strategy) do
     desc 'user.roles.retrieve.strategy, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`'
     newvalues('LOAD_GROUPS_BY_MEMBER_ATTRIBUTE', 'GET_GROUPS_FROM_USER_MEMBEROF_ATTRIBUTE', 'LOAD_GROUPS_BY_MEMBER_ATTRIBUTE_RECURSIVELY',
-              'LOAD_ROLES_BY_MEMBER_ATTRIBUTE', 'GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE', 'LOAD_ROLES_BY_MEMBER_ATTRIBUTE_RECURSIVELY')
+              'LOAD_ROLES_BY_MEMBER_ATTRIBUTE', 'GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE', 'LOAD_ROLES_BY_MEMBER_ATTRIBUTE_RECURSIVELY',)
     defaultto do
       case @resource[:type]
       when 'group-ldap-mapper'
@@ -333,22 +333,22 @@ Manage Keycloak LDAP attribute mappers
           [:name],
           [:resource_name],
           [:ldap],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 
   validate do
     required_properties = [
       :realm,
-      :ldap
+      :ldap,
     ]
     required_properties.each do |property|
       if self[property].nil?

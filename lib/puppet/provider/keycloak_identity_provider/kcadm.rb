@@ -10,7 +10,7 @@ Puppet::Type.type(:keycloak_identity_provider).provide(:kcadm, parent: Puppet::P
   def top_level_properties
     [
       :enabled, :display_name, :update_profile_first_login_mode, :trust_email, :store_token, :add_read_token_role_on_create,
-      :authenticate_by_default, :link_only, :first_broker_login_flow_alias, :post_broker_login_flow_alias
+      :authenticate_by_default, :link_only, :first_broker_login_flow_alias, :post_broker_login_flow_alias,
     ]
   end
 

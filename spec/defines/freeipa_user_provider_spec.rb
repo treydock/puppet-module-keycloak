@@ -12,7 +12,7 @@ describe 'keycloak::freeipa_user_provider' do
           bind_dn: 'uid=ldapproxy,cn=sysaccounts,cn=etc,dc=example,dc=org',
           bind_credential: 'secret',
           users_dn: 'cn=users,cn=accounts,dc=example,dc=org',
-          priority: 20
+          priority: 20,
         }
       end
       let(:params) { default_params }

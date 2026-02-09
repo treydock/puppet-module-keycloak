@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full do
+describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full_batch2 do
   context 'when removes role mappings for admin' do
     it 'runs successfully' do
       pp = <<-PUPPET_PP

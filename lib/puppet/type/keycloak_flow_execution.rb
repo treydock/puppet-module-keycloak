@@ -92,7 +92,7 @@ Manage a Keycloak flow
   newproperty(:requirement) do
     desc 'requirement'
     newvalues('DISABLED', 'ALTERNATIVE', 'REQUIRED', 'CONDITIONAL',
-              'disabled', 'alternative', 'required', 'conditional')
+              'disabled', 'alternative', 'required', 'conditional',)
     defaultto('DISABLED')
     munge { |v| v.upcase.to_s }
   end
@@ -135,15 +135,15 @@ Manage a Keycloak flow
           [:name],
           [:provider_id],
           [:flow_alias],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 
