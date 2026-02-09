@@ -10,29 +10,33 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
       keycloak_realm { 'test': ensure => 'present' }
       keycloak_flow { 'foo on test': ensure => 'present' }
       keycloak_client { 'test.foo.bar':
-        realm                          => 'test',
-        root_url                       => 'https://test.foo.bar',
-        redirect_uris                  => ['https://test.foo.bar/test1'],
-        default_client_scopes          => ['address'],
-        secret                         => 'foobar',
-        login_theme                    => 'keycloak',
-        backchannel_logout_url         => 'https://test.foo.bar/logout',
-        authorization_services_enabled => false,
-        service_accounts_enabled       => true,
-        browser_flow                   => 'foo',
-        roles                          => ['bar_role', 'other_bar_role'],
+        realm                                    => 'test',
+        root_url                                 => 'https://test.foo.bar',
+        redirect_uris                            => ['https://test.foo.bar/test1'],
+        default_client_scopes                    => ['address'],
+        secret                                   => 'foobar',
+        login_theme                              => 'keycloak',
+        backchannel_logout_url                   => 'https://test.foo.bar/logout',
+        backchannel_logout_session_required      => 'true',
+        backchannel_logout_revoke_offline_tokens => 'true',
+        authorization_services_enabled           => false,
+        service_accounts_enabled                 => true,
+        browser_flow                             => 'foo',
+        roles                                    => ['bar_role', 'other_bar_role'],
       }
       keycloak_client { 'test.foo.baz':
-        realm                          => 'test',
-        root_url                       => 'https://test.foo.bar',
-        redirect_uris                  => ['https://test.foo.bar/test1'],
-        default_client_scopes          => ['address'],
-        secret                         => 'foobar',
-        login_theme                    => 'keycloak',
-        backchannel_logout_url         => 'https://test.foo.baz/logout',
-        authorization_services_enabled => false,
-        service_accounts_enabled       => true,
-        browser_flow                   => 'foo',
+        realm                                    => 'test',
+        root_url                                 => 'https://test.foo.bar',
+        redirect_uris                            => ['https://test.foo.bar/test1'],
+        default_client_scopes                    => ['address'],
+        secret                                   => 'foobar',
+        login_theme                              => 'keycloak',
+        backchannel_logout_url                   => 'https://test.foo.baz/logout',
+        backchannel_logout_session_required      => 'false',
+        backchannel_logout_revoke_offline_tokens => 'false',
+        authorization_services_enabled           => false,
+        service_accounts_enabled                 => true,
+        browser_flow                             => 'foo',
       }
       keycloak_client { 'saml.foo.bar':
         realm                                   => 'test',
@@ -71,6 +75,9 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         expect(data['authorizationServicesEnabled']).to eq(nil)
         expect(data['serviceAccountsEnabled']).to eq(true)
         expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
+        expect(data['attributes']['backchannel.logout.url']).to eq('https://test.foo.bar/logout')
+        expect(data['attributes']['backchannel.logout.session.required']).to eq('true')
+        expect(data['attributes']['backchannel.logout.revoke.offline.tokens']).to eq('true')
       end
     end
 
@@ -78,6 +85,9 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz -r test' do
         data = JSON.parse(stdout)
         expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
+        expect(data['attributes']['backchannel.logout.url']).to eq('https://test.foo.baz/logout')
+        expect(data['attributes']['backchannel.logout.session.required']).to eq('false')
+        expect(data['attributes']['backchannel.logout.revoke.offline.tokens']).to eq('false')
       end
     end
 
