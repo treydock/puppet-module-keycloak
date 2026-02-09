@@ -25,6 +25,8 @@ type Keycloak::Configs = Struct[
     Optional['db-url-port'] => Stdlib::Port,
     Optional['db-url-properties'] => String[1],
     Optional['db-username'] => String[1],
+    # Hidden option
+    Optional['db-dialect'] => String[1],
     Optional['event-metrics-user-enabled'] => Boolean,
     Optional['event-metrics-user-events'] => Array[String[1]],
     Optional['transaction-xa-enabled'] => Boolean,
