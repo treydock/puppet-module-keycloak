@@ -67,6 +67,7 @@ Manage Keycloak client scope protocol mappers
       'saml-user-attribute-mapper',
       'saml-role-list-mapper',
       %r{script-.+},
+      'custom',
     )
     defaultto do
       case @resource[:protocol]
@@ -222,6 +223,14 @@ Manage Keycloak client scope protocol mappers
     desc 'included.client.audience Required for `type` of `oidc-audience-mapper`'
   end
 
+  newproperty(:custom_config) do
+    desc 'custom configuration data for `custom` protocolMapper type'
+  end
+
+  newproperty(:custom_type) do
+    desc 'custom protocolMapper type'
+  end
+
   autorequire(:keycloak_client_scope) do
     requires = []
     catalog.resources.each do |resource|
@@ -261,6 +270,7 @@ Manage Keycloak client scope protocol mappers
       'oidc-group-membership-mapper',
       'oidc-audience-mapper',
       'oidc-usermodel-attribute-mapper',
+      'custom',
     ]
     if self[:protocol] == 'openid-connect' && !openid_connect_types.include?(self[:type]) && self[:type] !~ %r{script-.+}
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"
@@ -284,6 +294,12 @@ Manage Keycloak client scope protocol mappers
     end
     if self[:type] == 'oidc-audience-mapper' && self[:included_client_audience].nil?
       raise Puppet::Error, 'included_client_audience is required for oidc-audience-mapper'
+    end
+    if self[:type] == 'custom' && !self[:custom_type]
+      raise Puppet::Error, 'custom_type is required for `custom` protocol mapper type'
+    end
+    if self[:type] == 'custom' && !self[:custom_config]
+      raise Puppet::Error, 'custom_config is required for `custom` protocol mapper type'
     end
   end
 end
