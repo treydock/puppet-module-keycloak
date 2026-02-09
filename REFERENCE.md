@@ -1725,6 +1725,14 @@ saml.encrypt
 
 saml.encryption.certificate
 
+##### `backchannel_logout_session_required`
+
+backchannel.logout.session.required
+
+##### `backchannel_logout_revoke_offline_tokens`
+
+backchannel.logout.revoke.offline.tokens
+
 ##### `saml_name_id_format`
 
 saml_name_id_format
