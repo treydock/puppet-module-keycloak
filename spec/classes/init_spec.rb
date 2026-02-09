@@ -139,7 +139,6 @@ describe 'keycloak' do
                                        'db-url-database=keycloak',
                                        'db-username=keycloak',
                                        'db-password=changeme',
-                                       'proxy=none',
                                      ],)
         end
 

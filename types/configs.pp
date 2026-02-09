@@ -67,7 +67,6 @@ type Keycloak::Configs = Struct[
     Optional['config-keystore-password'] => Variant[String[1], Sensitive],
     Optional['config-keystore-type'] => Enum['PKCS12'],
     Optional['metrics-enabled'] => Boolean,
-    Optional['proxy'] => Enum['edge','reencrypt','passthrough','none'],
     Optional['proxy-headers'] => Enum['forwarded', 'xforwarded'],
     Optional['proxy-protocol-enabled'] => Boolean,
     Optional['proxy-trusted-addresses'] => Array[Stdlib::IP::Address],

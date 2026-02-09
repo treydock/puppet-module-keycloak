@@ -134,8 +134,8 @@
 # @param truststore_password
 #   Truststore password.
 #   Default is `keycloak`.
-# @param proxy
-#   Type of proxy to use for Keycloak
+# @param proxy_headers
+#   How to handle proxy headers
 # @param realms
 #   Hash that is used to define keycloak_realm resources.
 #   Default is `{}`.
@@ -279,7 +279,7 @@ class keycloak (
   Boolean $truststore = false,
   Hash $truststore_hosts = {},
   String $truststore_password = 'keycloak',
-  Enum['edge','reencrypt','passthrough','none'] $proxy = 'none',
+  Optional[Enum['forwarded','xforwarded']] $proxy_headers = undef,
   Hash $realms = {},
   Boolean $realms_merge = false,
   Hash $oidc_client_scopes = {},
@@ -355,7 +355,7 @@ class keycloak (
     'db-password' => $db_password,
     'features' => $features,
     'features-disabled' => $features_disabled,
-    'proxy' => $proxy,
+    'proxy-headers' => $proxy_headers,
   }.filter |$key, $value| { $value =~ NotUndef and ! ($value in ['unset', 'UNSET']) }
   if $truststore {
     $truststore_configs = {
