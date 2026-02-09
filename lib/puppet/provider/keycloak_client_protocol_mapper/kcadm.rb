@@ -77,6 +77,7 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
             protocol_mapper[:single] = d['config']['single'].to_s.to_sym
           end
           protocol_mapper[:multivalued] = d['config']['multivalued'].to_s.to_sym if d['config']['multivalued']
+          protocol_mapper[:aggregate_attrs] = d['config']['aggregate.attrs'].to_s.to_sym if d['config']['aggregate.attrs']
           protocol_mappers << new(protocol_mapper)
         end
       end
@@ -145,6 +146,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
     end
     if resource[:multivalued]
       data[:config][:multivalued] = resource[:multivalued].to_s
+    end
+    if resource[:aggregate_attrs]
+      data[:config][:'aggregate.attrs'] = resource[:aggregate_attrs].to_s
     end
 
     t = Tempfile.new('keycloak_protocol_mapper')
@@ -235,6 +239,9 @@ Puppet::Type.type(:keycloak_client_protocol_mapper).provide(:kcadm, parent: Pupp
       end
       if resource[:multivalued]
         config[:multivalued] = resource[:multivalued].to_s
+      end
+      if resource[:aggregate_attrs]
+        config[:'aggregate.attrs'] = resource[:aggregate_attrs].to_s
       end
       data[:config] = config unless config.empty?
 

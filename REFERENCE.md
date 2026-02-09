@@ -1881,6 +1881,12 @@ Valid values: `true`, `false`
 
 multivalued
 
+##### `aggregate_attrs`
+
+Valid values: `true`, `false`
+
+aggregate.attrs
+
 ##### `protocol`
 
 Valid values: `openid-connect`, `saml`
@@ -3173,6 +3179,12 @@ json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`
 Valid values: `true`, `false`
 
 multivalued
+
+##### `aggregate_attrs`
+
+Valid values: `true`, `false`
+
+aggregate.attrs
 
 ##### `protocol`
 

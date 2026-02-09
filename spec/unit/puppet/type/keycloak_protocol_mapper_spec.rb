@@ -392,6 +392,27 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
     }.to raise_error(%r{foo})
   end
 
+  it 'accepts value for aggregate_attrs' do
+    config[:aggregate_attrs] = false
+    expect(resource[:aggregate_attrs]).to eq(:false)
+  end
+
+  it 'accepts value for aggregate_attrs string' do
+    config[:aggregate_attrs] = 'false'
+    expect(resource[:aggregate_attrs]).to eq(:false)
+  end
+
+  it 'has default for aggregate_attrs' do
+    expect(resource[:aggregate_attrs]).to be_nil
+  end
+
+  it 'does not accept invalid value for aggregate_attrs' do
+    config[:aggregate_attrs] = 'foo'
+    expect {
+      resource
+    }.to raise_error(%r{foo})
+  end
+
   it 'accepts script' do
     config[:protocol] = 'saml'
     config[:type] = 'script-foo.js'
