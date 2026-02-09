@@ -77,7 +77,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
         expect(data['attributes']['backchannel.logout.url']).to eq('https://test.foo.bar/logout')
         expect(data['attributes']['backchannel.logout.session.required']).to eq('true')
-        expect(data['attributes']['backchannel.logout.revoke.offline.tokens']).to eq(true)
+        expect(data['attributes']['backchannel.logout.revoke.offline.tokens']).to eq('true')
       end
     end
 
@@ -87,7 +87,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
         expect(data['attributes']['backchannel.logout.url']).to eq('https://test.foo.baz/logout')
         expect(data['attributes']['backchannel.logout.session.required']).to eq('false')
-        expect(data['attributes']['backchannel.logout.revoke.offline.tokens']).to eq(false)
+        expect(data['attributes']['backchannel.logout.revoke.offline.tokens']).to eq('false')
       end
     end
 
