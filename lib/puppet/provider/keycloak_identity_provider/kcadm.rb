@@ -34,6 +34,7 @@ Puppet::Type.type(:keycloak_identity_provider).provide(:kcadm, parent: Puppet::P
         provider[:realm] = realm
         provider[:name] = "#{provider[:alias]} on #{provider[:realm]}"
         provider[:provider_id] = d['providerId']
+        provider[:update_profile_first_login_mode] = d['updateProfileFirstLoginMode']
         type_properties.each do |property|
           key = camelize(property)
           if d.key?(key)
