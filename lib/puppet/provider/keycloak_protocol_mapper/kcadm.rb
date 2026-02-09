@@ -76,7 +76,7 @@ Puppet::Type.type(:keycloak_protocol_mapper).provide(:kcadm, parent: Puppet::Pro
           end
           protocol_mapper[:multivalued] = d['config']['multivalued'].to_s.to_sym if d['config']['multivalued']
           unless ['oidc-usermodel-property-mapper', 'oidc-usermodel-attribute-mapper', 'oidc-full-name-mapper', 'oidc-group-membership-mapper', 'oidc-audience-mapper',
-                  'saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper', ].include?(d['protocolMapper'])
+                  'saml-group-membership-mapper', 'saml-user-property-mapper', 'saml-user-attribute-mapper', 'saml-role-list-mapper', 'saml-javascript-mapper',].include?(d['protocolMapper'])
             protocol_mapper[:type] = 'custom'
             protocol_mapper[:custom_type] = d['protocolMapper']
             protocol_mapper[:custom_config] = d['config']
