@@ -252,7 +252,7 @@ describe Puppet::Type.type(:keycloak_protocol_mapper) do
   end
 
   it 'defaults for introspection_token_claim' do
-    expect(resource[:introspection_token_claim]).to eq(:true)
+    expect(resource[:introspection_token_claim]).to be_nil
   end
 
   it 'does not default introspection_token_claim for saml' do

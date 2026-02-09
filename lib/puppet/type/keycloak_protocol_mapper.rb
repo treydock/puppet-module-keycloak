@@ -179,15 +179,8 @@ Manage Keycloak client scope protocol mappers
   end
 
   newproperty(:introspection_token_claim, boolean: true) do
-    desc 'introspection.token.claim. Default to `true` for `protocol` `openid-connect`.'
+    desc 'introspection.token.claim.'
     newvalues(:true, :false)
-    defaultto do
-      if @resource['protocol'] == 'openid-connect'
-        :true
-      else
-        nil
-      end
-    end
   end
 
   newproperty(:attribute_nameformat) do
