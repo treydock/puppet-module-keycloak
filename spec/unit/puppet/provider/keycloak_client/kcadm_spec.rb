@@ -9,7 +9,7 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
   let(:resource) do
     type.new(name: 'foo',
              realm: 'test',
-             default_client_scopes: ['profile'])
+             default_client_scopes: ['profile'],)
   end
 
   describe 'self.instances' do

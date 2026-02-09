@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v13.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v13.4.0) (2025-02-24)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.3.0...v13.4.0)
+
+### Added
+
+- Add role mappings [\#342](https://github.com/treydock/puppet-module-keycloak/pull/342) ([wolfaba](https://github.com/wolfaba))
+- Add saml\_client\_signature attribute [\#341](https://github.com/treydock/puppet-module-keycloak/pull/341) ([wolfaba](https://github.com/wolfaba))
+- Client scope / Include in token scope attribute [\#339](https://github.com/treydock/puppet-module-keycloak/pull/339) ([wolfaba](https://github.com/wolfaba))
+
+### Fixed
+
+- Execute Keycloak API commands as keycloak:keycloak user:group [\#346](https://github.com/treydock/puppet-module-keycloak/pull/346) ([treydock](https://github.com/treydock))
+
 ## [v13.3.0](https://github.com/treydock/puppet-module-keycloak/tree/v13.3.0) (2024-11-26)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.2.1...v13.3.0)

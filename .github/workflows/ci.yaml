@@ -16,27 +16,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby: 2.7.8
-            puppet: 7
-            fixtures: .fixtures.yml
-            allow_failure: false
           - ruby: 3.2.3
             puppet: 8
             fixtures: .fixtures.yml
             allow_failure: false
-          - ruby: 2.7.7
-            puppet: 7
-            fixtures: .fixtures-latest.yml
-            allow_failure: true
-          - ruby: 3.2.2
-            puppet: 8
-            fixtures: .fixtures-latest.yml
-            allow_failure: true
     env:
       BUNDLE_WITHOUT: system_tests:release
       PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
       FIXTURES_YML: ${{ matrix.fixtures }}
-    name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }} fixtures=${{ matrix.fixtures }})
+    name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
       - uses: actions/checkout@v3
       - name: Setup ruby
@@ -51,18 +39,20 @@ jobs:
       - name: Run tests
         run: bundle exec rake parallel_spec
   acceptance:
-    runs-on: ubuntu-latest
+    # Run on 22.04 until newer doesn't cause ioctl errors for el10 tests
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
         set:
           - "el8"
           - "el9"
+          - "el10"
           - "debian-11"
-          - "ubuntu-2004"
+          - "debian-12"
           - "ubuntu-2204"
+          - "ubuntu-2404"
         puppet:
-          - "puppet7"
           - "puppet8"
         keycloak_version:
           - "25.0.1"
@@ -70,13 +60,13 @@ jobs:
           - "no"
         include:
           - set: "el8"
-            puppet: "puppet7"
+            puppet: "puppet8"
             keycloak_version: "25.0.1"
-            keycloak_full: "yes"
+            keycloak_full: "batch1"
           - set: "el8"
             puppet: "puppet8"
             keycloak_version: "25.0.1"
-            keycloak_full: "yes"
+            keycloak_full: "batch2"
     env:
       BUNDLE_WITHOUT: development:release
       BEAKER_debug: true

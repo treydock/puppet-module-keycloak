@@ -175,6 +175,18 @@ Manage Keycloak protocol mappers
     end
   end
 
+  newproperty(:introspection_token_claim, boolean: true) do
+    desc 'introspection.token.claim. Default to `true` for `protocol` `openid-connect`.'
+    newvalues(:true, :false)
+    defaultto do
+      if @resource['protocol'] == 'openid-connect'
+        :true
+      else
+        nil
+      end
+    end
+  end
+
   newproperty(:attribute_nameformat) do
     desc 'attribute.nameformat'
     validate do |v|
@@ -237,15 +249,15 @@ Manage Keycloak protocol mappers
           [:name],
           [:resource_name],
           [:client],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 
@@ -255,7 +267,7 @@ Manage Keycloak protocol mappers
       'oidc-usermodel-property-mapper',
       'oidc-full-name-mapper',
       'oidc-group-membership-mapper',
-      'oidc-audience-mapper'
+      'oidc-audience-mapper',
     ]
     if self[:protocol] == 'openid-connect' && !oidc_types.include?(self[:type]) && self[:type] !~ %r{script-.+}
       raise Puppet::Error, "type #{self[:type]} is not valid for protocol openid-connect"

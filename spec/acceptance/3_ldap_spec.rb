@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full do
+describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_batch1 do
   context 'with creates ldap' do
     it 'runs successfully' do
       pp = <<-PUPPET_PP

@@ -7,7 +7,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
     {
       name: 'foo',
       realm: 'test',
-      provider_id: 'some-provider'
+      provider_id: 'some-provider',
     }
   end
   let(:config) do
@@ -33,7 +33,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
 
   defaults = {
     enabled: true,
-    default: false
+    default: false,
   }
 
   describe 'basic properties' do
@@ -42,7 +42,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
       :realm,
       :name,
       :display_name,
-      :provider_id
+      :provider_id,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -61,7 +61,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
     # Test boolean properties
     [
       :enabled,
-      :default
+      :default,
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true
@@ -101,7 +101,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
   describe 'hash properties' do
     # Hash properties
     [
-      :config
+      :config,
     ].each do |p|
       it "accepts hash for #{p}" do
         config[p] = { foo: 'bar' }
@@ -124,7 +124,7 @@ describe Puppet::Type.type(:keycloak_required_action) do
   describe 'integer properties' do
     # Integer properties
     [
-      :priority
+      :priority,
     ].each do |p|
       it "accepts integer for #{p}" do
         config[p] = 1

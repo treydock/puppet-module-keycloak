@@ -8,7 +8,7 @@ describe Puppet::Type.type(:keycloak_flow) do
       name: 'foo',
       realm: 'test',
       priority: 10,
-      flow_alias: 'bar'
+      flow_alias: 'bar',
     }
   end
   let(:config) do
@@ -49,13 +49,13 @@ describe Puppet::Type.type(:keycloak_flow) do
   end
 
   defaults = {
-    top_level: :true
+    top_level: :true,
   }
 
   describe 'basic properties' do
     # Test basic properties
     [
-      :description
+      :description,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -73,7 +73,7 @@ describe Puppet::Type.type(:keycloak_flow) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :top_level
+      :top_level,
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true
@@ -113,7 +113,7 @@ describe Puppet::Type.type(:keycloak_flow) do
   describe 'integer properties' do
     # Integer properties
     [
-      :priority
+      :priority,
     ].each do |p|
       it "accepts integer for #{p}" do
         config[p] = 1
@@ -174,7 +174,7 @@ describe Puppet::Type.type(:keycloak_flow) do
     end
 
     [
-      'DISABLED', 'ALTERNATIVE', 'REQUIRED', 'CONDITIONAL'
+      'DISABLED', 'ALTERNATIVE', 'REQUIRED', 'CONDITIONAL',
     ].each do |v|
       it "accepts value #{v}" do
         config[:requirement] = v

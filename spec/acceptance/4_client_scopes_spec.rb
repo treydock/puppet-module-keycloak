@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_full do
+describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_full_batch1 do
   context 'when creates client scopes' do
     it 'runs successfully' do
       pp = <<-PUPPET_PP

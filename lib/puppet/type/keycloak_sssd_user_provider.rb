@@ -79,15 +79,15 @@ Manage Keycloak SSSD user providers
         [
           [:name],
           [:resource_name],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 

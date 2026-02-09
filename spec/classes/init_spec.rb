@@ -10,7 +10,7 @@ describe 'keycloak' do
       end
       let(:version) { '25.0.1' }
 
-      case facts[:osfamily]
+      case facts[:os]['family']
       when %r{RedHat}
         shell = '/sbin/nologin'
       when %r{Debian}
@@ -34,7 +34,7 @@ describe 'keycloak' do
                                                             gid: 'keycloak',
                                                             home: '/var/lib/keycloak',
                                                             managehome: 'true',
-                                                            system: 'true')
+                                                            system: 'true',)
         end
       end
 
@@ -48,13 +48,13 @@ describe 'keycloak' do
           is_expected.to contain_mysql__db('keycloak').with(user: 'keycloak',
                                                             password: 'changeme',
                                                             host: 'localhost',
-                                                            grant: 'ALL')
+                                                            grant: 'ALL',)
         end
 
         it do
           verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", [
-                            'db=mysql'
-                          ])
+                            'db=mysql',
+                          ],)
         end
 
         context 'when manage_db => false' do
@@ -74,13 +74,13 @@ describe 'keycloak' do
           is_expected.to contain_mysql__db('keycloak').with(user: 'keycloak',
                                                             password: 'changeme',
                                                             host: 'localhost',
-                                                            grant: 'ALL')
+                                                            grant: 'ALL',)
         end
 
         it do
           verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", [
-                            'db=mariadb'
-                          ])
+                            'db=mariadb',
+                          ],)
         end
 
         context 'when manage_db => false' do
@@ -97,13 +97,13 @@ describe 'keycloak' do
 
         it do
           is_expected.to contain_postgresql__server__db('keycloak').with(user: 'keycloak',
-                                                                         password: %r{.*})
+                                                                         password: %r{.*},)
         end
 
         it do
           verify_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", [
-                            'db=postgres'
-                          ])
+                            'db=postgres',
+                          ],)
         end
 
         context 'when manage_db => false' do
@@ -129,7 +129,7 @@ describe 'keycloak' do
 
         it do
           verify_exact_file_contents(catalogue, "/opt/keycloak-#{version}/conf/keycloak.conf", [
-                                       "hostname=#{facts[:fqdn]}",
+                                       "hostname=#{facts[:networking]['fqdn']}",
                                        'http-enabled=true',
                                        'http-host=0.0.0.0',
                                        'http-port=8080',
@@ -139,8 +139,8 @@ describe 'keycloak' do
                                        'db-url-database=keycloak',
                                        'db-username=keycloak',
                                        'db-password=changeme',
-                                       'proxy=none'
-                                     ])
+                                       'proxy=none',
+                                     ],)
         end
 
         context 'when hostname is unset' do
@@ -180,7 +180,7 @@ describe 'keycloak' do
                                                                enable: 'true',
                                                                name: 'keycloak',
                                                                hasstatus: 'true',
-                                                               hasrestart: 'true')
+                                                               hasrestart: 'true',)
         end
 
         context 'when java_opts defined' do

@@ -12,7 +12,7 @@ describe Puppet::Type.type(:keycloak_role_mapping).provider(:kcadm) do
       type.new(name: 'role-mapping',
                group: false,
                realm: 'test',
-               realm_roles: ['a', 'b', 'c'])
+               realm_roles: ['a', 'b', 'c'],)
     end
 
     it 'has added realm role' do
@@ -28,7 +28,7 @@ describe Puppet::Type.type(:keycloak_role_mapping).provider(:kcadm) do
       type.new(name: 'role-mapping',
                group: false,
                realm: 'test',
-               realm_roles: ['a'])
+               realm_roles: ['a'],)
     end
 
     it 'has removed realm role' do

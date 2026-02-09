@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'flow types:', if: RSpec.configuration.keycloak_full do
+describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
   context 'when creates flow' do
     it 'runs successfully' do
       pp = <<-PUPPET_PP

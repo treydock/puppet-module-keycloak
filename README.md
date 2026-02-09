@@ -588,11 +588,13 @@ The keycloak_api type can be used to define how this module's types access the K
 
  ```puppet
 keycloak_api { 'keycloak'
-  install_dir => '/opt/keycloak',
-  server     => 'http://localhost:8080/auth',
-  realm      => 'master',
-  user       => 'admin',
-  password   => 'changeme',
+  install_dir    => '/opt/keycloak',
+  server         => 'http://localhost:8080/auth',
+  realm          => 'master',
+  user           => 'admin',
+  password       => 'changeme',
+  keycloak_user  => 'keycloak',
+  keycloak_group => 'keycloak',
 }
 ```
 
@@ -640,9 +642,11 @@ This module has been tested on:
 
 * RedHat/Rocky/AlmaLinux 8 x86_64
 * RedHat/Rocky/AlmaLinux 9 x86_64
+* RedHat/Rocky/AlmaLinux 10 x86_64
 * Debian 11 x86_64
-* Ubuntu 20.04 x86_64
+* Debian 12 x86_64
 * Ubuntu 22.04 x86_64
+* Ubuntu 24.04 x86_64
 
 ## UUID Generation
 
