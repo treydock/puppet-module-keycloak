@@ -11,6 +11,7 @@ class keycloak::db::postgres {
   if $keycloak::manage_db {
     postgresql::server::db { $keycloak::db_url_database:
       user     => $keycloak::db_username,
+      owner    => $keycloak::db_username,
       password => postgresql::postgresql_password($keycloak::db_username, $keycloak::db_password),
       encoding => $keycloak::db_encoding,
     }

@@ -100,22 +100,22 @@ Manage Keycloak required actions
         [
           [:name],
           [:provider_id],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 
   validate do
     required_properties = [
       :provider_id,
-      :realm
+      :realm,
     ]
     required_properties.each do |property|
       if self[property].nil?

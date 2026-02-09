@@ -12,7 +12,7 @@ describe Puppet::Type.type(:keycloak_identity_provider).provider(:kcadm) do
              authorization_url: 'http://authorization',
              token_url: 'http://token',
              client_id: 'foobar',
-             client_secret: 'secret')
+             client_secret: 'secret',)
   end
 
   describe 'self.instances' do

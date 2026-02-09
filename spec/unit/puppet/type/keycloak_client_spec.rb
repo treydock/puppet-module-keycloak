@@ -6,7 +6,7 @@ describe Puppet::Type.type(:keycloak_client) do
   let(:default_config) do
     {
       name: 'foo',
-      realm: 'test'
+      realm: 'test',
     }
   end
   let(:config) do
@@ -75,7 +75,7 @@ describe Puppet::Type.type(:keycloak_client) do
     redirect_uris: [],
     login_theme: :absent,
     browser_flow: :absent,
-    direct_grant_flow: :absent
+    direct_grant_flow: :absent,
   }
 
   describe 'basic properties' do
@@ -100,7 +100,7 @@ describe Puppet::Type.type(:keycloak_client) do
       :saml_client_signature,
       :saml_signing_certificate,
       :saml_encryption_certificate,
-      :saml_signing_private_key
+      :saml_signing_private_key,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -125,7 +125,7 @@ describe Puppet::Type.type(:keycloak_client) do
       :service_accounts_enabled,
       :public_client,
       :bearer_only,
-      :full_scope_allowed
+      :full_scope_allowed,
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true
@@ -169,7 +169,7 @@ describe Puppet::Type.type(:keycloak_client) do
       :optional_client_scopes,
       :redirect_uris,
       :web_origins,
-      :roles
+      :roles,
     ].each do |p|
       it "accepts array for #{p}" do
         config[p] = ['foo', 'bar']

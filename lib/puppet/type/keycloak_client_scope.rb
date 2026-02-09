@@ -68,15 +68,15 @@ Manage Keycloak client scopes
         [
           [:name],
           [:resource_name],
-          [:realm]
-        ]
+          [:realm],
+        ],
       ],
       [
         %r{(.*)},
         [
-          [:name]
-        ]
-      ]
+          [:name],
+        ],
+      ],
     ]
   end
 end

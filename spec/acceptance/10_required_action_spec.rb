@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'required action types:', if: RSpec.configuration.keycloak_full do
+describe 'required action types:', if: RSpec.configuration.keycloak_full_batch2 do
   context 'when creates required action' do
     it 'runs successfully' do
       pp = <<-PUPPET_PP

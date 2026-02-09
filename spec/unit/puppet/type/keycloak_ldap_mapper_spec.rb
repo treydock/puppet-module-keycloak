@@ -7,7 +7,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     {
       name: 'foo',
       realm: 'test',
-      ldap: 'ldap'
+      ldap: 'ldap',
     }
   end
   let(:config) do
@@ -215,7 +215,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
 
   defaults = {
     read_only: :true,
-    mapped_group_attributes: :absent
+    mapped_group_attributes: :absent,
   }
 
   describe 'basic properties' do
@@ -226,7 +226,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
       :user_model_attribute,
       :mapped_group_attributes,
       :groups_ldap_filter,
-      :roles_ldap_filter
+      :roles_ldap_filter,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -245,7 +245,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
     # Test boolean properties
     [
       :read_only,
-      :write_only
+      :write_only,
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true
@@ -338,7 +338,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper) do
 
   [
     :realm,
-    :ldap
+    :ldap,
   ].each do |property|
     it "requires property #{property} when ensure => present" do
       config.delete(property)

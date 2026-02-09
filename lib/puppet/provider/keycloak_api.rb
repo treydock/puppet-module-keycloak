@@ -58,8 +58,8 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
 
   def self.kcadm(action, resource, realm = nil, file = nil, fields = nil, print_id = false, params = nil)
     kcadm_wrapper = '/opt/keycloak/bin/kcadm-wrapper.sh'
-    keycloak_user ||= 'keycloak'
-    keycloak_group ||= 'keycloak'
+    @keycloak_user ||= 'keycloak'
+    @keycloak_group ||= 'keycloak'
 
     arguments = [action]
 
@@ -111,7 +111,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
         '--server', server,
         '--realm', escape(self.realm),
         '--user', user,
-        '--password', password
+        '--password', password,
       ]
       cmd = [File.join(install_dir, 'bin/kcadm.sh')] + arguments + auth_arguments
     else
@@ -164,7 +164,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
                            0x4f,
                            0xd4,
                            0x30,
-                           0xc8].map { |b| b.chr }.join
+                           0xc8,].map { |b| b.chr }.join
 
     sha1 = Digest::SHA1.new
     sha1.update(uuid_name_space_dns)

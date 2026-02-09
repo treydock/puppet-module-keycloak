@@ -8,7 +8,7 @@ describe Puppet::Type.type(:keycloak_client_scope).provider(:kcadm) do
   end
   let(:resource) do
     type.new(name: 'foo',
-             realm: 'test')
+             realm: 'test',)
   end
 
   describe 'self.instances' do

@@ -9,7 +9,7 @@ describe Puppet::Type.type(:keycloak_ldap_mapper).provider(:kcadm) do
   let(:resource) do
     type.new(name: 'foo',
              realm: 'test',
-             ldap: 'bar')
+             ldap: 'bar',)
   end
 
   describe 'self.instances' do

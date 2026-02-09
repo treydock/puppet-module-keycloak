@@ -10,7 +10,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
       authorization_url: 'http://authorization',
       token_url: 'http://token',
       client_id: 'foobar',
-      client_secret: 'secret'
+      client_secret: 'secret',
     }
   end
   let(:config) do
@@ -96,13 +96,13 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     authenticate_by_default: :false,
     link_only: :false,
     first_broker_login_flow_alias: 'first broker login',
-    hide_on_login_page: :false,
+    hide_on_login: :false,
     validate_signature: :false,
     ui_locales: :false,
     backchannel_supported: :false,
     use_jwks_url: :true,
     login_hint: :false,
-    disable_user_info: :false
+    disable_user_info: :false,
   }
 
   describe 'basic properties' do
@@ -120,7 +120,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
       :default_scope,
       :allowed_clock_skew,
       :forward_parameters,
-      :jwks_url
+      :jwks_url,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 'foo'
@@ -138,7 +138,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
   describe 'integer properties' do
     # Test integer properties
     [
-      :gui_order
+      :gui_order,
     ].each do |p|
       it "accepts a #{p}" do
         config[p] = 100
@@ -162,13 +162,13 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
       :add_read_token_role_on_create,
       :authenticate_by_default,
       :link_only,
-      :hide_on_login_page,
+      :hide_on_login,
       :validate_signature,
       :ui_locales,
       :backchannel_supported,
       :use_jwks_url,
       :login_hint,
-      :disable_user_info
+      :disable_user_info,
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true
@@ -217,7 +217,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
 
   describe 'client_auth_method' do
     [
-      'client_secret_post', 'client_secret_basic', 'client_secret_jwt', 'private_key_jwt'
+      'client_secret_post', 'client_secret_basic', 'client_secret_jwt', 'private_key_jwt',
     ].each do |v|
       it "accepts #{v}" do
         config[:client_auth_method] = v
@@ -233,7 +233,7 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
 
   describe 'sync_mode' do
     [
-      'IMPORT', 'LEGACY', 'FORCE'
+      'IMPORT', 'LEGACY', 'FORCE',
     ].each do |v|
       it "accepts #{v}" do
         config[:sync_mode] = v

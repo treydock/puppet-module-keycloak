@@ -11,7 +11,7 @@ describe 'keycloak::freeipa_ldap_mappers' do
           realm: 'EXAMPLE.ORG',
           groups_dn: 'cn=groups,cn=accounts,dc=example,dc=org',
           roles_dn: 'cn=groups,cn=accounts,dc=example,dc=org',
-          parent_id: 'ipa.example.org'
+          parent_id: 'ipa.example.org',
         }
       end
 
@@ -63,7 +63,7 @@ describe 'keycloak::freeipa_ldap_mappers' do
                  ['email', 'mail', 'email'],
                  ['first name', 'givenName', 'firstName'],
                  ['last name', 'sn', 'lastName'],
-                 ['username', 'uid', 'username']]
+                 ['username', 'uid', 'username'],]
 
         attrs.each do |attr|
           name = attr[0]

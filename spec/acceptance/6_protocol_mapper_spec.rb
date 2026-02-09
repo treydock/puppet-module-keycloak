@@ -2,7 +2,7 @@
 
 require 'spec_helper_acceptance'
 
-describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full do
+describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full_batch2 do
   context 'when creates protocol_mapper' do
     it 'runs successfully' do
       pp = <<-PUPPET_PP
