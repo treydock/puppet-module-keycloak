@@ -285,7 +285,6 @@ describe Puppet::Type.type(:keycloak_realm) do
   describe 'boolean properties' do
     # Test boolean properties
     [
-      :no_password_warning,
       :user_managed_access_allowed,
       :remember_me,
       :registration_allowed,
