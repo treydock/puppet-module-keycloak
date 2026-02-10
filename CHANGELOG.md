@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v14.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v14.0.0) (2026-02-10)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.4.0...v14.0.0)
+
+### Changed
+
+- Upgrade default Keycloak to 26.5.2 [\#358](https://github.com/treydock/puppet-module-keycloak/pull/358) ([treydock](https://github.com/treydock))
+- Drop Ubuntu 20.04 support and add Ubuntu 24.04 support [\#357](https://github.com/treydock/puppet-module-keycloak/pull/357) ([treydock](https://github.com/treydock))
+- Drop Puppet 7, fix tests [\#355](https://github.com/treydock/puppet-module-keycloak/pull/355) ([treydock](https://github.com/treydock))
+- Rename to hide\_on\_login\_page to hide\_on\_login [\#330](https://github.com/treydock/puppet-module-keycloak/pull/330) ([nblock](https://github.com/nblock))
+- Remove support for logging via GELF [\#326](https://github.com/treydock/puppet-module-keycloak/pull/326) ([nblock](https://github.com/nblock))
+
+### Added
+
+- Support EL10 [\#359](https://github.com/treydock/puppet-module-keycloak/pull/359) ([treydock](https://github.com/treydock))
+- Add new user event metrics config parameters [\#356](https://github.com/treydock/puppet-module-keycloak/pull/356) ([treydock](https://github.com/treydock))
+- Add support for Debian12 [\#353](https://github.com/treydock/puppet-module-keycloak/pull/353) ([jas01](https://github.com/jas01))
+- Add Feature to set PKCE Code Challenge Method [\#352](https://github.com/treydock/puppet-module-keycloak/pull/352) ([C24-AK](https://github.com/C24-AK))
+- Allow puppetlabs/mysql 16.x [\#348](https://github.com/treydock/puppet-module-keycloak/pull/348) ([smortex](https://github.com/smortex))
+- Protocol mapper aggregate attrs [\#344](https://github.com/treydock/puppet-module-keycloak/pull/344) ([wolfaba](https://github.com/wolfaba))
+- Add backchannel\_logout attributes [\#343](https://github.com/treydock/puppet-module-keycloak/pull/343) ([wolfaba](https://github.com/wolfaba))
+- Client scope / Mappers / Custom protocol mapper [\#340](https://github.com/treydock/puppet-module-keycloak/pull/340) ([wolfaba](https://github.com/wolfaba))
+- Add introspection\_token\_claim to protocol mapper types [\#337](https://github.com/treydock/puppet-module-keycloak/pull/337) ([treydock](https://github.com/treydock))
+- Add proxy-{protocol-enabled,trusted-addresses} [\#333](https://github.com/treydock/puppet-module-keycloak/pull/333) ([nblock](https://github.com/nblock))
+- supress warnings [\#304](https://github.com/treydock/puppet-module-keycloak/pull/304) ([trefzer](https://github.com/trefzer))
+
+### Fixed
+
+- Keycloak user and groups for api commands are always keycloak [\#350](https://github.com/treydock/puppet-module-keycloak/pull/350) ([Guiiix](https://github.com/Guiiix))
+
 ## [v13.4.0](https://github.com/treydock/puppet-module-keycloak/tree/v13.4.0) (2025-02-24)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.3.0...v13.4.0)

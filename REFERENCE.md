@@ -126,7 +126,7 @@ The following parameters are available in the `keycloak` class:
 * [`truststore`](#-keycloak--truststore)
 * [`truststore_hosts`](#-keycloak--truststore_hosts)
 * [`truststore_password`](#-keycloak--truststore_password)
-* [`proxy`](#-keycloak--proxy)
+* [`proxy_headers`](#-keycloak--proxy_headers)
 * [`realms`](#-keycloak--realms)
 * [`realms_merge`](#-keycloak--realms_merge)
 * [`oidc_client_scopes`](#-keycloak--oidc_client_scopes)
@@ -183,11 +183,11 @@ Default value: `true`
 
 ##### <a name="-keycloak--version"></a>`version`
 
-Data type: `String`
+Data type: `String[1]`
 
 Version of Keycloak to install and manage.
 
-Default value: `'25.0.1'`
+Default value: `'26.5.2'`
 
 ##### <a name="-keycloak--package_url"></a>`package_url`
 
@@ -625,13 +625,13 @@ Default is `keycloak`.
 
 Default value: `'keycloak'`
 
-##### <a name="-keycloak--proxy"></a>`proxy`
+##### <a name="-keycloak--proxy_headers"></a>`proxy_headers`
 
-Data type: `Enum['edge','reencrypt','passthrough','none']`
+Data type: `Optional[Enum['forwarded','xforwarded']]`
 
-Type of proxy to use for Keycloak
+How to handle proxy headers
 
-Default value: `'none'`
+Default value: `undef`
 
 ##### <a name="-keycloak--realms"></a>`realms`
 
@@ -1577,6 +1577,14 @@ authorizationServicesEnabled
 
 Default value: `false`
 
+##### `backchannel_logout_revoke_offline_tokens`
+
+backchannel.logout.revoke.offline.tokens
+
+##### `backchannel_logout_session_required`
+
+backchannel.logout.session.required
+
 ##### `backchannel_logout_url`
 
 backchannel.logout.url
@@ -1669,6 +1677,14 @@ optionalClientScopes
 
 Default value: `[]`
 
+##### `pkce_code_challenge_method`
+
+Valid values: `S256`, `plain`, `absent`
+
+PKCE Code Challenge Method for OAuth 2.0 flows
+
+Default value: `absent`
+
 ##### `protocol`
 
 Valid values: `openid-connect`, `saml`
@@ -1724,14 +1740,6 @@ saml.encrypt
 ##### `saml_encryption_certificate`
 
 saml.encryption.certificate
-
-##### `backchannel_logout_session_required`
-
-backchannel.logout.session.required
-
-##### `backchannel_logout_revoke_offline_tokens`
-
-backchannel.logout.revoke.offline.tokens
 
 ##### `saml_name_id_format`
 
@@ -1831,6 +1839,12 @@ Valid values: `true`, `false`
 
 access.token.claim. Default to `true` for `protocol` `openid-connect`.
 
+##### `aggregate_attrs`
+
+Valid values: `true`, `false`
+
+aggregate.attrs
+
 ##### `attribute_name`
 
 attribute.name Default to `resource_name` for `type` `saml-user-property-mapper`.
@@ -1871,6 +1885,12 @@ id.token.claim. Default to `true` for `protocol` `openid-connect`.
 
 included.client.audience Required for `type` of `oidc-audience-mapper`
 
+##### `introspection_token_claim`
+
+Valid values: `true`, `false`
+
+introspection.token.claim.
+
 ##### `json_type_label`
 
 json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper` and `oidc-group-membership-mapper`.
@@ -1880,12 +1900,6 @@ json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`
 Valid values: `true`, `false`
 
 multivalued
-
-##### `aggregate_attrs`
-
-Valid values: `true`, `false`
-
-aggregate.attrs
 
 ##### `protocol`
 
@@ -2182,7 +2196,7 @@ execution priority, only applied to top_level=false, required for top_level=fals
 
 ##### `requirement`
 
-Valid values: `DISABLED`, `ALTERNATIVE`, `REQUIRED`, `CONDITIONAL`, `disabled`, `alternative`, `required`, `conditional`
+Valid values: `DISABLED`, `ALTERNATIVE`, `REQUIRED`, `CONDITIONAL`, `disabled`, `alternative`, `required`
 
 requirement, only applied to top_level=false and defaults to DISABLED
 
@@ -2331,7 +2345,7 @@ execution priority
 
 ##### `requirement`
 
-Valid values: `DISABLED`, `ALTERNATIVE`, `REQUIRED`, `CONDITIONAL`, `disabled`, `alternative`, `required`, `conditional`
+Valid values: `DISABLED`, `ALTERNATIVE`, `REQUIRED`, `CONDITIONAL`, `disabled`, `alternative`, `required`
 
 requirement
 
@@ -2512,11 +2526,11 @@ forwardParameters
 
 guiOrder
 
-##### `hide_on_login_page`
+##### `hide_on_login`
 
 Valid values: `true`, `false`
 
-hideOnLoginPage
+hideOnLogin
 
 Default value: `false`
 
@@ -2599,8 +2613,6 @@ Default value: `false`
 Valid values: `on`, `off`
 
 updateProfileFirstLoginMode
-
-Default value: `on`
 
 ##### `use_jwks_url`
 
@@ -2817,7 +2829,7 @@ user.model.attribute
 
 ##### `user_roles_retrieve_strategy`
 
-Valid values: `LOAD_GROUPS_BY_MEMBER_ATTRIBUTE`, `GET_GROUPS_FROM_USER_MEMBEROF_ATTRIBUTE`, `LOAD_GROUPS_BY_MEMBER_ATTRIBUTE_RECURSIVELY`, `LOAD_ROLES_BY_MEMBER_ATTRIBUTE`, `GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE`, `LOAD_ROLES_BY_MEMBER_ATTRIBUTE_RECURSIVELY`
+Valid values: `LOAD_GROUPS_BY_MEMBER_ATTRIBUTE`, `GET_GROUPS_FROM_USER_MEMBEROF_ATTRIBUTE`, `LOAD_GROUPS_BY_MEMBER_ATTRIBUTE_RECURSIVELY`, `LOAD_ROLES_BY_MEMBER_ATTRIBUTE`, `GET_ROLES_FROM_USER_MEMBEROF_ATTRIBUTE`
 
 user.roles.retrieve.strategy, only for `type` of `group-ldap-mapper` and `role-ldap-mapper`
 
@@ -3152,6 +3164,12 @@ Valid values: `true`, `false`
 
 access.token.claim. Default to `true` for `protocol` `openid-connect`.
 
+##### `aggregate_attrs`
+
+Valid values: `true`, `false`
+
+aggregate.attrs
+
 ##### `attribute_name`
 
 attribute.name Default to `resource_name` for `type` `saml-user-property-mapper`.
@@ -3163,6 +3181,14 @@ attribute.nameformat
 ##### `claim_name`
 
 claim.name
+
+##### `custom_config`
+
+custom configuration data for `custom` protocolMapper type
+
+##### `custom_type`
+
+custom protocolMapper type
 
 ##### `ensure`
 
@@ -3192,6 +3218,12 @@ id.token.claim. Default to `true` for `protocol` `openid-connect`.
 
 included.client.audience Required for `type` of `oidc-audience-mapper`
 
+##### `introspection_token_claim`
+
+Valid values: `true`, `false`
+
+introspection.token.claim.
+
 ##### `json_type_label`
 
 json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper` and `oidc-group-membership-mapper`.
@@ -3201,12 +3233,6 @@ json.type.label. Default to `String` for `type` `oidc-usermodel-property-mapper`
 Valid values: `true`, `false`
 
 multivalued
-
-##### `aggregate_attrs`
-
-Valid values: `true`, `false`
-
-aggregate.attrs
 
 ##### `protocol`
 
@@ -3243,8 +3269,6 @@ The following parameters are available in the `keycloak_protocol_mapper` type.
 * [`realm`](#-keycloak_protocol_mapper--realm)
 * [`resource_name`](#-keycloak_protocol_mapper--resource_name)
 * [`type`](#-keycloak_protocol_mapper--type)
-* [`custom_type`](#-keycloak_protocol_mapper--custom_type)
-* [`custom_config`](#-keycloak_protocol_mapper--custom_config)
 
 ##### <a name="-keycloak_protocol_mapper--client_scope"></a>`client_scope`
 
@@ -3275,20 +3299,12 @@ The protocol mapper name. Defaults to `name`.
 
 ##### <a name="-keycloak_protocol_mapper--type"></a>`type`
 
-Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-user-attribute-mapper`, `saml-role-list-mapper`, `custom`
+Valid values: `oidc-usermodel-property-mapper`, `oidc-usermodel-attribute-mapper`, `oidc-full-name-mapper`, `oidc-group-membership-mapper`, `oidc-audience-mapper`, `saml-group-membership-mapper`, `saml-user-property-mapper`, `saml-user-attribute-mapper`, `saml-role-list-mapper`, `%r{script-.+}`
 
 protocolMapper.
 
 Default is `oidc-usermodel-property-mapper` for `protocol` `openid-connect` and
 `saml-user-property-mapper` for `protocol` `saml`.
-
-##### <a name="-keycloak_protocol_mapper--custom_type"></a>`custom_type`
-
-Custom mapper type if `type` is set to `custom`.
-
-##### <a name="-keycloak_protocol_mapper--custom_config"></a>`custom_config`
-
-Custom mapper config for custom type. Simple hash with key-value pair, which will be converted to JSON.
 
 ### <a name="keycloak_realm"></a>`keycloak_realm`
 
@@ -4306,6 +4322,8 @@ Struct[{
     Optional['db-url-port'] => Stdlib::Port,
     Optional['db-url-properties'] => String[1],
     Optional['db-username'] => String[1],
+    # Hidden option
+    Optional['db-dialect'] => String[1],
     Optional['event-metrics-user-enabled'] => Boolean,
     Optional['event-metrics-user-events'] => Array[String[1]],
     Optional['transaction-xa-enabled'] => Boolean,
@@ -4346,29 +4364,21 @@ Struct[{
     Optional['config-keystore-password'] => Variant[String[1], Sensitive],
     Optional['config-keystore-type'] => Enum['PKCS12'],
     Optional['metrics-enabled'] => Boolean,
-    Optional['proxy'] => Enum['edge','reencrypt','passthrough','none'],
     Optional['proxy-headers'] => Enum['forwarded', 'xforwarded'],
+    Optional['proxy-protocol-enabled'] => Boolean,
+    Optional['proxy-trusted-addresses'] => Array[Stdlib::IP::Address],
     Optional['vault'] => Enum['file','keystore'],
     Optional['vault-dir'] => Stdlib::Absolutepath,
     Optional['vault-file'] => Stdlib::Absolutepath,
     Optional['vault-pass'] => Variant[String[1], Sensitive],
     Optional['vault-type'] => Enum['PKCS12'],
-    Optional['log'] => Array[Enum['console','file','gelf','syslog']],
+    Optional['log'] => Array[Enum['console','file','syslog']],
     Optional['log-console-color'] => Boolean,
     Optional['log-console-format'] => String[1],
     Optional['log-console-output'] => Enum['default','json'],
     Optional['log-file'] => String[1],
     Optional['log-file-format'] => String[1],
     Optional['log-file-output'] => Enum['default','json'],
-    Optional['log-gelf-facility'] => String[1],
-    Optional['log-gelf-host'] => Stdlib::Host,
-    Optional['log-gelf-include-location'] => Boolean,
-    Optional['log-gelf-include-message-parameters'] => Boolean,
-    Optional['log-gelf-include-stack-trace'] => Boolean,
-    Optional['log-gelf-level'] => String[1],
-    Optional['log-gelf-max-message-size'] => Integer,
-    Optional['log-gelf-port'] => Stdlib::Port,
-    Optional['log-gelf-timestamp-format'] => String[1],
     Optional['log-syslog-protocol'] => Enum['tcp','udp','ssl-tcp'],
     Optional['log-syslog-endpoint'] => String[1],
     Optional['log-syslog-format'] => String[1],
