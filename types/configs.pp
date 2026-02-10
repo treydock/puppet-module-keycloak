@@ -25,6 +25,8 @@ type Keycloak::Configs = Struct[
     Optional['db-url-port'] => Stdlib::Port,
     Optional['db-url-properties'] => String[1],
     Optional['db-username'] => String[1],
+    # Hidden option
+    Optional['db-dialect'] => String[1],
     Optional['event-metrics-user-enabled'] => Boolean,
     Optional['event-metrics-user-events'] => Array[String[1]],
     Optional['transaction-xa-enabled'] => Boolean,
@@ -65,7 +67,6 @@ type Keycloak::Configs = Struct[
     Optional['config-keystore-password'] => Variant[String[1], Sensitive],
     Optional['config-keystore-type'] => Enum['PKCS12'],
     Optional['metrics-enabled'] => Boolean,
-    Optional['proxy'] => Enum['edge','reencrypt','passthrough','none'],
     Optional['proxy-headers'] => Enum['forwarded', 'xforwarded'],
     Optional['proxy-protocol-enabled'] => Boolean,
     Optional['proxy-trusted-addresses'] => Array[Stdlib::IP::Address],

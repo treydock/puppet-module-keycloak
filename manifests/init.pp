@@ -134,8 +134,8 @@
 # @param truststore_password
 #   Truststore password.
 #   Default is `keycloak`.
-# @param proxy
-#   Type of proxy to use for Keycloak
+# @param proxy_headers
+#   How to handle proxy headers
 # @param realms
 #   Hash that is used to define keycloak_realm resources.
 #   Default is `{}`.
@@ -226,7 +226,7 @@
 #   Only necessary to set if the URL path to Keycloak is modified
 class keycloak (
   Boolean $manage_install       = true,
-  String $version               = '25.0.1',
+  String[1] $version            = '26.5.2',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl, Stdlib::Absolutepath]] $package_url= undef,
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Array[String[1]] $java_package_dependencies = [],
@@ -279,7 +279,7 @@ class keycloak (
   Boolean $truststore = false,
   Hash $truststore_hosts = {},
   String $truststore_password = 'keycloak',
-  Enum['edge','reencrypt','passthrough','none'] $proxy = 'none',
+  Optional[Enum['forwarded','xforwarded']] $proxy_headers = undef,
   Hash $realms = {},
   Boolean $realms_merge = false,
   Hash $oidc_client_scopes = {},
@@ -355,7 +355,7 @@ class keycloak (
     'db-password' => $db_password,
     'features' => $features,
     'features-disabled' => $features_disabled,
-    'proxy' => $proxy,
+    'proxy-headers' => $proxy_headers,
   }.filter |$key, $value| { $value =~ NotUndef and ! ($value in ['unset', 'UNSET']) }
   if $truststore {
     $truststore_configs = {

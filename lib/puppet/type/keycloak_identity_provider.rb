@@ -75,9 +75,7 @@ Manage Keycloak identity providers
 
   newproperty(:update_profile_first_login_mode) do
     desc 'updateProfileFirstLoginMode'
-    defaultto 'on'
     newvalues('on', 'off')
-    munge { |v| v }
   end
 
   newproperty(:trust_email, boolean: true) do

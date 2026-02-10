@@ -8,7 +8,7 @@ describe 'keycloak' do
       let(:facts) do
         facts.merge(concat_basedir: '/dne')
       end
-      let(:version) { '25.0.1' }
+      let(:version) { '26.5.2' }
 
       case facts[:os]['family']
       when %r{RedHat}
@@ -139,7 +139,6 @@ describe 'keycloak' do
                                        'db-url-database=keycloak',
                                        'db-username=keycloak',
                                        'db-password=changeme',
-                                       'proxy=none',
                                      ],)
         end
 

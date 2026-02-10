@@ -66,8 +66,8 @@ describe Puppet::Type.type(:keycloak_identity_provider) do
     }.to raise_error(%r{foo})
   end
 
-  it 'defaults to update_profile_first_login_mode=on' do
-    expect(resource[:update_profile_first_login_mode]).to eq('on')
+  it 'defaults to no update_profile_first_login_mode' do
+    expect(resource[:update_profile_first_login_mode]).to be_nil
   end
 
   it 'does not allow invalid update_profile_first_login_mode' do
