@@ -4,6 +4,9 @@ require_relative '../../puppet_x/keycloak/type'
 require_relative '../../puppet_x/keycloak/array_property'
 require_relative '../../puppet_x/keycloak/integer_property'
 
+# needed for puppet >= 8
+require 'puppet/parameter/boolean'
+
 Puppet::Type.newtype(:keycloak_ldap_user_provider) do
   desc <<-DESC
 Manage Keycloak LDAP user providers
@@ -42,6 +45,11 @@ Manage Keycloak LDAP user providers
 
   newparam(:realm, namevar: true) do
     desc 'parentId'
+  end
+
+  newparam(:no_bind_credential_warning, boolean: true, parent: Puppet::Parameter::Boolean) do
+    desc 'set this to true, to not display the puppet warning that we cannot ensure the smtp_server_password'
+    defaultto :false
   end
 
   newproperty(:enabled, boolean: true) do
@@ -128,11 +136,13 @@ Manage Keycloak LDAP user providers
   end
 
   newproperty(:bind_credential) do
-    desc 'bindCredential'
+    desc "bindCredential.
+          Puppet has no way to check current value and will therefore emit a warning
+          which can be suppressed by setting no_bind_credential_warning to true"
 
     def insync?(is)
       if is =~ %r{^\*+$}
-        Puppet.warning("Parameter 'bind_credential' is set and Puppet has no way to check current value")
+        Puppet.warning("Parameter 'bind_credential' is set and Puppet has no way to check current value") unless @resource[:no_bind_credential_warning]
         true
       else
         false
