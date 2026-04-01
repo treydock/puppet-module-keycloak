@@ -125,7 +125,9 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
           key = property.to_s
           attributes = d['attributes'] || {}
           auth_flows = d['authenticationFlowBindingOverrides'] || {}
-          if property == :secret
+          if property == :attributes
+            value = attributes
+          elsif property == :secret
             value = secret
           elsif d.key?(camel_key)
             value = d[camel_key]
@@ -220,15 +222,15 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       value = convert_property_value(resource[property.to_sym])
       next if value == 'absent' || value == :absent || value.nil?
 
-      if attributes_properties.include?(property)
-        unless data.key?(:attributes)
-          data[:attributes] = {}
-        end
+      if property == :attributes
+        data[:attributes] ||= {}
+        data[:attributes].merge!(value)
+        next
+      elsif attributes_properties.include?(property)
+        data[:attributes] ||= {}
         data[:attributes][attribute_key(property)] = value
       elsif auth_flow_properties.include?(property)
-        unless data.key?(:authenticationFlowBindingOverrides)
-          data[:authenticationFlowBindingOverrides] = {}
-        end
+        data[:authenticationFlowBindingOverrides] ||= {}
         flow_id = flow_ids[value]
         data[:authenticationFlowBindingOverrides][auth_flow_properties[property]] = flow_id
       else
@@ -371,10 +373,11 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
 
         value = convert_property_value(@property_flush[property.to_sym])
         value = nil if value.to_s == 'absent'
-        if attributes_properties.include?(property)
-          unless data.key?(:attributes)
-            data[:attributes] = {}
-          end
+        if property == :attributes
+          data[:attributes] ||= {}
+          data[:attributes].merge!(value)
+        elsif attributes_properties.include?(property)
+          data[:attributes] ||= {}
           data[:attributes][attribute_key(property)] = value
         elsif auth_flow_properties.include?(property)
           flow_id = value.nil? ? nil : flow_ids[value]

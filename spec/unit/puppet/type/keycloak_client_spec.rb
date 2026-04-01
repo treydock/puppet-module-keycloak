@@ -184,6 +184,23 @@ describe Puppet::Type.type(:keycloak_client) do
     end
   end
 
+  describe 'attributes' do
+    it 'allow attributes' do
+      config[:attributes] = { 'foo' => 'bar' }
+      expect(resource[:attributes]).to eq('foo' => 'bar')
+    end
+
+    it 'is in sync with default' do
+      config[:attributes] = {}
+      expect(resource.property(:attributes).insync?('foo' => 'bar')).to eq(true)
+    end
+
+    it 'is in sync with defined properties' do
+      config[:attributes] = { 'foo' => 'bar' }
+      expect(resource.property(:attributes).insync?('foo' => 'bar', 'bar' => 'baz')).to eq(true)
+    end
+  end
+
   it 'autorequires keycloak_conn_validator' do
     keycloak_conn_validator = Puppet::Type.type(:keycloak_conn_validator).new(name: 'keycloak')
     catalog = Puppet::Resource::Catalog.new
