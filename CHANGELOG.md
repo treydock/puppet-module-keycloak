@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v14.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v14.1.0) (2026-05-06)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v14.0.0...v14.1.0)
+
+### Added
+
+- feat: adding support for attributes in keycloak\_client [\#360](https://github.com/treydock/puppet-module-keycloak/pull/360) ([roock](https://github.com/roock))
+
 ## [v14.0.0](https://github.com/treydock/puppet-module-keycloak/tree/v14.0.0) (2026-02-10)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v13.4.0...v14.0.0)
