@@ -1569,6 +1569,10 @@ access.token.lifespan
 
 adminUrl
 
+##### `attributes`
+
+Keycloak client attributes map as described by ClientRepresentation attributes
+
 ##### `authorization_services_enabled`
 
 Valid values: `true`, `false`

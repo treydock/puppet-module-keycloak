@@ -15,6 +15,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         redirect_uris                            => ['https://test.foo.bar/test1'],
         default_client_scopes                    => ['address'],
         secret                                   => 'foobar',
+        attributes                               => { 'foo' => 'bar' },
         login_theme                              => 'keycloak',
         backchannel_logout_url                   => 'https://test.foo.bar/logout',
         backchannel_logout_session_required      => 'true',
@@ -75,6 +76,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         expect(data['authorizationServicesEnabled']).to eq(nil)
         expect(data['serviceAccountsEnabled']).to eq(true)
         expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
+        expect(data['attributes']['foo']).to eq('bar')
         expect(data['attributes']['backchannel.logout.url']).to eq('https://test.foo.bar/logout')
         expect(data['attributes']['backchannel.logout.session.required']).to eq('true')
         expect(data['attributes']['backchannel.logout.revoke.offline.tokens']).to eq('true')
