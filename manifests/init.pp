@@ -10,6 +10,9 @@
 #   Defaults to true.
 # @param version
 #   Version of Keycloak to install and manage.
+# @param base_url
+#   Base URL of the Keycloak download
+#   Default refers to github.com and based on version.
 # @param package_url
 #   URL of the Keycloak download.
 #   Default is based on version.
@@ -228,6 +231,7 @@ class keycloak (
   Boolean $manage_install       = true,
   String[1] $version            = '26.5.2',
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl, Stdlib::Absolutepath]] $package_url= undef,
+  Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl] $base_url = 'https://github.com/keycloak/keycloak/releases/download',
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Array[String[1]] $java_package_dependencies = [],
   Enum['include','class'] $java_declare_method = 'class',
@@ -327,7 +331,7 @@ class keycloak (
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamilies Debian and Redhat")
   }
 
-  $download_url = pick($package_url, "https://github.com/keycloak/keycloak/releases/download/${version}/keycloak-${version}.tar.gz")
+  $download_url = pick($package_url, "${base_url}/${version}/keycloak-${version}.tar.gz")
 
   $install_base = pick($install_dir, "/opt/keycloak-${keycloak::version}")
   $conf_dir = "${install_base}/conf"
