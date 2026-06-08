@@ -387,9 +387,9 @@ class keycloak (
     }
     $wrapper_protocol = 'https'
     $wrapper_port = $config['https-port']
-    $wrapper_address = $effective_hostname
+    $wrapper_address = pick($effective_hostname, $facts['networking']['fqdn'])
     $validator_port = $config['https-port']
-    $validator_server = $effective_hostname
+    $validator_server = pick($effective_hostname, $facts['networking']['fqdn'])
     $validator_ssl = true
   }
   $wrapper_server = "${wrapper_protocol}://${wrapper_address}:${wrapper_port}${config['http-relative-path']}"
