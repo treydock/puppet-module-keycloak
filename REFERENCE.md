@@ -39,7 +39,7 @@
 * [`keycloak_client_scope`](#keycloak_client_scope): Manage Keycloak client scopes
 * [`keycloak_conn_validator`](#keycloak_conn_validator): Verify that a connection can be successfully established between a node and the keycloak server.  Its primary use is as a precondition to pre
 * [`keycloak_flow`](#keycloak_flow): Manage a Keycloak flow **Autorequires** * `keycloak_realm` defined for `realm` parameter * `keycloak_flow` of `flow_alias` if `top_level=fals
-* [`keycloak_flow_execution`](#keycloak_flow_execution): Manage a Keycloak flow **Autorequires** * `keycloak_realm` defined for `realm` parameter * `keycloak_flow` of value defined for `flow_alias`
+* [`keycloak_flow_execution`](#keycloak_flow_execution): Manage a Keycloak flow **Autorequires** * `keycloak_realm` defined for `realm` parameter * `keycloak_flow` of value defined for `flow_alias` 
 * [`keycloak_identity_provider`](#keycloak_identity_provider): Manage Keycloak identity providers
 * [`keycloak_ldap_mapper`](#keycloak_ldap_mapper): Manage Keycloak LDAP attribute mappers
 * [`keycloak_ldap_user_provider`](#keycloak_ldap_user_provider): Manage Keycloak LDAP user providers
@@ -62,7 +62,7 @@ Manage Keycloak
 
 #### Examples
 
-#####
+##### 
 
 ```puppet
 include ::keycloak
@@ -194,10 +194,10 @@ Default value: `'26.5.2'`
 
 Data type: `Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl]`
 
-Base URL of the Keycloak download.
+Base URL of the Keycloak download
 Default refers to github.com and based on version.
 
-Default value: `https://github.com/keycloak/keycloak/releases/download`
+Default value: `'https://github.com/keycloak/keycloak/releases/download'`
 
 ##### <a name="-keycloak--package_url"></a>`package_url`
 
@@ -1007,7 +1007,7 @@ Manage Keycloak OpenID Connect client scope using built-in mappers
 
 #### Examples
 
-#####
+##### 
 
 ```puppet
 keycloak::client_scope::oidc { 'oidc-clients':
@@ -1042,7 +1042,7 @@ Manage Keycloak SAML client scope using built-in mappers
 
 #### Examples
 
-#####
+##### 
 
 ```puppet
 keycloak::client_scope::saml { 'saml-clients':
@@ -1077,7 +1077,7 @@ setup FreeIPA LDAP mappers for Keycloak
 
 #### Examples
 
-#####
+##### 
 
 ```puppet
 keycloak::freeipa_ldap_mappers { 'ipa.example.org':
@@ -1427,7 +1427,7 @@ Add host to Keycloak truststore
 
 #### Examples
 
-#####
+##### 
 
 ```puppet
 keycloak::truststore::host { 'ldap1.example.com':
@@ -4409,3 +4409,4 @@ Struct[{
     Optional['override'] => Boolean,
   }]
 ```
+

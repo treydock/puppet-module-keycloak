@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v14.2.0](https://github.com/treydock/puppet-module-keycloak/tree/v14.2.0) (2026-06-08)
+
+[Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v14.1.0...v14.2.0)
+
+### Added
+
+- Add base\_url variable [\#362](https://github.com/treydock/puppet-module-keycloak/pull/362) ([toggetit](https://github.com/toggetit))
+
+### Fixed
+
+- Pick the first non undef value since effective\_hostname can be undef … [\#364](https://github.com/treydock/puppet-module-keycloak/pull/364) ([repperille](https://github.com/repperille))
+
 ## [v14.1.0](https://github.com/treydock/puppet-module-keycloak/tree/v14.1.0) (2026-05-06)
 
 [Full Changelog](https://github.com/treydock/puppet-module-keycloak/compare/v14.0.0...v14.1.0)
