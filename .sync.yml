@@ -12,6 +12,7 @@ Rakefile:
       - debian-12
       - ubuntu-2204
       - ubuntu-2404
+      - ubuntu-2604
     puppet:
       - puppet8
     keycloak_version:
@@ -52,5 +53,8 @@ spec/acceptance/nodesets/ubuntu-2204.yml:
   packages:
     - iproute2
 spec/acceptance/nodesets/ubuntu-2404.yml:
+  packages:
+    - iproute2
+spec/acceptance/nodesets/ubuntu-2604.yml:
   packages:
     - iproute2
