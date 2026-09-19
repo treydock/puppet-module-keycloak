@@ -58,7 +58,7 @@ define keycloak::freeipa_user_provider (
   }
 
   keycloak_ldap_user_provider { "${ipa_host} on ${realm}":
-    ensure                                   => 'present',
+    ensure                                   => $ensure,
     id                                       => $id,
     auth_type                                => 'simple',
     bind_credential                          => $bind_credential,

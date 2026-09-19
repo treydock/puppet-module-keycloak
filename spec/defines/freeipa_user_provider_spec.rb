@@ -47,6 +47,12 @@ describe 'keycloak::freeipa_user_provider' do
         it { is_expected.to contain_keycloak_ldap_user_provider('ipa.example.org on EXAMPLE.ORG').with_trust_email(true) }
       end
 
+      context 'when ensure is absent' do
+        let(:params) { default_params.merge(ensure: 'absent') }
+
+        it { is_expected.to contain_keycloak_ldap_user_provider('ipa.example.org on EXAMPLE.ORG').with_ensure('absent') }
+      end
+
       context 'when id is defined' do
         let(:params) { default_params.merge(id: 'foobar') }
 
