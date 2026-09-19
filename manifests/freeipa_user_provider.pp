@@ -29,6 +29,8 @@
 #   Priority for this user provider
 # @param ldaps
 #   Use LDAPS protocol instead of LDAP
+# @param trust_email
+#   Trust email addresses from FreeIPA as verified (trustEmail)
 # @param full_sync_period
 #   Synchronize all users this often (fullSyncPeriod)
 # @param changed_sync_period
@@ -44,6 +46,7 @@ define keycloak::freeipa_user_provider (
   Stdlib::Host $ipa_host = $title,
   Integer $priority = 10,
   Boolean $ldaps = false,
+  Boolean $trust_email = false,
   Optional[Integer] $full_sync_period = undef,
   Optional[Integer] $changed_sync_period = undef
 ) {
@@ -73,6 +76,7 @@ define keycloak::freeipa_user_provider (
     users_dn                                 => $users_dn,
     uuid_ldap_attribute                      => 'ipaUniqueID',
     vendor                                   => 'rhds',
+    trust_email                              => $trust_email,
     full_sync_period                         => $full_sync_period,
     changed_sync_period                      => $changed_sync_period,
   }

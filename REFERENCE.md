@@ -1154,6 +1154,7 @@ The following parameters are available in the `keycloak::freeipa_user_provider` 
 * [`users_dn`](#-keycloak--freeipa_user_provider--users_dn)
 * [`priority`](#-keycloak--freeipa_user_provider--priority)
 * [`ldaps`](#-keycloak--freeipa_user_provider--ldaps)
+* [`trust_email`](#-keycloak--freeipa_user_provider--trust_email)
 * [`full_sync_period`](#-keycloak--freeipa_user_provider--full_sync_period)
 * [`changed_sync_period`](#-keycloak--freeipa_user_provider--changed_sync_period)
 
@@ -1218,6 +1219,14 @@ Default value: `10`
 Data type: `Boolean`
 
 Use LDAPS protocol instead of LDAP
+
+Default value: `false`
+
+##### <a name="-keycloak--freeipa_user_provider--trust_email"></a>`trust_email`
+
+Data type: `Boolean`
+
+Trust email addresses from FreeIPA as verified (trustEmail)
 
 Default value: `false`
 

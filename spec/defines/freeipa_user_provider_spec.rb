@@ -37,7 +37,14 @@ describe 'keycloak::freeipa_user_provider' do
           users_dn: 'cn=users,cn=accounts,dc=example,dc=org',
           uuid_ldap_attribute: 'ipaUniqueID',
           vendor: 'rhds',
+          trust_email: false,
         )
+      end
+
+      context 'when trust_email is true' do
+        let(:params) { default_params.merge(trust_email: true) }
+
+        it { is_expected.to contain_keycloak_ldap_user_provider('ipa.example.org on EXAMPLE.ORG').with_trust_email(true) }
       end
 
       context 'when id is defined' do
