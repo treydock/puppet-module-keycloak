@@ -22,8 +22,8 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full_batch2 
     end
 
     it 'has configured a required action' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/webauthn-register -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/webauthn-register -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['alias']).to eq('webauthn-register')
         expect(data['defaultAction']).to eq(true)
         expect(data['enabled']).to eq(true)
@@ -32,8 +32,8 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full_batch2 
     end
 
     it 'has the configured required action in list' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions -r test' do |result|
+        data = JSON.parse(result.stdout)
         webauthn = data.find { |d| d['alias'] == 'webauthn-register' }
         expect(webauthn['priority']).to eq(200)
       end
@@ -59,8 +59,8 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full_batch2 
     end
 
     it 'has updated a required action' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/webauthn-register -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/webauthn-register -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['priority']).to eq(100)
       end
     end
@@ -80,8 +80,8 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full_batch2 
     end
 
     it 'has deleted a flow' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['alias'] == 'webauthn-register' }[0]
         expect(d).to be_nil
       end
