@@ -24,11 +24,11 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
         source        => "https://github.com/OSC/osc-keycloak-scripts/releases/download/1.4.2/osc-keycloak-scripts-1.4.2-jar-with-dependencies.jar",
         test_url      => 'authentication/authenticator-providers',
         test_key      => 'id',
-        test_value    => 'script-user-enabled-authenticator.js',
+        test_value    => 'script-authz-authenticator.js',
         test_realm    => 'test',
         test_before   => [
           'Keycloak_flow[form-browser-with-duo]',
-          'Keycloak_flow_execution[script-user-enabled-authenticator.js under form-browser-with-duo on test]',
+          'Keycloak_flow_execution[script-authz-authenticator.js under form-browser-with-duo on test]',
         ],
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -64,7 +64,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
         priority     => 10,
         requirement  => 'REQUIRED',
       }
-      keycloak_flow_execution { 'script-user-enabled-authenticator.js under form-browser-with-duo on test':
+      keycloak_flow_execution { 'script-authz-authenticator.js under form-browser-with-duo on test':
         ensure      => 'present',
         requirement => 'REQUIRED',
         priority    => 15,
@@ -110,7 +110,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
         expect(form['description']).to eq('Form Browser with DUO')
         auth_form = data.find { |d| d['providerId'] == 'auth-username-password-form' }
         expect(auth_form['index']).to eq(0)
-        script = data.find { |d| d['authenticationConfig'] == 'script-user-enabled-authenticator.js' }
+        script = data.find { |d| d['authenticationConfig'] == 'script-authz-authenticator.js' }
         expect(script['index']).to eq(1)
         duo = data.find { |d| d['providerId'] == 'duo-universal' }
         expect(duo['index']).to eq(2)
@@ -139,11 +139,11 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
         source        => "https://github.com/OSC/osc-keycloak-scripts/releases/download/1.4.2/osc-keycloak-scripts-1.4.2-jar-with-dependencies.jar",
         test_url      => 'authentication/authenticator-providers',
         test_key      => 'id',
-        test_value    => 'script-user-enabled-authenticator.js',
+        test_value    => 'script-authz-authenticator.js',
         test_realm    => 'test',
         test_before   => [
           'Keycloak_flow[form-browser-with-duo]',
-          'Keycloak_flow_execution[script-user-enabled-authenticator.js under form-browser-with-duo on test]',
+          'Keycloak_flow_execution[script-authz-authenticator.js under form-browser-with-duo on test]',
         ],
       }
       keycloak_realm { 'test': ensure => 'present' }
@@ -192,7 +192,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
         priority     => 25,
         requirement  => 'REQUIRED',
       }
-      keycloak_flow_execution { 'script-user-enabled-authenticator.js under form-browser-with-duo on test':
+      keycloak_flow_execution { 'script-authz-authenticator.js under form-browser-with-duo on test':
         ensure      => 'present',
         requirement => 'REQUIRED',
         priority    => 35,
@@ -223,7 +223,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
         expect(auth_form['index']).to eq(1)
         duo = data.find { |d| d['providerId'] == 'duo-universal' }
         expect(duo['index']).to eq(0)
-        script = data.find { |d| d['authenticationConfig'] == 'script-user-enabled-authenticator.js' }
+        script = data.find { |d| d['authenticationConfig'] == 'script-authz-authenticator.js' }
         expect(script['index']).to eq(2)
       end
     end
@@ -235,15 +235,12 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
       class { 'keycloak': }
       keycloak_flow { 'browser-with-duo on test':
         ensure => 'absent',
-        before => Class['keycloak::service'],
       }
       keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
         ensure => 'absent',
-        before => Class['keycloak::service'],
       }
       keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
         ensure => 'absent',
-        before => Class['keycloak::service'],
       }
       PUPPET_PP
 
