@@ -369,12 +369,7 @@ class keycloak (
   } else {
     $truststore_configs = {}
   }
-  if $facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] in ['8', '9'] and $db == 'mariadb' {
-    $mariadb_fix = { 'db-dialect' => 'org.hibernate.community.dialect.MariaDBLegacyDialect' }
-  } else {
-    $mariadb_fix = {}
-  }
-  $config = $default_config + $truststore_configs + $mariadb_fix + $configs + $extra_configs
+  $config = $default_config + $truststore_configs + $configs + $extra_configs
 
   if $config['http-enabled'] {
     $wrapper_protocol = 'http'
