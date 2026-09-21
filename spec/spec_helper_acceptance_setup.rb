@@ -17,7 +17,6 @@ RSpec.configure do |c|
 end
 
 proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-scp_to(hosts, File.join(proj_root, 'spec/fixtures/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar'), '/tmp/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar')
 scp_to(hosts, File.join(proj_root, 'spec/fixtures/partial-import.json'), '/tmp/partial-import.json')
 
 puppet_dir = if fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12

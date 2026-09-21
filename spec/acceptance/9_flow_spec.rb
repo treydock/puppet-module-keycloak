@@ -9,7 +9,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
       class { 'keycloak': }
       keycloak::spi_deployment { 'duo-spi':
         deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
-        source        => 'file:///tmp/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
+        source        => 'https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.1.2/DuoUniversalKeycloakAuthenticator-1.1.2_26.6.4-jar-with-dependencies.jar',
         test_url      => 'authentication/authenticator-providers',
         test_key      => 'id',
         test_value    => 'duo-universal',
@@ -21,7 +21,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
       }
       keycloak::spi_deployment { 'osc-keycloak-scripts':
         deployed_name => 'osc-keycloak-scripts-jar-with-dependencies.jar',
-        source        => "https://github.com/OSC/osc-keycloak-scripts/releases/download/1.1.0/osc-keycloak-scripts-1.1.0-jar-with-dependencies.jar",
+        source        => "https://github.com/OSC/osc-keycloak-scripts/releases/download/1.4.2/osc-keycloak-scripts-1.4.2-jar-with-dependencies.jar",
         test_url      => 'authentication/authenticator-providers',
         test_key      => 'id',
         test_value    => 'script-user-enabled-authenticator.js',
@@ -124,7 +124,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
       class { 'keycloak': }
       keycloak::spi_deployment { 'duo-spi':
         deployed_name => 'DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
-        source        => 'file:///tmp/DuoUniversalKeycloakAuthenticator-jar-with-dependencies.jar',
+        source        => 'https://github.com/instipod/DuoUniversalKeycloakAuthenticator/releases/download/1.1.2/DuoUniversalKeycloakAuthenticator-1.1.2_26.6.4-jar-with-dependencies.jar',
         test_url      => 'authentication/authenticator-providers',
         test_key      => 'id',
         test_value    => 'duo-universal',
@@ -136,7 +136,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
       }
       keycloak::spi_deployment { 'osc-keycloak-scripts':
         deployed_name => 'osc-keycloak-scripts-jar-with-dependencies.jar',
-        source        => "https://github.com/OSC/osc-keycloak-scripts/releases/download/1.1.0/osc-keycloak-scripts-1.1.0-jar-with-dependencies.jar",
+        source        => "https://github.com/OSC/osc-keycloak-scripts/releases/download/1.4.2/osc-keycloak-scripts-1.4.2-jar-with-dependencies.jar",
         test_url      => 'authentication/authenticator-providers',
         test_key      => 'id',
         test_value    => 'script-user-enabled-authenticator.js',
