@@ -191,7 +191,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         realm                          => 'test',
         root_url                       => 'https://test.foo.bar/test',
         redirect_uris                  => ['https://test.foo.bar/test2'],
-        default_client_scopes          => ['profile', 'email'],
+        default_client_scopes          => ['service_account', 'profile', 'email'],
         secret                         => 'foobar2',
         authorization_services_enabled => true,
         service_accounts_enabled       => true,
@@ -201,7 +201,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         realm                          => 'test',
         root_url                       => 'https://test.foo.bar',
         redirect_uris                  => ['https://test.foo.bar/test1'],
-        default_client_scopes          => ['address'],
+        default_client_scopes          => ['service_account', 'address'],
         secret                         => 'foobar',
         login_theme                    => 'keycloak',
         authorization_services_enabled => false,
@@ -220,7 +220,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         data = JSON.parse(result.stdout)
         expect(data['id']).to eq('test.foo.bar')
         expect(data['clientId']).to eq('test.foo.bar')
-        expect(data['defaultClientScopes']).to eq(['profile', 'email'])
+        expect(data['defaultClientScopes']).to eq(['service_account', 'profile', 'email'])
         expect(data['rootUrl']).to eq('https://test.foo.bar/test')
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test2'])
         expect(data['attributes']['login_theme']).to be_nil
@@ -290,7 +290,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         realm                          => 'test',
         root_url                       => 'https://test.foo.bar/test/authorization',
         redirect_uris                  => ['https://test.foo.bar/test2'],
-        default_client_scopes          => ['profile', 'email'],
+        default_client_scopes          => ['service_account', 'profile', 'email'],
         secret                         => 'foobar2',
         authorization_services_enabled => true,
         service_accounts_enabled       => true,
