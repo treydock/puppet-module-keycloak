@@ -233,6 +233,9 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
     it 'runs successfully' do
       pp = <<-PUPPET_PP
       class { 'keycloak': }
+      Keycloak_conn_validator <| title == 'keycloak' |> {
+        timeout => 120
+      }
       keycloak_flow { 'browser-with-duo on test':
         ensure => 'absent',
       }
