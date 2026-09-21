@@ -44,8 +44,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has created a LDAP user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'LDAP' }[0]
         expect(d['config']['usersDn']).to eq(['ou=People,dc=test'])
         expect(d['config']['connectionUrl']).to eq(['ldap://localhost:389'])
@@ -58,8 +58,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has created a LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'full-name' }[0]
         expect(d['providerId']).to eq('full-name-ldap-mapper')
         expect(d['config']['ldap.full.name.attribute']).to eq(['foo'])
@@ -67,8 +67,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has set firstName LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'first name' }[0]
         expect(d['providerId']).to eq('user-attribute-ldap-mapper')
         expect(d['config']['user.model.attribute']).to eq(['firstName'])
@@ -77,8 +77,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has set group-role LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'group-role' }[0]
         expect(d['providerId']).to eq('role-ldap-mapper')
         expect(d['config']['roles.dn']).to eq(['ou=Groups,dc=example,dc=com'])
@@ -87,8 +87,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has set group LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'group' }[0]
         expect(d['providerId']).to eq('group-ldap-mapper')
         expect(d['config']['groups.dn']).to eq(['ou=Groups,dc=example,dc=com'])
@@ -136,8 +136,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has updated a LDAP user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'LDAP' }[0]
         expect(d['config']['usersDn']).to eq(['ou=People,dc=test'])
         expect(d['config']['connectionUrl']).to eq(['ldap://localhost:389'])
@@ -151,8 +151,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has updated a LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'full-name' }[0]
         expect(d['providerId']).to eq('full-name-ldap-mapper')
         expect(d['config']['ldap.full.name.attribute']).to eq(['bar'])
@@ -160,8 +160,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has updated group-role LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'group-role' }[0]
         expect(d['providerId']).to eq('role-ldap-mapper')
         expect(d['config']['roles.dn']).to eq(['ou=Groups,dc=example,dc=com'])
@@ -170,8 +170,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has updated group LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'group' }[0]
         expect(d['providerId']).to eq('group-ldap-mapper')
         expect(d['config']['groups.dn']).to eq(['ou=Groups,dc=example,dc=com'])
@@ -202,8 +202,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has created a LDAP user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'LDAP2' }[0]
         expect(d['config']['authType']).to eq(['simple'])
         expect(d['config']['bindDn']).to eq(['cn=read,ou=People,dc=test'])
@@ -212,8 +212,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has set bindCredential' do
-      on hosts, "mysql keycloak -BN -e 'SELECT VALUE FROM COMPONENT_CONFIG WHERE NAME=\"bindCredential\" AND COMPONENT_ID=\"0d9e16dc-728d-547c-a0f5-fa0f3ca925a6\"'" do
-        expect(stdout).to match(%r{^test$})
+      on hosts, "mysql keycloak -BN -e 'SELECT VALUE FROM COMPONENT_CONFIG WHERE NAME=\"bindCredential\" AND COMPONENT_ID=\"0d9e16dc-728d-547c-a0f5-fa0f3ca925a6\"'" do |result|
+        expect(result.stdout).to match(%r{^test$})
       end
     end
   end
@@ -239,8 +239,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has updated a LDAP user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'LDAP' }[0]
         expect(d['config']['authType']).to eq(['simple'])
         expect(d['config']['bindDn']).to eq(['cn=read,ou=People,dc=test'])
@@ -249,8 +249,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has set bindCredential' do
-      on hosts, "mysql keycloak -BN -e 'SELECT VALUE FROM COMPONENT_CONFIG WHERE NAME=\"bindCredential\" AND COMPONENT_ID=\"bc7bc27f-39b8-5152-91c3-915d710fba35\"'" do
-        expect(stdout).to match(%r{^test$})
+      on hosts, "mysql keycloak -BN -e 'SELECT VALUE FROM COMPONENT_CONFIG WHERE NAME=\"bindCredential\" AND COMPONENT_ID=\"bc7bc27f-39b8-5152-91c3-915d710fba35\"'" do |result|
+        expect(result.stdout).to match(%r{^test$})
       end
     end
   end
@@ -271,8 +271,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has deleted ldap mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'full-name' }[0]
         expect(d).to be_nil
       end
@@ -357,16 +357,16 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has created a LDAP user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'LDAP' }[0]
         expect(d['id']).to eq('LDAP-test')
       end
     end
 
     it 'has created a LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         # first name for LDAP-test on test
         d = data.select { |o| o['name'] == 'first name' && o['parentId'] == 'LDAP-test' }[0]
         expect(d['parentId']).to eq('LDAP-test')
@@ -401,16 +401,16 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has migrated a LDAP user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['name'] == 'LDAP' }[0]
         expect(d['id']).to eq('32c83a5e-b233-510f-a6a8-0edeccc900f6')
       end
     end
 
     it 'has migrated a LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         # first name for LDAP on test
         d = data.select { |o| o['name'] == 'first name' && o['parentId'] == '32c83a5e-b233-510f-a6a8-0edeccc900f6' }[0]
         expect(d['parentId']).to eq('32c83a5e-b233-510f-a6a8-0edeccc900f6')
@@ -418,8 +418,8 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
     end
 
     it 'has removed a LDAP mapper' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components -r test' do |result|
+        data = JSON.parse(result.stdout)
         # first name for LDAP-test on test
         d = data.select { |o| o['name'] == 'first name' && o['parentId'] == 'LDAP-test' }[0]
         expect(d).to be_nil

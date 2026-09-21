@@ -90,8 +90,8 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
     end
 
     it 'has created a flow' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo-test -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo-test -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['alias']).to eq('browser-with-duo')
         expect(data['description']).to eq('Browser with DUO')
         expect(data['topLevel']).to eq(true)
@@ -99,8 +99,8 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
     end
 
     it 'has executions' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo/executions -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo/executions -r test' do |result|
+        data = JSON.parse(result.stdout)
         form = data.find { |d| d['displayName'] == 'form-browser-with-duo' }
         expect(form['index']).to eq(2)
         cookie = data.find { |d| d['providerId'] == 'auth-cookie' }
@@ -204,15 +204,15 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
     end
 
     it 'has updated a flow' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo-test -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo-test -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['description']).to eq('browser with Duo')
       end
     end
 
     it 'has executions' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo/executions -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows/browser-with-duo/executions -r test' do |result|
+        data = JSON.parse(result.stdout)
         form = data.find { |d| d['displayName'] == 'form-browser-with-duo' }
         expect(form['index']).to eq(2)
         cookie = data.find { |d| d['providerId'] == 'auth-cookie' }
@@ -249,8 +249,8 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
     end
 
     it 'has deleted a flow' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows -r test' do |result|
+        data = JSON.parse(result.stdout)
         d = data.select { |o| o['alias'] == 'browser-with-duo' }[0]
         expect(d).to be_nil
       end

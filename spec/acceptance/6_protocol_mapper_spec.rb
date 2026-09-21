@@ -34,16 +34,16 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has created a client scope' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['name']).to eq('oidc')
         expect(data['protocol']).to eq('openid-connect')
       end
     end
 
     it 'has created protocol mapper username' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
         expect(mapper['config']['claim.name']).to eq('preferred_username')
         expect(mapper['config']['user.attribute']).to eq('username')
@@ -52,8 +52,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has created protocol mapper full name' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'full name' }[0]
         expect(mapper['protocolMapper']).to eq('oidc-full-name-mapper')
         expect(mapper['config']['userinfo.token.claim']).to eq('false')
@@ -61,8 +61,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has created protocol mapper groups' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'groups' }[0]
         expect(mapper['protocolMapper']).to eq('oidc-group-membership-mapper')
         expect(mapper['config']['full.path']).to eq('false')
@@ -74,8 +74,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has created protocol mapper audience' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'foo' }[0]
         expect(mapper['protocolMapper']).to eq('oidc-audience-mapper')
         expect(mapper['config']['id.token.claim']).to eq('true')
@@ -119,8 +119,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has updated protocol mapper username' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
         expect(mapper['config']['claim.name']).to eq('preferred_username')
         expect(mapper['config']['user.attribute']).to eq('username')
@@ -129,8 +129,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has updated protocol mapper full name' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'full name' }[0]
         expect(mapper['protocolMapper']).to eq('oidc-full-name-mapper')
         expect(mapper['config']['userinfo.token.claim']).to eq('true')
@@ -138,8 +138,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has updated protocol mapper groups' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'groups' }[0]
         expect(mapper['protocolMapper']).to eq('oidc-group-membership-mapper')
         expect(mapper['config']['full.path']).to eq('true')
@@ -151,8 +151,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has updated protocol mapper audience' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/oidc/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'foo' }[0]
         expect(mapper['protocolMapper']).to eq('oidc-audience-mapper')
         expect(mapper['config']['id.token.claim']).to eq('false')
@@ -205,16 +205,16 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has created a client scope' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['name']).to eq('saml')
         expect(data['protocol']).to eq('saml')
       end
     end
 
     it 'has created protocol mapper email' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'email' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
         expect(mapper['config']['attribute.name']).to eq('email')
@@ -224,8 +224,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has created protocol mapper firstName' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'firstName' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
         expect(mapper['config']['attribute.name']).to eq('firstName')
@@ -235,8 +235,8 @@ describe 'keycloak_protocol_mapper type:', if: RSpec.configuration.keycloak_full
     end
 
     it 'has created protocol mapper from script' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'x500 displayName' }[0]
         expect(mapper['protocolMapper']).to eq('script-x500-displayName.js')
         expect(mapper['config']['attribute.name']).to eq('urn:oid:2.16.840.1.113730.3.1.241')

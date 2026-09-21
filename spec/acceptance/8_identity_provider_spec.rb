@@ -40,7 +40,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     end
 
     it 'has created identity provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/cilogon -r test' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/cilogon -r test' do |result|
         data = JSON.parse(stdout)
         expect(data['enabled']).to eq(true)
         expect(data['displayName']).to eq('CILogon')
@@ -52,7 +52,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     end
 
     it 'has created keycloak-oidc identity provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/foo -r test' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/foo -r test' do |result|
         data = JSON.parse(stdout)
         expect(data['enabled']).to eq(true)
         expect(data['displayName']).to eq('foo')
@@ -103,7 +103,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     end
 
     it 'has created identity provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/cilogon -r test' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/cilogon -r test' do |result|
         data = JSON.parse(stdout)
         expect(data['enabled']).to eq(true)
         expect(data['displayName']).to eq('CILogon')
@@ -116,7 +116,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     end
 
     it 'has created keycloak-oidc identity provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/foo -r test' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/foo -r test' do |result|
         data = JSON.parse(stdout)
         expect(data['enabled']).to eq(true)
         expect(data['displayName']).to eq('foo')
@@ -143,7 +143,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     end
 
     it 'has deleted identity provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances -r test' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances -r test' do |result|
         data = JSON.parse(stdout)
         d = data.select { |o| o['alias'] == 'cilogon' }[0]
         expect(d).to be_nil

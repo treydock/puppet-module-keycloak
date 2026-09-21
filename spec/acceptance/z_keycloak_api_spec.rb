@@ -29,8 +29,8 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has created a realm' do
-      on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://127.0.0.1:8080 --realm master --user admin --password changeme' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://127.0.0.1:8080 --realm master --user admin --password changeme' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['id']).to eq('test2')
       end
     end
@@ -54,8 +54,8 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has updated a realm' do
-      on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://127.0.0.1:8080 --realm master --user admin --password changeme' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://127.0.0.1:8080 --realm master --user admin --password changeme' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['rememberMe']).to eq(true)
       end
     end
