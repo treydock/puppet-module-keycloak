@@ -249,6 +249,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
 
       apply_manifest(pp, catch_failures: true)
       on hosts, 'journalctl -u keycloak -e --no-pager'
+      on hosts, 'systemctl status keycloak'
       apply_manifest(pp, catch_changes: true)
     end
 
