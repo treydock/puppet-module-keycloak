@@ -235,12 +235,15 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
       class { 'keycloak': }
       keycloak_flow { 'browser-with-duo on test':
         ensure => 'absent',
+        before => Class['keycloak::service'],
       }
       keycloak_flow_execution { 'auth-cookie under browser-with-duo on test':
         ensure => 'absent',
+        before => Class['keycloak::service'],
       }
       keycloak_flow_execution { 'identity-provider-redirector under browser-with-duo on test':
         ensure => 'absent',
+        before => Class['keycloak::service'],
       }
       PUPPET_PP
 
