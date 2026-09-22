@@ -30,6 +30,7 @@ describe 'keycloak class:', unless: RSpec.configuration.keycloak_full do
       PUPPET_PP
 
       apply_manifest(pp, catch_failures: true)
+      on hosts, 'journalctl -u keycloak -e --no-pager'
       apply_manifest(pp, catch_changes: true)
     end
 
