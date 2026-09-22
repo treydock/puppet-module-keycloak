@@ -58,9 +58,16 @@ COMMON_YAML
 
 el8_yaml = <<-EL8_YAML
 ---
+keycloak::db_charset: utf8mb3
+keycloak::db_collate: utf8mb3_general_ci
 postgresql::globals::manage_dnf_module: true
 postgresql::globals::version: '13'
 EL8_YAML
+el9_yaml = <<-EL9_YAML
+---
+keycloak::db_charset: utf8mb3
+keycloak::db_collate: utf8mb3_general_ci
+EL9_YAML
 # Remove logic once merged and released:
 # https://github.com/puppetlabs/puppetlabs-postgresql/pull/1650
 el10_yaml = <<-EL10_YAML
@@ -74,6 +81,7 @@ on hosts, "mkdir -p #{File.join(puppet_dir, 'data')}"
 create_remote_file(hosts, File.join(puppet_dir, 'data/common.yaml'), common_yaml)
 on hosts, "mkdir -p #{File.join(puppet_dir, 'data/os/RedHat')}"
 create_remote_file(hosts, File.join(puppet_dir, 'data/os/RedHat/8.yaml'), el8_yaml)
+create_remote_file(hosts, File.join(puppet_dir, 'data/os/RedHat/9.yaml'), el9_yaml)
 create_remote_file(hosts, File.join(puppet_dir, 'data/os/RedHat/10.yaml'), el10_yaml)
 
 # Ensure new enough MariaDB is used
