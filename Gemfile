@@ -24,15 +24,7 @@ group :development do
   gem "puppet-strings",             require: false
 end
 group :system_tests do
-  gem "beaker",                                                                  require: false
-  gem "beaker-abs", *location_for(ENV['BEAKER_ABS_VERSION'] || '~> 0.1')
-  gem "beaker-pe",                                                               require: false
-  gem "beaker-hostgenerator"
-  gem "beaker-rspec"
-  gem "beaker-docker", '~> 2.2.0',                                               require: false
-  gem "beaker-puppet",               git: 'https://github.com/puppetlabs/beaker-puppet.git', ref: '6063d22b6c4449df795731f5853c3c75241240c4'
-  gem "beaker-puppet_install_helper",                                            require: false
-  gem "beaker-module_install_helper",                                            require: false
+  gem "voxpupuli-acceptance", '~> 4.4.0', require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']

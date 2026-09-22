@@ -52,8 +52,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has created a realm' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['id']).to eq('test')
         expect(data['bruteForceProtected']).to eq(false)
         expect(data['registrationAllowed']).to eq(false)
@@ -66,15 +66,15 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'created a realm with space in name' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test%20realm' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test%20realm' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['id']).to eq('test realm')
       end
     end
 
     it 'has left default-client-scopes' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do |result|
+        data = JSON.parse(result.stdout)
         names = data.map { |d| d['name'] }.sort
         expect(names).to include('email')
         expect(names).to include('profile')
@@ -83,8 +83,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has left optional-client-scopes' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-optional-client-scopes' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-optional-client-scopes' do |result|
+        data = JSON.parse(result.stdout)
         names = data.map { |d| d['name'] }.sort
         expect(names).to include('address')
         expect(names).to include('offline_access')
@@ -93,8 +93,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has default events config' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get events/config -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get events/config -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['eventsEnabled']).to eq(false)
         expect(data['eventsExpiration']).to be_nil
         expect(data['eventsListeners']).to eq(['jboss-logging'])
@@ -104,8 +104,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has correct smtp settings' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['smtpServer']['host']).to eq('smtp.example.org')
         expect(data['smtpServer']['port']).to eq('587')
         expect(data['smtpServer']['starttls']).to eq('false')
@@ -120,8 +120,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has correct token settings' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['accessCodeLifespan']).to eq(60)
         expect(data['accessCodeLifespanLogin']).to eq(1800)
         expect(data['accessCodeLifespanUserAction']).to eq(300)
@@ -140,8 +140,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has correct roles settings' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r test' do |result|
+        data = JSON.parse(result.stdout)
         expected_roles = ['new_role', 'offline_access', 'uma_authorization']
         realm_roles = []
         data.each do |d|
@@ -154,8 +154,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'imports a client' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients -r test' do |result|
+        data = JSON.parse(result.stdout)
         client = data.find { |d| d['clientId'] == 'test.example.com' }
         expect(client['clientId']).to eq('test.example.com')
       end
@@ -260,7 +260,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has updated the realm' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do |result|
         password_policy_value = [
           'length(12)',
           'notUsername(undefined)',
@@ -275,7 +275,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
           'maxLength(64)',
         ]
 
-        data = JSON.parse(stdout)
+        data = JSON.parse(result.stdout)
         expect(data['rememberMe']).to eq(true)
         expect(data['registrationAllowed']).to eq(true)
         expect(data['loginWithEmailAllowed']).to eq(false)
@@ -355,16 +355,16 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has updated the realm default-client-scopes' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test/default-default-client-scopes' do |result|
+        data = JSON.parse(result.stdout)
         names = data.map { |d| d['name'] }
         expect(names).to eq(['profile'])
       end
     end
 
     it 'has updated events config' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get events/config -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get events/config -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['eventsEnabled']).to eq(true)
         expect(data['eventsExpiration']).to eq(2_678_400)
         expect(data['eventsListeners']).to eq(['jboss-logging'])
@@ -374,8 +374,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has updated roles settings' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get roles -r test' do |result|
+        data = JSON.parse(result.stdout)
         expected_roles = ['new_role', 'other_new_role', 'uma_authorization']
         realm_roles = []
         data.each do |d|
@@ -403,8 +403,8 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     end
 
     it 'has created a realm' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test2' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test2' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['browserFlow']).to eq('browser')
       end
     end

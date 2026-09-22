@@ -48,8 +48,8 @@ services = ifp
     end
 
     it 'has created a SSSD user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/SSSD-test -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/SSSD-test -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['config']['priority']).to eq(['0'])
         expect(data['config']['cachePolicy']).to eq(['DEFAULT'])
         expect(data['config']['enabled']).to eq(['true'])
@@ -77,8 +77,8 @@ services = ifp
     end
 
     it 'has updated a SSSD user provider' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/SSSD-test -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get components/SSSD-test -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['config']['priority']).to eq(['1'])
         expect(data['config']['cachePolicy']).to eq(['DEFAULT'])
         expect(data['config']['enabled']).to eq(['true'])

@@ -18,16 +18,16 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created a client scope' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['name']).to eq('openid-connect-clients')
         expect(data['protocol']).to eq('openid-connect')
       end
     end
 
     it 'has created protocol mapper email' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'email' }[0]
         expect(mapper['config']['claim.name']).to eq('email')
         expect(mapper['config']['user.attribute']).to eq('email')
@@ -35,8 +35,8 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created protocol mapper username' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
         expect(mapper['config']['claim.name']).to eq('preferred_username')
         expect(mapper['config']['user.attribute']).to eq('username')
@@ -44,8 +44,8 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created protocol mapper full name' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'full name' }[0]
         expect(mapper['protocolMapper']).to eq('oidc-full-name-mapper')
         expect(mapper['config']['userinfo.token.claim']).to eq('false')
@@ -53,8 +53,8 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created protocol mapper family name' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'family name' }[0]
         expect(mapper['config']['claim.name']).to eq('family_name')
         expect(mapper['config']['user.attribute']).to eq('lastName')
@@ -62,8 +62,8 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created protocol mapper given name' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/openid-connect-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'given name' }[0]
         expect(mapper['config']['claim.name']).to eq('given_name')
         expect(mapper['config']['user.attribute']).to eq('firstName')
@@ -86,16 +86,16 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created a client scope' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['name']).to eq('saml-clients')
         expect(data['protocol']).to eq('saml')
       end
     end
 
     it 'has created protocol mapper username' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'username' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
         expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
@@ -106,8 +106,8 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created protocol mapper X500 email' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'X500 email' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
         expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
@@ -118,8 +118,8 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created protocol mapper X500 givenName' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'X500 givenName' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
         expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
@@ -130,8 +130,8 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created protocol mapper X500 surname' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'X500 surname' }[0]
         expect(mapper['protocolMapper']).to eq('saml-user-property-mapper')
         expect(mapper['config']['attribute.nameformat']).to eq('URI Reference')
@@ -142,8 +142,8 @@ describe 'keycloak client scopes defines:', if: RSpec.configuration.keycloak_ful
     end
 
     it 'has created protocol mapper role list' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get client-scopes/saml-clients/protocol-mappers/models -r test' do |result|
+        data = JSON.parse(result.stdout)
         mapper = data.select { |d| d['name'] == 'role list' }[0]
         expect(mapper['protocolMapper']).to eq('saml-role-list-mapper')
         expect(mapper['config']['attribute.nameformat']).to eq('Basic')

@@ -65,8 +65,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
     end
 
     it 'has created a client' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['id']).to eq('test.foo.bar')
         expect(data['clientId']).to eq('test.foo.bar')
         expect(data['defaultClientScopes']).to eq(['address'])
@@ -84,8 +84,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
     end
 
     it 'has created a client2' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
         expect(data['attributes']['backchannel.logout.url']).to eq('https://test.foo.baz/logout')
         expect(data['attributes']['backchannel.logout.session.required']).to eq('false')
@@ -94,15 +94,15 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
     end
 
     it 'has set the client secret' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['value']).to eq('foobar')
       end
     end
 
     it 'has updated roles settings for client' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/roles -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/roles -r test' do |result|
+        data = JSON.parse(result.stdout)
         expected_roles = ['bar_role', 'other_bar_role']
         client_roles = []
         data.each do |d|
@@ -115,15 +115,15 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
     end
 
     it 'has not updated roles settings for client2' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz/roles -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz/roles -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data).to eq([])
       end
     end
 
     it 'has created SAML client' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/saml.foo.bar -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/saml.foo.bar -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['id']).to eq('saml.foo.bar')
         expect(data['clientId']).to eq('saml.foo.bar')
         expect(data['defaultClientScopes']).to eq(['role_list'])
@@ -191,7 +191,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         realm                          => 'test',
         root_url                       => 'https://test.foo.bar/test',
         redirect_uris                  => ['https://test.foo.bar/test2'],
-        default_client_scopes          => ['profile', 'email'],
+        default_client_scopes          => ['service_account', 'profile', 'email'],
         secret                         => 'foobar2',
         authorization_services_enabled => true,
         service_accounts_enabled       => true,
@@ -201,7 +201,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         realm                          => 'test',
         root_url                       => 'https://test.foo.bar',
         redirect_uris                  => ['https://test.foo.bar/test1'],
-        default_client_scopes          => ['address'],
+        default_client_scopes          => ['service_account', 'address'],
         secret                         => 'foobar',
         login_theme                    => 'keycloak',
         authorization_services_enabled => false,
@@ -216,11 +216,11 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
     end
 
     it 'has updated a client' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['id']).to eq('test.foo.bar')
         expect(data['clientId']).to eq('test.foo.bar')
-        expect(data['defaultClientScopes']).to eq(['profile', 'email'])
+        expect(data['defaultClientScopes']).to eq(['service_account', 'profile', 'email'])
         expect(data['rootUrl']).to eq('https://test.foo.bar/test')
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test2'])
         expect(data['attributes']['login_theme']).to be_nil
@@ -232,8 +232,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
 
     it 'has updated a client flow' do
       browser_id = nil
-      on hosts, "/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows -r test --fields 'id,alias'" do
-        data = JSON.parse(stdout)
+      on hosts, "/opt/keycloak/bin/kcadm-wrapper.sh get authentication/flows -r test --fields 'id,alias'" do |result|
+        data = JSON.parse(result.stdout)
         data.each do |d|
           if d['alias'] == 'browser'
             browser_id = d['id']
@@ -241,22 +241,22 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
           end
         end
       end
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['authenticationFlowBindingOverrides']['browser']).to eq(browser_id)
       end
     end
 
     it 'has set the same client secret' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/client-secret -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['value']).to eq('foobar2')
       end
     end
 
     it 'has updated client roles settings' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/roles -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar/roles -r test' do |result|
+        data = JSON.parse(result.stdout)
         expected_roles = ['bar_role']
         client_roles = []
         data.each do |d|
@@ -269,8 +269,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
     end
 
     it 'has updated client2 roles settings' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz/roles -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.baz/roles -r test' do |result|
+        data = JSON.parse(result.stdout)
         expected_roles = ['baz_role']
         client_roles = []
         data.each do |d|
@@ -290,7 +290,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         realm                          => 'test',
         root_url                       => 'https://test.foo.bar/test/authorization',
         redirect_uris                  => ['https://test.foo.bar/test2'],
-        default_client_scopes          => ['profile', 'email'],
+        default_client_scopes          => ['service_account', 'profile', 'email'],
         secret                         => 'foobar2',
         authorization_services_enabled => true,
         service_accounts_enabled       => true,
@@ -303,8 +303,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
     end
 
     it 'has not disabled authorization services due to unrelated property change' do
-      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do
-        data = JSON.parse(stdout)
+      on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do |result|
+        data = JSON.parse(result.stdout)
         expect(data['authorizationServicesEnabled']).to eq(true)
       end
     end

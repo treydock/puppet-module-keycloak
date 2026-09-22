@@ -22,8 +22,8 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full_batch2 
     it 'has removed role mappings for admin' do
       scp_to hosts, 'spec/acceptance/get_role_mappings.rb', '/tmp'
 
-      on hosts, '/tmp/get_role_mappings.rb users' do
-        data = JSON.parse(stdout)
+      on hosts, '/tmp/get_role_mappings.rb users' do |result|
+        data = JSON.parse(result.stdout)
         expect(data.sort).to eq(['admin'])
       end
     end
@@ -48,8 +48,8 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full_batch2 
     it 'has added role mappings for admin' do
       scp_to hosts, 'spec/acceptance/get_role_mappings.rb', '/tmp'
 
-      on hosts, '/tmp/get_role_mappings.rb users' do
-        data = JSON.parse(stdout)
+      on hosts, '/tmp/get_role_mappings.rb users' do |result|
+        data = JSON.parse(result.stdout)
         expect(data.sort).to eq(['admin', 'offline_access'])
       end
     end
@@ -78,8 +78,8 @@ describe 'keycloak_role_mapping:', if: RSpec.configuration.keycloak_full_batch2 
     it 'has added role mappings for testgroup' do
       scp_to hosts, 'spec/acceptance/get_role_mappings.rb', '/tmp'
 
-      on hosts, '/tmp/get_role_mappings.rb groups' do
-        data = JSON.parse(stdout)
+      on hosts, '/tmp/get_role_mappings.rb groups' do |result|
+        data = JSON.parse(result.stdout)
         expect(data.sort).to eq(['admin'])
       end
     end
