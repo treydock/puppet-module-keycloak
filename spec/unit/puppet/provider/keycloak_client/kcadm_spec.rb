@@ -12,6 +12,22 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
              default_client_scopes: ['profile'],)
   end
 
+  def stub_named_realm
+    allow(described_class).to receive(:realms).and_return(['named'])
+    allow(described_class).to receive(:kcadm).with('get', 'clients', 'named').and_return(my_fixture_read('get-named.out'))
+    allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'named', nil, ['id', 'alias']).and_return('[]')
+    ['empty-name.example.com', 'display-name.example.com', 'localized.example.com', 'public.example.com'].each do |client_id|
+      allow(described_class).to receive(:kcadm).with('get', "clients/#{client_id}/client-secret", 'named').and_return(my_fixture_read('get-client-secret.out'))
+    end
+    allow(described_class).to receive(:get_client_roles).and_return([])
+  end
+
+  def named_realm_secrets
+    described_class.instances.each_with_object({}) do |instance, secrets|
+      secrets[instance.client_id] = instance.secret
+    end
+  end
+
   describe 'self.instances' do
     it 'creates instances' do
       allow(described_class).to receive(:realms).and_return(['test', 'master'])
@@ -50,6 +66,41 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       expect(property_hash[:name]).to eq('example.com on test')
       expect(property_hash[:browser_flow]).to eq('browser')
       expect(property_hash[:roles]).to eq([])
+    end
+
+    it 'reads the secret of clients that have a display name' do
+      stub_named_realm
+      secrets = named_realm_secrets
+      expect(secrets['empty-name.example.com']).to eq('super-secret')
+      expect(secrets['display-name.example.com']).to eq('super-secret')
+      expect(secrets['localized.example.com']).to eq('super-secret')
+      expect(secrets['public.example.com']).to eq('super-secret')
+    end
+
+    it 'treats an unreadable secret as absent' do
+      stub_named_realm
+      allow(described_class).to receive(:kcadm).with('get', 'clients/empty-name.example.com/client-secret', 'named').and_raise(Puppet::ExecutionFailure, 'kcadm failed')
+      secrets = named_realm_secrets
+      expect(secrets['empty-name.example.com']).to eq(:absent)
+    end
+
+    it 'warns and treats an unparsable secret response as absent' do
+      stub_named_realm
+      allow(described_class).to receive(:kcadm).with('get', 'clients/empty-name.example.com/client-secret', 'named').and_return('not json')
+      expect(Puppet).to receive(:warning).with(%r{Unable to parse output from kcadm get clients/empty-name.example.com/client-secret})
+      secrets = named_realm_secrets
+      expect(secrets['empty-name.example.com']).to eq(:absent)
+    end
+
+    it 'does not read the secret of built-in clients' do
+      stub_named_realm
+      expect(described_class).not_to receive(:kcadm).with('get', 'clients/account/client-secret', 'named')
+      expect(described_class).not_to receive(:kcadm).with('get', 'clients/account-console/client-secret', 'named')
+      expect(described_class).not_to receive(:kcadm).with('get', 'clients/named-realm/client-secret', 'named')
+      secrets = named_realm_secrets
+      expect(secrets['account']).to eq(:absent)
+      expect(secrets['account-console']).to eq(:absent)
+      expect(secrets['named-realm']).to eq(:absent)
     end
   end
   #   describe 'self.prefetch' do

@@ -83,6 +83,47 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
     self.class.get_client_roles(*args)
   end
 
+  def self.builtin_client_ids
+    ['account', 'account-console', 'admin-cli', 'broker', 'realm-management', 'security-admin-console']
+  end
+
+  # Built-in clients are never managed by this module, so skip the extra kcadm
+  # call needed to read their secret. Keycloak does not flag built-in clients
+  # the way it flags built-in flows, so this is a heuristic: the clients Keycloak
+  # creates in every realm use an i18n placeholder as their display name, eg.
+  # `${client_account}`, and the management client of a realm is bearer only and
+  # named after the realm, eg. `test-realm` / `test Realm`.
+  #
+  # If the heuristic fails to recognize a built-in, that only results in an
+  # unnecessary kcadm call. If it mistakes a managed client for a built-in, its
+  # secret is not read and Puppet unnecessarily rewrites the secret on every
+  # run.
+  def self.builtin_client?(client)
+    name = client['name'].to_s
+    return true if builtin_client_ids.include?(client['clientId']) && name.start_with?('${client_')
+
+    client['bearerOnly'] == true && name.end_with?(' Realm') && client['clientId'].to_s.end_with?('-realm')
+  end
+
+  def self.client_secret(realm, client)
+    return nil unless client['clientAuthenticatorType'] == 'client-secret'
+    return nil if builtin_client?(client)
+
+    begin
+      secret_output = kcadm('get', "clients/#{client['id']}/client-secret", realm)
+    rescue StandardError
+      Puppet.debug("Unable to get clients/#{client['id']}/client-secret")
+      secret_output = '{}'
+    end
+    begin
+      secret_data = JSON.parse(secret_output)
+    rescue JSON::ParserError
+      Puppet.warning("Unable to parse output from kcadm get clients/#{client['id']}/client-secret")
+      return nil
+    end
+    secret_data['value']
+  end
+
   def self.instances
     clients = []
     realms.each do |realm|
@@ -96,21 +137,7 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       end
 
       data.each do |d|
-        # avoid built-in clients
-        if d.key?('clientAuthenticatorType') &&
-           d['clientAuthenticatorType'] == 'client-secret' &&
-           !d.key?('name')
-          begin
-            secret_output = kcadm('get', "clients/#{d['id']}/client-secret", realm)
-          rescue StandardError
-            Puppet.debug("Unable to get clients/#{d['id']}/client-secret")
-            secret_output = '{}'
-          end
-          secret_data = JSON.parse(secret_output)
-          secret = secret_data['value']
-        else
-          secret = nil
-        end
+        secret = client_secret(realm, d)
         client = {}
         client[:ensure] = :present
         client[:id] = d['id']
