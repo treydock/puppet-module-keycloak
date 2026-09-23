@@ -235,7 +235,7 @@ class keycloak (
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl] $base_url = 'https://github.com/keycloak/keycloak/releases/download',
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Array[String[1]] $java_package_dependencies = [],
-  Enum['include','class'] $java_declare_method = 'class',
+  Enum['include','class','none'] $java_declare_method = 'class',
   String[1] $java_package = 'java-21-openjdk-devel',
   Stdlib::Absolutepath $java_home = '/usr/lib/jvm/java-21-openjdk',
   Stdlib::Absolutepath $java_alternative_path = '/usr/lib/jvm/java-21-openjdk/bin/java',
@@ -416,7 +416,7 @@ class keycloak (
   if $java_declare_method == 'none' {
     package { $java_package:
       ensure => 'installed',
-      before => Class['keycloak::install']
+      before => Class['keycloak::install'],
     }
   } elsif $java_declare_method == 'include' {
     contain java
