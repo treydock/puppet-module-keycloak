@@ -25,6 +25,7 @@
 #   How to declare the Java class within this module
 #   The `include` value only includes the java class
 #   The `class` method defines the Java class and passes necessary parameters
+#   The `none` value will exclude Java class
 #   For RedHat base systems this defaults to `class`, other OSes default to `include`
 # @param java_package
 #   Java package name, only used when `java_declare_method` is `class`
@@ -234,7 +235,7 @@ class keycloak (
   Variant[Stdlib::HTTPUrl, Stdlib::HTTPSUrl] $base_url = 'https://github.com/keycloak/keycloak/releases/download',
   Optional[Stdlib::Absolutepath] $install_dir = undef,
   Array[String[1]] $java_package_dependencies = [],
-  Enum['include','class'] $java_declare_method = 'class',
+  Enum['include','class','none'] $java_declare_method = 'class',
   String[1] $java_package = 'java-21-openjdk-devel',
   Stdlib::Absolutepath $java_home = '/usr/lib/jvm/java-21-openjdk',
   Stdlib::Absolutepath $java_alternative_path = '/usr/lib/jvm/java-21-openjdk/bin/java',
@@ -412,14 +413,22 @@ class keycloak (
     }
   }
 
-  if $java_declare_method == 'include' {
+  if $java_declare_method == 'none' {
+    package { $java_package:
+      ensure => 'installed',
+      before => Class['keycloak::install'],
+    }
+  } elsif $java_declare_method == 'include' {
     contain java
+    Class['java']
+    -> Class['keycloak::install']
   } else {
     class { 'java':
       package               => $java_package,
       java_home             => $java_home,
       java_alternative_path => $java_alternative_path,
       java_alternative      => $java_alternative,
+      before                => Class['keycloak::install'],
     }
   }
 
@@ -427,8 +436,7 @@ class keycloak (
   contain 'keycloak::config'
   contain 'keycloak::service'
 
-  Class['java']
-  -> Class['keycloak::install']
+  Class['keycloak::install']
   -> Class['keycloak::config']
   -> Class['keycloak::service']
 
