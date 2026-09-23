@@ -65,14 +65,16 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "12"
+        "12",
+        "13"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "22.04",
-        "24.04"
+        "24.04",
+        "26.04"
       ]
     }
   ],
@@ -84,5 +86,5 @@
   ],
   "pdk-version": "3.4.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g44c3970"
+  "template-ref": "heads/master-0-g25f2bd5"
 }

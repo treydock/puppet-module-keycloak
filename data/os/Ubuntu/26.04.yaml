@@ -1,0 +1,4 @@
+# TODO: Use until the defaults are addressed upstream:
+# https://github.com/puppetlabs/puppetlabs-mysql/issues/1507
+keycloak::db_charset: utf8mb3
+keycloak::db_collate: utf8mb3_general_ci
