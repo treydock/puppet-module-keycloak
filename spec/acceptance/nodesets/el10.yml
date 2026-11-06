@@ -20,6 +20,9 @@ HOSTS:
 CONFIG:
   log_level: debug
   type: foss
+  docker_options:
+    write_timeout: 600
+    read_timeout: 600
 ssh:
   password: root
   auth_methods: ["password"]

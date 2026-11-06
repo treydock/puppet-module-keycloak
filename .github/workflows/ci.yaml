@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby: 3.2.3
+          - ruby: 3.2
             puppet: 8
             fixtures: .fixtures.yml
             allow_failure: false
@@ -32,8 +32,8 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-          cache-version: 2
-          bundler: '2.1.0'
+          cache-version: 3
+          bundler: '2.4.13'
       - name: Validate
         run: bundle exec rake check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint
       - name: Run tests
