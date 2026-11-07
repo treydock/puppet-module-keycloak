@@ -197,7 +197,7 @@ This module may work on earlier versions but this is the only version tested.
 | 21.x             | 10.x                            |
 | 22.x - 24.x      | 11.x                            |
 | 25.x             | 12.x - 13.x                     |
-| 26.x             | 14.x                            |
+| 26.x             | 14.x - 15.x                     |
 | -----------------|---------------------------------|
 
 ## Usage
@@ -214,7 +214,7 @@ Install a specific version of Keycloak.
 
 ```puppet
 class { 'keycloak':
-  version => '24.0.0',
+  version => '26.8.2',
   db      => 'mariadb',
 }
 ```
