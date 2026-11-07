@@ -10,11 +10,11 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 9.0.0 <10.0.0"
+      "version_requirement": ">= 9.0.0 <11.0.0"
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">= 11.1.0 <17.0.0"
+      "version_requirement": ">= 11.1.0 <19.0.0"
     },
     {
       "name": "puppetlabs/postgresql",
@@ -30,11 +30,11 @@
     },
     {
       "name": "puppet/archive",
-      "version_requirement": ">= 0.5.1 <8.0.0"
+      "version_requirement": ">= 0.5.1 <10.0.0"
     },
     {
       "name": "puppet/systemd",
-      "version_requirement": ">= 0.4.0 <9.0.0"
+      "version_requirement": ">= 0.4.0 <12.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -86,5 +86,5 @@
   ],
   "pdk-version": "3.4.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g25f2bd5"
+  "template-ref": "heads/master-0-gf41bf55"
 }

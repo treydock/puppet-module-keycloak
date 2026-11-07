@@ -76,22 +76,8 @@ postgresql::globals::version: '16'
 postgresql::globals::manage_package_repo: true
 EL10_YAML
 
-deb13 = <<-DEB13_YAML
----
-mysql::server::override_options:
-  client:
-    ssl: false
-  mysqld:
-    ssl-disable: true
-DEB13_YAML
-
 ubuntu26 = <<-UBUNTU26_YAML
 ---
-mysql::server::override_options:
-  client:
-    ssl: false
-  mysqld:
-    ssl-disable: true
 postgresql::globals::version: '18'
 UBUNTU26_YAML
 
@@ -103,7 +89,6 @@ create_remote_file(hosts, File.join(puppet_dir, 'data/os/RedHat/8.yaml'), el8_ya
 create_remote_file(hosts, File.join(puppet_dir, 'data/os/RedHat/9.yaml'), el9_yaml)
 create_remote_file(hosts, File.join(puppet_dir, 'data/os/RedHat/10.yaml'), el10_yaml)
 on hosts, "mkdir -p #{File.join(puppet_dir, 'data/os/Debian')}"
-create_remote_file(hosts, File.join(puppet_dir, 'data/os/Debian/13.yaml'), deb13)
 create_remote_file(hosts, File.join(puppet_dir, 'data/os/Debian/26.04.yaml'), ubuntu26)
 
 # Ensure new enough MariaDB is used
