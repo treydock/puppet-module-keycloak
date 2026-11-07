@@ -61,10 +61,12 @@ el8_yaml = <<-EL8_YAML
 keycloak::db_charset: utf8mb3
 keycloak::db_collate: utf8mb3_general_ci
 postgresql::globals::manage_dnf_module: true
-postgresql::globals::version: '13'
+postgresql::globals::version: '15'
 EL8_YAML
 el9_yaml = <<-EL9_YAML
 ---
+postgresql::globals::version: '15'
+postgresql::globals::manage_package_repo: true
 keycloak::db_charset: utf8mb3
 keycloak::db_collate: utf8mb3_general_ci
 EL9_YAML
