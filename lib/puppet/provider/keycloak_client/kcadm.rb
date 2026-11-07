@@ -275,6 +275,12 @@ Puppet::Type.type(:keycloak_client).provide(:kcadm, parent: Puppet::Provider::Ke
       end
       output = kcadm('create', 'clients', resource[:realm], t.path)
       Puppet.debug("create client output: #{output}")
+      # The saml.signing.private.key is not getting created on create so have to update after create
+      if resource[:saml_signing_private_key]
+        @property_hash[:id] = resource[:id]
+        @property_flush[:saml_signing_private_key] = resource[:saml_signing_private_key]
+        flush
+      end
     rescue Puppet::ExecutionFailure => e
       raise Puppet::Error, "kcadm create client failed\nError message: #{e.message}"
     end
