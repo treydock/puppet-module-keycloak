@@ -15,17 +15,17 @@ describe Puppet::Type.type(:keycloak_required_action).provider(:kcadm) do
   describe 'self.instances' do
     it 'creates instances' do
       allow(described_class).to receive(:realms).and_return(['master', 'test'])
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/required-actions', 'master').and_return(my_fixture_read('get-master.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/unregistered-required-actions', 'master').and_return(my_fixture_read('get-unregistered-required-actions-master.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/required-actions', 'test').and_return(my_fixture_read('get-test.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/unregistered-required-actions', 'test').and_return(my_fixture_read('get-unregistered-required-actions-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/required-actions', 'master').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_required_action/kcadm/get-master.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/unregistered-required-actions', 'master').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_required_action/kcadm/get-unregistered-required-actions-master.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/required-actions', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_required_action/kcadm/get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/unregistered-required-actions', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_required_action/kcadm/get-unregistered-required-actions-test.out'))
 
       expect(described_class.instances.length).to eq(16)
     end
 
     it 'returns the resource for a required action' do
       allow(described_class).to receive(:realms).and_return(['test'])
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/required-actions', 'test').and_return(my_fixture_read('get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/required-actions', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_required_action/kcadm/get-test.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/unregistered-required-actions', 'test').and_return('[]')
 
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')

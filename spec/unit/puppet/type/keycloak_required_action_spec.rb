@@ -65,22 +65,22 @@ describe Puppet::Type.type(:keycloak_required_action) do
     ].each do |p|
       it "accepts true for #{p}" do
         config[p] = true
-        expect(resource[p]).to eq(true)
+        expect(resource[p]).to be(true)
       end
 
       it "accepts true for #{p} string" do
         config[p] = 'true'
-        expect(resource[p]).to eq(true)
+        expect(resource[p]).to be(true)
       end
 
       it "accepts false for #{p}" do
         config[p] = false
-        expect(resource[p]).to eq(false)
+        expect(resource[p]).to be(false)
       end
 
       it "accepts false for #{p} string" do
         config[p] = 'false'
-        expect(resource[p]).to eq(false)
+        expect(resource[p]).to be(false)
       end
 
       it "does not accept strings for #{p}" do

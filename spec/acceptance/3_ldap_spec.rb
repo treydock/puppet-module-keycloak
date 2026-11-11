@@ -142,7 +142,7 @@ describe 'keycloak_ldap_user_provider:', if: RSpec.configuration.keycloak_full_b
         expect(d['config']['usersDn']).to eq(['ou=People,dc=test'])
         expect(d['config']['connectionUrl']).to eq(['ldap://localhost:389'])
         expect(d['config']['userObjectClasses']).to eq(['posixAccount'])
-        expect(d['config'].key?('customUserSearchFilter')).to eq(false)
+        expect(d['config'].key?('customUserSearchFilter')).to be(false)
         expect(d['config']['trustEmail']).to eq(['true'])
         expect(d['config']['fullSyncPeriod']).to eq(['60'])
         expect(d['config']['changedSyncPeriod']).to eq(['30'])

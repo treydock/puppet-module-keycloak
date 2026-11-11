@@ -57,7 +57,7 @@ Manage Keycloak clients
       end
     end
 
-    def is_to_s(_currentvalue) # rubocop:disable Style/PredicateName
+    def is_to_s(_currentvalue) # rubocop:disable Naming/PredicatePrefix
       '[old secret redacted]'
     end
 
@@ -266,7 +266,7 @@ Manage Keycloak clients
       super(currentvalue, newvalue)
     end
 
-    def is_to_s(currentvalue) # rubocop:disable Style/PredicateName
+    def is_to_s(currentvalue) # rubocop:disable Naming/PredicatePrefix
       currentvalue.to_s
     end
     alias_method :should_to_s, :is_to_s

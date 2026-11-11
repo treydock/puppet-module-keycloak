@@ -114,7 +114,7 @@ Manage a Keycloak flow
       end
     end
 
-    def is_to_s(_currentvalue) # rubocop:disable Style/PredicateName
+    def is_to_s(_currentvalue) # rubocop:disable Naming/PredicatePrefix
       '[old config redacted]'
     end
 

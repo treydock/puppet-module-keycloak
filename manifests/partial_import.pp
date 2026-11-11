@@ -42,9 +42,9 @@ define keycloak::partial_import (
 
   $file_path = "${keycloak::conf_dir}/${filename}.json"
   $command = join([
-      "${keycloak::wrapper_path} create partialImport",
-      "-r ${realm} -s ifResourceExists=${if_resource_exists} -o",
-      "-f ${file_path}",
+    "${keycloak::wrapper_path} create partialImport",
+    "-r ${realm} -s ifResourceExists=${if_resource_exists} -o",
+    "-f ${file_path}",
   ], ' ')
 
   file { $file_path:

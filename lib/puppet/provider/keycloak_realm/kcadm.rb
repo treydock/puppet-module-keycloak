@@ -213,7 +213,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
     end
     scope_id = nil
     if resource[:default_client_scopes]
-      default_scopes = default_scopes ||= get_client_scopes(resource[:name], 'default')
+      default_scopes = @default_scopes ||= get_client_scopes(resource[:name], 'default')
       remove_default_scopes = default_scopes.keys - resource[:default_client_scopes]
       begin
         remove_default_scopes.each do |s|
@@ -225,7 +225,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       end
     end
     if resource[:optional_client_scopes]
-      optional_scopes = optional_scopes ||= get_client_scopes(resource[:name], 'optional')
+      optional_scopes = @optional_scopes ||= get_client_scopes(resource[:name], 'optional')
       remove_optional_scopes = optional_scopes.keys - resource[:optional_client_scopes]
       begin
         remove_optional_scopes.each do |s|
@@ -237,7 +237,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       end
     end
     if resource[:default_client_scopes]
-      default_scopes = default_scopes ||= get_client_scopes(resource[:name], 'default')
+      default_scopes = @default_scopes ||= get_client_scopes(resource[:name], 'default')
       add_default_scopes = resource[:default_client_scopes] - default_scopes.keys
       begin
         add_default_scopes.each do |s|
@@ -249,7 +249,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       end
     end
     if resource[:optional_client_scopes]
-      optional_scopes = optional_scopes ||= get_client_scopes(resource[:name], 'optional')
+      optional_scopes = @optional_scopes ||= get_client_scopes(resource[:name], 'optional')
       add_optional_scopes = resource[:optional_client_scopes] - optional_scopes.keys
       begin
         add_optional_scopes.each do |s|
@@ -383,7 +383,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
       end
       scope_id = nil
       if @property_flush[:default_client_scopes]
-        default_scopes = default_scopes ||= get_client_scopes(resource[:name], 'default')
+        default_scopes = @default_scopes ||= get_client_scopes(resource[:name], 'default')
         remove_default_scopes = default_scopes.keys - @property_flush[:default_client_scopes]
         begin
           remove_default_scopes.each do |s|
@@ -395,7 +395,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
         end
       end
       if @property_flush[:optional_client_scopes]
-        optional_scopes = optional_scopes ||= get_client_scopes(resource[:name], 'optional')
+        optional_scopes = @optional_scopes ||= get_client_scopes(resource[:name], 'optional')
         remove_optional_scopes = optional_scopes.keys - @property_flush[:optional_client_scopes]
         begin
           remove_optional_scopes.each do |s|
@@ -419,7 +419,7 @@ Puppet::Type.type(:keycloak_realm).provide(:kcadm, parent: Puppet::Provider::Key
         end
       end
       if @property_flush[:optional_client_scopes]
-        optional_scopes = optional_scopes ||= get_client_scopes(resource[:name], 'optional')
+        optional_scopes = @optional_scopes ||= get_client_scopes(resource[:name], 'optional')
         add_optional_scopes = @property_flush[:optional_client_scopes] - optional_scopes.keys
         begin
           add_optional_scopes.each do |s|

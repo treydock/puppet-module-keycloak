@@ -73,8 +73,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         expect(data['rootUrl']).to eq('https://test.foo.bar')
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test1'])
         expect(data['attributes']['login_theme']).to eq('keycloak')
-        expect(data['authorizationServicesEnabled']).to eq(nil)
-        expect(data['serviceAccountsEnabled']).to eq(true)
+        expect(data['authorizationServicesEnabled']).to be_nil
+        expect(data['serviceAccountsEnabled']).to be(true)
         expect(data['authenticationFlowBindingOverrides']['browser']).to eq('foo-test')
         expect(data['attributes']['foo']).to eq('bar')
         expect(data['attributes']['backchannel.logout.url']).to eq('https://test.foo.bar/logout')
@@ -224,8 +224,8 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
         expect(data['rootUrl']).to eq('https://test.foo.bar/test')
         expect(data['redirectUris']).to eq(['https://test.foo.bar/test2'])
         expect(data['attributes']['login_theme']).to be_nil
-        expect(data['authorizationServicesEnabled']).to eq(true)
-        expect(data['serviceAccountsEnabled']).to eq(true)
+        expect(data['authorizationServicesEnabled']).to be(true)
+        expect(data['serviceAccountsEnabled']).to be(true)
         expect(data['authenticationFlowBindingOverrides']).to eq({})
       end
     end
@@ -305,7 +305,7 @@ describe 'keycloak_client define:', if: RSpec.configuration.keycloak_full_batch1
     it 'has not disabled authorization services due to unrelated property change' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get clients/test.foo.bar -r test' do |result|
         data = JSON.parse(result.stdout)
-        expect(data['authorizationServicesEnabled']).to eq(true)
+        expect(data['authorizationServicesEnabled']).to be(true)
       end
     end
   end

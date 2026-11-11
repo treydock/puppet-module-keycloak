@@ -84,7 +84,7 @@ Manage Keycloak required actions
       end
     end
 
-    def is_to_s(_currentvalue) # rubocop:disable Style/PredicateName
+    def is_to_s(_currentvalue) # rubocop:disable Naming/PredicatePrefix
       '[old config redacted]'
     end
 

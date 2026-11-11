@@ -55,13 +55,13 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get realms/test' do |result|
         data = JSON.parse(result.stdout)
         expect(data['id']).to eq('test')
-        expect(data['bruteForceProtected']).to eq(false)
-        expect(data['registrationAllowed']).to eq(false)
-        expect(data['resetPasswordAllowed']).to eq(false)
-        expect(data['verifyEmail']).to eq(false)
+        expect(data['bruteForceProtected']).to be(false)
+        expect(data['registrationAllowed']).to be(false)
+        expect(data['resetPasswordAllowed']).to be(false)
+        expect(data['verifyEmail']).to be(false)
         expect(data['sslRequired']).to eq('external')
-        expect(data['editUsernameAllowed']).to eq(false)
-        expect(data['internationalizationEnabled']).to eq(false)
+        expect(data['editUsernameAllowed']).to be(false)
+        expect(data['internationalizationEnabled']).to be(false)
       end
     end
 
@@ -95,11 +95,11 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     it 'has default events config' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get events/config -r test' do |result|
         data = JSON.parse(result.stdout)
-        expect(data['eventsEnabled']).to eq(false)
+        expect(data['eventsEnabled']).to be(false)
         expect(data['eventsExpiration']).to be_nil
         expect(data['eventsListeners']).to eq(['jboss-logging'])
-        expect(data['adminEventsEnabled']).to eq(false)
-        expect(data['adminEventsDetailsEnabled']).to eq(false)
+        expect(data['adminEventsEnabled']).to be(false)
+        expect(data['adminEventsDetailsEnabled']).to be(false)
       end
     end
 
@@ -135,7 +135,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
         expect(data['ssoSessionMaxLifespan']).to eq(36_000)
         expect(data['offlineSessionIdleTimeout']).to eq(2_592_000)
         expect(data['offlineSessionMaxLifespan']).to eq(5_184_000)
-        expect(data['offlineSessionMaxLifespanEnabled']).to eq(true)
+        expect(data['offlineSessionMaxLifespanEnabled']).to be(true)
       end
     end
 
@@ -276,13 +276,13 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
         ]
 
         data = JSON.parse(result.stdout)
-        expect(data['rememberMe']).to eq(true)
-        expect(data['registrationAllowed']).to eq(true)
-        expect(data['loginWithEmailAllowed']).to eq(false)
-        expect(data['duplicateEmailsAllowed']).to eq(true)
-        expect(data['resetPasswordAllowed']).to eq(true)
-        expect(data['verifyEmail']).to eq(true)
-        expect(data['userManagedAccessAllowed']).to eq(true)
+        expect(data['rememberMe']).to be(true)
+        expect(data['registrationAllowed']).to be(true)
+        expect(data['loginWithEmailAllowed']).to be(false)
+        expect(data['duplicateEmailsAllowed']).to be(true)
+        expect(data['resetPasswordAllowed']).to be(true)
+        expect(data['verifyEmail']).to be(true)
+        expect(data['userManagedAccessAllowed']).to be(true)
         expect(data['accessCodeLifespan']).to eq(3600)
         expect(data['accessCodeLifespanLogin']).to eq(3600)
         expect(data['accessCodeLifespanUserAction']).to eq(600)
@@ -294,7 +294,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
         expect(data['ssoSessionMaxLifespan']).to eq(72_000)
         expect(data['offlineSessionIdleTimeout']).to eq(1_296_000)
         expect(data['offlineSessionMaxLifespan']).to eq(2_592_000)
-        expect(data['offlineSessionMaxLifespanEnabled']).to eq(false)
+        expect(data['offlineSessionMaxLifespanEnabled']).to be(false)
         expect(data['browserSecurityHeaders']['contentSecurityPolicy']).to eq("frame-src https://*.duosecurity.com/ 'self'; frame-src 'self'; frame-ancestors 'self'; object-src 'none';")
         expect(data['smtpServer']['host']).to eq('smtp.example.org')
         expect(data['smtpServer']['port']).to eq('587')
@@ -306,20 +306,20 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
         expect(data['smtpServer']['fromDisplayName']).to eq('Keycloak')
         expect(data['smtpServer']['replyTo']).to eq('webmaster@example.org')
         expect(data['smtpServer']['replyToDisplayName']).to eq('Hostmaster')
-        expect(data['bruteForceProtected']).to eq(true)
+        expect(data['bruteForceProtected']).to be(true)
         expect(data['loginTheme']).to eq('keycloak.v2')
         expect(data['accountTheme']).to eq('keycloak.v2')
         expect(data['adminTheme']).to eq('keycloak.v2')
         expect(data['emailTheme']).to eq('keycloak.v2')
         expect(data['failureFactor']).to eq(60)
-        expect(data['permanentLockout']).to eq(true)
+        expect(data['permanentLockout']).to be(true)
         expect(data['maxFailureWaitSeconds']).to eq(999)
         expect(data['minimumQuickLoginWaitSeconds']).to eq(40)
         expect(data['waitIncrementSeconds']).to eq(10)
         expect(data['quickLoginCheckMilliSeconds']).to eq(10)
         expect(data['maxDeltaTimeSeconds']).to eq(3600)
-        expect(data['revokeRefreshToken']).to eq(true)
-        expect(data['internationalizationEnabled']).to eq(true)
+        expect(data['revokeRefreshToken']).to be(true)
+        expect(data['internationalizationEnabled']).to be(true)
         expect(data['defaultLocale']).to eq('en')
         expect(data['supportedLocales']).to eq(['de', 'en'])
         expect(data['otpPolicyType']).to eq('totp')
@@ -327,7 +327,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
         expect(data['otpPolicyInitialCounter']).to eq(1)
         expect(data['otpPolicyDigits']).to eq(8)
         expect(data['otpPolicyPeriod']).to eq(30)
-        expect(data['otpPolicyCodeReusable']).to eq(true)
+        expect(data['otpPolicyCodeReusable']).to be(true)
         expect(data['passwordPolicy']).to eq(password_policy_value.join(' and '))
         expect(data['webAuthnPolicyRpEntityName']).to eq('Keycloak')
         expect(data['webAuthnPolicySignatureAlgorithms']).to eq(['ES256', 'ES384', 'ES512', 'RS256', 'RS384', 'RS512'])
@@ -337,7 +337,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
         expect(data['webAuthnPolicyRequireResidentKey']).to eq('No')
         expect(data['webAuthnPolicyUserVerificationRequirement']).to eq('required')
         expect(data['webAuthnPolicyCreateTimeout']).to eq(600)
-        expect(data['webAuthnPolicyAvoidSameAuthenticatorRegister']).to eq(true)
+        expect(data['webAuthnPolicyAvoidSameAuthenticatorRegister']).to be(true)
         expect(data['webAuthnPolicyAcceptableAaguids']).to eq(['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'])
         expect(data['webAuthnPolicyExtraOrigins']).to eq(['https://example.com'])
         expect(data['webAuthnPolicyPasswordlessRpEntityName']).to eq('Keycloak')
@@ -348,7 +348,7 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
         expect(data['webAuthnPolicyPasswordlessRequireResidentKey']).to eq('No')
         expect(data['webAuthnPolicyPasswordlessUserVerificationRequirement']).to eq('required')
         expect(data['webAuthnPolicyPasswordlessCreateTimeout']).to eq(600)
-        expect(data['webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister']).to eq(true)
+        expect(data['webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister']).to be(true)
         expect(data['webAuthnPolicyPasswordlessAcceptableAaguids']).to eq(['d1d1d1d1-d1d1-d1d1-d1d1-d1d1d1d1d1d1'])
         expect(data['webAuthnPolicyPasswordlessExtraOrigins']).to eq(['https://example.com'])
       end
@@ -365,11 +365,11 @@ describe 'keycloak_realm:', if: RSpec.configuration.keycloak_full_batch1 do
     it 'has updated events config' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get events/config -r test' do |result|
         data = JSON.parse(result.stdout)
-        expect(data['eventsEnabled']).to eq(true)
+        expect(data['eventsEnabled']).to be(true)
         expect(data['eventsExpiration']).to eq(2_678_400)
         expect(data['eventsListeners']).to eq(['jboss-logging'])
-        expect(data['adminEventsEnabled']).to eq(true)
-        expect(data['adminEventsDetailsEnabled']).to eq(true)
+        expect(data['adminEventsEnabled']).to be(true)
+        expect(data['adminEventsDetailsEnabled']).to be(true)
       end
     end
 

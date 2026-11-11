@@ -56,7 +56,7 @@ describe 'keycloak_api:', if: RSpec.configuration.keycloak_full_batch1 do
     it 'has updated a realm' do
       on hosts, '/opt/keycloak/bin/kcadm.sh get realms/test2 --no-config --server http://127.0.0.1:8080 --realm master --user admin --password changeme' do |result|
         data = JSON.parse(result.stdout)
-        expect(data['rememberMe']).to eq(true)
+        expect(data['rememberMe']).to be(true)
       end
     end
   end

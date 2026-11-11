@@ -105,7 +105,7 @@ class Puppet::Provider::KeycloakAPI < Puppet::Provider
     if action == 'create' && print_id
       arguments << '--id'
     end
-    if use_wrapper == false || use_wrapper == :false
+    if [false, :false].include?(use_wrapper)
       auth_arguments = [
         '--no-config',
         '--server', server,

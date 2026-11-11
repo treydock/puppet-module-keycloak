@@ -25,8 +25,8 @@ describe 'required action types:', if: RSpec.configuration.keycloak_full_batch2 
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get authentication/required-actions/webauthn-register -r test' do |result|
         data = JSON.parse(result.stdout)
         expect(data['alias']).to eq('webauthn-register')
-        expect(data['defaultAction']).to eq(true)
-        expect(data['enabled']).to eq(true)
+        expect(data['defaultAction']).to be(true)
+        expect(data['enabled']).to be(true)
         expect(data['priority']).to eq(200)
       end
     end

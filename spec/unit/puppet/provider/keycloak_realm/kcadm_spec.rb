@@ -12,7 +12,7 @@ describe Puppet::Type.type(:keycloak_realm).provider(:kcadm) do
 
   describe 'self.instances' do
     it 'creates instances' do
-      allow(described_class).to receive(:kcadm).with('get', 'realms').and_return(my_fixture_read('get.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'realms').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_realm/kcadm/get.out'))
       allow(described_class).to receive(:get_client_scopes).with('test', 'default').and_return('profile' => '8a6759cb-3950-48a2-b29b-c2c06fc3379b')
       allow(described_class).to receive(:get_client_scopes).with('test', 'optional').and_return('address' => '1cda5a52-aa2c-4b07-b620-30b703619581')
       allow(described_class).to receive(:get_client_scopes).with('master', 'default').and_return('profile' => '8a6759cb-3950-48a2-b29b-c2c06fc3379b')
@@ -25,7 +25,7 @@ describe Puppet::Type.type(:keycloak_realm).provider(:kcadm) do
     end
 
     it 'returns the resource for a fileset' do
-      allow(described_class).to receive(:kcadm).with('get', 'realms').and_return(my_fixture_read('get.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'realms').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_realm/kcadm/get.out'))
       allow(described_class).to receive(:get_client_scopes).with('test', 'default').and_return('profile' => '8a6759cb-3950-48a2-b29b-c2c06fc3379b')
       allow(described_class).to receive(:get_client_scopes).with('test', 'optional').and_return('address' => '1cda5a52-aa2c-4b07-b620-30b703619581')
       allow(described_class).to receive(:get_client_scopes).with('master', 'default').and_return('profile' => '8a6759cb-3950-48a2-b29b-c2c06fc3379b')
