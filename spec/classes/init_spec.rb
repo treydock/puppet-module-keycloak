@@ -92,6 +92,15 @@ describe 'keycloak' do
 
       context 'when keycloak db=postgres' do
         let(:params) { { db: 'postgres' } }
+        # TODO: Remove once released:
+        # https://github.com/puppetlabs/puppetlabs-postgresql/commit/ae81b3f72843c360e832e972de1a4da97509ecbe
+        let(:pre_condition) do
+          <<~PP
+            if $facts['os']['release']['major'] == '26.04' {
+              class { 'postgresql::globals': version => '18' }
+            }
+          PP
+        end
 
         it { is_expected.to contain_class('keycloak::db::postgres').that_notifies('Class[keycloak::service]') }
 
