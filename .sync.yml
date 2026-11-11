@@ -16,16 +16,25 @@ Rakefile:
     puppet:
       - puppet8
     keycloak_version:
-      - '26.5.2'
+      - '26.7.5'
+      - '26.8.2'
     keycloak_full: ['no']
   acceptance_includes:
     - set: el9
       puppet: puppet8
-      keycloak_version: '26.5.2'
+      keycloak_version: '26.7.5'
       keycloak_full: 'batch1'
     - set: el9
       puppet: puppet8
-      keycloak_version: '26.5.2'
+      keycloak_version: '26.7.5'
+      keycloak_full: 'batch2'
+    - set: el9
+      puppet: puppet8
+      keycloak_version: '26.8.2'
+      keycloak_full: 'batch1'
+    - set: el9
+      puppet: puppet8
+      keycloak_version: '26.8.2'
       keycloak_full: 'batch2'
 .gitignore:
   paths:
