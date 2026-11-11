@@ -192,12 +192,12 @@ describe Puppet::Type.type(:keycloak_client) do
 
     it 'is in sync with default' do
       config[:attributes] = {}
-      expect(resource.property(:attributes).insync?('foo' => 'bar')).to eq(true)
+      expect(resource.property(:attributes).insync?('foo' => 'bar')).to be(true)
     end
 
     it 'is in sync with defined properties' do
       config[:attributes] = { 'foo' => 'bar' }
-      expect(resource.property(:attributes).insync?('foo' => 'bar', 'bar' => 'baz')).to eq(true)
+      expect(resource.property(:attributes).insync?('foo' => 'bar', 'bar' => 'baz')).to be(true)
     end
   end
 

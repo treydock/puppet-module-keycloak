@@ -14,15 +14,17 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
   describe 'self.instances' do
     it 'creates instances' do
       allow(described_class).to receive(:realms).and_return(['test'])
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(my_fixture_read('get-test.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow/kcadm/get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow/kcadm/get-executions.out'))
       expect(described_class.instances.length).to eq(3)
     end
 
     it 'returns the resource for a flow' do
       allow(described_class).to receive(:realms).and_return(['test'])
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(my_fixture_read('get-test.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow/kcadm/get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow/kcadm/get-executions.out'))
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
       expect(property_hash[:name]).to eq('browser-with-duo on test')
       property_hash = described_class.instances[1].instance_variable_get('@property_hash')
@@ -72,7 +74,8 @@ describe Puppet::Type.type(:keycloak_flow).provider(:kcadm) do
       allow(Tempfile).to receive(:new).with('keycloak_flow').and_return(temp)
       allow(Tempfile).to receive(:new).with('keycloak_flow_execution').and_return(tempu)
       uid = '53751618-6a49-4682-b4e8-624f170b8507'
-      expect(resource.provider).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(my_fixture_read('get-executions.out')) # rubocop:disable RSpec/StubbedMock
+      fixture = File.read('spec/fixtures/unit/puppet/provider/keycloak_flow/kcadm/get-executions.out')
+      expect(resource.provider).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(fixture) # rubocop:disable RSpec/StubbedMock
       expect(resource.provider).to receive(:kcadm).with('create', 'authentication/flows/browser-with-duo/executions/flow', 'test', temp.path, nil, true).and_return(uid) # rubocop:disable RSpec/StubbedMock
       expect(resource.provider).to receive(:kcadm).with('update', 'authentication/flows/browser-with-duo/executions', 'test', tempu.path, nil, true)
       resource.provider.create

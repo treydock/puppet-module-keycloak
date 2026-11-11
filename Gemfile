@@ -17,41 +17,21 @@ ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
-  gem "voxpupuli-test", '9.2.1',    require: false
-  gem "faraday", '~> 1.0',          require: false
-  gem "github_changelog_generator", require: false
-  gem "puppet-blacksmith",          require: false
-  gem "puppet-strings",             require: false
+  gem "voxpupuli-test", '~> 14.0', require: false
 end
 group :system_tests do
-  gem "voxpupuli-acceptance", '~> 4.4.0', require: false
+  gem "voxpupuli-acceptance", '~> 4.4', require: false
+end
+group :release do
+  gem "voxpupuli-release", '~> 5.5', require: false
 end
 
-puppet_version = ENV['PUPPET_GEM_VERSION']
-facter_version = ENV['FACTER_GEM_VERSION']
-hiera_version = ENV['HIERA_GEM_VERSION']
+openvox_version = ENV['OPENVOX_GEM_VERSION']
 
 gems = {}
 
 gems['rake'] = [require: false]
-gems['puppetlabs_spec_helper'] = [require: false]
-gems['puppet'] = location_for(puppet_version)
-
-# If facter or hiera versions have been specified via the environment
-# variables
-
-gems['facter'] = location_for(facter_version) if facter_version
-gems['hiera'] = location_for(hiera_version) if hiera_version
-
-if Gem.win_platform? && puppet_version =~ %r{^(file:///|git://)}
-  # If we're using a Puppet gem on Windows which handles its own win32-xxx gem
-  # dependencies (>= 3.5.0), set the maximum versions (see PUP-6445).
-  gems['win32-dir'] =      ['<= 0.4.9', require: false]
-  gems['win32-eventlog'] = ['<= 0.6.5', require: false]
-  gems['win32-process'] =  ['<= 0.7.5', require: false]
-  gems['win32-security'] = ['<= 0.2.5', require: false]
-  gems['win32-service'] =  ['0.8.8', require: false]
-end
+gems['openvox'] = location_for(openvox_version)
 
 gems.each do |gem_name, gem_params|
   gem gem_name, *gem_params

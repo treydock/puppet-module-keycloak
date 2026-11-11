@@ -4,7 +4,7 @@ RSpec.configure do |c|
   c.mock_with :rspec
 end
 
-require 'puppetlabs_spec_helper/module_spec_helper'
+require 'voxpupuli/test/spec_helper'
 require 'rspec-puppet-facts'
 
 require 'spec_helper_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_local.rb'))
@@ -56,6 +56,12 @@ def ensure_module_defined(module_name)
     last_module.const_set(next_module, Module.new) unless last_module.const_defined?(next_module, false)
     last_module.const_get(next_module, false)
   end
+end
+
+# TODO: Get modules off this legacy method
+def verify_contents(subject, title, expected_lines)
+  content = subject.resource('file', title).send(:parameters)[:content]
+  expect(content.split("\n") & expected_lines).to match_array expected_lines.uniq
 end
 
 # 'spec_overrides' from sync.yml will appear below this line

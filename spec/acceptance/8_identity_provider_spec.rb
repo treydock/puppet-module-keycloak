@@ -42,7 +42,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     it 'has created identity provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/cilogon -r test' do |result|
         data = JSON.parse(result.stdout)
-        expect(data['enabled']).to eq(true)
+        expect(data['enabled']).to be(true)
         expect(data['displayName']).to eq('CILogon')
         expect(data['providerId']).to eq('oidc')
         expect(data['config']['jwksUrl']).to eq('https://cilogon.org/jwks')
@@ -54,7 +54,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     it 'has created keycloak-oidc identity provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/foo -r test' do |result|
         data = JSON.parse(result.stdout)
-        expect(data['enabled']).to eq(true)
+        expect(data['enabled']).to be(true)
         expect(data['displayName']).to eq('foo')
         expect(data['providerId']).to eq('keycloak-oidc')
         expect(data['config']['userInfoUrl']).to eq('https://foo/oauth2/userinfo')
@@ -105,7 +105,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     it 'has created identity provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/cilogon -r test' do |result|
         data = JSON.parse(result.stdout)
-        expect(data['enabled']).to eq(true)
+        expect(data['enabled']).to be(true)
         expect(data['displayName']).to eq('CILogon')
         expect(data['providerId']).to eq('oidc')
         expect(data['config']['jwksUrl']).to eq('https://cilogon.org/jwks')
@@ -118,7 +118,7 @@ describe 'keycloak_identity_provider type:', if: RSpec.configuration.keycloak_fu
     it 'has created keycloak-oidc identity provider' do
       on hosts, '/opt/keycloak/bin/kcadm-wrapper.sh get identity-provider/instances/foo -r test' do |result|
         data = JSON.parse(result.stdout)
-        expect(data['enabled']).to eq(true)
+        expect(data['enabled']).to be(true)
         expect(data['displayName']).to eq('foo')
         expect(data['providerId']).to eq('keycloak-oidc')
         expect(data['config']['userInfoUrl']).to eq('https://foo/userinfo')

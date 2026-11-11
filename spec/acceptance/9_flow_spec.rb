@@ -94,7 +94,7 @@ describe 'flow types:', if: RSpec.configuration.keycloak_full_batch2 do
         data = JSON.parse(result.stdout)
         expect(data['alias']).to eq('browser-with-duo')
         expect(data['description']).to eq('Browser with DUO')
-        expect(data['topLevel']).to eq(true)
+        expect(data['topLevel']).to be(true)
       end
     end
 

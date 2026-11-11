@@ -17,5 +17,3 @@ fixtures:
       repo: puppet/archive
     systemd:
       repo: puppet/systemd
-  symlinks:
-    keycloak: "#{source_dir}"

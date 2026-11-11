@@ -157,7 +157,7 @@ Manage Keycloak LDAP user providers
       end
     end
 
-    def is_to_s(_currentvalue) # rubocop:disable Style/PredicateName
+    def is_to_s(_currentvalue) # rubocop:disable Naming/PredicatePrefix
       '[old bind_credential redacted]'
     end
 

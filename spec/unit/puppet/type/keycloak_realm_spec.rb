@@ -377,12 +377,12 @@ describe Puppet::Type.type(:keycloak_realm) do
 
     it 'is in sync with default' do
       config[:custom_properties] = {}
-      expect(resource.property(:custom_properties).insync?('foo' => 'bar')).to eq(true)
+      expect(resource.property(:custom_properties).insync?('foo' => 'bar')).to be(true)
     end
 
     it 'is in sync with defined properties' do
       config[:custom_properties] = { 'foo' => 'bar' }
-      expect(resource.property(:custom_properties).insync?('foo' => 'bar', 'bar' => 'baz')).to eq(true)
+      expect(resource.property(:custom_properties).insync?('foo' => 'bar', 'bar' => 'baz')).to be(true)
     end
   end
 

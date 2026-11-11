@@ -16,7 +16,7 @@ class PuppetX::Keycloak::ArrayProperty < Puppet::Property
     super(currentvalue, newvalue)
   end
 
-  def is_to_s(currentvalue) # rubocop:disable Style/PredicateName
+  def is_to_s(currentvalue) # rubocop:disable Naming/PredicatePrefix
     if currentvalue.is_a?(Array)
       currentvalue.join(',')
     else
