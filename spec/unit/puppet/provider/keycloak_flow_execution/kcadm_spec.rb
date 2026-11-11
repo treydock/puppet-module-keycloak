@@ -18,7 +18,8 @@ describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
     it 'creates instances' do
       allow(described_class).to receive(:realms).and_return(['test'])
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-test.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-executions.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-executions.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/config/be93a426-077f-4235-9686-677ff0706bf8', 'test').and_return('{}')
       allow(described_class).to receive(:kcadm).with('get', 'authentication/config/script-user-enabled-authenticator.js', 'test').and_return('{}')
       expect(described_class.instances.length).to eq(5)
@@ -27,7 +28,8 @@ describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
     it 'returns the resource for a flow' do
       allow(described_class).to receive(:realms).and_return(['test'])
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-test.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-executions.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-executions.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/config/be93a426-077f-4235-9686-677ff0706bf8', 'test').and_return('{}')
       allow(described_class).to receive(:kcadm).with('get', 'authentication/config/script-user-enabled-authenticator.js', 'test').and_return('{}')
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
@@ -37,7 +39,8 @@ describe Puppet::Type.type(:keycloak_flow_execution).provider(:kcadm) do
     it 'returns script execution' do
       allow(described_class).to receive(:realms).and_return(['test'])
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-test.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-executions.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows/browser-with-duo/executions',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_flow_execution/kcadm/get-executions.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/config/be93a426-077f-4235-9686-677ff0706bf8', 'test').and_return('{}')
       allow(described_class).to receive(:kcadm).with('get', 'authentication/config/script-user-enabled-authenticator.js', 'test').and_return('{}')
       property_hash = described_class.instances.last.instance_variable_get('@property_hash')

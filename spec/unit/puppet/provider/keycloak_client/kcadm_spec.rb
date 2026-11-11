@@ -16,7 +16,8 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
     allow(described_class).to receive(:kcadm).with('get', 'clients', 'named').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-named.out'))
     allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'named', nil, ['id', 'alias']).and_return('[]')
     ['empty-name.example.com', 'display-name.example.com', 'localized.example.com', 'public.example.com'].each do |client_id|
-      allow(described_class).to receive(:kcadm).with('get', "clients/#{client_id}/client-secret", 'named').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-client-secret.out'))
+      allow(described_class).to receive(:kcadm).with('get', "clients/#{client_id}/client-secret",
+                                                     'named',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-client-secret.out'))
     end
     allow(described_class).to receive_messages(realms: ['named'], get_client_roles: [])
   end
@@ -32,9 +33,11 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       allow(described_class).to receive(:realms).and_return(['test', 'master'])
       allow(described_class).to receive(:kcadm).with('get', 'clients', 'master').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-master.out'))
       allow(described_class).to receive(:kcadm).with('get', 'clients', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-test.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'clients/example.com/client-secret', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-client-secret.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'clients/example.com/client-secret',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-client-secret.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'master', nil, ['id', 'alias']).and_return('[]')
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['id', 'alias']).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-flows.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil,
+                                                     ['id', 'alias'],).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-flows.out'))
       master_clients = JSON.parse(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-master.out'))
       test_clients = JSON.parse(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-test.out'))
       master_clients.each do |c|
@@ -50,9 +53,11 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       allow(described_class).to receive(:realms).and_return(['test', 'master'])
       allow(described_class).to receive(:kcadm).with('get', 'clients', 'master').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-master.out'))
       allow(described_class).to receive(:kcadm).with('get', 'clients', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-test.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'clients/example.com/client-secret', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-client-secret.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'clients/example.com/client-secret',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-client-secret.out'))
       allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'master', nil, ['id', 'alias']).and_return('[]')
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['id', 'alias']).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-flows.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil,
+                                                     ['id', 'alias'],).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-flows.out'))
       master_clients = JSON.parse(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-master.out'))
       test_clients = JSON.parse(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-test.out'))
       master_clients.each do |c|
@@ -131,7 +136,8 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       temp = Tempfile.new('keycloak_client')
       rtemp = Tempfile.new('keycloak_client_role')
       allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
-      allow(resource.provider).to receive(:kcadm).with('get', 'client-scopes', 'test', nil, ['id', 'name']).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-scopes.out'))
+      allow(resource.provider).to receive(:kcadm).with('get', 'client-scopes', 'test', nil,
+                                                       ['id', 'name'],).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-scopes.out'))
       allow(described_class).to receive(:get_client_roles).with('test', 'foo').and_return([])
       expect(resource.provider).to receive(:kcadm).with('create', 'clients', 'test', temp.path).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-client.out')) # rubocop:disable RSpec/StubbedMock
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/default-client-scopes/b8ebafcc-485f-44d2-9fe6-f4ed0da80980', 'test')
@@ -140,7 +146,8 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/optional-client-scopes/a83d9575-d122-4af1-afb0-10edb851798e', 'test')
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/optional-client-scopes/dbd3b1c1-9159-46d9-a879-9602972f1994', 'test')
       expect(resource.provider).to receive(:kcadm).with('update', 'clients/foo/default-client-scopes/ee85ec64-4853-4fd4-a2f4-ff578016c9b5', 'test')
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['id', 'alias']).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-flows.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil,
+                                                     ['id', 'alias'],).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-flows.out'))
       allow(Tempfile).to receive(:new).with('keycloak_client_role').and_return(rtemp)
       expect(resource.provider).to receive(:kcadm).with('create', 'clients/foo/roles', 'test', rtemp.path)
       resource.provider.create
@@ -187,7 +194,8 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       resource.provider.instance_variable_set(:@property_hash, hash)
       temp = Tempfile.new('keycloak_client')
       allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
-      allow(resource.provider).to receive(:kcadm).with('get', 'client-scopes', 'test', nil, ['id', 'name']).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-scopes.out'))
+      allow(resource.provider).to receive(:kcadm).with('get', 'client-scopes', 'test', nil,
+                                                       ['id', 'name'],).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-scopes.out'))
       expect(resource.provider).to receive(:kcadm).with('update', 'clients/foo', 'test', temp.path)
       expect(resource.provider).to receive(:kcadm).with('delete', 'clients/foo/default-client-scopes/ee85ec64-4853-4fd4-a2f4-ff578016c9b5', 'test')
       expect(resource.provider).to receive(:kcadm).with('update', 'clients/foo/default-client-scopes/openid-connect-clients', 'test')
@@ -201,7 +209,8 @@ describe Puppet::Type.type(:keycloak_client).provider(:kcadm) do
       resource.provider.instance_variable_set(:@property_hash, hash)
       temp = Tempfile.new('keycloak_client')
       allow(Tempfile).to receive(:new).with('keycloak_client').and_return(temp)
-      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil, ['id', 'alias']).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-flows.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'authentication/flows', 'test', nil,
+                                                     ['id', 'alias'],).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_client/kcadm/get-flows.out'))
       expect(resource.provider).to receive(:kcadm).with('update', 'clients/foo', 'test', temp.path)
       resource.provider.browser_flow = 'browser'
       resource.provider.flush

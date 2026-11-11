@@ -18,15 +18,19 @@ describe Puppet::Type.type(:keycloak_identity_provider).provider(:kcadm) do
   describe 'self.instances' do
     it 'creates instances' do
       allow(described_class).to receive(:realms).and_return(['master', 'test'])
-      allow(described_class).to receive(:kcadm).with('get', 'identity-provider/instances', 'master').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_identity_provider/kcadm/get-master.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'identity-provider/instances', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_identity_provider/kcadm/get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'identity-provider/instances',
+                                                     'master',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_identity_provider/kcadm/get-master.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'identity-provider/instances',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_identity_provider/kcadm/get-test.out'))
       expect(described_class.instances.length).to eq(1)
     end
 
     it 'returns the resource for a fileset' do
       allow(described_class).to receive(:realms).and_return(['master', 'test'])
-      allow(described_class).to receive(:kcadm).with('get', 'identity-provider/instances', 'master').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_identity_provider/kcadm/get-master.out'))
-      allow(described_class).to receive(:kcadm).with('get', 'identity-provider/instances', 'test').and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_identity_provider/kcadm/get-test.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'identity-provider/instances',
+                                                     'master',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_identity_provider/kcadm/get-master.out'))
+      allow(described_class).to receive(:kcadm).with('get', 'identity-provider/instances',
+                                                     'test',).and_return(File.read('spec/fixtures/unit/puppet/provider/keycloak_identity_provider/kcadm/get-test.out'))
       property_hash = described_class.instances[0].instance_variable_get('@property_hash')
       expect(property_hash[:name]).to eq('cilogon on test')
     end
